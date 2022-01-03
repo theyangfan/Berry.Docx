@@ -1,14 +1,10 @@
-### Berry.Docx
-
----
+# Berry.Docx
 
 Berry.Docx 是一款用于读写 Word 2007+ (.docx)文档的.NET 库。开发该库的主要目的是为了提供简便，友好的接口来处理底层的 [OpenXML](https://github.com/OfficeDev/Open-XML-SDK) API。
 
 
 
-#### 示例
-
----
+# 示例
 
 Berry.Docx 支持读写 Word 文档，无需安装 MS Word 程序。
 
@@ -44,17 +40,13 @@ doc.Close();
 
 
 
-#### 依赖
-
----
+# 依赖
 
 本项目基于.NET Framework 4.7.2 开发，依赖的 [OpenXML SDK](https://github.com/OfficeDev/Open-XML-SDK) 版本为 v2.15.0 。
 
 
 
-#### 更新日志
-
----
+# 更新日志
 
 ##### v1.0.0（2022-01-03）
 
