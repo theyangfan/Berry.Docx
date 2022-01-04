@@ -23,7 +23,7 @@ namespace Berry.Docx.Documents
         private ParagraphFormat _pFormat;
         private CharacterFormat _cFormat;
 
-        public Paragraph(W.Paragraph paragraph) : base(paragraph)
+        public Paragraph(Document doc, W.Paragraph paragraph) : base(doc, paragraph)
         {
             _paragraph = paragraph;
             _pFormat = new ParagraphFormat(paragraph);

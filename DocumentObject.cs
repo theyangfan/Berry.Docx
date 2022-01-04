@@ -5,6 +5,7 @@ using System.Text;
 
 using OO = DocumentFormat.OpenXml;
 using OW = DocumentFormat.OpenXml.Wordprocessing;
+using OP = DocumentFormat.OpenXml.Packaging;
 
 using Berry.Docx.Interface;
 using Berry.Docx.Collections;
@@ -18,16 +19,20 @@ namespace Berry.Docx
     /// </summary>
     public class DocumentObject
     {
+        private Document _doc = null;
         private OO.OpenXmlElement _object = null;
 
         /// <summary>
         /// DocumentObject
         /// </summary>
         /// <param name="obj"></param>
-        public DocumentObject(OO.OpenXmlElement obj)
+        public DocumentObject(Document doc, OO.OpenXmlElement obj)
         {
+            _doc = doc;
             _object = obj;
         }
+
+        public Document Document { get => _doc; }
 
         internal OO.OpenXmlElement OpenXmlElement { get => _object; }
         
@@ -57,52 +62,6 @@ namespace Berry.Docx
             get => new DocumentObjectCollection(ChildObjectsPrivate());
         }
 
-        private IEnumerable<DocumentObject> ChildObjectsPrivate()
-        {
-            foreach (OO.OpenXmlElement ele in _object.ChildElements)
-            {
-                if (ele.GetType() == typeof(OW.Paragraph))
-                    yield return new Paragraph(ele as OW.Paragraph);
-                else if (ele.GetType() == typeof(OW.Table))
-                    yield return new Table(ele as OW.Table);
-                else if (ele.GetType() == typeof(OW.Run))
-                    yield return new TextRange(ele as OW.Run);
-                else
-                    yield return new DocumentObject(ele);
-            }
-        }
-
-        /// <summary>
-        /// 获取之前的同级对象
-        /// </summary>
-        public DocumentObject PreviousSibling
-        {
-            get
-            {
-                if (_object == null || _object.PreviousSibling() == null) return null;
-                return new DocumentObject(_object.PreviousSibling());
-            }
-
-        }
-        /// <summary>
-        /// 获取之后的同级对象
-        /// </summary>
-        public DocumentObject NextSibling
-        {
-            get
-            {
-                if (_object == null || _object.NextSibling() == null) return null;
-                return new DocumentObject(_object.NextSibling());
-            }
-        }
-
-        public DocumentObject LastChild
-        {
-            get
-            {
-                if (_object == null || _object.LastChild == null) return null;
-                return new DocumentObject(_object.LastChild);
-            }
-        }
+        
     }
 }

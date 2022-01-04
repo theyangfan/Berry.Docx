@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using OOxml = DocumentFormat.OpenXml.Wordprocessing;
+using P = DocumentFormat.OpenXml.Packaging;
 
 namespace Berry.Docx.Formatting
 {
@@ -12,18 +13,19 @@ namespace Berry.Docx.Formatting
     /// </summary>
     public class ParagraphFormat
     {
-        #region Paragraph
+        #region Private Paragraph Members
         private OOxml.Paragraph _ownerParagraph = null;
         private ParagraphPropertiesHolder _curPHld = null;
         private ParagraphFormat _stylePFormat = null;
         #endregion
-        #region Style
+
+        #region Private Style Members
         private OOxml.Style _ownerStyle = null;
         private ParagraphPropertiesHolder _curSHld = null;
         private ParagraphFormat _baseStylePFormat = null;
         #endregion
 
-        #region Formats
+        #region Private Formats Menbers
         private JustificationType _justification = JustificationType.Both;
         private OutlineLevelType _outlineLevel = OutlineLevelType.BodyText;
         private float _leftIndent = -1;
@@ -49,6 +51,7 @@ namespace Berry.Docx.Formatting
         private Zbool _adjustRightIndent = true;
         private Zbool _snapToGrid = true;
         #endregion
+
         /// <summary>
         /// 空构造函数
         /// </summary>
