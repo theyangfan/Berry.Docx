@@ -16,10 +16,9 @@ namespace Berry.Docx.Collections
     {
         private P.WordprocessingDocument _doc = null;
         private IEnumerable<Paragraph> _paragraphs;
-        public ParagraphCollection(P.WordprocessingDocument doc)
+        public ParagraphCollection(IEnumerable<Paragraph> paragraphs)
         {
-            _doc = doc;
-            _paragraphs = ParagraphsPrivate();
+            _paragraphs = paragraphs;
         }
 
         public Paragraph this[int index]
@@ -37,7 +36,7 @@ namespace Berry.Docx.Collections
 
         public void Add(Paragraph paragraph)
         {
-            _doc.MainDocumentPart.Document.Body.AddChild(paragraph.OpenXmlElement);
+           //_doc.MainDocumentPart.Document.Body.AddChild(paragraph.OpenXmlElement);
         }
 
         public IEnumerator GetEnumerator()
@@ -45,10 +44,6 @@ namespace Berry.Docx.Collections
             return _paragraphs.GetEnumerator();
         }
 
-        private IEnumerable<Paragraph> ParagraphsPrivate()
-        {
-            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-                yield return new Paragraph(p);
-        }
+        
     }
 }

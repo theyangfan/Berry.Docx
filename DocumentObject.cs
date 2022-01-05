@@ -59,9 +59,23 @@ namespace Berry.Docx
 
         public DocumentObjectCollection ChildObjects
         {
-            get => new DocumentObjectCollection(ChildObjectsPrivate());
+            get => new DocumentObjectCollection(_doc, ChildObjectsPrivate());
         }
 
-        
+        private IEnumerable<DocumentObject> ChildObjectsPrivate()
+        {
+            foreach (OO.OpenXmlElement ele in _object.ChildElements)
+            {
+                if (ele.GetType() == typeof(OW.Paragraph))
+                    yield return new Paragraph(_doc, ele as OW.Paragraph);
+                else if (ele.GetType() == typeof(OW.Table))
+                    yield return new Table(_doc, ele as OW.Table);
+                else if (ele.GetType() == typeof(OW.Run))
+                    yield return new TextRange(_doc, ele as OW.Run);
+                else
+                    yield return new DocumentObject(_doc, ele);
+            }
+        }
+
     }
 }

@@ -11,7 +11,7 @@ namespace Berry.Docx.Field
     public class TextRange : DocumentObject
     {
         private OW.Run _run = null;
-        public TextRange(OW.Run run) : base(run)
+        public TextRange(Document doc, OW.Run run) : base(doc, run)
         {
             _run = run;
         }

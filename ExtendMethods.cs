@@ -52,9 +52,9 @@ namespace Berry.Docx
             return styles.StylesPart.OpenXmlPackage as OP.WordprocessingDocument;
         }
 
-        public static OW.Style GetStyle(this OW.Paragraph p)
+        public static OW.Style GetStyle(this OW.Paragraph p, Document doc)
         {
-            OW.Styles styles = p.Document().MainDocumentPart.StyleDefinitionsPart.Styles;
+            OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
             if(p.ParagraphProperties != null && p.ParagraphProperties.ParagraphStyleId != null)
             {
                 string styleId = p.ParagraphProperties.ParagraphStyleId.Val.ToString();

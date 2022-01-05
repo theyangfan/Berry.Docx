@@ -9,14 +9,17 @@ namespace Berry.Docx.Documents
 {
     public class FootEndnote
     {
+        private Document _doc = null;
         private OW.Footnote _footnote;
         private OW.Endnote _endnote;
-        public FootEndnote(OW.Footnote footnote)
+        public FootEndnote(Document doc, OW.Footnote footnote)
         {
+            _doc = doc;
             _footnote = footnote;
         }
-        public FootEndnote(OW.Endnote endnote)
+        public FootEndnote(Document doc, OW.Endnote endnote)
         {
+            _doc = doc;
             _endnote = endnote;
         }
         /// <summary>
@@ -30,7 +33,7 @@ namespace Berry.Docx.Documents
             {
                 foreach (OW.Paragraph p in _footnote.Elements<OW.Paragraph>())
                 {
-                    Paragraph myPara = new Paragraph(p);
+                    Paragraph myPara = new Paragraph(_doc, p);
                     para.Add(myPara);
                 }
             }
@@ -47,7 +50,7 @@ namespace Berry.Docx.Documents
             {
                 foreach (OW.Paragraph p in _endnote.Elements<OW.Paragraph>())
                 {
-                    Paragraph myPara = new Paragraph(p);
+                    Paragraph myPara = new Paragraph(_doc, p);
                     para.Add(myPara);
                 }
             }
@@ -113,13 +116,13 @@ namespace Berry.Docx.Documents
                 OW.Paragraph paragraph = _footnote.Elements<OW.Paragraph>().First();
                 if (paragraph.Descendants<OW.SeparatorMark>().Any())
                 {
-                    Paragraph myPara = new Paragraph(paragraph);
+                    Paragraph myPara = new Paragraph(_doc, paragraph);
                     
                     p.Add(myPara);
                 }
                 if (paragraph.Descendants<OW.ContinuationSeparatorMark>().Any())
                 {
-                    Paragraph myPara = new Paragraph(paragraph);
+                    Paragraph myPara = new Paragraph(_doc, paragraph);
                     
                     p.Add(myPara);
                 }
@@ -137,12 +140,12 @@ namespace Berry.Docx.Documents
                 OW.Paragraph paragraph = _endnote.Elements<OW.Paragraph>().First();
                 if (paragraph.Descendants<OW.SeparatorMark>().Any())
                 {
-                    Paragraph myPara = new Paragraph(paragraph);
+                    Paragraph myPara = new Paragraph(_doc, paragraph);
                     p.Add(myPara);
                 }
                 if (paragraph.Descendants<OW.ContinuationSeparatorMark>().Any())
                 {
-                    Paragraph myPara = new Paragraph(paragraph);
+                    Paragraph myPara = new Paragraph(_doc, paragraph);
                     p.Add(myPara);
                 }
             }

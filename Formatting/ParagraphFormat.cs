@@ -13,6 +13,7 @@ namespace Berry.Docx.Formatting
     /// </summary>
     public class ParagraphFormat
     {
+        private Document _doc = null;
         #region Private Paragraph Members
         private OOxml.Paragraph _ownerParagraph = null;
         private ParagraphPropertiesHolder _curPHld = null;
@@ -60,20 +61,22 @@ namespace Berry.Docx.Formatting
         /// 构造函数，用于构造段落的段落格式
         /// </summary>
         /// <param name="ownerParagraph"></param>
-        public ParagraphFormat(OOxml.Paragraph ownerParagraph)
+        public ParagraphFormat(Document doc, OOxml.Paragraph ownerParagraph)
         {
+            _doc = doc;
             _ownerParagraph = ownerParagraph;
             if (ownerParagraph.ParagraphProperties == null)
                 ownerParagraph.ParagraphProperties = new OOxml.ParagraphProperties();
             _curPHld = new ParagraphPropertiesHolder(ownerParagraph.ParagraphProperties);
-            _stylePFormat = new ParagraphFormat(ownerParagraph.GetStyle());
+            _stylePFormat = new ParagraphFormat(doc, ownerParagraph.GetStyle(doc));
         }
         /// <summary>
         /// 构造函数，用于构造样式的段落格式
         /// </summary>
         /// <param name="ownerStyle"></param>
-        public ParagraphFormat(OOxml.Style ownerStyle)
+        public ParagraphFormat(Document doc, OOxml.Style ownerStyle)
         {
+            _doc = doc;
             _ownerStyle = ownerStyle;
             _curSHld = new ParagraphPropertiesHolder(ownerStyle.StyleParagraphProperties);
             _baseStylePFormat = GetStyleParagraphFormatRecursively(ownerStyle);

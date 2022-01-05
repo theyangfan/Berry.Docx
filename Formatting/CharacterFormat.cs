@@ -12,6 +12,7 @@ namespace Berry.Docx.Formatting
     /// </summary>
     public class CharacterFormat
     {
+        private Document _doc = null;
         #region Paragraph
         private OOxml.Paragraph _ownerParagraph = null;
         private RunPropertiesHolder _curPHld = null;
@@ -34,23 +35,25 @@ namespace Berry.Docx.Formatting
         #endregion
 
         public CharacterFormat() { }
-        public CharacterFormat(OOxml.Paragraph ownerParagraph)
+        public CharacterFormat(Document doc, OOxml.Paragraph ownerParagraph)
         {
+            _doc = doc;
             _ownerParagraph = ownerParagraph;
             if (ownerParagraph.ParagraphProperties == null)
                 ownerParagraph.ParagraphProperties = new OOxml.ParagraphProperties();
             if (ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties == null)
                 ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties = new OOxml.ParagraphMarkRunProperties();
-            _curPHld = new RunPropertiesHolder(ownerParagraph.Document(), ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties);
-            _styleCFormat = new CharacterFormat(ownerParagraph.GetStyle());
+            _curPHld = new RunPropertiesHolder(doc.Package, ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties);
+            _styleCFormat = new CharacterFormat(doc, ownerParagraph.GetStyle(doc));
         }
         
-        public CharacterFormat(OOxml.Style ownerStyle)
+        public CharacterFormat(Document doc, OOxml.Style ownerStyle)
         {
+            _doc = doc;
             _ownerStyle = ownerStyle;
             if (ownerStyle.StyleRunProperties == null)
                 ownerStyle.StyleRunProperties = new OOxml.StyleRunProperties();
-            _curSHld = new RunPropertiesHolder(ownerStyle.Document(), ownerStyle.StyleRunProperties);
+            _curSHld = new RunPropertiesHolder(doc.Package, ownerStyle.StyleRunProperties);
             _baseStyleCFormat = GetStyleCharacterFormatRecursively(ownerStyle);
         }
 
@@ -63,7 +66,7 @@ namespace Berry.Docx.Formatting
             if (styles.DocDefaults != null && styles.DocDefaults.RunPropertiesDefault != null
                 && styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle != null)
             {
-                RunPropertiesHolder rPr = new RunPropertiesHolder(style.Document(), styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle);
+                RunPropertiesHolder rPr = new RunPropertiesHolder(_doc.Package, styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle);
                 baseFormat.FontCN = rPr.FontCN;
                 baseFormat.FontEN = rPr.FontEN;
                 baseFormat.FontSize = rPr.FontSize;
@@ -76,7 +79,7 @@ namespace Berry.Docx.Formatting
             if (baseStyle != null)
                 baseFormat = GetStyleCharacterFormatRecursively(baseStyle);
             if (style.StyleRunProperties == null) style.StyleRunProperties = new OOxml.StyleRunProperties();
-            RunPropertiesHolder curSHld = new RunPropertiesHolder(style.Document(), style.StyleRunProperties);
+            RunPropertiesHolder curSHld = new RunPropertiesHolder(_doc.Package, style.StyleRunProperties);
 
             format.FontCN = curSHld.FontCN ?? baseFormat.FontCN;
             format.FontEN = curSHld.FontEN ?? baseFormat.FontEN;

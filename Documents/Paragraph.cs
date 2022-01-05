@@ -19,15 +19,17 @@ namespace Berry.Docx.Documents
 {
     public class Paragraph : DocumentObject
     {
+        private Document _doc = null;
         private W.Paragraph _paragraph;
         private ParagraphFormat _pFormat;
         private CharacterFormat _cFormat;
 
         public Paragraph(Document doc, W.Paragraph paragraph) : base(doc, paragraph)
         {
+            _doc = doc;
             _paragraph = paragraph;
-            _pFormat = new ParagraphFormat(paragraph);
-            _cFormat = new CharacterFormat(paragraph);
+            _pFormat = new ParagraphFormat(_doc, paragraph);
+            _cFormat = new CharacterFormat(_doc, paragraph);
         }
         
         /// <summary>
@@ -125,8 +127,8 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                if (_paragraph == null || _paragraph.GetStyle() == null) return null;
-                return new Style(_paragraph.GetStyle());
+                if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return null;
+                return new Style(_doc, _paragraph.GetStyle(_doc));
             }
         }
 
@@ -137,8 +139,8 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                if (_paragraph == null || _paragraph.GetStyle() == null) return string.Empty;
-                return _paragraph.GetStyle().StyleName.Val;
+                if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return string.Empty;
+                return _paragraph.GetStyle(_doc).StyleName.Val;
             }
         }
 
@@ -195,7 +197,7 @@ namespace Berry.Docx.Documents
             {
                 if (_paragraph == null || _paragraph.PreviousSibling() == null) return null;
                 if (_paragraph.PreviousSibling().GetType() == typeof(W.Paragraph))
-                    return new Paragraph(_paragraph.PreviousSibling() as W.Paragraph);
+                    return new Paragraph(_doc, _paragraph.PreviousSibling() as W.Paragraph);
                 return null;
             }
         }
@@ -206,7 +208,7 @@ namespace Berry.Docx.Documents
             {
                 if (_paragraph == null || _paragraph.NextSibling() == null) return null;
                 if (_paragraph.NextSibling().GetType() == typeof(W.Paragraph))
-                    return new Paragraph(_paragraph.NextSibling() as W.Paragraph);
+                    return new Paragraph(_doc, _paragraph.NextSibling() as W.Paragraph);
                 return null;
             }
         }

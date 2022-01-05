@@ -14,13 +14,13 @@ namespace Berry.Docx.Documents
         private W.Style _style = null;
         protected ParagraphFormat _pFormat = null;
         protected CharacterFormat _cFormat = null;
-        public Style(W.Style style)
+        public Style(Document doc, W.Style style)
         {
             _style = style;
             if(style.Type.Value == W.StyleValues.Paragraph)
             {
-                _pFormat = new ParagraphFormat(style);
-                _cFormat = new CharacterFormat(style);
+                _pFormat = new ParagraphFormat(doc, style);
+                _cFormat = new CharacterFormat(doc, style);
             }
         }
 

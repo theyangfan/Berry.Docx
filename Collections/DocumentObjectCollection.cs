@@ -43,20 +43,5 @@ namespace Berry.Docx.Collections
         {
             return _objects.GetEnumerator();
         }
-
-        private IEnumerable<DocumentObject> ChildObjectsPrivate()
-        {
-            foreach (OO.OpenXmlElement ele in _object.ChildElements)
-            {
-                if (ele.GetType() == typeof(OW.Paragraph))
-                    yield return new Paragraph(_doc, ele as OW.Paragraph);
-                else if (ele.GetType() == typeof(OW.Table))
-                    yield return new Table(ele as OW.Table);
-                else if (ele.GetType() == typeof(OW.Run))
-                    yield return new TextRange(ele as OW.Run);
-                else
-                    yield return new DocumentObject(_doc, ele);
-            }
-        }
     }
 }

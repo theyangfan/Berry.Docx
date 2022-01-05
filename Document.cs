@@ -116,6 +116,8 @@ namespace Berry.Docx
             }
         }
 
+        public P.WordprocessingDocument Package { get => _doc; }
+
         /// <summary>
         /// 文档子类对象
         /// </summary>
@@ -123,7 +125,7 @@ namespace Berry.Docx
         {
             get
             {
-                return new DocumentObjectCollection(ChildObjectsPrivate());
+                return new DocumentObjectCollection(this, ChildObjectsPrivate());
             }
         }
 
@@ -132,11 +134,11 @@ namespace Berry.Docx
             foreach(OOxml.OpenXmlElement ele in _doc.MainDocumentPart.Document.Body.Elements())
             {
                 if (ele.GetType() == typeof(W.Paragraph))
-                    yield return new Paragraph(ele as W.Paragraph);
+                    yield return new Paragraph(this, ele as W.Paragraph);
                 else if (ele.GetType() == typeof(W.Table))
-                    yield return new Table(ele as W.Table);
+                    yield return new Table(this, ele as W.Table);
                 else
-                    yield return new DocumentObject(ele);
+                    yield return new DocumentObject(this, ele);
             }
         }
 
@@ -175,8 +177,14 @@ namespace Berry.Docx
         {
             get
             {
-                return new ParagraphCollection(_doc);
+                return new ParagraphCollection(ParagraphsPrivate());
             }
+        }
+
+        private IEnumerable<Paragraph> ParagraphsPrivate()
+        {
+            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
+                yield return new Paragraph(this, p);
         }
 
         /// <summary>
@@ -193,7 +201,7 @@ namespace Berry.Docx
         private IEnumerable<Table> TablesPrivate()
         {
             foreach (W.Table table in _doc.MainDocumentPart.Document.Body.Elements<W.Table>())
-                yield return new Table(table);
+                yield return new Table(this, table);
         }
 
         /// <summary>
@@ -247,9 +255,9 @@ namespace Berry.Docx
             foreach (W.Style style in _doc.MainDocumentPart.StyleDefinitionsPart.Styles.Elements<W.Style>())
             {
                 if (style.Type.Value == W.StyleValues.Paragraph)
-                    yield return new ParagraphStyle(style);
+                    yield return new ParagraphStyle(this, style);
                 else
-                    yield return new Style(style);
+                    yield return new Style(this, style);
             }
         }
 
@@ -264,7 +272,7 @@ namespace Berry.Docx
                 if(_doc.MainDocumentPart.FootnotesPart!=null)
                 {
                     foreach (W.Footnote fn in _doc.MainDocumentPart.FootnotesPart.Footnotes.Elements<W.Footnote>())
-                        fenotes.Add(new FootEndnote(fn));
+                        fenotes.Add(new FootEndnote(this, fn));
                 }
                 return fenotes;
             }
@@ -280,7 +288,7 @@ namespace Berry.Docx
                 if(_doc.MainDocumentPart.EndnotesPart!=null)
                 {
                     foreach (W.Endnote en in _doc.MainDocumentPart.EndnotesPart.Endnotes.Elements<W.Endnote>())
-                        fenotes.Add(new FootEndnote(en));
+                        fenotes.Add(new FootEndnote(this, en));
                 }
                 return fenotes;
             }
@@ -293,7 +301,7 @@ namespace Berry.Docx
         public Paragraph CreateParagraph()
         {
             W.Paragraph paragraph = new W.Paragraph();
-            return new Paragraph(paragraph);
+            return new Paragraph(this, paragraph);
         }
 
         /// <summary>
@@ -321,7 +329,7 @@ namespace Berry.Docx
             foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
             {
                 if (p.InnerText.Trim() == text)
-                    paras.Add(new Paragraph(p));
+                    paras.Add(new Paragraph(this, p));
             }
             return paras;
         }
@@ -337,7 +345,7 @@ namespace Berry.Docx
             foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
             {
                 if (Regex.IsMatch(p.InnerText, pattern, options))
-                    paras.Add(new Paragraph(p));
+                    paras.Add(new Paragraph(this, p));
             }
             return paras;
         }
@@ -360,7 +368,7 @@ namespace Berry.Docx
                 {
                     if (p.Descendants<W.SectionProperties>().Count() > 0) break;
                     if (!string.IsNullOrWhiteSpace(p.InnerText.Trim()))
-                        paras.Add(new Paragraph(p));
+                        paras.Add(new Paragraph(this, p));
                 }
             }
             return paras;
