@@ -7,9 +7,8 @@ using OO = DocumentFormat.OpenXml;
 using OW = DocumentFormat.OpenXml.Wordprocessing;
 using OP = DocumentFormat.OpenXml.Packaging;
 
-using Berry.Docx.Interface;
+using Berry.Docx;
 using Berry.Docx.Collections;
-using Berry.Docx.Documents;
 using Berry.Docx.Field;
 
 namespace Berry.Docx
@@ -34,7 +33,7 @@ namespace Berry.Docx
 
         public Document Document { get => _doc; }
 
-        internal OO.OpenXmlElement OpenXmlElement { get => _object; }
+        internal OO.OpenXmlElement XElement { get => _object; }
         
         /// <summary>
         /// 当前对象的类型

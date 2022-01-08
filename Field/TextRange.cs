@@ -5,6 +5,7 @@ using System.Text;
 
 using OO = DocumentFormat.OpenXml;
 using OW = DocumentFormat.OpenXml.Wordprocessing;
+using Berry.Docx.Documents;
 
 namespace Berry.Docx.Field
 {

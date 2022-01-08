@@ -114,11 +114,11 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 段落格式
         /// </summary>
-        public ParagraphFormat Format{ get => _pFormat; }
+        public ParagraphFormat Format { get => _pFormat; }
         /// <summary>
         /// 段落字符格式
         /// </summary>
-        public CharacterFormat CharacterFormat{ get => _cFormat; }
+        public CharacterFormat CharacterFormat { get => _cFormat; }
 
         /// <summary>
         /// 样式
@@ -221,10 +221,10 @@ namespace Berry.Docx.Documents
         public void AppendComment(string author, string content)
         {
             int id = 0; // 新批注Id
-            P.WordprocessingCommentsPart part = _paragraph.Document().MainDocumentPart.WordprocessingCommentsPart;
+            P.WordprocessingCommentsPart part = _doc.Package.MainDocumentPart.WordprocessingCommentsPart;
             if (part == null)
             {
-                part = _paragraph.Document().MainDocumentPart.AddNewPart<P.WordprocessingCommentsPart>();
+                part = _doc.Package.MainDocumentPart.AddNewPart<P.WordprocessingCommentsPart>();
                 part.Comments = new W.Comments();
             }
             W.Comments comments = part.Comments;

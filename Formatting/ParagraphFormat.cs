@@ -13,7 +13,7 @@ namespace Berry.Docx.Formatting
     /// </summary>
     public class ParagraphFormat
     {
-        private Document _doc = null;
+        private Document _document = null;
         #region Private Paragraph Members
         private OOxml.Paragraph _ownerParagraph = null;
         private ParagraphPropertiesHolder _curPHld = null;
@@ -61,24 +61,24 @@ namespace Berry.Docx.Formatting
         /// 构造函数，用于构造段落的段落格式
         /// </summary>
         /// <param name="ownerParagraph"></param>
-        public ParagraphFormat(Document doc, OOxml.Paragraph ownerParagraph)
+        public ParagraphFormat(Document document, OOxml.Paragraph ownerParagraph)
         {
-            _doc = doc;
+            _document = document;
             _ownerParagraph = ownerParagraph;
             if (ownerParagraph.ParagraphProperties == null)
                 ownerParagraph.ParagraphProperties = new OOxml.ParagraphProperties();
-            _curPHld = new ParagraphPropertiesHolder(ownerParagraph.ParagraphProperties);
-            _stylePFormat = new ParagraphFormat(doc, ownerParagraph.GetStyle(doc));
+            _curPHld = new ParagraphPropertiesHolder(document, ownerParagraph.ParagraphProperties);
+            _stylePFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
         }
         /// <summary>
         /// 构造函数，用于构造样式的段落格式
         /// </summary>
         /// <param name="ownerStyle"></param>
-        public ParagraphFormat(Document doc, OOxml.Style ownerStyle)
+        public ParagraphFormat(Document document, OOxml.Style ownerStyle)
         {
-            _doc = doc;
+            _document = document;
             _ownerStyle = ownerStyle;
-            _curSHld = new ParagraphPropertiesHolder(ownerStyle.StyleParagraphProperties);
+            _curSHld = new ParagraphPropertiesHolder(document, ownerStyle.StyleParagraphProperties);
             _baseStylePFormat = GetStyleParagraphFormatRecursively(ownerStyle);
         }
         /// <summary>
@@ -94,7 +94,7 @@ namespace Berry.Docx.Formatting
             if (baseStyle != null)
                 baseFormat = GetStyleParagraphFormatRecursively(baseStyle);
 
-            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(style.StyleParagraphProperties);
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(_document, style.StyleParagraphProperties);
 
             format.NumberingFormat = curSHld.NumberingFormat ?? baseFormat.NumberingFormat;
 

@@ -156,7 +156,7 @@ namespace Berry.Docx
         private IEnumerable<Section> SectionsPrivate()
         {
             foreach (W.SectionProperties sectPr in _doc.MainDocumentPart.Document.Body.Descendants<W.SectionProperties>())
-                yield return new Section(sectPr);
+                yield return new Section(this, sectPr);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Berry.Docx
         {
             get
             {
-                return new Section(_doc.MainDocumentPart.Document.Body.Elements<W.SectionProperties>().Last());
+                return new Section(this, _doc.MainDocumentPart.Document.Body.Elements<W.SectionProperties>().Last());
             }
         }
 
@@ -177,7 +177,7 @@ namespace Berry.Docx
         {
             get
             {
-                return new ParagraphCollection(ParagraphsPrivate());
+                return new ParagraphCollection(this, ParagraphsPrivate());
             }
         }
 

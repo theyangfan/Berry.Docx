@@ -7,8 +7,10 @@ using OOxml = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
-    public class ParagraphPropertiesHolder
+    internal class ParagraphPropertiesHolder
     {
+        private Document _document = null;
+
         private OOxml.ParagraphProperties _pPr = null;
         private OOxml.StyleParagraphProperties _spPr = null;
         // 常规
@@ -27,8 +29,9 @@ namespace Berry.Docx.Formatting
         // 编号
         private OOxml.Level _lvl = null;
 
-        public ParagraphPropertiesHolder(OOxml.ParagraphProperties pPr)
+        public ParagraphPropertiesHolder(Document document, OOxml.ParagraphProperties pPr)
         {
+            _document = document;
             if (pPr == null)
                 pPr = new OOxml.ParagraphProperties();
             _pPr = pPr;
@@ -55,8 +58,8 @@ namespace Berry.Docx.Formatting
                     if(pPr.NumberingProperties.NumberingLevelReference != null)
                     {
                         int ilvl = pPr.NumberingProperties.NumberingLevelReference.Val;
-                        if (pPr.Document().MainDocumentPart.NumberingDefinitionsPart == null) return;
-                        OOxml.Numbering numbering = pPr.Document().MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                        if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
+                        OOxml.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
                         OOxml.NumberingInstance num = numbering.Elements<OOxml.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
                         if (num == null) return;
                         int abstractNumId = num.AbstractNumId.Val;
@@ -68,8 +71,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        public ParagraphPropertiesHolder(OOxml.StyleParagraphProperties spPr)
+        public ParagraphPropertiesHolder(Document document, OOxml.StyleParagraphProperties spPr)
         {
+            _document = document;
             if (spPr == null)
                 spPr = new OOxml.StyleParagraphProperties();
             _spPr = spPr;
@@ -93,8 +97,8 @@ namespace Berry.Docx.Formatting
                 {
                     int numId = spPr.NumberingProperties.NumberingId.Val;
                     string styleId = (spPr.Parent as OOxml.Style).StyleId;
-                    if (spPr.Document().MainDocumentPart.NumberingDefinitionsPart == null) return;
-                    OOxml.Numbering numbering = spPr.Document().MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                    if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
+                    OOxml.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
                     OOxml.NumberingInstance num = numbering.Elements<OOxml.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
                     if (num == null) return;
                     int abstractNumId = num.AbstractNumId.Val;

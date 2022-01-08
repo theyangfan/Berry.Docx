@@ -12,46 +12,15 @@ namespace Berry.Docx
 {
     static class ExtendMethods
     {
-        public static OP.WordprocessingDocument Document(this OW.Paragraph p)
+        public static OW.Body GetBody (this OP.WordprocessingDocument doc)
         {
-            if (p == null) return null;
-            DocumentFormat.OpenXml.Wordprocessing.Document document = p.Ancestors<DocumentFormat.OpenXml.Wordprocessing.Document>().FirstOrDefault();
-            if(document != null)
-                return document.MainDocumentPart.OpenXmlPackage as OP.WordprocessingDocument;
-            OW.Footnotes footnotes = p.Ancestors<OW.Footnotes>().FirstOrDefault();
-            if (footnotes != null)
-                return footnotes.FootnotesPart.OpenXmlPackage as OP.WordprocessingDocument;
-            OW.Endnotes endnotes = p.Ancestors<OW.Endnotes>().FirstOrDefault();
-            if (endnotes != null)
-                return endnotes.EndnotesPart.OpenXmlPackage as OP.WordprocessingDocument;
-            OW.Header header = p.Ancestors<OW.Header>().FirstOrDefault();
-            if (header != null)
-                return header.HeaderPart.OpenXmlPackage as OP.WordprocessingDocument;
-            OW.Footer footer = p.Ancestors<OW.Footer>().FirstOrDefault();
-            if (footer != null)
-                return footer.FooterPart.OpenXmlPackage as OP.WordprocessingDocument;
-            return null;
+            return doc?.MainDocumentPart?.Document?.Body;
         }
 
-        public static OP.WordprocessingDocument Document(this OW.ParagraphProperties pPr)
+        public static OW.SectionProperties GetRootSectionProperties(this OP.WordprocessingDocument doc)
         {
-            DocumentFormat.OpenXml.Wordprocessing.Document document = pPr.Ancestors<DocumentFormat.OpenXml.Wordprocessing.Document>().First();
-            return document.MainDocumentPart.OpenXmlPackage as OP.WordprocessingDocument;
+            return doc.GetBody()?.LastChild as OW.SectionProperties;
         }
-
-        public static OP.WordprocessingDocument Document(this OW.Style style)
-        {
-            DocumentFormat.OpenXml.Wordprocessing.Styles styles = style.Ancestors<DocumentFormat.OpenXml.Wordprocessing.Styles>().First();
-            return styles.StylesPart.OpenXmlPackage as OP.WordprocessingDocument;
-        }
-
-
-        public static OP.WordprocessingDocument Document(this OW.StyleParagraphProperties pPr)
-        {
-            DocumentFormat.OpenXml.Wordprocessing.Styles styles = pPr.Ancestors<DocumentFormat.OpenXml.Wordprocessing.Styles>().First();
-            return styles.StylesPart.OpenXmlPackage as OP.WordprocessingDocument;
-        }
-
         public static OW.Style GetStyle(this OW.Paragraph p, Document doc)
         {
             OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;

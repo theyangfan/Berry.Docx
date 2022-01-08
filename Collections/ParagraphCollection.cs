@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using OOxml = DocumentFormat.OpenXml;
+using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using P = DocumentFormat.OpenXml.Packaging;
 
@@ -14,10 +14,11 @@ namespace Berry.Docx.Collections
 {
     public class ParagraphCollection : IEnumerable
     {
-        private P.WordprocessingDocument _doc = null;
+        private O.OpenXmlElement _container = null;
         private IEnumerable<Paragraph> _paragraphs;
-        public ParagraphCollection(IEnumerable<Paragraph> paragraphs)
+        public ParagraphCollection(O.OpenXmlElement container, IEnumerable<Paragraph> paragraphs)
         {
+            _container = container;
             _paragraphs = paragraphs;
         }
 
@@ -36,7 +37,18 @@ namespace Berry.Docx.Collections
 
         public void Add(Paragraph paragraph)
         {
-           //_doc.MainDocumentPart.Document.Body.AddChild(paragraph.OpenXmlElement);
+            if (_paragraphs.Count() == 0)
+                _container.AppendChild(paragraph.XElement);
+            else
+                _paragraphs.Last().XElement.InsertAfterSelf(paragraph.XElement);
+        }
+
+        public void Insert(Paragraph paragraph, int index)
+        {
+            if (_paragraphs.Count() == 0)
+                _container.AppendChild(paragraph.XElement);
+            else
+                _paragraphs.ElementAt(index).XElement.InsertBeforeSelf(paragraph.XElement);
         }
 
         public IEnumerator GetEnumerator()
