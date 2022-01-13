@@ -87,12 +87,26 @@ namespace Berry.Docx.Documents
                 }
                 return text;
             }
+            set
+            {
+                _paragraph.RemoveAllChildren<W.Run>();
+
+                W.Run run = new W.Run();
+                
+                W.RunProperties rPr = new W.RunProperties();
+                W.RunFonts rFonts = new W.RunFonts() { Hint = W.FontTypeHintValues.EastAsia };
+                rPr.AddChild(rFonts);
+                
+                W.Text text = new W.Text() { Space = O.SpaceProcessingModeValues.Preserve };
+                text.Text = value;
+
+                run.AddChild(rPr);
+                run.AddChild(text);
+
+                _paragraph.AddChild(run);
+            }
         }
 
-        public string InnerText
-        {
-            get { return _paragraph.InnerText; }
-        }
         /// <summary>
         /// 段落编号(默认为1)
         /// </summary>
@@ -191,28 +205,6 @@ namespace Berry.Docx.Documents
             }
         }
 
-        public Paragraph PreviousParagraph
-        {
-            get
-            {
-                if (_paragraph == null || _paragraph.PreviousSibling() == null) return null;
-                if (_paragraph.PreviousSibling().GetType() == typeof(W.Paragraph))
-                    return new Paragraph(_doc, _paragraph.PreviousSibling() as W.Paragraph);
-                return null;
-            }
-        }
-
-        public Paragraph NextParagraph
-        {
-            get
-            {
-                if (_paragraph == null || _paragraph.NextSibling() == null) return null;
-                if (_paragraph.NextSibling().GetType() == typeof(W.Paragraph))
-                    return new Paragraph(_doc, _paragraph.NextSibling() as W.Paragraph);
-                return null;
-            }
-        }
-
         /// <summary>
         /// 添加批注
         /// </summary>
@@ -256,55 +248,6 @@ namespace Berry.Docx.Documents
         {
             if (_paragraph != null) _paragraph.Remove();
         }
-        /// <summary>
-        /// 判断段落是否中包含图片
-        /// </summary>
-        /// <returns></returns>
-        public bool HasPicture()
-        {
-            if (_paragraph == null) return false;
-            if (_paragraph.Descendants<Pic.Picture>().Any() || _paragraph.Descendants<W.Picture>().Any()) return true;
-            if (_paragraph.Descendants<W.EmbeddedObject>().Any())
-            {
-                W.EmbeddedObject obj = _paragraph.Descendants<W.EmbeddedObject>().First();
-                if (obj.Descendants<V.Shape>().Any() && obj.Descendants<V.ImageData>().Any() && obj.Descendants<Office.OleObject>().Any())
-                {
-                    Office.OleObject ole = obj.Descendants<Office.OleObject>().First();
-                    if (ole.ProgId != null && ole.ProgId.Value == "PBrush")
-                        return true;
-                }
-            }
-            return false;
-        }
-        /// <summary>
-        /// 判断段落中是否包含嵌入式对象
-        /// </summary>
-        /// <returns></returns>
-        public bool HasEmbeddedObject()
-        {
-            if (_paragraph == null) return false;
-            return _paragraph.Descendants<W.EmbeddedObject>().Count() > 0;
-        }
-        /// <summary>
-        /// 判断段落中是否包含公式
-        /// </summary>
-        /// <returns></returns>
-        public bool HasOfficeMath()
-        {
-            if (_paragraph == null) return false;
-            return _paragraph.Descendants<M.OfficeMath>().Count() > 0;
-        }
-        /// <summary>
-        /// 判断段落中是否包含嵌入式公式
-        /// </summary>
-        /// <returns></returns>
-        public bool HasOLEEquation()
-        {
-            if (_paragraph == null) return false;
-            Office.OleObject ole = _paragraph.Descendants<Office.OleObject>().FirstOrDefault();
-            if (ole != null)
-                return ole.ProgId != null && ole.ProgId.Value.Contains("Equation");
-            return false;
-        }
+
     }
 }

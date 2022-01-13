@@ -31,7 +31,7 @@ namespace Berry.Docx
         {
             get
             {
-                return new ParagraphCollection(_document, ParagraphsPrivate());
+                return new ParagraphCollection(_document.Package.GetBody(), ParagraphsPrivate());
             }
         }
 
@@ -51,13 +51,8 @@ namespace Berry.Docx
 
             for (int i = index; i >= 0; --i)
             {
-                if (i == index && all_paragraphs[i].Descendants().Contains(_sectPr))
-                {
-                    if(all_paragraphs[i].Elements<OW.Run>().Any())
-                        paragraphs.Add(new Paragraph(_document, all_paragraphs[i]));
-                    continue;
-                }
-                if (all_paragraphs[i].Descendants<OW.SectionProperties>().Any())
+                // 保留包含 SectionProperties 元素的段落
+                if (i != index && all_paragraphs[i].Descendants<OW.SectionProperties>().Any())
                     break;
                 paragraphs.Add(new Paragraph(_document, all_paragraphs[i]));
             }

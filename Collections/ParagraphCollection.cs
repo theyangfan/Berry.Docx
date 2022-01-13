@@ -35,20 +35,93 @@ namespace Berry.Docx.Collections
         /// </summary>
         public int Count { get => _paragraphs.Count(); }
 
+        /// <summary>
+        /// 在集合末尾添加段落
+        /// </summary>
+        /// <param name="paragraph">段落</param>
         public void Add(Paragraph paragraph)
         {
+            W.Paragraph newParagraph = paragraph.XElement as W.Paragraph;
             if (_paragraphs.Count() == 0)
-                _container.AppendChild(paragraph.XElement);
+            {
+                if(_container is W.Body)
+                {
+                    _container.InsertBefore(newParagraph, _container.LastChild);
+                    return;
+                }
+                _container.AppendChild(newParagraph);
+            }
             else
-                _paragraphs.Last().XElement.InsertAfterSelf(paragraph.XElement);
+            {
+                W.Paragraph lastParagraph = _paragraphs.Last().XElement as W.Paragraph;
+                // 末尾段落包含分节符
+                if (lastParagraph.Descendants<W.SectionProperties>().Any())
+                {
+                    // 若包含文本，则在分节符后插入，并将分节符移至插入的段落中
+                    if (lastParagraph.Elements<W.Run>().Any())
+                    {
+                        W.SectionProperties sectPr = lastParagraph.Descendants<W.SectionProperties>().First();
+                        sectPr.Remove();
+                        if (newParagraph.ParagraphProperties == null)
+                            newParagraph.ParagraphProperties = new W.ParagraphProperties();
+                        newParagraph.ParagraphProperties.AddChild(sectPr);
+                        lastParagraph.InsertAfterSelf(newParagraph);
+                    }
+                    else
+                    {
+                        // 若只包含分节符，则在分节符前插入
+                        lastParagraph.InsertBeforeSelf(newParagraph);
+                    }
+                }
+                else
+                {
+                    // 若不包含分节符，则在末尾段落之后插入
+                    lastParagraph.InsertAfterSelf(newParagraph);
+                }
+            }
         }
 
-        public void Insert(Paragraph paragraph, int index)
+        /// <summary>
+        /// 返回段落在集合中从零开始的索引
+        /// </summary>
+        /// <param name="paragraph">段落</param>
+        /// <returns></returns>
+        public int IndexOf(Paragraph paragraph)
         {
+            return _paragraphs.ToList().IndexOf(paragraph);
+        }
+
+        /// <summary>
+        /// 在集合指定位置插入段落
+        /// </summary>
+        /// <param name="paragraph">段落</param>
+        /// <param name="index">段落位置，从零开始的索引</param>
+        public void InsertAt(Paragraph paragraph, int index)
+        {
+            W.Paragraph newParagraph = paragraph.XElement as W.Paragraph;
             if (_paragraphs.Count() == 0)
-                _container.AppendChild(paragraph.XElement);
+            {
+                if (index == 0)
+                {
+                    Add(paragraph);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("index", index, "索引超出范围, 必须为非负值并小于集合大小。");
+                }
+            }
             else
-                _paragraphs.ElementAt(index).XElement.InsertBeforeSelf(paragraph.XElement);
+            {
+                if(index == _paragraphs.Count())
+                {
+                    Add(paragraph);
+                }
+                else
+                {
+                    _paragraphs.ElementAt(index).XElement.InsertBeforeSelf(newParagraph);
+                }
+            }
+                
         }
 
         public IEnumerator GetEnumerator()

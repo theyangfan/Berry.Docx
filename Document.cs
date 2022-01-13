@@ -55,39 +55,6 @@ namespace Berry.Docx
         }
 
         /// <summary>
-        /// 尝试打开文档，不抛出异常
-        /// </summary>
-        /// <param name="filename">文件名</param>
-        /// <param name="isEditable">是否可写</param>
-        /// <param name="error">错误信息</param>
-        /// <returns></returns>
-        public static Document TryOpen(string filename, bool isEditable, out string error)
-        {
-            error = string.Empty;
-            Document doc = null;
-            FileInfo file = new FileInfo(filename);
-            if (!file.Exists)
-            {
-                error = $"未找到\"{filename}\"文件，请检查 \"{file.DirectoryName}\" 路径下是否存在该文件!";
-                return doc;
-            }
-            if (file.Length == 0)
-            {
-                error = $"文件 \"{filename}\" 为空!";
-                return doc;
-            }
-            try
-            {
-                doc = new Document(filename);
-            }
-            catch (Exception e)
-            {
-               error = $"\"{filename}\"读取失败, 请检查是否已关闭该文件!({e.Message})";
-            }
-            return doc;
-        }
-
-        /// <summary>
         /// 保存
         /// </summary>
         public void Save()
@@ -135,8 +102,6 @@ namespace Berry.Docx
             {
                 if (ele.GetType() == typeof(W.Paragraph))
                     yield return new Paragraph(this, ele as W.Paragraph);
-                else if (ele.GetType() == typeof(W.Table))
-                    yield return new Table(this, ele as W.Table);
                 else
                     yield return new DocumentObject(this, ele);
             }
@@ -171,75 +136,6 @@ namespace Berry.Docx
         }
 
         /// <summary>
-        /// 返回文档的段落集合
-        /// </summary>
-        public ParagraphCollection Paragraphs
-        {
-            get
-            {
-                return new ParagraphCollection(this, ParagraphsPrivate());
-            }
-        }
-
-        private IEnumerable<Paragraph> ParagraphsPrivate()
-        {
-            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-                yield return new Paragraph(this, p);
-        }
-
-        /// <summary>
-        /// 返回文档中所有表格
-        /// </summary>
-        public TableCollection Tables
-        {
-            get
-            {
-                return new TableCollection(TablesPrivate());
-            }
-        }
-
-        private IEnumerable<Table> TablesPrivate()
-        {
-            foreach (W.Table table in _doc.MainDocumentPart.Document.Body.Elements<W.Table>())
-                yield return new Table(this, table);
-        }
-
-        /// <summary>
-        /// 返回文档页眉集合
-        /// </summary>
-        public HeaderCollection Headers
-        {
-            get
-            {
-                List<Header> headers = new List<Header>();
-                foreach (P.HeaderPart p in _doc.MainDocumentPart.HeaderParts)
-                {
-                    headers.Add(new Header(p.Header));
-                }
-                    
-                return new HeaderCollection(headers);
-            }
-        }
-
-        /// <summary>
-        /// 返回文档页脚集合
-        /// </summary>
-        public FooterCollection Footers
-        {
-            get
-            {
-                List<Footer> footers = new List<Footer>();
-                foreach (P.FooterPart p in _doc.MainDocumentPart.FooterParts)
-                {
-                    footers.Add(new Footer(p.Footer));
-                }
-
-                return new FooterCollection(footers);
-            }
-        }
-
-
-        /// <summary>
         /// 返回文档的样式集合
         /// </summary>
         public StyleCollection Styles
@@ -261,38 +157,6 @@ namespace Berry.Docx
             }
         }
 
-        /// <summary>
-        /// 返回文档的脚注集合
-        /// </summary>
-        public List<FootEndnote> FootEndnotes
-        {
-            get
-            {
-                List<FootEndnote> fenotes = new List<FootEndnote>();
-                if(_doc.MainDocumentPart.FootnotesPart!=null)
-                {
-                    foreach (W.Footnote fn in _doc.MainDocumentPart.FootnotesPart.Footnotes.Elements<W.Footnote>())
-                        fenotes.Add(new FootEndnote(this, fn));
-                }
-                return fenotes;
-            }
-        }
-        /// <summary>
-        /// 返回文档的尾注集合
-        /// </summary>
-        public List<FootEndnote> Endnotes
-        {
-            get
-            {
-                List<FootEndnote> fenotes = new List<FootEndnote>();
-                if(_doc.MainDocumentPart.EndnotesPart!=null)
-                {
-                    foreach (W.Endnote en in _doc.MainDocumentPart.EndnotesPart.Endnotes.Elements<W.Endnote>())
-                        fenotes.Add(new FootEndnote(this, en));
-                }
-                return fenotes;
-            }
-        }
         /// <summary>
         /// 全局设置
         /// </summary>
@@ -318,6 +182,7 @@ namespace Berry.Docx
                 settings.Settings.Save();
             }
         }
+
         /// <summary>
         /// 查找文本内容为 text 的所有段落
         /// </summary>
@@ -346,30 +211,6 @@ namespace Berry.Docx
             {
                 if (Regex.IsMatch(p.InnerText, pattern, options))
                     paras.Add(new Paragraph(this, p));
-            }
-            return paras;
-        }
-        /// <summary>
-        /// 获取目录内容段落列表
-        /// </summary>
-        /// <returns></returns>
-        public List<Paragraph> CatalogParagraphs()
-        {
-            List<Paragraph> paras = new List<Paragraph>();
-            bool begin = false;
-            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-            {
-                if (!begin && Regex.IsMatch(p.InnerText, @"^\s*目\s*录\s*$"))
-                {
-                    begin = true;
-                    continue;
-                }
-                if (begin)
-                {
-                    if (p.Descendants<W.SectionProperties>().Count() > 0) break;
-                    if (!string.IsNullOrWhiteSpace(p.InnerText.Trim()))
-                        paras.Add(new Paragraph(this, p));
-                }
             }
             return paras;
         }

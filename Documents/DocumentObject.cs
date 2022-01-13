@@ -7,7 +7,7 @@ using OO = DocumentFormat.OpenXml;
 using OW = DocumentFormat.OpenXml.Wordprocessing;
 using OP = DocumentFormat.OpenXml.Packaging;
 
-using Berry.Docx;
+using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Field;
 
@@ -67,13 +67,36 @@ namespace Berry.Docx
             {
                 if (ele.GetType() == typeof(OW.Paragraph))
                     yield return new Paragraph(_doc, ele as OW.Paragraph);
-                else if (ele.GetType() == typeof(OW.Table))
-                    yield return new Table(_doc, ele as OW.Table);
                 else if (ele.GetType() == typeof(OW.Run))
                     yield return new TextRange(_doc, ele as OW.Run);
                 else
                     yield return new DocumentObject(_doc, ele);
             }
+        }
+
+        public static bool operator ==(DocumentObject lhs, DocumentObject rhs)
+        {
+            // 如果均为null，或实例相同，返回true
+            if (ReferenceEquals(lhs, rhs)) return true;
+            // 如果只有一项为null，返回false
+            if (((object)lhs == null) || (object)rhs == null) return false;
+            // 判断两者 OpenXmlElement 是否相等
+            return lhs.XElement == rhs.XElement;
+        }
+
+        public static bool operator !=(DocumentObject lhs, DocumentObject rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this == (DocumentObject)obj;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
     }
