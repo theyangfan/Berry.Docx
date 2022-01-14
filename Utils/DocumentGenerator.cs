@@ -20,9 +20,14 @@ namespace Berry.Docx
     {
         internal static WordprocessingDocument Generate(string filename)
         {
-            WordprocessingDocument document = WordprocessingDocument.Create(filename, WordprocessingDocumentType.Document);
-            new DocumentGenerator().CreateParts(document);
-            return document;
+            DocumentGenerator gen = new DocumentGenerator();
+            using (WordprocessingDocument tempDoc = WordprocessingDocument.Create(filename, WordprocessingDocumentType.Document))
+            {
+                WordprocessingDocument document = (WordprocessingDocument)tempDoc.Clone();
+                gen.CreateParts(document);
+                document.Save();
+                return document;
+            }
         }
 
         // Adds child parts and generates content of the specified part.

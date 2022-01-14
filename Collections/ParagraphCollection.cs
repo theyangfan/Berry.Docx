@@ -35,6 +35,11 @@ namespace Berry.Docx.Collections
         /// </summary>
         public int Count { get => _paragraphs.Count(); }
 
+        public bool Contains(Paragraph paragraph)
+        {
+            return _paragraphs.Contains(paragraph);
+        }
+
         /// <summary>
         /// 在集合末尾添加段落
         /// </summary>
@@ -122,6 +127,41 @@ namespace Berry.Docx.Collections
                 }
             }
                 
+        }
+
+        /// <summary>
+        /// 移除段落
+        /// </summary>
+        /// <param name="paragraph">段落</param>
+        public void Remove(Paragraph paragraph)
+        {
+            if (!Contains(paragraph)) return;
+            if (paragraph.XElement.Descendants<W.SectionProperties>().Any())
+            {
+                paragraph.XElement.RemoveAllChildren<W.Run>();
+            }
+            else
+            {
+                paragraph.Remove();
+            }
+        }
+
+        /// <summary>
+        /// 移除指定位置处的段落
+        /// </summary>
+        /// <param name="index">段落位置，从零开始的索引</param>
+        public void RemoveAt(int index)
+        {
+            Remove(_paragraphs.ElementAt(index));
+        }
+
+        /// <summary>
+        /// 移除所有段落
+        /// </summary>
+        public void Clear()
+        {
+            foreach (Paragraph paragraph in _paragraphs)
+                Remove(paragraph);
         }
 
         public IEnumerator GetEnumerator()

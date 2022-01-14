@@ -107,24 +107,7 @@ namespace Berry.Docx.Documents
             }
         }
 
-        /// <summary>
-        /// 段落编号(默认为1)
-        /// </summary>
-        public string ListText
-        {
-            get
-            {
-                if (_pFormat.NumberingFormat == null) return string.Empty;
-                string lvlText = _pFormat.NumberingFormat.LevelText;
-                if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.Decimal)
-                    lvlText = lvlText.RxReplace(@"%[0-9]", "1");
-                else if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCounting
-                    || _pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCountingThousand)
-                    lvlText = lvlText.RxReplace(@"%[0-9]", "一");
-
-                return lvlText;
-            }
-        }
+        
         /// <summary>
         /// 段落格式
         /// </summary>
@@ -163,7 +146,36 @@ namespace Berry.Docx.Documents
             get => Text.Length;
         }
 
-        public FieldCodeCollection FieldCodes
+        /// <summary>
+        /// 从父类集合中移除当前段落
+        /// </summary>
+        public void Remove()
+        {
+            if (_paragraph != null) _paragraph.Remove();
+        }
+
+        #region Future
+
+        /// <summary>
+        /// 段落编号(默认为1)
+        /// </summary>
+        private string ListText
+        {
+            get
+            {
+                if (_pFormat.NumberingFormat == null) return string.Empty;
+                string lvlText = _pFormat.NumberingFormat.LevelText;
+                if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.Decimal)
+                    lvlText = lvlText.RxReplace(@"%[0-9]", "1");
+                else if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCounting
+                    || _pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCountingThousand)
+                    lvlText = lvlText.RxReplace(@"%[0-9]", "一");
+
+                return lvlText;
+            }
+        }
+
+        private FieldCodeCollection FieldCodes
         {
             get
             {
@@ -172,7 +184,7 @@ namespace Berry.Docx.Documents
 
                 int begin_times = 0;
                 int end_times = 0;
-                
+
                 foreach (O.OpenXmlElement ele in _paragraph.Descendants())
                 {
                     if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.SimpleField"))
@@ -210,7 +222,7 @@ namespace Berry.Docx.Documents
         /// </summary>
         /// <param name="author">作者</param>
         /// <param name="content">内容</param>
-        public void AppendComment(string author, string content)
+        private void AppendComment(string author, string content)
         {
             int id = 0; // 新批注Id
             P.WordprocessingCommentsPart part = _doc.Package.MainDocumentPart.WordprocessingCommentsPart;
@@ -235,19 +247,13 @@ namespace Berry.Docx.Documents
             comments.AppendChild(comment);
             // 插入批注标记
             W.CommentRangeStart start = new W.CommentRangeStart() { Id = id.ToString() };
-            W.Run run = new W.Run(new W.CommentReference() { Id = id.ToString()});
+            W.Run run = new W.Run(new W.CommentReference() { Id = id.ToString() });
             W.CommentRangeEnd end = new W.CommentRangeEnd() { Id = id.ToString() };
             _paragraph.InsertAt(start, 0);
             _paragraph.AppendChild(end);
             _paragraph.AppendChild(run);
         }
-        /// <summary>
-        /// 移除当前段落
-        /// </summary>
-        public void Remove()
-        {
-            if (_paragraph != null) _paragraph.Remove();
-        }
 
+        #endregion
     }
 }

@@ -13,8 +13,9 @@ using Berry.Docx.Collections;
 
 namespace Berry.Docx
 {
-    public class Document
+    public class Document : IDisposable
     {
+        private string _filename = string.Empty;
         private P.WordprocessingDocument _doc;
         private Settings _settings;
 
@@ -24,9 +25,13 @@ namespace Berry.Docx
         /// <param name="filename">文档名称</param>
         public Document(string filename)
         {
+            _filename = filename;
             if (File.Exists(filename))
             {
-                _doc = P.WordprocessingDocument.Open(filename, true);
+                using (P.WordprocessingDocument tempDoc = P.WordprocessingDocument.Open(filename, false))
+                {
+                    _doc = (P.WordprocessingDocument)tempDoc.Clone();
+                }
             }
             else
             {
@@ -59,8 +64,7 @@ namespace Berry.Docx
         /// </summary>
         public void Save()
         {
-            if (_doc != null)
-                _doc.Save();
+            SaveAs(_filename);
         }
         /// <summary>
         /// 另存为
@@ -78,9 +82,13 @@ namespace Berry.Docx
         {
             if (_doc != null)
             {
-                _doc.Close();
-                _doc = null;
+                Dispose();
             }
+        }
+
+        public void Dispose()
+        {
+            _doc.Close();
         }
 
         public P.WordprocessingDocument Package { get => _doc; }
@@ -169,21 +177,6 @@ namespace Berry.Docx
         }
 
         /// <summary>
-        /// 更新域代码
-        /// </summary>
-        public void UpdateFields()
-        {
-            if(_doc != null)
-            {
-                P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
-                W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
-                updateFields.Val = new OOxml.OnOffValue(true);
-                settings.Settings.PrependChild(updateFields);
-                settings.Settings.Save();
-            }
-        }
-
-        /// <summary>
         /// 查找文本内容为 text 的所有段落
         /// </summary>
         /// <param name="text">文本内容</param>
@@ -198,6 +191,7 @@ namespace Berry.Docx
             }
             return paras;
         }
+
         /// <summary>
         /// 返回匹配成功的所有段落
         /// </summary>
@@ -214,5 +208,25 @@ namespace Berry.Docx
             }
             return paras;
         }
+
+        #region Future
+
+        /// <summary>
+        /// 更新域代码
+        /// </summary>
+        private void UpdateFields()
+        {
+            if (_doc != null)
+            {
+                P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
+                W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
+                updateFields.Val = new OOxml.OnOffValue(true);
+                settings.Settings.PrependChild(updateFields);
+                settings.Settings.Save();
+            }
+        }
+
+        #endregion
+
     }
 }

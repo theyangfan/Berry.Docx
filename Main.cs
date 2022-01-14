@@ -15,16 +15,18 @@ namespace Test
     public class Test
     {
         public static void Main() {
-            string filename = @"C:\Users\zhailiao123\Desktop\test7.docx";
+            string src = @"C:\Users\zhailiao123\Desktop\test.docx";
+            string dst = @"C:\Users\zhailiao123\Desktop\test2.docx";
             //OP.WordprocessingDocument doc = OP.WordprocessingDocument.Open(filename, false);
             
-            Document doc = new Document(filename);
+            Document doc = new Document(src);
+            Paragraph p = doc.Find("1").First();
 
-            Paragraph p = doc.Find("测试2").First();
+            doc.Sections[0].Paragraphs.Remove(p);
 
-            doc.Save();
+            doc.SaveAs(dst);
             doc.Close();
-            System.Diagnostics.Process.Start(filename);
+            System.Diagnostics.Process.Start(dst);
         }
     }
 }
