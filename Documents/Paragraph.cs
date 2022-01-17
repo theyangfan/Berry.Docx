@@ -17,21 +17,43 @@ using Berry.Docx.Collections;
 
 namespace Berry.Docx.Documents
 {
-    public class Paragraph : DocumentObject
+    public class Paragraph : DocumentElement
     {
         private Document _doc = null;
         private W.Paragraph _paragraph;
         private ParagraphFormat _pFormat;
         private CharacterFormat _cFormat;
 
-        public Paragraph(Document doc, W.Paragraph paragraph) : base(doc, paragraph)
+        public Paragraph(Document doc) : this(doc, new W.Paragraph())
+        {
+        }
+
+        internal Paragraph(Document doc, W.Paragraph paragraph) : base(doc, paragraph)
         {
             _doc = doc;
             _paragraph = paragraph;
             _pFormat = new ParagraphFormat(_doc, paragraph);
             _cFormat = new CharacterFormat(_doc, paragraph);
         }
-        
+
+        public override DocumentObjectCollection ChildObjects
+        {
+            get => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
+        }
+
+        private IEnumerable<DocumentObject> ChildObjectsPrivate()
+        {
+            foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
+            {
+                if (ele.GetType() == typeof(W.Paragraph))
+                    yield return new Paragraph(_doc, ele as W.Paragraph);
+                else if (ele.GetType() == typeof(W.Run))
+                    yield return new TextRange(_doc, ele as W.Run);
+            }
+        }
+
+        public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Paragraph; }
+
         /// <summary>
         /// 段落文本
         /// </summary>
@@ -146,15 +168,16 @@ namespace Berry.Docx.Documents
             get => Text.Length;
         }
 
+
         /// <summary>
         /// 从父类集合中移除当前段落
         /// </summary>
-        public void Remove()
+        internal void Remove()
         {
             if (_paragraph != null) _paragraph.Remove();
         }
 
-        #region Future
+        #region TODO
 
         /// <summary>
         /// 段落编号(默认为1)

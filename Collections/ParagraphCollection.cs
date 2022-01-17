@@ -14,11 +14,11 @@ namespace Berry.Docx.Collections
 {
     public class ParagraphCollection : IEnumerable
     {
-        private O.OpenXmlElement _container = null;
+        private O.OpenXmlElement _owner;
         private IEnumerable<Paragraph> _paragraphs;
-        public ParagraphCollection(O.OpenXmlElement container, IEnumerable<Paragraph> paragraphs)
+        public ParagraphCollection(O.OpenXmlElement owner, IEnumerable<Paragraph> paragraphs)
         {
-            _container = container;
+            _owner = owner;
             _paragraphs = paragraphs;
         }
 
@@ -49,12 +49,12 @@ namespace Berry.Docx.Collections
             W.Paragraph newParagraph = paragraph.XElement as W.Paragraph;
             if (_paragraphs.Count() == 0)
             {
-                if(_container is W.Body)
+                if(_owner is W.Body)
                 {
-                    _container.InsertBefore(newParagraph, _container.LastChild);
+                    _owner.InsertBefore(newParagraph, _owner.LastChild);
                     return;
                 }
-                _container.AppendChild(newParagraph);
+                _owner.AppendChild(newParagraph);
             }
             else
             {

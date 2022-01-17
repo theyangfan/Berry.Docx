@@ -29,7 +29,8 @@ namespace Berry.Docx
         /// <summary>
         /// 文本范围
         /// </summary>
-        TextRange = 3
+        TextRange = 3,
+        BodyRange
     }
 
     public enum LineSpacingRule 

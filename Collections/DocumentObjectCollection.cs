@@ -5,23 +5,33 @@ using System.Linq;
 using System.Text;
 using Berry.Docx.Documents;
 
+using O = DocumentFormat.OpenXml;
+using W = DocumentFormat.OpenXml.Wordprocessing;
+
 namespace Berry.Docx.Collections
 {
     /// <summary>
     /// DocumentObject 集合
     /// </summary>
-    public class DocumentObjectCollection : IEnumerable
+    public abstract class DocumentObjectCollection : IEnumerable
     {
-        private Document _doc = null;
+        private O.OpenXmlElement _owner;
         private IEnumerable<DocumentObject> _objects;
+
         /// <summary>
         /// DocumentObject 集合
         /// </summary>
-        public DocumentObjectCollection(Document doc, IEnumerable<DocumentObject> objects)
+        internal DocumentObjectCollection(O.OpenXmlElement owner, IEnumerable<DocumentObject> objects)
         {
-            _doc = doc;
+            _owner = owner;
             _objects = objects;
         }
+
+        internal DocumentObjectCollection(O.OpenXmlElement owner)
+        {
+
+        }
+
         /// <summary>
         /// 返回索引为 index 的 DocumentObject 对象
         /// </summary>

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D2E7472A-A56A-4B6E-ADF5-A9722765D460}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Berry.Docx</RootNamespace>
     <AssemblyName>Berry.Docx</AssemblyName>
@@ -66,6 +66,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseClasses\DocumentContainer.cs" />
+    <Compile Include="BaseClasses\DocumentElement.cs" />
+    <Compile Include="BaseClasses\BodyRange.cs" />
+    <Compile Include="Collections\DocumentElementCollection.cs" />
+    <Compile Include="Collections\ParagraphItemCollection.cs" />
     <Compile Include="Utils\DocumentGenerator.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Collections\DocumentObjectCollection.cs" />
@@ -74,7 +79,7 @@
     <Compile Include="Collections\SectionCollection.cs" />
     <Compile Include="Collections\StyleCollection.cs" />
     <Compile Include="Document.cs" />
-    <Compile Include="Documents\DocumentObject.cs" />
+    <Compile Include="BaseClasses\DocumentObject.cs" />
     <Compile Include="Documents\PageSetup.cs" />
     <Compile Include="Documents\Paragraph.cs" />
     <Compile Include="Documents\ParagraphStyle.cs" />

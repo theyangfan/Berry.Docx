@@ -94,28 +94,6 @@ namespace Berry.Docx
         public P.WordprocessingDocument Package { get => _doc; }
 
         /// <summary>
-        /// 文档子类对象
-        /// </summary>
-        public DocumentObjectCollection ChildObjects
-        {
-            get
-            {
-                return new DocumentObjectCollection(this, ChildObjectsPrivate());
-            }
-        }
-
-        private IEnumerable<DocumentObject> ChildObjectsPrivate()
-        {
-            foreach(OOxml.OpenXmlElement ele in _doc.MainDocumentPart.Document.Body.Elements())
-            {
-                if (ele.GetType() == typeof(W.Paragraph))
-                    yield return new Paragraph(this, ele as W.Paragraph);
-                else
-                    yield return new DocumentObject(this, ele);
-            }
-        }
-
-        /// <summary>
         /// 返回文档节的集合
         /// </summary>
         public SectionCollection Sections
@@ -209,7 +187,7 @@ namespace Berry.Docx
             return paras;
         }
 
-        #region Future
+        #region TODO
 
         /// <summary>
         /// 更新域代码

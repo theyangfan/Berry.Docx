@@ -18,7 +18,7 @@ namespace Berry.Docx
 {
     internal class DocumentGenerator
     {
-        internal static WordprocessingDocument Generate(string filename)
+        public static WordprocessingDocument Generate(string filename)
         {
             DocumentGenerator gen = new DocumentGenerator();
             using (WordprocessingDocument tempDoc = WordprocessingDocument.Create(filename, WordprocessingDocumentType.Document))

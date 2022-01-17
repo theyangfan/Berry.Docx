@@ -3,30 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using O = DocumentFormat.OpenXml;
 using OW = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 
 namespace Berry.Docx
 {
-    public class Section
+    public class Section : DocumentContainer
     {
         private Document _document = null;
         
         private OW.SectionProperties _sectPr = null;
         private PageSetup _pageSetup = null;
 
-        public Section(Document document, OW.SectionProperties sectPr)
+        private BodyRange _range;
+
+        internal Section(Document document, OW.SectionProperties sectPr)
+            : base(document, sectPr)
         {
             _document = document;
-            _pageSetup = new PageSetup(sectPr);
             _sectPr = sectPr;
+            _pageSetup = new PageSetup(sectPr);
+            _range = new BodyRange(document, sectPr);
         }
+
+        public override DocumentObjectCollection ChildObjects
+        {
+            get => new DocumentElementCollection(_sectPr);
+        }
+
+        public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Section; }
+
 
         /// <summary>
         /// 页面设置
         /// </summary>
         public PageSetup PageSetup { get => _pageSetup; }
+
+        public BodyRange Range => _range;
+
         public ParagraphCollection Paragraphs
         {
             get
@@ -60,19 +76,5 @@ namespace Berry.Docx
             return paragraphs.AsEnumerable();
         }
 
-        /// <summary>
-        /// 页码是否设置章标题
-        /// </summary>
-        public void setPageNumberChapterStyleShow(bool show = false)
-        {
-            OW.PageNumberType numberType = _sectPr.Elements<OW.PageNumberType>().FirstOrDefault();
-            if (numberType != null)
-            {
-                if (numberType.ChapterStyle != null && !show)
-                {
-                    numberType.ChapterStyle = null;
-                }
-            }
-        }
     }
 }
