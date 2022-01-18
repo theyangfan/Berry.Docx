@@ -23,10 +23,9 @@ namespace Berry.Docx
             DocumentGenerator gen = new DocumentGenerator();
             using (WordprocessingDocument tempDoc = WordprocessingDocument.Create(filename, WordprocessingDocumentType.Document))
             {
-                WordprocessingDocument document = (WordprocessingDocument)tempDoc.Clone();
-                gen.CreateParts(document);
-                document.Save();
-                return document;
+                gen.CreateParts(tempDoc);
+                tempDoc.Save();
+                return (WordprocessingDocument)tempDoc.Clone();
             }
         }
 

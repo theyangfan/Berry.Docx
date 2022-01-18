@@ -1,5 +1,4 @@
-bin/*
-obj/*
+src/bin/*
+src/obj/*
 .vs/*
 *.user
-packages/*

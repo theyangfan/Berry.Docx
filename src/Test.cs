@@ -15,16 +15,16 @@ namespace Test
     public class Test
     {
         public static void Main() {
-            string src = @"C:\Users\zhailiao123\Desktop\test.docx";
-            string dst = @"C:\Users\zhailiao123\Desktop\test2.docx";
+            string src = @"C:\Users\Tomato\Desktop\test.docx";
+            string dst = @"C:\Users\Tomato\Desktop\test2.docx";
             //OP.WordprocessingDocument doc = OP.WordprocessingDocument.Open(filename, false);
             
             Document doc = new Document(src);
 
-            Paragraph p = new Paragraph(doc) { Text = "这是一个段落" };
+            Paragraph p = new Paragraph(doc) { Text = "这是2个段落" };
             Table table = new Table(doc, 10, 10);
 
-            doc.Sections[1].Range.ChildObjects.Add(p);
+            doc.Sections[0].Range.ChildObjects.Add(p);
             doc.Sections[0].Range.ChildObjects.Add(table);
 
             doc.SaveAs(dst);
