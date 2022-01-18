@@ -30,7 +30,7 @@ namespace Berry.Docx
 
         public override DocumentObjectCollection ChildObjects
         {
-            get => new DocumentElementCollection(_sectPr);
+            get => new DocumentElementCollection(_sectPr, null);
         }
 
         public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Section; }
@@ -75,6 +75,8 @@ namespace Berry.Docx
             paragraphs.Reverse();
             return paragraphs.AsEnumerable();
         }
+
+        
 
     }
 }

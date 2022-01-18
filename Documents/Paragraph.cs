@@ -19,7 +19,7 @@ namespace Berry.Docx.Documents
 {
     public class Paragraph : DocumentElement
     {
-        private Document _doc = null;
+        private Document _doc;
         private W.Paragraph _paragraph;
         private ParagraphFormat _pFormat;
         private CharacterFormat _cFormat;
@@ -35,13 +35,14 @@ namespace Berry.Docx.Documents
             _pFormat = new ParagraphFormat(_doc, paragraph);
             _cFormat = new CharacterFormat(_doc, paragraph);
         }
+        public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Paragraph; }
 
         public override DocumentObjectCollection ChildObjects
         {
             get => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
         }
 
-        private IEnumerable<DocumentObject> ChildObjectsPrivate()
+        private IEnumerable<DocumentElement> ChildObjectsPrivate()
         {
             foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
             {
@@ -51,8 +52,6 @@ namespace Berry.Docx.Documents
                     yield return new TextRange(_doc, ele as W.Run);
             }
         }
-
-        public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Paragraph; }
 
         /// <summary>
         /// 段落文本

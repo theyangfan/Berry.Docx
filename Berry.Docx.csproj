@@ -71,6 +71,7 @@
     <Compile Include="BaseClasses\BodyRange.cs" />
     <Compile Include="Collections\DocumentElementCollection.cs" />
     <Compile Include="Collections\ParagraphItemCollection.cs" />
+    <Compile Include="Documents\Table.cs" />
     <Compile Include="Utils\DocumentGenerator.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Collections\DocumentObjectCollection.cs" />
@@ -85,8 +86,8 @@
     <Compile Include="Documents\ParagraphStyle.cs" />
     <Compile Include="Documents\Settings.cs" />
     <Compile Include="Documents\Style.cs" />
-    <Compile Include="Utils\EnumerationTypes.cs" />
-    <Compile Include="Utils\ExtendMethods.cs" />
+    <Compile Include="EnumerationTypes.cs" />
+    <Compile Include="ExtendMethods.cs" />
     <Compile Include="Field\FieldCode.cs" />
     <Compile Include="Field\TextRange.cs" />
     <Compile Include="Formatting\CharacterFormat.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Section.cs" />
     <Compile Include="SimpleTypes\Zbool.cs" />
+    <Compile Include="Utils\TableGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

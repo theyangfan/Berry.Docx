@@ -15,7 +15,6 @@ namespace Berry.Docx
     {
         private Document _doc;
         private O.OpenXmlElement _owner;
-        private DocumentElementCollection _collection;
         internal BodyRange(Document doc, O.OpenXmlElement owner)
             : base(doc, owner)
         {
@@ -62,6 +61,10 @@ namespace Berry.Docx
                 if(ele is W.Paragraph)
                 {
                     elements.Add(new Paragraph(_doc, (W.Paragraph)ele));
+                }
+                else if(ele is W.Table)
+                {
+                    elements.Add(new Table(_doc, (W.Table)ele));
                 }
                 
             }

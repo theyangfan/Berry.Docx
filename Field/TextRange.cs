@@ -10,7 +10,7 @@ using Berry.Docx.Collections;
 
 namespace Berry.Docx.Field
 {
-    public class TextRange : DocumentObject
+    public class TextRange : DocumentElement
     {
         private Document _doc = null;
         private OW.Run _run = null;

@@ -20,9 +20,12 @@ namespace Test
             //OP.WordprocessingDocument doc = OP.WordprocessingDocument.Open(filename, false);
             
             Document doc = new Document(src);
-            Paragraph p = doc.Find("1").First();
 
-            doc.Sections[0].Paragraphs.Remove(p);
+            Paragraph p = new Paragraph(doc) { Text = "这是一个段落" };
+            Table table = new Table(doc, 10, 10);
+
+            doc.Sections[1].Range.ChildObjects.Add(p);
+            doc.Sections[0].Range.ChildObjects.Add(table);
 
             doc.SaveAs(dst);
             doc.Close();

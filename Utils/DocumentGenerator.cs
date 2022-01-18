@@ -1145,12 +1145,40 @@ namespace Berry.Docx
             style4.Append(semiHidden3);
             style4.Append(unhideWhenUsed3);
 
+            Style style5 = new Style() { Type = StyleValues.Table, StyleId = "a3" };
+            StyleName styleName7 = new StyleName() { Val = "Table Grid" };
+            BasedOn basedOn3 = new BasedOn() { Val = "a1" };
+
+            StyleTableProperties styleTableProperties2 = new StyleTableProperties();
+
+            TableBorders tableBorders1 = new TableBorders();
+            TopBorder topBorder1 = new TopBorder() { Val = BorderValues.Single, Color = "000000", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            LeftBorder leftBorder1 = new LeftBorder() { Val = BorderValues.Single, Color = "000000", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            BottomBorder bottomBorder1 = new BottomBorder() { Val = BorderValues.Single, Color = "000000", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            RightBorder rightBorder1 = new RightBorder() { Val = BorderValues.Single, Color = "000000", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            InsideHorizontalBorder insideHorizontalBorder1 = new InsideHorizontalBorder() { Val = BorderValues.Single, Color = "000000", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            InsideVerticalBorder insideVerticalBorder1 = new InsideVerticalBorder() { Val = BorderValues.Single, Color = "000000", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+
+            tableBorders1.Append(topBorder1);
+            tableBorders1.Append(leftBorder1);
+            tableBorders1.Append(bottomBorder1);
+            tableBorders1.Append(rightBorder1);
+            tableBorders1.Append(insideHorizontalBorder1);
+            tableBorders1.Append(insideVerticalBorder1);
+
+            styleTableProperties2.Append(tableBorders1);
+
+            style5.Append(styleName7);
+            style5.Append(basedOn3);
+            style5.Append(styleTableProperties2);
+
             styles1.Append(docDefaults1);
             styles1.Append(latentStyles1);
             styles1.Append(style1);
             styles1.Append(style2);
             styles1.Append(style3);
             styles1.Append(style4);
+            styles1.Append(style5);
 
             styleDefinitionsPart1.Styles = styles1;
         }

@@ -9,22 +9,27 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Collections
 {
-    public class ParagraphItemCollection : DocumentObjectCollection
+    public class ParagraphItemCollection : DocumentElementCollection
     {
-        private IEnumerable<DocumentObject> _objects;
-        internal ParagraphItemCollection(O.OpenXmlElement owner, IEnumerable<DocumentObject> objects):base(owner, objects)
+        private IEnumerable<DocumentElement> _objects;
+        internal ParagraphItemCollection(O.OpenXmlElement owner, IEnumerable<DocumentElement> objects):base(owner, objects)
         {
         }
 
         /// <summary>
         /// 返回索引为 index 的 DocumentObject 对象
         /// </summary>
-        public DocumentObject this[int index]
+        public override DocumentObject this[int index]
         {
             get
             {
                 return _objects.ElementAt(index);
             }
+        }
+
+        public override void Add(DocumentObject obj)
+        {
+            base.Add(obj);
         }
     }
 }
