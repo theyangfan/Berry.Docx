@@ -15,8 +15,8 @@ namespace Test
     public class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Tomato\Desktop\test.docx";
-            string dst = @"C:\Users\Tomato\Desktop\test2.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test.docx";
+            string dst = @"C:\Users\Zhailiao123\Desktop\test2.docx";
             //OP.WordprocessingDocument doc = OP.WordprocessingDocument.Open(filename, false);
             
             Document doc = new Document(src);

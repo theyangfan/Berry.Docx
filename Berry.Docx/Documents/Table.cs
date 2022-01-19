@@ -38,6 +38,8 @@ namespace Berry.Docx.Documents
             }
         }
 
+        public int RowCount => _table.Elements<W.TableRow>().Count();
+
         private IEnumerable<DocumentElement> ChildObjectsPrivate()
         {
             foreach (O.OpenXmlElement ele in _table.ChildElements)

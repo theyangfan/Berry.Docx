@@ -1,4 +1,6 @@
-src/bin/*
-src/obj/*
+Berry.Docx/bin/*
+Berry.Docx/obj/*
 .vs/*
-*.user
+TestResults/*
+Berry.Docx.Tests/bin/*
+Berry.Docx.Tests/obj/*
