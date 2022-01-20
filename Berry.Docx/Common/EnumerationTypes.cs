@@ -17,19 +17,24 @@ namespace Berry.Docx
         /// <summary>
         /// 段落
         /// </summary>
-        Paragraph = 0,
-        /// <summary>
-        /// 表格
-        /// </summary>
-        Table = 1,
-        /// <summary>
-        /// 节
-        /// </summary>
-        Section = 2,
+        Paragraph,
         /// <summary>
         /// 文本范围
         /// </summary>
-        TextRange = 3,
+        TextRange,
+        /// <summary>
+        /// 表格
+        /// </summary>
+        Table,
+        TableRow,
+        TableCell,
+        /// <summary>
+        /// 节
+        /// </summary>
+        Section,
+        /// <summary>
+        /// 
+        /// </summary>
         BodyRange
     }
 

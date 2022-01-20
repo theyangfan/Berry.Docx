@@ -47,36 +47,41 @@ namespace Berry.Docx
         {
             get
             {
-                return new ParagraphCollection(_document.Package.GetBody(), ParagraphsPrivate());
+                return new ParagraphCollection(_document.Package.GetBody(), _range.SectionChildElements<Paragraph>());
             }
         }
 
-        private IEnumerable<Paragraph> ParagraphsPrivate()
+        public TableCollection Tables
         {
-            List<OW.Paragraph> all_paragraphs = _document.Package.GetBody().Elements<OW.Paragraph>().ToList();
-            List<Paragraph> paragraphs = new List<Paragraph>();
-            int index = 0;
-            if(_sectPr == _document.Package.GetRootSectionProperties())
+            get
             {
-                index = all_paragraphs.Count - 1;
+                return new TableCollection(_document.Package.GetBody(), _range.SectionChildElements<Table>());
             }
-            else
-            {
-                index = all_paragraphs.FindIndex(p => p.Descendants().Contains(_sectPr));
-            }
-
-            for (int i = index; i >= 0; --i)
-            {
-                // 保留包含 SectionProperties 元素的段落
-                if (i != index && all_paragraphs[i].Descendants<OW.SectionProperties>().Any())
-                    break;
-                paragraphs.Add(new Paragraph(_document, all_paragraphs[i]));
-            }
-            paragraphs.Reverse();
-            return paragraphs.AsEnumerable();
+        }
+        
+        /// <summary>
+        /// Add a new paragraph to the end of section.
+        /// </summary>
+        /// <returns>The paragraph</returns>
+        public Paragraph AddParagraph()
+        {
+            Paragraph paragraph = new Paragraph(_document);
+            Paragraphs.Add(paragraph);
+            return paragraph;
         }
 
-        
+        /// <summary>
+        /// Add a new Table to the end of section.
+        /// </summary>
+        /// <param name="rowCnt">Table row count</param>
+        /// <param name="columnCnt">Table column count</param>
+        /// <returns>The table</returns>
+        public Table AddTable(int rowCnt, int columnCnt)
+        {
+            Table table = new Table(_document, rowCnt, columnCnt);
+            Tables.Add(table);
+            return table;
+        }
 
     }
 }

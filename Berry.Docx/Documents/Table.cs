@@ -18,7 +18,7 @@ namespace Berry.Docx.Documents
         private W.Table _table;
 
         public Table(Document doc, int rowCnt, int columnCnt)
-            :this(doc, TableGenerator.Generate(rowCnt, columnCnt)) 
+            :this(doc, TableGenerator.GenerateTable(rowCnt, columnCnt))
         {
         }
 
@@ -30,25 +30,23 @@ namespace Berry.Docx.Documents
 
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Table;
 
-        public override DocumentObjectCollection ChildObjects
+        public override DocumentObjectCollection ChildObjects => Rows;
+
+        public TableRowCollection Rows => new TableRowCollection(_table, TableRowsPrivate());
+        private IEnumerable<TableRow> TableRowsPrivate()
         {
-            get
+            foreach(W.TableRow row in _table.Elements<W.TableRow>())
             {
-                return new DocumentElementCollection(_table, ChildObjectsPrivate());
+                yield return new TableRow(_doc, row);
             }
         }
 
-        public int RowCount => _table.Elements<W.TableRow>().Count();
-
-        private IEnumerable<DocumentElement> ChildObjectsPrivate()
+        /// <summary>
+        /// 从父类集合中移除当前表格
+        /// </summary>
+        internal void Remove()
         {
-            foreach (O.OpenXmlElement ele in _table.ChildElements)
-            {
-                if (ele.GetType() == typeof(W.Paragraph))
-                    yield return new Paragraph(_doc, ele as W.Paragraph);
-                else if (ele.GetType() == typeof(W.Run))
-                    yield return new TextRange(_doc, ele as W.Run);
-            }
+            if (_table != null) _table.Remove();
         }
 
     }

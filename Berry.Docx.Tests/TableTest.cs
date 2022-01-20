@@ -13,10 +13,11 @@ namespace Berry.Docx.Tests
         [DataRow(3)]
         public void Add_TableRow_ReturnSameRowCount(int row)
         {
-            var doc = new Document("test.docx");
-            Table table = new Table(doc, row, 1);
-            Assert.AreEqual(row, table.RowCount);
-            doc.Close();
+            using (var doc = new Document("test.docx"))
+            {
+                Table table = new Table(doc, row, 1);
+                Assert.AreEqual(row, table.Rows.Count);
+            }
         }
     }
 }

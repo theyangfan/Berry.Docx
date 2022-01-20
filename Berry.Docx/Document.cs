@@ -91,7 +91,7 @@ namespace Berry.Docx
             _doc.Close();
         }
 
-        public P.WordprocessingDocument Package { get => _doc; }
+        internal P.WordprocessingDocument Package { get => _doc; }
 
         /// <summary>
         /// 返回文档节的集合
@@ -148,10 +148,24 @@ namespace Berry.Docx
         /// </summary>
         public Settings Settings { get => _settings; }
 
+        /// <summary>
+        /// Create a new paragraph.
+        /// </summary>
+        /// <returns>The paragraph</returns>
         public Paragraph CreateParagraph()
         {
-            W.Paragraph paragraph = new W.Paragraph();
-            return new Paragraph(this, paragraph);
+            return new Paragraph(this);
+        }
+
+        /// <summary>
+        /// Create a new table.
+        /// </summary>
+        /// <param name="rowCnt">Table row count</param>
+        /// <param name="columnCnt">Table Column count</param>
+        /// <returns>The table</returns>
+        public Table CreateTable(int rowCnt, int columnCnt)
+        {
+            return new Table(this, rowCnt, columnCnt);
         }
 
         /// <summary>

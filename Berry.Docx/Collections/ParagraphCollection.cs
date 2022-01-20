@@ -12,28 +12,18 @@ using Berry.Docx.Documents;
 
 namespace Berry.Docx.Collections
 {
-    public class ParagraphCollection : IEnumerable
+    public class ParagraphCollection : DocumentElementCollection
     {
         private O.OpenXmlElement _owner;
         private IEnumerable<Paragraph> _paragraphs;
-        public ParagraphCollection(O.OpenXmlElement owner, IEnumerable<Paragraph> paragraphs)
+        internal ParagraphCollection(O.OpenXmlElement owner, IEnumerable<Paragraph> paragraphs)
+            : base(owner, paragraphs)
         {
             _owner = owner;
             _paragraphs = paragraphs;
         }
 
-        public Paragraph this[int index]
-        {
-            get
-            {
-                return _paragraphs.ElementAt(index);
-            }
-        }
-
-        /// <summary>
-        /// 返回集合数量
-        /// </summary>
-        public int Count { get => _paragraphs.Count(); }
+        public new Paragraph this[int index] => _paragraphs.ElementAt(index);
 
         public bool Contains(Paragraph paragraph)
         {
@@ -150,7 +140,7 @@ namespace Berry.Docx.Collections
         /// 移除指定位置处的段落
         /// </summary>
         /// <param name="index">段落位置，从零开始的索引</param>
-        public void RemoveAt(int index)
+        public override void RemoveAt(int index)
         {
             Remove(_paragraphs.ElementAt(index));
         }
@@ -158,15 +148,10 @@ namespace Berry.Docx.Collections
         /// <summary>
         /// 移除所有段落
         /// </summary>
-        public void Clear()
+        public override void Clear()
         {
             foreach (Paragraph paragraph in _paragraphs)
                 Remove(paragraph);
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return _paragraphs.GetEnumerator();
         }
 
         

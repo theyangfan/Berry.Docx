@@ -37,7 +37,12 @@ namespace Berry.Docx
             }
         }
 
-        private IEnumerable<DocumentElement> SectionChildElements()
+        internal IEnumerable<T> SectionChildElements<T>() where T : DocumentElement
+        {
+            return SectionChildElements().OfType<T>();
+        }
+
+        internal IEnumerable<DocumentElement> SectionChildElements()
         {
             W.SectionProperties sectPr = (W.SectionProperties)_owner;
             List<O.OpenXmlElement> allElements = _doc.Package.GetBody().Elements().ToList();
