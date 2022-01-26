@@ -28,7 +28,7 @@ namespace Berry.Docx.Collections
         /// <summary>
         /// 返回索引为 index 的 DocumentObject 对象
         /// </summary>
-        public virtual DocumentObject this[int index] => _objects.ElementAt(index);
+        public DocumentObject this[int index] => _objects.ElementAt(index);
 
         /// <summary>
         /// 返回集合数量

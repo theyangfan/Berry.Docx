@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using O = DocumentFormat.OpenXml;
+using Berry.Docx.Collections;
 
 namespace Berry.Docx
 {
@@ -12,6 +13,11 @@ namespace Berry.Docx
         public DocumentElement(Document doc, O.OpenXmlElement ele)
             : base(doc, ele)
         {
+        }
+
+        public override DocumentObjectCollection ChildObjects
+        {
+            get;
         }
     }
 }

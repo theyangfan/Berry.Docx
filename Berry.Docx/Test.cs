@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Berry.Docx;
 using Berry.Docx.Documents;
+using Berry.Docx.Field;
 
 using OP = DocumentFormat.OpenXml.Packaging;
 using OW = DocumentFormat.OpenXml.Wordprocessing;
@@ -18,15 +19,18 @@ namespace Test
             string src = @"C:\Users\Zhailiao123\Desktop\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test2.docx";
             //OP.WordprocessingDocument doc = OP.WordprocessingDocument.Open(filename, false);
-            
-            Document doc = new Document(src);
-            Table table = doc.Sections[0].Tables[0];
-            Paragraph p = doc.CreateParagraph();
-            p.Text = "new";
 
+            Document doc = new Document(src);
+            Paragraph p = doc.Sections[0].Paragraphs[0];
+            TextRange tx = new TextRange(doc);
+            tx.Text = "test";
+            p.ChildObjects.Add(tx);
             doc.SaveAs(dst);
             doc.Close();
             System.Diagnostics.Process.Start(dst);
         }
+
+        
+        
     }
 }

@@ -46,9 +46,7 @@ namespace Berry.Docx.Documents
         {
             foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
             {
-                if (ele.GetType() == typeof(W.Paragraph))
-                    yield return new Paragraph(_doc, ele as W.Paragraph);
-                else if (ele.GetType() == typeof(W.Run))
+                if (ele.GetType() == typeof(W.Run))
                     yield return new TextRange(_doc, ele as W.Run);
             }
         }
@@ -132,11 +130,11 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 段落格式
         /// </summary>
-        public ParagraphFormat Format { get => _pFormat; }
+        public ParagraphFormat Format => _pFormat;
         /// <summary>
         /// 段落字符格式
         /// </summary>
-        public CharacterFormat CharacterFormat { get => _cFormat; }
+        public CharacterFormat CharacterFormat => _cFormat;
 
         /// <summary>
         /// 样式

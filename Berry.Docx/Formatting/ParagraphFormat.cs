@@ -14,16 +14,17 @@ namespace Berry.Docx.Formatting
     public class ParagraphFormat
     {
         private Document _document = null;
+
         #region Private Paragraph Members
         private OOxml.Paragraph _ownerParagraph = null;
         private ParagraphPropertiesHolder _curPHld = null;
-        private ParagraphFormat _stylePFormat = null;
+        private ParagraphFormat _inheritFromStyleFormat = null;
         #endregion
 
         #region Private Style Members
         private OOxml.Style _ownerStyle = null;
         private ParagraphPropertiesHolder _curSHld = null;
-        private ParagraphFormat _baseStylePFormat = null;
+        private ParagraphFormat _inheritFromBaseStyleFormat = null;
         #endregion
 
         #region Private Formats Menbers
@@ -68,7 +69,7 @@ namespace Berry.Docx.Formatting
             if (ownerParagraph.ParagraphProperties == null)
                 ownerParagraph.ParagraphProperties = new OOxml.ParagraphProperties();
             _curPHld = new ParagraphPropertiesHolder(document, ownerParagraph.ParagraphProperties);
-            _stylePFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
+            _inheritFromStyleFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
         }
         /// <summary>
         /// 构造函数，用于构造样式的段落格式
@@ -79,7 +80,7 @@ namespace Berry.Docx.Formatting
             _document = document;
             _ownerStyle = ownerStyle;
             _curSHld = new ParagraphPropertiesHolder(document, ownerStyle.StyleParagraphProperties);
-            _baseStylePFormat = GetStyleParagraphFormatRecursively(ownerStyle);
+            _inheritFromBaseStyleFormat = GetStyleParagraphFormatRecursively(ownerStyle);
         }
         /// <summary>
         /// 递归地获取样式的段落格式
@@ -133,11 +134,11 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerParagraph != null)
                 {
-                    return _ownerParagraph.ParagraphProperties != null && _ownerParagraph.ParagraphProperties.NumberingProperties != null ? _curPHld.NumberingFormat : _stylePFormat.NumberingFormat;
+                    return _ownerParagraph.ParagraphProperties != null && _ownerParagraph.ParagraphProperties.NumberingProperties != null ? _curPHld.NumberingFormat : _inheritFromStyleFormat.NumberingFormat;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _baseStylePFormat.NumberingFormat;
+                    return _inheritFromBaseStyleFormat.NumberingFormat;
                 }
                 else
                 {
@@ -159,11 +160,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.Justification != JustificationType.None ? _curPHld.Justification : _stylePFormat.Justification;
+                    return _curPHld.Justification != JustificationType.None ? _curPHld.Justification : _inheritFromStyleFormat.Justification;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.Justification;
+                    return _inheritFromBaseStyleFormat.Justification;
                 }
                 else
                 {
@@ -196,11 +197,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.OutlineLevel != OutlineLevelType.None ? _curPHld.OutlineLevel : _stylePFormat.OutlineLevel;
+                    return _curPHld.OutlineLevel != OutlineLevelType.None ? _curPHld.OutlineLevel : _inheritFromStyleFormat.OutlineLevel;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.OutlineLevel;
+                    return _inheritFromBaseStyleFormat.OutlineLevel;
                 }
                 else
                 {
@@ -233,11 +234,11 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerParagraph != null)
                 {
-                    return _curPHld.LeftIndent >= 0 ? _curPHld.LeftIndent : _stylePFormat.LeftIndent;
+                    return _curPHld.LeftIndent >= 0 ? _curPHld.LeftIndent : _inheritFromStyleFormat.LeftIndent;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _baseStylePFormat.LeftIndent;
+                    return _inheritFromBaseStyleFormat.LeftIndent;
                 }
                 else
                 {
@@ -269,11 +270,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.LeftCharsIndent >= 0 ? _curPHld.LeftCharsIndent : _stylePFormat.LeftCharsIndent;
+                    return _curPHld.LeftCharsIndent >= 0 ? _curPHld.LeftCharsIndent : _inheritFromStyleFormat.LeftCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.LeftCharsIndent;
+                    return _inheritFromBaseStyleFormat.LeftCharsIndent;
                 }
                 else
                 {
@@ -305,11 +306,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.RightIndent >= 0 ? _curPHld.RightIndent : _stylePFormat.RightIndent;
+                    return _curPHld.RightIndent >= 0 ? _curPHld.RightIndent : _inheritFromStyleFormat.RightIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.RightIndent;
+                    return _inheritFromBaseStyleFormat.RightIndent;
                 }
                 else
                 {
@@ -341,11 +342,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.RightCharsIndent >= 0 ? _curPHld.RightCharsIndent : _stylePFormat.RightCharsIndent;
+                    return _curPHld.RightCharsIndent >= 0 ? _curPHld.RightCharsIndent : _inheritFromStyleFormat.RightCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.RightCharsIndent;
+                    return _inheritFromBaseStyleFormat.RightCharsIndent;
                 }
                 else
                 {
@@ -377,11 +378,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.FirstLineIndent >= 0 ? _curPHld.FirstLineIndent : _stylePFormat.FirstLineIndent;
+                    return _curPHld.FirstLineIndent >= 0 ? _curPHld.FirstLineIndent : _inheritFromStyleFormat.FirstLineIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.FirstLineIndent;
+                    return _inheritFromBaseStyleFormat.FirstLineIndent;
                 }
                 else
                 {
@@ -413,11 +414,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.FirstLineCharsIndent >= 0 ? _curPHld.FirstLineCharsIndent : _stylePFormat.FirstLineCharsIndent;
+                    return _curPHld.FirstLineCharsIndent >= 0 ? _curPHld.FirstLineCharsIndent : _inheritFromStyleFormat.FirstLineCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.FirstLineCharsIndent;
+                    return _inheritFromBaseStyleFormat.FirstLineCharsIndent;
                 }
                 else
                 {
@@ -449,11 +450,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.HangingIndent >= 0 ? _curPHld.HangingIndent : _stylePFormat.HangingIndent;
+                    return _curPHld.HangingIndent >= 0 ? _curPHld.HangingIndent : _inheritFromStyleFormat.HangingIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.HangingIndent;
+                    return _inheritFromBaseStyleFormat.HangingIndent;
                 }
                 else
                 {
@@ -485,11 +486,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.HangingCharsIndent >= 0 ? _curPHld.HangingCharsIndent : _stylePFormat.HangingCharsIndent;
+                    return _curPHld.HangingCharsIndent >= 0 ? _curPHld.HangingCharsIndent : _inheritFromStyleFormat.HangingCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.HangingCharsIndent;
+                    return _inheritFromBaseStyleFormat.HangingCharsIndent;
                 }
                 else
                 {
@@ -521,11 +522,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.BeforeSpacing >= 0 ? _curPHld.BeforeSpacing : _stylePFormat.BeforeSpacing;
+                    return _curPHld.BeforeSpacing >= 0 ? _curPHld.BeforeSpacing : _inheritFromStyleFormat.BeforeSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.BeforeSpacing;
+                    return _inheritFromBaseStyleFormat.BeforeSpacing;
                 }
                 else
                 {
@@ -557,11 +558,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.BeforeLinesSpacing >= 0 ? _curPHld.BeforeLinesSpacing : _stylePFormat.BeforeLinesSpacing;
+                    return _curPHld.BeforeLinesSpacing >= 0 ? _curPHld.BeforeLinesSpacing : _inheritFromStyleFormat.BeforeLinesSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.BeforeLinesSpacing;
+                    return _inheritFromBaseStyleFormat.BeforeLinesSpacing;
                 }
                 else
                 {
@@ -593,11 +594,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.BeforeAutoSpacing ?? _stylePFormat.BeforeAutoSpacing;
+                    return _curPHld.BeforeAutoSpacing ?? _inheritFromStyleFormat.BeforeAutoSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.BeforeAutoSpacing;
+                    return _inheritFromBaseStyleFormat.BeforeAutoSpacing;
                 }
                 else
                 {
@@ -629,11 +630,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AfterSpacing >= 0 ? _curPHld.AfterSpacing : _stylePFormat.AfterSpacing;
+                    return _curPHld.AfterSpacing >= 0 ? _curPHld.AfterSpacing : _inheritFromStyleFormat.AfterSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.AfterSpacing;
+                    return _inheritFromBaseStyleFormat.AfterSpacing;
                 }
                 else
                 {
@@ -665,11 +666,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AfterLinesSpacing >= 0 ? _curPHld.AfterLinesSpacing : _stylePFormat.AfterLinesSpacing;
+                    return _curPHld.AfterLinesSpacing >= 0 ? _curPHld.AfterLinesSpacing : _inheritFromStyleFormat.AfterLinesSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.AfterLinesSpacing;
+                    return _inheritFromBaseStyleFormat.AfterLinesSpacing;
                 }
                 else
                 {
@@ -702,11 +703,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AfterAutoSpacing ?? _stylePFormat.AfterAutoSpacing;
+                    return _curPHld.AfterAutoSpacing ?? _inheritFromStyleFormat.AfterAutoSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.AfterAutoSpacing;
+                    return _inheritFromBaseStyleFormat.AfterAutoSpacing;
                 }
                 else
                 {
@@ -738,11 +739,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.LineSpacing >= 0 ? _curPHld.LineSpacing : _stylePFormat.LineSpacing;
+                    return _curPHld.LineSpacing >= 0 ? _curPHld.LineSpacing : _inheritFromStyleFormat.LineSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.LineSpacing;
+                    return _inheritFromBaseStyleFormat.LineSpacing;
                 }
                 else
                 {
@@ -774,11 +775,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.LineSpacingRule != LineSpacingRule.None ? _curPHld.LineSpacingRule : _stylePFormat.LineSpacingRule;
+                    return _curPHld.LineSpacingRule != LineSpacingRule.None ? _curPHld.LineSpacingRule : _inheritFromStyleFormat.LineSpacingRule;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.LineSpacingRule;
+                    return _inheritFromBaseStyleFormat.LineSpacingRule;
                 }
                 else
                 {
@@ -811,11 +812,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.OverflowPunctuation ?? _stylePFormat.OverflowPunctuation;
+                    return _curPHld.OverflowPunctuation ?? _inheritFromStyleFormat.OverflowPunctuation;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.OverflowPunctuation;
+                    return _inheritFromBaseStyleFormat.OverflowPunctuation;
                 }
                 else
                 {
@@ -848,11 +849,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.TopLinePunctuation ?? _stylePFormat.TopLinePunctuation;
+                    return _curPHld.TopLinePunctuation ?? _inheritFromStyleFormat.TopLinePunctuation;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.TopLinePunctuation;
+                    return _inheritFromBaseStyleFormat.TopLinePunctuation;
                 }
                 else
                 {
@@ -884,11 +885,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AdjustRightIndent ?? _stylePFormat.AdjustRightIndent;
+                    return _curPHld.AdjustRightIndent ?? _inheritFromStyleFormat.AdjustRightIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.AdjustRightIndent;
+                    return _inheritFromBaseStyleFormat.AdjustRightIndent;
                 }
                 else
                 {
@@ -921,11 +922,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.SnapToGrid ?? _stylePFormat.SnapToGrid;
+                    return _curPHld.SnapToGrid ?? _inheritFromStyleFormat.SnapToGrid;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStylePFormat.SnapToGrid;
+                    return _inheritFromBaseStyleFormat.SnapToGrid;
                 }
                 else
                 {

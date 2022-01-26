@@ -9,7 +9,7 @@ namespace Berry.Docx.Formatting
 {
     public class RunPropertiesHolder
     {
-        private P.WordprocessingDocument _document = null;
+        private P.WordprocessingDocument _document;
         private OOxml.RunProperties _rPr = null;
         private OOxml.ParagraphMarkRunProperties _mark_rPr = null;
         private OOxml.StyleRunProperties _style_rPr = null;
@@ -20,9 +20,15 @@ namespace Berry.Docx.Formatting
         private OOxml.Bold _bold = null;
         private OOxml.Italic _italic = null;
 
-        public RunPropertiesHolder(OOxml.RunProperties rPr)
+        public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.RunProperties rPr)
         {
-
+            _document = doc;
+            _rPr = rPr;
+            _rFonts = rPr.RunFonts;
+            _fontSize = rPr.FontSize;
+            _fontSizeCs = rPr.FontSizeComplexScript;
+            _bold = rPr.Bold;
+            _italic = rPr.Italic;
         }
 
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.ParagraphMarkRunProperties rPr)
@@ -65,12 +71,9 @@ namespace Berry.Docx.Formatting
             get
             {
                 if (_rFonts == null) return null;
-                if(_rFonts.EastAsia == null && _rFonts.EastAsiaTheme != null)
+                if(_rFonts.EastAsiaTheme != null)
                 {
-                    if (_rFonts.EastAsiaTheme == OOxml.ThemeFontValues.MajorEastAsia)
-                        return _document.GetMajorFont();
-                    else if (_rFonts.EastAsiaTheme == OOxml.ThemeFontValues.MinorEastAsia)
-                        return _document.GetMinorFont();
+                    return _document.GetThemeFont(_rFonts.EastAsiaTheme);
                 }
                 return _rFonts.EastAsia;
             }
@@ -98,13 +101,9 @@ namespace Berry.Docx.Formatting
             get
             {
                 if (_rFonts == null) return null;
-                if (_rFonts.Ascii == null && _rFonts.HighAnsi == null 
-                    && _rFonts.AsciiTheme != null && _rFonts.HighAnsiTheme != null)
+                if (_rFonts.AsciiTheme != null)
                 {
-                    if (_rFonts.HighAnsiTheme == OOxml.ThemeFontValues.MajorHighAnsi)
-                        return _document.GetMajorFont();
-                    else if (_rFonts.HighAnsiTheme == OOxml.ThemeFontValues.MinorHighAnsi)
-                        return _document.GetMinorFont();
+                    return _document.GetThemeFont(_rFonts.AsciiTheme);
                 }
                 return _rFonts.Ascii;
             }

@@ -91,7 +91,7 @@ namespace Berry.Docx
             _doc.Close();
         }
 
-        internal P.WordprocessingDocument Package { get => _doc; }
+        internal P.WordprocessingDocument Package => _doc;
 
         /// <summary>
         /// 返回文档节的集合

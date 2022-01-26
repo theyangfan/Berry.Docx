@@ -19,7 +19,7 @@ namespace Berry.Docx.Collections
         /// <summary>
         /// 返回索引为 index 的 DocumentObject 对象
         /// </summary>
-        public override DocumentObject this[int index]
+        public new DocumentObject this[int index]
         {
             get
             {

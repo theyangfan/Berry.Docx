@@ -51,33 +51,44 @@ namespace Berry.Docx
             return Regex.Replace(input, pattern, newStr);
         }
 
-        public static string GetMajorFont(this OP.WordprocessingDocument doc)
+        /// <summary>
+        /// Get Theme Font.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="themeFont"></param>
+        /// <returns></returns>
+        public static string GetThemeFont(this OP.WordprocessingDocument doc, OW.ThemeFontValues themeFont)
         {
-            OD.Theme theme = doc.MainDocumentPart.ThemePart.Theme;
-            if(theme != null && theme.ThemeElements != null 
-                && theme.ThemeElements.FontScheme != null
-                && theme.ThemeElements.FontScheme.MajorFont != null
-                && theme.ThemeElements.FontScheme.MajorFont.LatinFont != null
-                && theme.ThemeElements.FontScheme.MajorFont.LatinFont.Typeface != null)
+            OD.MajorFont majorFont = doc.MainDocumentPart?.ThemePart?.Theme?.ThemeElements?.FontScheme?.MajorFont;
+            OD.MinorFont minorFont = doc.MainDocumentPart?.ThemePart?.Theme?.ThemeElements?.FontScheme?.MinorFont;
+            OD.SupplementalFont font = null;
+            switch (themeFont)
             {
-                return theme.ThemeElements.FontScheme.MajorFont.LatinFont.Typeface;
+                case OW.ThemeFontValues.MajorEastAsia:
+                    font = majorFont.Elements<OD.SupplementalFont>().Where(f => f.Script.Value == "Hans").FirstOrDefault();
+                    if(font != null)
+                        return font.Typeface;
+                    else
+                        return majorFont.EastAsianFont.Typeface;
+                case OW.ThemeFontValues.MajorAscii:
+                    return majorFont.LatinFont.Typeface;
+                case OW.ThemeFontValues.MajorHighAnsi:
+                    return majorFont.LatinFont.Typeface;
+                case OW.ThemeFontValues.MinorEastAsia:
+                    font = minorFont.Elements<OD.SupplementalFont>().Where(f => f.Script.Value == "Hans").FirstOrDefault();
+                    if (font != null)
+                        return font.Typeface;
+                    else
+                        return minorFont.EastAsianFont.Typeface;
+                case OW.ThemeFontValues.MinorAscii:
+                    return minorFont.LatinFont.Typeface;
+                case OW.ThemeFontValues.MinorHighAnsi:
+                    return minorFont.LatinFont.Typeface;
+                default:
+                    return string.Empty;
             }
-            return "宋体";
         }
 
-        public static string GetMinorFont(this OP.WordprocessingDocument doc)
-        {
-            OD.Theme theme = doc.MainDocumentPart.ThemePart.Theme;
-            if (theme != null && theme.ThemeElements != null
-                && theme.ThemeElements.FontScheme != null
-                && theme.ThemeElements.FontScheme.MinorFont != null
-                && theme.ThemeElements.FontScheme.MinorFont.LatinFont != null
-                && theme.ThemeElements.FontScheme.MinorFont.LatinFont.Typeface != null)
-            {
-                return theme.ThemeElements.FontScheme.MinorFont.LatinFont.Typeface;
-            }
-            return "宋体";
-        }
         /// <summary>
         /// 转换为单精度浮点数
         /// </summary>

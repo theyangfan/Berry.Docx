@@ -12,17 +12,24 @@ namespace Berry.Docx.Formatting
     /// </summary>
     public class CharacterFormat
     {
-        private Document _doc = null;
+        private Document _doc;
+
+        #region TextRange
+        private OOxml.Run _ownerRun = null;
+        private RunPropertiesHolder _curRHld = null;
+        private CharacterFormat _inheritFromParagraphFormat = null;
+        #endregion
+
         #region Paragraph
         private OOxml.Paragraph _ownerParagraph = null;
         private RunPropertiesHolder _curPHld = null;
-        private CharacterFormat _styleCFormat = null;
+        private CharacterFormat _inheritFromStyleFormat = null;
         #endregion
 
         #region Style
         private OOxml.Style _ownerStyle = null;
         private RunPropertiesHolder _curSHld = null;
-        private CharacterFormat _baseStyleCFormat = null;
+        private CharacterFormat _inheritFromBaseStyleFormat = null;
         #endregion
 
         #region Formats
@@ -35,6 +42,18 @@ namespace Berry.Docx.Formatting
         #endregion
 
         public CharacterFormat() { }
+
+        public CharacterFormat(Document doc, OOxml.Run ownerRun)
+        {
+            _doc = doc;
+            _ownerRun = ownerRun;
+            if (ownerRun.RunProperties == null)
+                ownerRun.RunProperties = new OOxml.RunProperties();
+            _curRHld = new RunPropertiesHolder(doc.Package, ownerRun.RunProperties);
+            if(ownerRun.Parent != null)
+                _inheritFromParagraphFormat = new CharacterFormat(doc, ownerRun.Parent as OOxml.Paragraph);
+        }
+
         public CharacterFormat(Document doc, OOxml.Paragraph ownerParagraph)
         {
             _doc = doc;
@@ -44,7 +63,7 @@ namespace Berry.Docx.Formatting
             if (ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties == null)
                 ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties = new OOxml.ParagraphMarkRunProperties();
             _curPHld = new RunPropertiesHolder(doc.Package, ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties);
-            _styleCFormat = new CharacterFormat(doc, ownerParagraph.GetStyle(doc));
+            _inheritFromStyleFormat = new CharacterFormat(doc, ownerParagraph.GetStyle(doc));
         }
         
         public CharacterFormat(Document doc, OOxml.Style ownerStyle)
@@ -54,7 +73,7 @@ namespace Berry.Docx.Formatting
             if (ownerStyle.StyleRunProperties == null)
                 ownerStyle.StyleRunProperties = new OOxml.StyleRunProperties();
             _curSHld = new RunPropertiesHolder(doc.Package, ownerStyle.StyleRunProperties);
-            _baseStyleCFormat = GetStyleCharacterFormatRecursively(ownerStyle);
+            _inheritFromBaseStyleFormat = GetStyleCharacterFormatRecursively(ownerStyle);
         }
 
         private CharacterFormat GetStyleCharacterFormatRecursively(OOxml.Style style)
@@ -97,13 +116,18 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_ownerParagraph != null)
+                if(_ownerRun != null)
                 {
-                    return _curPHld.FontCN ?? _styleCFormat.FontCN;
+                    InitRun();
+                    return _curRHld.FontCN ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontCN : string.Empty);
+                }
+                else if(_ownerParagraph != null)
+                {
+                    return _curPHld.FontCN ?? _inheritFromStyleFormat.FontCN;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _baseStyleCFormat.FontCN;
+                    return _curSHld.FontCN ?? _inheritFromBaseStyleFormat.FontCN;
                 }
                 else
                 {
@@ -112,7 +136,11 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if (_ownerParagraph != null)
+                if (_ownerRun != null)
+                {
+                    _curRHld.FontCN = value;
+                }
+                else if(_ownerParagraph != null)
                 {
                     _curPHld.FontCN = value;
                 }
@@ -134,13 +162,18 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_ownerParagraph != null)
+                if (_ownerRun != null)
                 {
-                    return _curPHld.FontEN ?? _styleCFormat.FontEN;
+                    InitRun();
+                    return _curRHld.FontEN ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontEN : string.Empty);
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.FontEN ?? _inheritFromStyleFormat.FontEN;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStyleCFormat.FontEN;
+                    return _curSHld.FontEN ?? _inheritFromBaseStyleFormat.FontEN;
                 }
                 else
                 {
@@ -149,7 +182,11 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if (_ownerParagraph != null)
+                if (_ownerRun != null)
+                {
+                    _curRHld.FontEN = value;
+                }
+                else if (_ownerParagraph != null)
                 {
                     _curPHld.FontEN = value;
                 }
@@ -170,13 +207,22 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_ownerParagraph != null)
+                if (_ownerRun != null)
                 {
-                    return _curPHld.FontSize > 0 ? _curPHld.FontSize : _styleCFormat.FontSize;
+                    InitRun();
+                    if(_curRHld.FontSize > 0)
+                    {
+                        return _curRHld.FontSize;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontSize : 0;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.FontSize > 0 ? _curPHld.FontSize : _inheritFromStyleFormat.FontSize;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStyleCFormat.FontSize;
+                    return _curSHld.FontSize > 0 ? _curSHld.FontSize : _inheritFromBaseStyleFormat.FontSize;
                 }
                 else
                 {
@@ -185,7 +231,11 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if (_ownerParagraph != null)
+                if(_ownerRun != null)
+                {
+                    _curRHld.FontSize = value;
+                }
+                else if (_ownerParagraph != null)
                 {
                     _curPHld.FontSize = value;
                 }
@@ -225,18 +275,29 @@ namespace Berry.Docx.Formatting
                     FontSize = sizeList[value];
             }
         }
-
+        /// <summary>
+        /// 字号
+        /// </summary>
         public float FontSizeCs
         {
             get
             {
-                if (_ownerParagraph != null)
+                if(_ownerRun != null)
                 {
-                    return _curPHld.FontSizeCs > 0 ? _curPHld.FontSizeCs : _styleCFormat.FontSizeCs;
+                    InitRun();
+                    if (_curRHld.FontSizeCs > 0)
+                    {
+                        return _curRHld.FontSizeCs;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontSizeCs : 0;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.FontSizeCs > 0 ? _curPHld.FontSizeCs : _inheritFromStyleFormat.FontSizeCs;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStyleCFormat.FontSizeCs;
+                    return _curSHld.FontSizeCs > 0 ?_curSHld.FontSizeCs : _inheritFromBaseStyleFormat.FontSizeCs;
                 }
                 else
                 {
@@ -245,7 +306,11 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if (_ownerParagraph != null)
+                if (_ownerRun != null)
+                {
+                    _curRHld.FontSizeCs = value;
+                }
+                else if (_ownerParagraph != null)
                 {
                     _curPHld.FontSizeCs = value;
                 }
@@ -267,13 +332,17 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_ownerParagraph != null)
+                if(_ownerRun != null)
                 {
-                    return _curPHld.Bold ?? _styleCFormat.Bold;
+                    return _curRHld.Bold ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.Bold : false);
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.Bold ?? _inheritFromStyleFormat.Bold;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStyleCFormat.Bold;
+                    return _curSHld.Bold ?? _inheritFromBaseStyleFormat.Bold;
                 }
                 else
                 {
@@ -282,7 +351,11 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if (_ownerParagraph != null)
+                if(_ownerRun != null)
+                {
+                    _curRHld.Bold = value;
+                }
+                else if (_ownerParagraph != null)
                 {
                     _curPHld.Bold = value;
                 }
@@ -303,13 +376,17 @@ namespace Berry.Docx.Formatting
         {
             get
             {
+                if(_ownerRun != null)
+                {
+                    return _curRHld.Italic ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.Italic : false);
+                }
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.Italic ?? _styleCFormat.Italic;
+                    return _curPHld.Italic ?? _inheritFromStyleFormat.Italic;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _baseStyleCFormat.Italic;
+                    return _curSHld.Italic ?? _inheritFromBaseStyleFormat.Italic;
                 }
                 else
                 {
@@ -318,7 +395,11 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if (_ownerParagraph != null)
+                if (_ownerRun != null)
+                {
+                    _curRHld.Italic = value;
+                }
+                else if (_ownerParagraph != null)
                 {
                     _curPHld.Italic = value;
                 }
@@ -331,6 +412,12 @@ namespace Berry.Docx.Formatting
                     _italic = value;
                 }
             }
+        }
+
+        private void InitRun()
+        {
+            if(_ownerRun.Parent != null && _inheritFromParagraphFormat == null)
+                _inheritFromParagraphFormat = new CharacterFormat(_doc, _ownerRun.Parent as OOxml.Paragraph);
         }
 
     }
