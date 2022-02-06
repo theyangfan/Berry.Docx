@@ -11,7 +11,9 @@ namespace Berry.Docx.Documents
 {
     public class ParagraphStyle : Style
     {
-        public ParagraphStyle(Document doc, W.Style style):base(doc, style){}
+        internal ParagraphStyle(Document doc, W.Style style):base(doc, style)
+        {
+        }
 
         /// <summary>
         /// 段落格式

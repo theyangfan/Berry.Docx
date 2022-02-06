@@ -4,45 +4,64 @@ using System.Linq;
 using System.Text;
 
 using O = DocumentFormat.OpenXml;
-using OW = DocumentFormat.OpenXml.Wordprocessing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 
 namespace Berry.Docx
 {
+    /// <summary>
+    /// Represent the section of document.
+    /// </summary>
     public class Section : DocumentContainer
     {
-        private Document _document = null;
-        
-        private OW.SectionProperties _sectPr = null;
-        private PageSetup _pageSetup = null;
-
+        #region Private Members
+        private Document _document;
+        private W.SectionProperties _sectPr;
+        private PageSetup _pageSetup;
         private BodyRange _range;
+        #endregion
 
-        internal Section(Document document, OW.SectionProperties sectPr)
+        #region Constructors
+        /// <summary>
+        /// Create a Section class instance.
+        /// </summary>
+        /// <param name="document">Owner document object</param>
+        public Section(Document document)
+            : this(document, document.LastSection.XElement.CloneNode(true) as W.SectionProperties)
+        {
+        }
+
+        internal Section(Document document, W.SectionProperties sectPr)
             : base(document, sectPr)
         {
             _document = document;
             _sectPr = sectPr;
-            _pageSetup = new PageSetup(sectPr);
+            _pageSetup = new PageSetup(document, sectPr);
             _range = new BodyRange(document, sectPr);
         }
+        #endregion
 
-        public override DocumentObjectCollection ChildObjects
-        {
-            get => new DocumentElementCollection(_sectPr, null);
-        }
-
-        public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Section; }
-
+        #region Public Properties
 
         /// <summary>
-        /// 页面设置
+        /// The DocumentObject type.
         /// </summary>
-        public PageSetup PageSetup { get => _pageSetup; }
+        public override DocumentObjectType DocumentObjectType => DocumentObjectType.Section;
 
+        /// <summary>
+        /// The Page Layout setup.
+        /// </summary>
+        public PageSetup PageSetup => _pageSetup;
+
+        /// <summary>
+        /// The range of section content.
+        /// </summary>
         public BodyRange Range => _range;
 
+        /// <summary>
+        /// The paragraphs in this section.
+        /// </summary>
         public ParagraphCollection Paragraphs
         {
             get
@@ -50,7 +69,9 @@ namespace Berry.Docx
                 return new ParagraphCollection(_document.Package.GetBody(), _range.SectionChildElements<Paragraph>());
             }
         }
-
+        /// <summary>
+        /// The tables in this section.
+        /// </summary>
         public TableCollection Tables
         {
             get
@@ -58,7 +79,10 @@ namespace Berry.Docx
                 return new TableCollection(_document.Package.GetBody(), _range.SectionChildElements<Table>());
             }
         }
-        
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// Add a new paragraph to the end of section.
         /// </summary>
@@ -82,6 +106,6 @@ namespace Berry.Docx
             Tables.Add(table);
             return table;
         }
-
+        #endregion
     }
 }

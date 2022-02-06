@@ -10,7 +10,7 @@ namespace Berry.Docx.Documents
     {
         private W.SectionProperties _sectPr = null;
         private W.DocGrid _docGrid = null;
-        public PageSetup(W.SectionProperties sectPr)
+        internal PageSetup(Document doc, W.SectionProperties sectPr)
         {
             _sectPr = sectPr;
             _docGrid = sectPr.GetFirstChild<W.DocGrid>();
@@ -18,7 +18,6 @@ namespace Berry.Docx.Documents
                 _docGrid = new W.DocGrid();
             sectPr.AddChild(_docGrid);
         }
-
 
 
         /// <summary>

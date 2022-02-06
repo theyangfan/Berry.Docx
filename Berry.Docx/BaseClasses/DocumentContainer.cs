@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Berry.Docx.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,6 @@ namespace Berry.Docx
 
         }
 
-
+        public override DocumentObjectCollection ChildObjects { get; }
     }
 }

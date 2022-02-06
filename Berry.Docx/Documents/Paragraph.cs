@@ -14,16 +14,27 @@ using Office = DocumentFormat.OpenXml.Vml.Office;
 using Berry.Docx.Formatting;
 using Berry.Docx.Field;
 using Berry.Docx.Collections;
+using Berry.Docx.Utils;
 
 namespace Berry.Docx.Documents
 {
+    /// <summary>
+    /// Represent the paragraph.
+    /// </summary>
     public class Paragraph : DocumentElement
     {
+        #region Private Members
         private Document _doc;
         private W.Paragraph _paragraph;
         private ParagraphFormat _pFormat;
         private CharacterFormat _cFormat;
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// The paragraph constructor.
+        /// </summary>
+        /// <param name="doc">The owner document.</param>
         public Paragraph(Document doc) : this(doc, new W.Paragraph())
         {
         }
@@ -35,24 +46,24 @@ namespace Berry.Docx.Documents
             _pFormat = new ParagraphFormat(_doc, paragraph);
             _cFormat = new CharacterFormat(_doc, paragraph);
         }
+        #endregion
+
+        #region Public Properties
+        /// <summary>
+        /// The DocumentObject type.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Paragraph; }
 
+        /// <summary>
+        /// The child DocumentObjects of this paragraph.
+        /// </summary>
         public override DocumentObjectCollection ChildObjects
         {
             get => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
         }
 
-        private IEnumerable<DocumentElement> ChildObjectsPrivate()
-        {
-            foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
-            {
-                if (ele.GetType() == typeof(W.Run))
-                    yield return new TextRange(_doc, ele as W.Run);
-            }
-        }
-
         /// <summary>
-        /// 段落文本
+        /// The paragraph text.
         /// </summary>
         public string Text
         {
@@ -109,70 +120,51 @@ namespace Berry.Docx.Documents
             set
             {
                 _paragraph.RemoveAllChildren<W.Run>();
-
-                W.Run run = new W.Run();
-                
-                W.RunProperties rPr = new W.RunProperties();
-                W.RunFonts rFonts = new W.RunFonts() { Hint = W.FontTypeHintValues.EastAsia };
-                rPr.AddChild(rFonts);
-                
-                W.Text text = new W.Text() { Space = O.SpaceProcessingModeValues.Preserve };
-                text.Text = value;
-
-                run.AddChild(rPr);
-                run.AddChild(text);
-
+                W.Run run = RunGenerator.Generate(value);
                 _paragraph.AddChild(run);
             }
         }
 
-        
         /// <summary>
-        /// 段落格式
+        /// The paragraph format.
         /// </summary>
         public ParagraphFormat Format => _pFormat;
+
         /// <summary>
-        /// 段落字符格式
+        /// The common character format of paragraph.
         /// </summary>
         public CharacterFormat CharacterFormat => _cFormat;
 
         /// <summary>
-        /// 样式
+        /// The paragraph style. 
         /// </summary>
-        public Style Style
+        public ParagraphStyle Style
         {
             get
             {
                 if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return null;
-                return new Style(_doc, _paragraph.GetStyle(_doc));
+                return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
             }
         }
+        #endregion
 
-        /// <summary>
-        /// 样式名称
-        /// </summary>
-        public string StyleName
-        {
-            get
-            {
-                if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return string.Empty;
-                return _paragraph.GetStyle(_doc).StyleName.Val;
-            }
-        }
-
-        public int CharCount
-        {
-            get => Text.Length;
-        }
-
-
-        /// <summary>
-        /// 从父类集合中移除当前段落
-        /// </summary>
+        #region Internal Methods
         internal void Remove()
         {
             if (_paragraph != null) _paragraph.Remove();
         }
+        #endregion
+
+        #region Private Methods
+        private IEnumerable<DocumentElement> ChildObjectsPrivate()
+        {
+            foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
+            {
+                if (ele.GetType() == typeof(W.Run))
+                    yield return new TextRange(_doc, ele as W.Run);
+            }
+        }
+        #endregion
 
         #region TODO
 

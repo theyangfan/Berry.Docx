@@ -4,7 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using OOxml = DocumentFormat.OpenXml;
+using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using P = DocumentFormat.OpenXml.Packaging;
 
@@ -13,16 +13,22 @@ using Berry.Docx.Collections;
 
 namespace Berry.Docx
 {
+    /// <summary>
+    /// Represents a document.
+    /// </summary>
     public class Document : IDisposable
     {
+        #region Private Members
         private string _filename = string.Empty;
         private P.WordprocessingDocument _doc;
         private Settings _settings;
+        #endregion
 
+        #region Constructor
         /// <summary>
-        /// 打开指定文档，如果文档不存在，则创建新文档。
+        /// Creates a new instance of the Document class from the specified file. If the file dose not exists, a new file will be created .
         /// </summary>
-        /// <param name="filename">文档名称</param>
+        /// <param name="filename">Name of the file</param>
         public Document(string filename)
         {
             _filename = filename;
@@ -39,79 +45,16 @@ namespace Berry.Docx
             }
             _settings = new Settings(_doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
+        #endregion
 
+        #region Public Properties
         /// <summary>
-        /// 创建新文档
+        /// Return a collection of sections in the document.
         /// </summary>
-        /// <param name="filename">文档名称</param>
-        /// <returns></returns>
-        public static Document Create(string filename)
-        {
-            return new Document(filename);
-        }
-        /// <summary>
-        /// 打开文档
-        /// </summary>
-        /// <param name="filename">文档名称</param>
-        /// <returns></returns>
-        public static Document Open(string filename)
-        {
-            return new Document(filename);
-        }
+        public SectionCollection Sections => new SectionCollection(SectionsPrivate());
 
         /// <summary>
-        /// 保存
-        /// </summary>
-        public void Save()
-        {
-            SaveAs(_filename);
-        }
-        /// <summary>
-        /// 另存为
-        /// </summary>
-        /// <param name="path"></param>
-        public void SaveAs(string path)
-        {
-            if (_doc != null)
-                _doc.SaveAs(path).Close();
-        }
-        /// <summary>
-        /// 关闭文档
-        /// </summary>
-        public void Close()
-        {
-            if (_doc != null)
-            {
-                Dispose();
-            }
-        }
-
-        public void Dispose()
-        {
-            _doc.Close();
-        }
-
-        internal P.WordprocessingDocument Package => _doc;
-
-        /// <summary>
-        /// 返回文档节的集合
-        /// </summary>
-        public SectionCollection Sections
-        {
-            get
-            {
-                return new SectionCollection(SectionsPrivate());
-            }
-        }
-
-        private IEnumerable<Section> SectionsPrivate()
-        {
-            foreach (W.SectionProperties sectPr in _doc.MainDocumentPart.Document.Body.Descendants<W.SectionProperties>())
-                yield return new Section(this, sectPr);
-        }
-
-        /// <summary>
-        /// 最后一节
+        /// Return the last section of the document.
         /// </summary>
         public Section LastSection
         {
@@ -122,14 +65,80 @@ namespace Berry.Docx
         }
 
         /// <summary>
-        /// 返回文档的样式集合
+        /// Return a collection of styles in the document.
         /// </summary>
-        public StyleCollection Styles
+        public StyleCollection Styles => new StyleCollection(StylesPrivate());
+
+
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Create a new paragraph.
+        /// </summary>
+        /// <returns>The paragraph.</returns>
+        public Paragraph CreateParagraph()
         {
-            get
+            return new Paragraph(this);
+        }
+
+        /// <summary>
+        /// Create a new table with specified size.
+        /// </summary>
+        /// <param name="rowCnt">Table row count</param>
+        /// <param name="columnCnt">Table Column count</param>
+        /// <returns>The table.</returns>
+        public Table CreateTable(int rowCnt, int columnCnt)
+        {
+            return new Table(this, rowCnt, columnCnt);
+        }
+
+        /// <summary>
+        /// Save the contents and changes of the docuemnt.
+        /// </summary>
+        public void Save()
+        {
+            SaveAs(_filename);
+        }
+        /// <summary>
+        /// Save the contents and changes to specified file.
+        /// </summary>
+        /// <param name="filename">Name of file</param>
+        public void SaveAs(string filename)
+        {
+            if (_doc != null)
+                _doc.SaveAs(filename).Close();
+        }
+
+        /// <summary>
+        /// Close the document.
+        /// </summary>
+        public void Close()
+        {
+            if (_doc != null)
             {
-                return new StyleCollection(StylesPrivate());
+                Dispose();
             }
+        }
+
+        /// <summary>
+        /// Close the document.
+        /// </summary>
+        public void Dispose()
+        {
+            _doc.Close();
+        }
+        #endregion
+
+        #region Internal Properties
+        internal P.WordprocessingDocument Package => _doc;
+        #endregion
+
+        #region Private Methods
+        private IEnumerable<Section> SectionsPrivate()
+        {
+            foreach (W.SectionProperties sectPr in _doc.MainDocumentPart.Document.Body.Descendants<W.SectionProperties>())
+                yield return new Section(this, sectPr);
         }
 
         private IEnumerable<Style> StylesPrivate()
@@ -142,38 +151,23 @@ namespace Berry.Docx
                     yield return new Style(this, style);
             }
         }
+        #endregion
+
+        #region TODO
 
         /// <summary>
         /// 全局设置
         /// </summary>
-        public Settings Settings { get => _settings; }
+        private Settings Settings { get => _settings; }
 
         /// <summary>
-        /// Create a new paragraph.
+        /// 返回文档中指定文本内容的所有段落。
+        /// <br/><br/>
+        /// Return a list of paragraphs with specified text in the document.
         /// </summary>
-        /// <returns>The paragraph</returns>
-        public Paragraph CreateParagraph()
-        {
-            return new Paragraph(this);
-        }
-
-        /// <summary>
-        /// Create a new table.
-        /// </summary>
-        /// <param name="rowCnt">Table row count</param>
-        /// <param name="columnCnt">Table Column count</param>
-        /// <returns>The table</returns>
-        public Table CreateTable(int rowCnt, int columnCnt)
-        {
-            return new Table(this, rowCnt, columnCnt);
-        }
-
-        /// <summary>
-        /// 查找文本内容为 text 的所有段落
-        /// </summary>
-        /// <param name="text">文本内容</param>
-        /// <returns></returns>
-        public List<Paragraph> Find(string text)
+        /// <param name="text">段落文本<br/><br/>Paragraph text</param>
+        /// <returns>找到的段落列表。<br/><br/>A list of paragraphs found</returns>
+        private List<Paragraph> Find(string text)
         {
             List<Paragraph> paras = new List<Paragraph>();
             foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
@@ -190,7 +184,7 @@ namespace Berry.Docx
         /// <param name="pattern"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public List<Paragraph> Find(string pattern, RegexOptions options)
+        private List<Paragraph> Find(string pattern, RegexOptions options)
         {
             List<Paragraph> paras = new List<Paragraph>();
             foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
@@ -201,8 +195,6 @@ namespace Berry.Docx
             return paras;
         }
 
-        #region TODO
-
         /// <summary>
         /// 更新域代码
         /// </summary>
@@ -212,7 +204,7 @@ namespace Berry.Docx
             {
                 P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
                 W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
-                updateFields.Val = new OOxml.OnOffValue(true);
+                updateFields.Val = new O.OnOffValue(true);
                 settings.Settings.PrependChild(updateFields);
                 settings.Settings.Save();
             }
