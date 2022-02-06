@@ -1,54 +1,94 @@
+**English** | [简体中文](./README_CN.md)
+
+<br/>
+
 # Berry.Docx
 
-Berry.Docx 是一款用于读写 Word 2007+ (.docx)文档的.NET 库。开发该库的主要目的是为了提供简便，友好的接口来处理底层的 [OpenXML](https://github.com/OfficeDev/Open-XML-SDK) API。
+Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying [OpenXML](https://github.com/OfficeDev/Open-XML-SDK) API.
 
+<br/>
 
+# Install via NuGet
 
-# 示例
+If you want to include Berry.Docx in your project, you can install it directly from NuGet.
 
-Berry.Docx 支持读写 Word 文档，无需安装 MS Word 程序。
+Run the following command in the Package Manager Console to install it.
 
-以下是一个设置段落格式的典型例子：
+```sh
+PM> Install-Package Berry.Docx
+```
+
+<br/>
+
+# Examples
+
+The following example shows how to create a new file, and add a new paragraph with "Times New Roman font, 14 point, Center justification" format,and a 3x3 size table.
 
 ```c#
 using Berry.Docx;
 using Berry.Docx.Documents;
 
-Document doc = new Document("test.docx");
-Paragraph p = doc.Paragraphs[0];
-//字体
-p.CharacterFormat.FontCN = "微软雅黑";
-// 字号
-p.CharacterFormat.FontSize = 16;
-// 加粗
-p.CharacterFormat.Bold = true;
-// 对齐方式
-p.Format.Justification = JustificationType.Left;
-// 大纲级别
-p.Format.OutlineLevel = OutlineLevelType.Level1;
-// 左侧缩进
-p.Format.LeftCharsIndent = 2;
-// 段前行距
-p.Format.BeforeLinesSpacing = 1;
-//行距
-p.Format.LineSpacing = 12;
-p.Format.LineSpacingRule = LineSpacingRule.Multiple;
-
-doc.Save();
-doc.Close();
+namespace DocumentTest
+{
+    class Test
+    {
+        static void Main() 
+        {
+			// Create a new word document called “example.docx”
+            Document doc = new Document("example.docx");
+			// Create a new paragraph
+            Paragraph p1 = doc.CreateParagraph();
+            p1.Text = "This is a paragraph.";
+            p1.CharacterFormat.FontEN = "Times New Roman";
+            p1.CharacterFormat.FontSize = 14;
+            p1.Format.Justification = JustificationType.Center;
+			// Create a new table
+            Table tbl1 = doc.CreateTable(3, 3);
+            tbl1.Rows[0].Cells[1].Paragraphs[0].Text = "1st Column";
+            tbl1.Rows[0].Cells[2].Paragraphs[0].Text = "2nd Column";
+            tbl1.Rows[1].Cells[0].Paragraphs[0].Text = "1st Row";
+            tbl1.Rows[2].Cells[0].Paragraphs[0].Text = "2nd Row";
+			// Add to the document
+            doc.Sections[0].Range.ChildObjects.Add(p1);
+            doc.Sections[0].Range.ChildObjects.Add(tbl1);
+			// Save and close
+            doc.Save();
+            doc.Close();
+        } 
+    }
+}
 ```
 
+<br/>
 
+# Main Features
 
-# 依赖
+| Features                                                     |
+| ------------------------------------------------------------ |
+| Open existing DOCX files Or Create new DOCX files            |
+| Get sections                                                 |
+| Get paragraphs of section Or Append/Insert new paragraphs    |
+| Get characters of paragraph Or Append/Insert new characters  |
+| Get/Set character format(FontCN, FontEN, FontSize, Bold, Italic) |
+| Get/Set paragraph format(Justification, OutlineLevel, Indentation, Spacing etc.) |
+| Get paragraph style                                          |
+| Get tables of section Or Append/Insert new tables            |
+| Get table rows and cells                                     |
+| Get/Set table cell paragraphs                                |
 
-本项目基于.NET Framework 4.7.2 开发，依赖的 [OpenXML SDK](https://github.com/OfficeDev/Open-XML-SDK) 版本为 v2.15.0 。
+<br/>
 
+# Documentation
 
+- [Examples](https://theyangfan.github.io/Berry.Docx/en-US/examples/paragraph/index.html)
+- [APIs References](https://theyangfan.github.io/Berry.Docx/en-US/api/index.html)
 
-# 更新日志
+<br/>
+
+# Release History
 
 ##### v1.0.0（2022-01-03）
 
-- 支持创建、打开 .docx 文档；
-- 支持读取、设置段落的常规格式(字体、对齐方式、缩进、间距等)。
+- Supports create & open DOCX files；
+- Supports read and change the normal format(Font、Justification、Indentation、Spacing) of paragraph。
+
