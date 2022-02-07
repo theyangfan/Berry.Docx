@@ -76,19 +76,38 @@ namespace Berry.Docx.Collections
 
         public override void InsertAt(DocumentObject obj, int index)
         {
-
+            if (index == _elements.Count())
+            {
+                Add(obj);
+            }
+            else
+            {
+                _elements.ElementAt(index).XElement.InsertBeforeSelf(obj.XElement);
+            }
         }
+
         public override void Remove(DocumentObject obj)
         {
-
+            if (!Contains(obj)) return;
+            if (obj.XElement.Descendants<W.SectionProperties>().Any())
+            {
+                obj.XElement.RemoveAllChildren<W.Run>();
+            }
+            else
+            {
+                obj.Remove();
+            }
         }
         public override void RemoveAt(int index)
         {
-
+            Remove(_elements.ElementAt(index));
         }
         public override void Clear()
         {
-
+            foreach(DocumentObject obj in _elements)
+            {
+                Remove(obj);
+            }
         }
     }
 }

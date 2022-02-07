@@ -25,6 +25,15 @@ namespace Berry.Docx.Collections
 
         public new Paragraph this[int index] => _paragraphs.ElementAt(index);
 
+        public Paragraph First()
+        {
+            return _paragraphs.First();
+        }
+
+        public Paragraph Last()
+        {
+            return _paragraphs.Last();
+        }
         public bool Contains(Paragraph paragraph)
         {
             return _paragraphs.Contains(paragraph);
@@ -116,7 +125,6 @@ namespace Berry.Docx.Collections
                     _paragraphs.ElementAt(index).XElement.InsertBeforeSelf(newParagraph);
                 }
             }
-                
         }
 
         /// <summary>

@@ -58,6 +58,20 @@ namespace Berry.Docx.Documents
         public TableRowCollection Rows => new TableRowCollection(_table, TableRowsPrivate());
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Adds a new row to the end of table.
+        /// </summary>
+        /// <returns>The table row.</returns>
+        public TableRow AddRow()
+        {
+            TableRow row = Rows.Last().Clone();
+            row.ClearContent();
+            Rows.Add(row);
+            return row;
+        }
+        #endregion
+
         #region Internal
         internal void Remove()
         {
@@ -70,7 +84,7 @@ namespace Berry.Docx.Documents
         {
             foreach (W.TableRow row in _table.Elements<W.TableRow>())
             {
-                yield return new TableRow(_doc, row);
+                yield return new TableRow(_doc, this, row);
             }
         }
         #endregion

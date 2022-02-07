@@ -28,12 +28,25 @@ namespace Berry.Docx.Utils
         private static void SetTableProperties(Table table)
         {
             TableProperties tableProperties1 = new TableProperties();
-            TableStyle tableStyle1 = new TableStyle() { Val = "a3" };
-            TableWidth tableWidth1 = new TableWidth() { Width = "0", Type = TableWidthUnitValues.Auto };
-            TableLook tableLook1 = new TableLook() { FirstRow = true, LastRow = false, FirstColumn = true, LastColumn = false, NoHorizontalBand = false, NoVerticalBand = true };
 
-            tableProperties1.Append(tableStyle1);
-            tableProperties1.Append(tableWidth1);
+            TableBorders tableBorders1 = new TableBorders();
+            TopBorder topBorder1 = new TopBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            LeftBorder leftBorder1 = new LeftBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            BottomBorder bottomBorder1 = new BottomBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            RightBorder rightBorder1 = new RightBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            InsideHorizontalBorder insideHorizontalBorder1 = new InsideHorizontalBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+            InsideVerticalBorder insideVerticalBorder1 = new InsideVerticalBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+
+            tableBorders1.Append(topBorder1);
+            tableBorders1.Append(leftBorder1);
+            tableBorders1.Append(bottomBorder1);
+            tableBorders1.Append(rightBorder1);
+            tableBorders1.Append(insideHorizontalBorder1);
+            tableBorders1.Append(insideVerticalBorder1);
+
+            TableLook tableLook1 = new TableLook() { FirstRow = false, LastRow = false, FirstColumn = false, LastColumn = false, NoHorizontalBand = true, NoVerticalBand = true };
+
+            tableProperties1.Append(tableBorders1);
             tableProperties1.Append(tableLook1);
 
             table.Append(tableProperties1);
@@ -41,47 +54,56 @@ namespace Berry.Docx.Utils
 
         private static void SetTableGrid(Table table, int columnCnt)
         {
-            int averageWidth = TableWidth / columnCnt;
-
             TableGrid tableGrid1 = new TableGrid();
-            for (int i = 1; i <= columnCnt; i++)
-            {
-                GridColumn gridColumn = new GridColumn();
-                if (i < columnCnt)
-                    gridColumn.Width = averageWidth.ToString();
-                else
-                    gridColumn.Width = (TableWidth - (averageWidth * (columnCnt - 1))).ToString();
-
-                tableGrid1.Append(gridColumn);
-            }
             table.Append(tableGrid1);
         }
 
         private static void SetTableData(Table table, int rowCnt, int columnCnt)
         {
-            int averageWidth = TableWidth / columnCnt;
             for(int r = 1; r <= rowCnt; r++)
             {
                 TableRow row = new TableRow();
-                for(int c = 1; c <= columnCnt; c++)
+
+                TableRowProperties tableRowProperties1 = new TableRowProperties();
+                row.Append(tableRowProperties1);
+
+                for (int c = 1; c <= columnCnt; c++)
                 {
-                    TableCell cell = new TableCell();
-                    TableCellProperties tableCellProperties = new TableCellProperties();
-                    TableCellWidth tableCellWidth = new TableCellWidth() { Type = TableWidthUnitValues.Dxa };
-                    if (c < columnCnt)
-                        tableCellWidth.Width = averageWidth.ToString();
-                    else
-                        tableCellWidth.Width = (TableWidth - (averageWidth * (columnCnt - 1))).ToString();
+                    TableCell tableCell1 = new TableCell();
 
-                    tableCellProperties.Append(tableCellWidth);
-                    Paragraph paragraph = new Paragraph();
+                    TableCellProperties tableCellProperties1 = new TableCellProperties();
 
-                    cell.Append(tableCellProperties);
-                    cell.Append(paragraph);
+                    TableCellBorders tableCellBorders1 = new TableCellBorders();
+                    TopBorder topBorder1 = new TopBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+                    LeftBorder leftBorder1 = new LeftBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+                    BottomBorder bottomBorder1 = new BottomBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+                    RightBorder rightBorder1 = new RightBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+                    InsideHorizontalBorder insideHorizontalBorder1 = new InsideHorizontalBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+                    InsideVerticalBorder insideVerticalBorder1 = new InsideVerticalBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
 
-                    row.Append(cell);
+                    tableCellBorders1.Append(topBorder1);
+                    tableCellBorders1.Append(leftBorder1);
+                    tableCellBorders1.Append(bottomBorder1);
+                    tableCellBorders1.Append(rightBorder1);
+                    tableCellBorders1.Append(insideHorizontalBorder1);
+                    tableCellBorders1.Append(insideVerticalBorder1);
+                    Shading shading1 = new Shading() { Val = ShadingPatternValues.Clear, Color = "auto", Fill = "auto" };
+
+                    tableCellProperties1.Append(tableCellBorders1);
+                    tableCellProperties1.Append(shading1);
+
+                    Paragraph paragraph1 = new Paragraph();
+                    ParagraphProperties paragraphProperties1 = new ParagraphProperties();
+
+                    paragraph1.Append(paragraphProperties1);
+
+                    tableCell1.Append(tableCellProperties1);
+                    tableCell1.Append(paragraph1);
+
+                    row.Append(tableCell1);
                 }
                 table.Append(row);
+
             }
         }
 

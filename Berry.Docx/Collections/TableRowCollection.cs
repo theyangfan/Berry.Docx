@@ -19,5 +19,10 @@ namespace Berry.Docx.Collections
         }
 
         public new TableRow this[int index] => _rows.ElementAt(index);
+
+        public TableRow Last()
+        {
+            return _rows.Last();
+        }
     }
 }

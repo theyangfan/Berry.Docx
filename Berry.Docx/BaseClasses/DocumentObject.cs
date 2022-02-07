@@ -16,7 +16,7 @@ namespace Berry.Docx
     /// <summary>
     /// DocumentObject Class.
     /// </summary>
-    public abstract class DocumentObject
+    public abstract class DocumentObject : IEquatable<DocumentObject>
     {
         private Document _doc = null;
         private OO.OpenXmlElement _object = null;
@@ -42,7 +42,10 @@ namespace Berry.Docx
         /// </summary>
         public abstract DocumentObjectType DocumentObjectType { get; }
 
-        
+        internal void Remove()
+        {
+            _object.Remove();
+        }
 
         public static bool operator ==(DocumentObject lhs, DocumentObject rhs)
         {
@@ -59,9 +62,9 @@ namespace Berry.Docx
             return !(lhs == rhs);
         }
 
-        public override bool Equals(object obj)
+        public bool Equals(DocumentObject obj)
         {
-            return this == (DocumentObject)obj;
+            return this == obj;
         }
 
         public override int GetHashCode()

@@ -13,15 +13,26 @@ using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// Represent the text range.
+    /// </summary>
     public class TextRange : DocumentElement
     {
+        #region Private Members
         private Document _doc;
         private W.Run _run;
         private W.Text _text;
         private CharacterFormat _cFormat;
+        #endregion
 
-        public TextRange(Document doc):this(doc, RunGenerator.Generate(""))
-        {}
+        #region Constructors
+        /// <summary>
+        /// The TextRange constructor.
+        /// </summary>
+        /// <param name="doc">The owner document.</param>
+        public TextRange(Document doc) : this(doc, RunGenerator.Generate(""))
+        {
+        }
         internal TextRange(Document doc, W.Run run) : base(doc, run)
         {
             _doc = doc;
@@ -29,9 +40,18 @@ namespace Berry.Docx.Field
             _text = run.Elements<W.Text>().FirstOrDefault();
             _cFormat = new CharacterFormat(doc, run);
         }
+        #endregion
 
+        #region Public Properties
+
+        /// <summary>
+        /// The DocumentObject type.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.TextRange;
 
+        /// <summary>
+        /// The text.
+        /// </summary>
         public string Text
         {
             get
@@ -51,7 +71,10 @@ namespace Berry.Docx.Field
             }
         }
 
+        /// <summary>
+        /// The character format.
+        /// </summary>
         public CharacterFormat CharacterFormat => _cFormat;
-
+        #endregion
     }
 }
