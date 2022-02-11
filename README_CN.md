@@ -30,11 +30,11 @@ PM> Install-Package Berry.Docx
 using Berry.Docx;
 using Berry.Docx.Documents;
 
-namespace DocumentTest
+namespace Example
 {
-    class Test
+    class Example
     {
-        static void Main() 
+        static void Main()
         {
 			// 新建一个名为“示例.docx”的文档
             Document doc = new Document("示例.docx");
@@ -75,7 +75,7 @@ namespace DocumentTest
 | 获取/设置段落格式(对齐方式, 大纲级别, 缩进, 间距等.)    |
 | 获取段落样式                                            |
 | 获取节中的表格或者添加/插入新的表格                     |
-| 获取表格行和单元格                                      |
+| 在表格单元格四周插入新的行或列                          |
 | 获取/设置表格单元格中的段落                             |
 
 <br/>
@@ -89,7 +89,16 @@ namespace DocumentTest
 
 # 更新日志
 
-##### v1.0.0（2022-01-03）
+### v1.0.1 (2022-02-11)
+
+#### 新增功能
+
+- 支持新增/删除段落；
+- 支持新增/删除表格，以及在表格中插入行，列，单元格和段落。
+
+### v1.0.0（2022-01-03）
+
+#### 新增功能
 
 - 支持创建、打开 DOCX 文档；
 - 支持读取、设置段落的常规格式(字体、对齐方式、缩进、间距)。

@@ -22,15 +22,15 @@ PM> Install-Package Berry.Docx
 
 # Examples
 
-The following example shows how to create a new file, and add a new paragraph with "Times New Roman font, 14 point, Center justification" format,and a 3x3 size table.
+The following example shows how to create a new document file, and add a new paragraph with "Times New Roman font, 14 point, Center justification" format,and a 3x3 size table.
 
 ```c#
 using Berry.Docx;
 using Berry.Docx.Documents;
 
-namespace DocumentTest
+namespace Example
 {
-    class Test
+    class Example
     {
         static void Main() 
         {
@@ -74,6 +74,7 @@ namespace DocumentTest
 | Get paragraph style                                          |
 | Get tables of section Or Append/Insert new tables            |
 | Get table rows and cells                                     |
+| Insert Rows/Columns around table cells                       |
 | Get/Set table cell paragraphs                                |
 
 <br/>
@@ -87,8 +88,18 @@ namespace DocumentTest
 
 # Release History
 
-##### v1.0.0（2022-01-03）
+### v1.0.1 (2022-02-11)
+
+#### Added
+
+- Supports add/remove paragraphs;
+
+- Supports add/remove tables, and add/insert rows, cloumns, cells, paragraphs to the table.
+
+### v1.0.0（2022-01-03）
+
+#### Added
 
 - Supports create & open DOCX files；
-- Supports read and change the normal format(Font、Justification、Indentation、Spacing) of paragraph。
+- Supports read and change the normal format(Font、Justification、Indentation、Spacing) of paragraph.
 

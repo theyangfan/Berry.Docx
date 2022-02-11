@@ -14,17 +14,17 @@ using OW = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Test
 {
-    public class Test
+    internal class Test
     {
         public static void Main() {
             string src = @"C:\Users\zhailiao123\Desktop\test.docx";
             string dst = @"C:\Users\tomato\Desktop\test2.docx";
-            //OP.WordprocessingDocument doc = OP.WordprocessingDocument.Open(filename, false);
-            Document doc = new Document(src);
+
+            //Document doc = new Document(src);
 
 
-            doc.Save();
-            doc.Close();
+            //doc.Save();
+            //doc.Close();
 
             //System.Diagnostics.Process.Start(dst);
         }
