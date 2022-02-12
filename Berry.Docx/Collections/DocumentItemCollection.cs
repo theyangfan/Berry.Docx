@@ -1,35 +1,63 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Collections
 {
-    public class DocumentElementCollection : DocumentObjectCollection
+    /// <summary>
+    /// Represent a DocumentItem collection.
+    /// </summary>
+    public class DocumentItemCollection : DocumentObjectCollection
     {
+        #region Private Members
         private O.OpenXmlElement _owner;
-        private IEnumerable<DocumentElement> _elements;
-        internal DocumentElementCollection(O.OpenXmlElement owner, IEnumerable<DocumentElement> elements)
-            : base(elements)
+        private IEnumerable<DocumentItem> _items;
+        #endregion
+
+        #region Constructors
+        internal DocumentItemCollection(O.OpenXmlElement owner, IEnumerable<DocumentItem> items)
+            : base(items)
         {
             _owner = owner;
-            _elements = elements;
+            _items = items;
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Returns the first item of the current collection.
+        /// </summary>
+        /// <returns>The first item in the current collection.</returns>
+        public DocumentItem First()
+        {
+            return _items.First();
         }
 
+        /// <summary>
+        /// Returns the last item of the current collection.
+        /// </summary>
+        /// <returns>The last item in the current collection.</returns>
+        public DocumentItem Last()
+        {
+            return _items.Last();
+        }
+
+        /// <summary>
+        /// Adds the specified object to the end of the current collection.
+        /// </summary>
+        /// <param name="obj">The DocumentObject instance that was added.</param>
         public override void Add(DocumentObject obj)
         {
             var newElement = obj.XElement;
-            if (_elements.Count() > 0)
+            if (_items.Count() > 0)
             {
-                var lastElement = _elements.Last().XElement;
-                // 末尾段落包含分节符
+                var lastElement = _items.Last().XElement;
+                // the last item is paragraph and contains section
                 if (lastElement is W.Paragraph && lastElement.Descendants<W.SectionProperties>().Any())
                 {
-                    // 若包含文本，则在分节符后插入，并将分节符移至插入的段落中
+                    // if last item contains text, insert the new item after last item and move the section to the new item
                     if (lastElement.Elements<W.Run>().Any())
                     {
                         if(newElement is W.Paragraph)
@@ -53,13 +81,13 @@ namespace Berry.Docx.Collections
                     }
                     else
                     {
-                        // 若只包含分节符，则在分节符前插入
+                        // if only contains section, insert before last item
                         lastElement.InsertBeforeSelf(newElement);
                     }
                 }
                 else
                 {
-                    // 若不包含分节符，则在末尾段落之后插入
+                    // if doesn't contain section, insert after last item
                     lastElement.InsertAfterSelf(newElement);
                 }
             }
@@ -74,18 +102,27 @@ namespace Berry.Docx.Collections
             }
         }
 
+        /// <summary>
+        /// Insert the specified object immediately to the specified index of the current collection.
+        /// </summary>
+        /// <param name="obj">The inserted DocumentObject instance.</param>
+        /// <param name="index">The zero-based index.</param>
         public override void InsertAt(DocumentObject obj, int index)
         {
-            if (index == _elements.Count())
+            if (index == _items.Count())
             {
                 Add(obj);
             }
             else
             {
-                _elements.ElementAt(index).XElement.InsertBeforeSelf(obj.XElement);
+                _items.ElementAt(index).XElement.InsertBeforeSelf(obj.XElement);
             }
         }
 
+        /// <summary>
+        /// Removes the specified DocumentObject immediately from the current collection.
+        /// </summary>
+        /// <param name="obj"> The DocumentObject instance that was removed. </param>
         public override void Remove(DocumentObject obj)
         {
             if (!Contains(obj)) return;
@@ -98,16 +135,26 @@ namespace Berry.Docx.Collections
                 obj.Remove();
             }
         }
+
+        /// <summary>
+        /// Removes the DocumentObject at the zero-based index immediately from the current collection.
+        /// </summary>
+        /// <param name="index">The zero-based index.</param>
         public override void RemoveAt(int index)
         {
-            Remove(_elements.ElementAt(index));
+            Remove(_items.ElementAt(index));
         }
+
+        /// <summary>
+        /// Removes all items of the current collection.
+        /// </summary>
         public override void Clear()
         {
-            foreach(DocumentObject obj in _elements)
+            foreach(DocumentObject obj in _items)
             {
                 Remove(obj);
             }
         }
+        #endregion
     }
 }

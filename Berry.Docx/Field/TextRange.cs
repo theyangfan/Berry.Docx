@@ -16,7 +16,7 @@ namespace Berry.Docx.Field
     /// <summary>
     /// Represent the text range.
     /// </summary>
-    public class TextRange : DocumentElement
+    public class TextRange : DocumentItem
     {
         #region Private Members
         private Document _doc;

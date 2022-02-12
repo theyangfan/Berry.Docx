@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
@@ -11,71 +8,87 @@ using Berry.Docx.Collections;
 
 namespace Berry.Docx
 {
+    /// <summary>
+    /// Represent a body content range in the document.
+    /// </summary>
     public class BodyRange : DocumentContainer
     {
+        #region Private Members
         private Document _doc;
         private O.OpenXmlElement _owner;
+        #endregion
+
+        #region Constructors
         internal BodyRange(Document doc, O.OpenXmlElement owner)
             : base(doc, owner)
         {
             _doc = doc;
             _owner = owner;
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// 
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.BodyRange;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public override DocumentObjectCollection ChildObjects
         {
             get
             {
-                DocumentElementCollection collection = null;
+                DocumentItemCollection collection = null;
                 if (_owner is W.SectionProperties)
                 {
-                    collection = new DocumentElementCollection(_doc.Package.GetBody(), SectionChildElements());
+                    collection = new DocumentItemCollection(_doc.Package.GetBody(), SectionChildElements());
                 }
                 return collection;
             }
         }
+        #endregion
 
-        internal IEnumerable<T> SectionChildElements<T>() where T : DocumentElement
+        #region Internal Methods
+        internal IEnumerable<T> SectionChildElements<T>() where T : DocumentItem
         {
             return SectionChildElements().OfType<T>();
         }
 
-        internal IEnumerable<DocumentElement> SectionChildElements()
+        /// <summary>
+        /// Gets the DocuemntItems between current section and previous section.
+        /// </summary>
+        /// <returns></returns>
+        internal IEnumerable<DocumentItem> SectionChildElements()
         {
-            W.SectionProperties sectPr = (W.SectionProperties)_owner;
             List<O.OpenXmlElement> allElements = _doc.Package.GetBody().Elements().ToList();
-            List<DocumentElement> elements = new List<DocumentElement>();
-            int index = 0;
-            if (sectPr == _doc.Package.GetRootSectionProperties())
+            int startIndex = 0;
+            int endIndex = 0;
+
+            Section curSection = new Section(_doc, (W.SectionProperties)_owner);
+            int curentSectIndex = _doc.Sections.IndexOf(curSection);
+            
+            if(curentSectIndex > 0)
             {
-                index = allElements.Count - 1;
-            }
-            else
-            {
-                index = allElements.FindIndex(e => e.Descendants().Contains(sectPr));
+                Section prevSection = _doc.Sections[curentSectIndex - 1];
+                startIndex = allElements.FindIndex(e => e.Descendants<W.SectionProperties>().Contains(prevSection.XElement));
             }
 
-            for (int i = index; i >= 0; --i)
+            endIndex = allElements.FindIndex(e => e == curSection.XElement || e.Descendants<W.SectionProperties>().Contains(curSection.XElement));
+
+            for (int i = startIndex; i <= endIndex; ++i)
             {
                 O.OpenXmlElement ele = allElements[i];
-                // 保留包含 SectionProperties 元素的段落
-                if (i != index && ele.Descendants<W.SectionProperties>().Any())
-                    break;
                 if(ele is W.Paragraph)
                 {
-                    elements.Add(new Paragraph(_doc, (W.Paragraph)ele));
+                    yield return new Paragraph(_doc, (W.Paragraph)ele);
                 }
                 else if(ele is W.Table)
                 {
-                    elements.Add(new Table(_doc, (W.Table)ele));
+                    yield return new Table(_doc, (W.Table)ele);
                 }
-                
             }
-            elements.Reverse();
-            return elements.AsEnumerable();
         }
-
+        #endregion
     }
 }

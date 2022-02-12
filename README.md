@@ -94,7 +94,7 @@ namespace Example
 
 - Supports add/remove paragraphs;
 
-- Supports add/remove tables, and add/insert rows, cloumns, cells, paragraphs to the table.
+- Supports add/remove tables, and add/insert rows, columns, cells, paragraphs to the table.
 
 ### v1.0.0（2022-01-03）
 

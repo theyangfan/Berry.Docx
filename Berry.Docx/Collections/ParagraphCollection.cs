@@ -1,167 +1,97 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using O = DocumentFormat.OpenXml;
-using W = DocumentFormat.OpenXml.Wordprocessing;
-using P = DocumentFormat.OpenXml.Packaging;
-
 using Berry.Docx.Documents;
 
 namespace Berry.Docx.Collections
 {
-    public class ParagraphCollection : DocumentElementCollection
+    /// <summary>
+    /// Represent a Paragraph collection.
+    /// </summary>
+    public class ParagraphCollection : DocumentItemCollection
     {
-        private O.OpenXmlElement _owner;
-        private IEnumerable<Paragraph> _paragraphs;
+        #region Constructors
         internal ParagraphCollection(O.OpenXmlElement owner, IEnumerable<Paragraph> paragraphs)
             : base(owner, paragraphs)
         {
-            _owner = owner;
-            _paragraphs = paragraphs;
         }
+        #endregion
 
-        public new Paragraph this[int index] => _paragraphs.ElementAt(index);
+        #region Public Properties
+        /// <summary>
+        /// Gets the paragraph at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index.</param>
+        /// <returns>The paragraph at the specified index.</returns>
+        public new Paragraph this[int index] => (Paragraph)base[index];
+        #endregion
 
-        public Paragraph First()
+        #region Public Methods
+        /// <summary>
+        /// Returns the first paragraph of the current collection.
+        /// </summary>
+        /// <returns>The first paragraph in the current collection.</returns>
+        public new Paragraph First()
         {
-            return _paragraphs.First();
+            return (Paragraph)base.First();
         }
 
-        public Paragraph Last()
+        /// <summary>
+        /// Returns the last paragraph of the current collection.
+        /// </summary>
+        /// <returns>The last paragraph in the current collection.</returns>
+        public new Paragraph Last()
         {
-            return _paragraphs.Last();
+            return (Paragraph)base.Last();
         }
+
+        /// <summary>
+        /// Determines whether this collection contains a specified paragraph.
+        /// </summary>
+        /// <param name="paragraph">The specified paragraph.</param>
+        /// <returns>true if the collection contains the specified paragraph; otherwise, false.</returns>
         public bool Contains(Paragraph paragraph)
         {
-            return _paragraphs.Contains(paragraph);
+            return base.Contains(paragraph);
         }
 
         /// <summary>
-        /// 在集合末尾添加段落
+        /// Adds the specified paragraph to the end of the current collection.
         /// </summary>
-        /// <param name="paragraph">段落</param>
+        /// <param name="paragraph">The paragraph instance that was added.</param>
         public void Add(Paragraph paragraph)
         {
-            W.Paragraph newParagraph = paragraph.XElement as W.Paragraph;
-            if (_paragraphs.Count() == 0)
-            {
-                if(_owner is W.Body)
-                {
-                    _owner.InsertBefore(newParagraph, _owner.LastChild);
-                    return;
-                }
-                _owner.AppendChild(newParagraph);
-            }
-            else
-            {
-                W.Paragraph lastParagraph = _paragraphs.Last().XElement as W.Paragraph;
-                // 末尾段落包含分节符
-                if (lastParagraph.Descendants<W.SectionProperties>().Any())
-                {
-                    // 若包含文本，则在分节符后插入，并将分节符移至插入的段落中
-                    if (lastParagraph.Elements<W.Run>().Any())
-                    {
-                        W.SectionProperties sectPr = lastParagraph.Descendants<W.SectionProperties>().First();
-                        sectPr.Remove();
-                        if (newParagraph.ParagraphProperties == null)
-                            newParagraph.ParagraphProperties = new W.ParagraphProperties();
-                        newParagraph.ParagraphProperties.AddChild(sectPr);
-                        lastParagraph.InsertAfterSelf(newParagraph);
-                    }
-                    else
-                    {
-                        // 若只包含分节符，则在分节符前插入
-                        lastParagraph.InsertBeforeSelf(newParagraph);
-                    }
-                }
-                else
-                {
-                    // 若不包含分节符，则在末尾段落之后插入
-                    lastParagraph.InsertAfterSelf(newParagraph);
-                }
-            }
+            base.Add(paragraph);
         }
 
         /// <summary>
-        /// 返回段落在集合中从零开始的索引
-        /// </summary>
-        /// <param name="paragraph">段落</param>
-        /// <returns></returns>
+        /// Searchs for the specified paragraph and returns the zero-based index of the first occurrence within the entire collection.
+        /// </summary> 
+        /// <param name="paragraph">The specified paragraph.</param>
+        /// <returns>The zero-based index of the first occurrence of paragraph within the entire collection,if found; otherwise, -1.</returns>
         public int IndexOf(Paragraph paragraph)
         {
-            return _paragraphs.ToList().IndexOf(paragraph);
+            return base.IndexOf(paragraph);
         }
 
         /// <summary>
-        /// 在集合指定位置插入段落
+        /// Insert the specified paragraph immediately to the specified index of the current collection.
         /// </summary>
-        /// <param name="paragraph">段落</param>
-        /// <param name="index">段落位置，从零开始的索引</param>
+        /// <param name="paragraph">The inserted paragraph instance.</param>
+        /// <param name="index">The zero-based index.</param>
         public void InsertAt(Paragraph paragraph, int index)
         {
-            W.Paragraph newParagraph = paragraph.XElement as W.Paragraph;
-            if (_paragraphs.Count() == 0)
-            {
-                if (index == 0)
-                {
-                    Add(paragraph);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("index", index, "索引超出范围, 必须为非负值并小于集合大小。");
-                }
-            }
-            else
-            {
-                if(index == _paragraphs.Count())
-                {
-                    Add(paragraph);
-                }
-                else
-                {
-                    _paragraphs.ElementAt(index).XElement.InsertBeforeSelf(newParagraph);
-                }
-            }
+            base.InsertAt(paragraph, index);
         }
 
         /// <summary>
-        /// 移除段落
+        /// Removes the specified paragraph immediately from the current collection.
         /// </summary>
-        /// <param name="paragraph">段落</param>
+        /// <param name="paragraph"> The paragraph instance that was removed. </param>
         public void Remove(Paragraph paragraph)
         {
-            if (!Contains(paragraph)) return;
-            if (paragraph.XElement.Descendants<W.SectionProperties>().Any())
-            {
-                paragraph.XElement.RemoveAllChildren<W.Run>();
-            }
-            else
-            {
-                paragraph.Remove();
-            }
+            base.Remove(paragraph);
         }
+        #endregion
 
-        /// <summary>
-        /// 移除指定位置处的段落
-        /// </summary>
-        /// <param name="index">段落位置，从零开始的索引</param>
-        public override void RemoveAt(int index)
-        {
-            Remove(_paragraphs.ElementAt(index));
-        }
-
-        /// <summary>
-        /// 移除所有段落
-        /// </summary>
-        public override void Clear()
-        {
-            foreach (Paragraph paragraph in _paragraphs)
-                Remove(paragraph);
-        }
-
-        
     }
 }

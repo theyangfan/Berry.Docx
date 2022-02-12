@@ -10,7 +10,7 @@ namespace Berry.Docx.Documents
     /// <summary>
     /// Represent the table cell.
     /// </summary>
-    public class TableCell : DocumentElement
+    public class TableCell : DocumentItem
     {
         #region Private Members
         private Document _ownerDoc;

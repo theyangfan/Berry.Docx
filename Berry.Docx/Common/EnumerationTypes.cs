@@ -6,138 +6,212 @@ using System.Text;
 namespace Berry.Docx
 {
     /// <summary>
-    /// 文档对象类型
+    /// Defines the DocumentObjectType enumeration.
     /// </summary>
     public enum DocumentObjectType
     {
         /// <summary>
-        /// 无效
+        /// Invalid Type.
         /// </summary>
         Invalid = -1,
         /// <summary>
-        /// 段落
+        /// Paragraph.
         /// </summary>
         Paragraph,
         /// <summary>
-        /// 文本范围
+        /// Text range.
         /// </summary>
         TextRange,
         /// <summary>
-        /// 表格
+        /// Table.
         /// </summary>
         Table,
+        /// <summary>
+        /// Table row.
+        /// </summary>
         TableRow,
+        /// <summary>
+        /// Table cell.
+        /// </summary>
         TableCell,
         /// <summary>
-        /// 节
+        /// Section.
         /// </summary>
         Section,
         /// <summary>
-        /// 
+        /// Body range.
         /// </summary>
         BodyRange
     }
 
-    public enum LineSpacingRule 
+    /// <summary>
+    /// Defines the LineSpacingRule enumeration.
+    /// </summary>
+    public enum LineSpacingRule
     {
+        /// <summary>
+        /// Undefined rule.
+        /// </summary>
         None = -1,
         /// <summary>
-        /// 行距大于等于 LineSpacing 属性的值
+        /// Minimum Line Height.
         /// </summary>
         AtLeast = 0,
         /// <summary>
-        /// 行距固定，即使段落字体发生变化
+        /// Exact Line Height.
         /// </summary>
         Exactly = 1,
         /// <summary>
-        /// LineSpacing属性值为行的倍数，1行为12磅
+        /// The line spacing is specified in the LineSpacing property as the number of lines.
+        /// One line equals 12 points.
         /// </summary>
         Multiple = 2
     }
 
     /// <summary>
-    /// 多页
+    /// Defines the MultiPage enumeration.
     /// </summary>
     public enum MultiPage
     {
         /// <summary>
-        /// 普通
+        /// Normal page number range.
         /// </summary>
         Normal = 0,
         /// <summary>
-        /// 对称页边距
+        /// MirrorMargins page number range.
         /// </summary>
         MirrorMargins = 1,
         /// <summary>
-        /// 拼页
+        /// PrintTwoOnOne page number range.
         /// </summary>
         PrintTwoOnOne = 2
     }
 
+    /// <summary>
+    /// Defines the DocGridType enumeration.
+    /// </summary>
     public enum DocGridType
     {
         /// <summary>
-        /// 无网格
+        /// No Document Grid.
         /// </summary>
         None = 0,
         /// <summary>
-        /// 只指定行网格
+        /// Line Grid Only.
         /// </summary>
         Lines = 1,
         /// <summary>
-        /// 指定行和字符网格
+        /// Line and Character Grid.
         /// </summary>
         LinesAndChars = 2,
         /// <summary>
-        /// 文字对齐字符网格
+        /// Character Grid Only.
         /// </summary>
         SnapToChars = 3
     }
+
     /// <summary>
-    /// 样式类型
+    /// Defines the StyleType enumeration.
     /// </summary>
     public enum StyleType
     {
         /// <summary>
-        /// 段落样式
+        /// Paragraph Style.
         /// </summary>
         Paragraph = 0,
         /// <summary>
-        /// 字符样式
+        /// Character Style.
         /// </summary>
         Character = 1,
         /// <summary>
-        /// 表格样式
+        /// Table Style.
         /// </summary>
         Table = 2,
         /// <summary>
-        /// 编号样式
+        /// Numbering Style.
         /// </summary>
         Numbering = 3
     }
 
+    /// <summary>
+    /// Defines the JustificationType enumeration.
+    /// </summary>
     public enum JustificationType
     {
+        /// <summary>
+        /// Undefined.
+        /// </summary>
         None = -1,
+        /// <summary>
+        /// Align Left.
+        /// </summary>
         Left = 0,
+        /// <summary>
+        /// Align Center.
+        /// </summary>
         Center = 1,
+        /// <summary>
+        /// Align Right.
+        /// </summary>
         Right = 2,
+        /// <summary>
+        /// Justified.
+        /// </summary>
         Both = 3,
+        /// <summary>
+        /// Distribute All Characters Equally.
+        /// </summary>
         Distribute = 4
     }
 
+    /// <summary>
+    /// Defines the OutlineLevelType enumeration.
+    /// </summary>
     public enum OutlineLevelType
     {
+        /// <summary>
+        /// Undefined level.
+        /// </summary>
         None = -1,
+        /// <summary>
+        /// Level 1.
+        /// </summary>
         Level1 = 0,
+        /// <summary>
+        /// Level 2.
+        /// </summary>
         Level2 = 1,
+        /// <summary>
+        /// Level 3.
+        /// </summary>
         Level3 = 2,
+        /// <summary>
+        /// Level 4.
+        /// </summary>
         Level4 = 3,
+        /// <summary>
+        /// Level 5.
+        /// </summary>
         Level5 = 4,
+        /// <summary>
+        /// Level 6.
+        /// </summary>
         Level6 = 5,
+        /// <summary>
+        /// Level 7.
+        /// </summary>
         Level7 = 6,
+        /// <summary>
+        /// Level 8.
+        /// </summary>
         Level8 = 7,
+        /// <summary>
+        /// Level 9.
+        /// </summary>
         Level9 = 8,
+        /// <summary>
+        /// Body Text.
+        /// </summary>
         BodyText = 9
     }
 }

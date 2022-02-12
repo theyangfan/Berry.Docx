@@ -54,15 +54,10 @@ namespace Berry.Docx.Formatting
         private Zbool _snapToGrid = true;
         #endregion
 
-        /// <summary>
-        /// 空构造函数
-        /// </summary>
-        public ParagraphFormat() { }
-        /// <summary>
-        /// 构造函数，用于构造段落的段落格式
-        /// </summary>
-        /// <param name="ownerParagraph"></param>
-        public ParagraphFormat(Document document, OOxml.Paragraph ownerParagraph)
+        #region Constructors
+        internal ParagraphFormat() { }
+
+        internal ParagraphFormat(Document document, OOxml.Paragraph ownerParagraph)
         {
             _document = document;
             _ownerParagraph = ownerParagraph;
@@ -71,22 +66,16 @@ namespace Berry.Docx.Formatting
             _curPHld = new ParagraphPropertiesHolder(document, ownerParagraph.ParagraphProperties);
             _inheritFromStyleFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
         }
-        /// <summary>
-        /// 构造函数，用于构造样式的段落格式
-        /// </summary>
-        /// <param name="ownerStyle"></param>
-        public ParagraphFormat(Document document, OOxml.Style ownerStyle)
+        
+        internal ParagraphFormat(Document document, OOxml.Style ownerStyle)
         {
             _document = document;
             _ownerStyle = ownerStyle;
             _curSHld = new ParagraphPropertiesHolder(document, ownerStyle.StyleParagraphProperties);
             _inheritFromBaseStyleFormat = GetStyleParagraphFormatRecursively(ownerStyle);
         }
-        /// <summary>
-        /// 递归地获取样式的段落格式
-        /// </summary>
-        /// <param name="style"></param>
-        /// <returns></returns>
+        #endregion
+
         private ParagraphFormat GetStyleParagraphFormatRecursively(OOxml.Style style)
         {
             ParagraphFormat format = new ParagraphFormat();
@@ -126,7 +115,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 编号格式
+        /// Gets paragraph numbering format.
         /// </summary>
         public NumberingFormat NumberingFormat
         {

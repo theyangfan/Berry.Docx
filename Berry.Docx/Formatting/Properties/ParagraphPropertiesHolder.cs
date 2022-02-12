@@ -1,49 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using OOxml = DocumentFormat.OpenXml.Wordprocessing;
+﻿using System.Linq;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
+    /// <summary>
+    /// Represent an OpenXML ParagraphProperties holder.
+    /// </summary>
     internal class ParagraphPropertiesHolder
     {
+        #region Private Members
         private Document _document = null;
+        private W.ParagraphProperties _pPr = null;
+        private W.StyleParagraphProperties _spPr = null;
+        // Normal
+        private W.Justification _justification = null;
+        private W.OutlineLevel _outlineLevel = null;
+        // Indentation
+        private W.Indentation _indentation = null;
+        private W.MirrorIndents _mirrorIndents = null;
+        private W.AdjustRightIndent _adjustRightInd = null;
+        // Spacing
+        private W.SpacingBetweenLines _spacing = null;
+        private W.SnapToGrid _snapToGrid = null;
+        // Others
+        private W.OverflowPunctuation _overflowPunct = null;
+        private W.TopLinePunctuation _topLinePunct = null;
+        // Numbering
+        private W.Level _lvl = null;
+        #endregion
 
-        private OOxml.ParagraphProperties _pPr = null;
-        private OOxml.StyleParagraphProperties _spPr = null;
-        // 常规
-        private OOxml.Justification _justification = null;
-        private OOxml.OutlineLevel _outlineLevel = null;
-        // 缩进
-        private OOxml.Indentation _indentation = null;
-        private OOxml.MirrorIndents _mirrorIndents = null;
-        private OOxml.AdjustRightIndent _adjustRightInd = null;
-        // 间距
-        private OOxml.SpacingBetweenLines _spacing = null;
-        private OOxml.SnapToGrid _snapToGrid = null;
-
-        private OOxml.OverflowPunctuation _overflowPunct = null;
-        private OOxml.TopLinePunctuation _topLinePunct = null;
-        // 编号
-        private OOxml.Level _lvl = null;
-
-        public ParagraphPropertiesHolder(Document document, OOxml.ParagraphProperties pPr)
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the ParagraphPropertiesHolder class using the supplied OpenXML ParagraphProperties element.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="pPr"></param>
+        public ParagraphPropertiesHolder(Document document, W.ParagraphProperties pPr)
         {
             _document = document;
             if (pPr == null)
-                pPr = new OOxml.ParagraphProperties();
+                pPr = new W.ParagraphProperties();
             _pPr = pPr;
 
             _justification = pPr.Justification;
             _outlineLevel = pPr.OutlineLevel;
 
             if (pPr.Indentation == null)
-                pPr.Indentation = new OOxml.Indentation();
+                pPr.Indentation = new W.Indentation();
             _indentation = pPr.Indentation;
             if (pPr.SpacingBetweenLines == null)
-                pPr.SpacingBetweenLines = new OOxml.SpacingBetweenLines();
+                pPr.SpacingBetweenLines = new W.SpacingBetweenLines();
             _spacing = pPr.SpacingBetweenLines;
 
             _overflowPunct = pPr.OverflowPunctuation;
@@ -59,32 +65,37 @@ namespace Berry.Docx.Formatting
                     {
                         int ilvl = pPr.NumberingProperties.NumberingLevelReference.Val;
                         if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
-                        OOxml.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
-                        OOxml.NumberingInstance num = numbering.Elements<OOxml.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
+                        W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                        W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
                         if (num == null) return;
                         int abstractNumId = num.AbstractNumId.Val;
-                        OOxml.AbstractNum abstractNum = numbering.Elements<OOxml.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
+                        W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
                         if (abstractNum == null) return;
-                        _lvl = abstractNum.Elements<OOxml.Level>().Where(l => l.LevelIndex == ilvl).FirstOrDefault();
+                        _lvl = abstractNum.Elements<W.Level>().Where(l => l.LevelIndex == ilvl).FirstOrDefault();
                     }
                 }
             }
         }
 
-        public ParagraphPropertiesHolder(Document document, OOxml.StyleParagraphProperties spPr)
+        /// <summary>
+        /// Initializes a new instance of the ParagraphPropertiesHolder class using the supplied OpenXML StyleParagraphProperties element.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="spPr"></param>
+        public ParagraphPropertiesHolder(Document document, W.StyleParagraphProperties spPr)
         {
             _document = document;
             if (spPr == null)
-                spPr = new OOxml.StyleParagraphProperties();
+                spPr = new W.StyleParagraphProperties();
             _spPr = spPr;
             _justification = spPr.Justification;
             _outlineLevel = spPr.OutlineLevel;
 
             if (spPr.Indentation == null)
-                spPr.Indentation = new OOxml.Indentation();
+                spPr.Indentation = new W.Indentation();
             _indentation = spPr.Indentation;
             if (spPr.SpacingBetweenLines == null)
-                spPr.SpacingBetweenLines = new OOxml.SpacingBetweenLines();
+                spPr.SpacingBetweenLines = new W.SpacingBetweenLines();
             _spacing = spPr.SpacingBetweenLines;
 
             _overflowPunct = spPr.OverflowPunctuation;
@@ -96,19 +107,24 @@ namespace Berry.Docx.Formatting
                 if (spPr.NumberingProperties.NumberingId != null)
                 {
                     int numId = spPr.NumberingProperties.NumberingId.Val;
-                    string styleId = (spPr.Parent as OOxml.Style).StyleId;
+                    string styleId = (spPr.Parent as W.Style).StyleId;
                     if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
-                    OOxml.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
-                    OOxml.NumberingInstance num = numbering.Elements<OOxml.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
+                    W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                    W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
                     if (num == null) return;
                     int abstractNumId = num.AbstractNumId.Val;
-                    OOxml.AbstractNum abstractNum = numbering.Elements<OOxml.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
+                    W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
                     if (abstractNum == null) return;
-                    _lvl = abstractNum.Elements<OOxml.Level>().Where(l => l.ParagraphStyleIdInLevel != null && l.ParagraphStyleIdInLevel.Val == styleId).FirstOrDefault();
+                    _lvl = abstractNum.Elements<W.Level>().Where(l => l.ParagraphStyleIdInLevel != null && l.ParagraphStyleIdInLevel.Val == styleId).FirstOrDefault();
                 }
             }
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Gets paragraph numbering format.
+        /// </summary>
         public NumberingFormat NumberingFormat
         {
             get
@@ -117,8 +133,9 @@ namespace Berry.Docx.Formatting
                 return new NumberingFormat(_lvl);
             }
         }
+
         /// <summary>
-        /// 对齐方式
+        /// Gets or sets the justification.
         /// </summary>
         public JustificationType Justification
         {
@@ -131,7 +148,7 @@ namespace Berry.Docx.Formatting
             {
                 if (_justification == null)
                 {
-                    _justification = new OOxml.Justification();
+                    _justification = new W.Justification();
                     if (_pPr != null)
                         _pPr.Justification = _justification;
                     else if (_spPr != null)
@@ -142,7 +159,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 大纲级别
+        /// Gets or sets the outline level.
         /// </summary>
         public OutlineLevelType OutlineLevel
         {
@@ -155,7 +172,7 @@ namespace Berry.Docx.Formatting
             {
                 if (_outlineLevel == null)
                 {
-                    _outlineLevel = new OOxml.OutlineLevel();
+                    _outlineLevel = new W.OutlineLevel();
                     if (_pPr != null)
                         _pPr.OutlineLevel = _outlineLevel;
                     else if (_spPr != null)
@@ -169,7 +186,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 左侧缩进(磅)
+        /// Gets or sets the left indent (in points) for paragraph.
         /// </summary>
         public float LeftIndent
         {
@@ -200,9 +217,9 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 右侧缩进(磅)
+        /// Gets or sets the right indent (in points) for paragraph.
         /// </summary>
-        
+
         public float RightIndent
         {
             get
@@ -220,9 +237,9 @@ namespace Berry.Docx.Formatting
                     _indentation.Right = null;
             }
         }
-        
+
         /// <summary>
-        /// 左侧缩进(字符)
+        /// Gets or sets the left indent (in chars) for paragraph.
         /// </summary>
         public float LeftCharsIndent
         {
@@ -242,7 +259,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 右侧缩进(字符)
+        /// Gets or sets the right indent (in chars) for paragraph.
         /// </summary>
         public float RightCharsIndent
         {
@@ -262,7 +279,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 首行缩进(磅)
+        /// Gets or sets the first line indent (in points) for paragraph.
         /// </summary>
         public float FirstLineIndent
         {
@@ -289,7 +306,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 首行缩进(字符)
+        /// Gets or sets the first line indent (in chars) for paragraph.
         /// </summary>
         public float FirstLineCharsIndent
         {
@@ -315,7 +332,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 悬挂缩进(磅)
+        /// Gets or sets the hanging indent (in points) for paragraph.
         /// </summary>
         public float HangingIndent
         {
@@ -341,7 +358,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 悬挂缩进(字符)
+        /// Gets or sets the hanging indent (in chars) for paragraph.
         /// </summary>
         public float HangingCharsIndent
         {
@@ -367,7 +384,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 段前间距(磅)
+        /// Gets or sets the spacing (in points) before the paragraph.
         /// </summary>
         public float BeforeSpacing
         {
@@ -392,7 +409,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 段前间距(行)
+        /// Gets or sets the spacing (in lines) before the paragraph.
         /// </summary>
         public float BeforeLinesSpacing
         {
@@ -417,7 +434,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 自动调整段前间距
+        /// Gets or sets a value indicating whether spacing before is automatic.
         /// </summary>
         public Zbool BeforeAutoSpacing
         {
@@ -436,7 +453,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 段后间距(磅)
+        /// Gets or sets the spacing (in points) after the paragraph.
         /// </summary>
         public float AfterSpacing
         {
@@ -461,7 +478,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 段后间距(行)
+        /// Gets or sets the spacing (in lines) after the paragraph.
         /// </summary>
         public float AfterLinesSpacing
         {
@@ -486,7 +503,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 自动调整段后间距
+        /// Gets or sets a value indicating whether spacing after is automatic.
         /// </summary>
         public Zbool AfterAutoSpacing
         {
@@ -505,7 +522,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 行距(磅)
+        /// Gets or sets the line spacing (in points) for paragraph.
         /// </summary>
         public float LineSpacing
         {
@@ -529,7 +546,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 行距类型
+        /// Gets or sets the line spacing rule of paragraph.
         /// </summary>
         public LineSpacingRule LineSpacingRule
         {
@@ -538,9 +555,9 @@ namespace Berry.Docx.Formatting
                 if ( _spacing.LineRule == null) return LineSpacingRule.None;
                 switch (_spacing.LineRule.Value)
                 {
-                    case OOxml.LineSpacingRuleValues.Exact:
+                    case W.LineSpacingRuleValues.Exact:
                         return LineSpacingRule.Exactly;
-                    case OOxml.LineSpacingRuleValues.AtLeast:
+                    case W.LineSpacingRuleValues.AtLeast:
                         return LineSpacingRule.AtLeast;
                 }
                 return LineSpacingRule.Multiple;
@@ -550,13 +567,13 @@ namespace Berry.Docx.Formatting
                 switch (value)
                 {
                     case LineSpacingRule.AtLeast:
-                        _spacing.LineRule = OOxml.LineSpacingRuleValues.AtLeast;
+                        _spacing.LineRule = W.LineSpacingRuleValues.AtLeast;
                         break;
                     case LineSpacingRule.Exactly:
-                        _spacing.LineRule = OOxml.LineSpacingRuleValues.Exact;
+                        _spacing.LineRule = W.LineSpacingRuleValues.Exact;
                         break;
                     case LineSpacingRule.Multiple:
-                        _spacing.LineRule = OOxml.LineSpacingRuleValues.Auto;
+                        _spacing.LineRule = W.LineSpacingRuleValues.Auto;
                         break;
                     case LineSpacingRule.None:
                         _spacing.LineRule = null;
@@ -566,7 +583,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 允许标点溢出边界
+        /// Gets or sets a value indicating whether allow punctuation to overflow boundaries.
         /// </summary>
         public Zbool OverflowPunctuation
         {
@@ -580,7 +597,7 @@ namespace Berry.Docx.Formatting
             {
                 if (_overflowPunct == null)
                 {
-                    _overflowPunct = new OOxml.OverflowPunctuation();
+                    _overflowPunct = new W.OverflowPunctuation();
                     if (_pPr != null)
                         _pPr.OverflowPunctuation = _overflowPunct;
                     else if (_spPr != null)
@@ -592,8 +609,9 @@ namespace Berry.Docx.Formatting
                     _overflowPunct.Val = false;
             }
         }
+
         /// <summary>
-        /// 允许行首标点压缩
+        /// Gets or sets a value indicating whether allow line header punctuation compression.
         /// </summary>
         public Zbool TopLinePunctuation
         {
@@ -607,7 +625,7 @@ namespace Berry.Docx.Formatting
             {
                 if (_topLinePunct == null)
                 {
-                    _topLinePunct = new OOxml.TopLinePunctuation();
+                    _topLinePunct = new W.TopLinePunctuation();
                     if (_pPr != null)
                         _pPr.TopLinePunctuation = _topLinePunct;
                     else if (_spPr != null)
@@ -635,7 +653,7 @@ namespace Berry.Docx.Formatting
             {
                 if (_adjustRightInd == null)
                 {
-                    _adjustRightInd = new OOxml.AdjustRightIndent();
+                    _adjustRightInd = new W.AdjustRightIndent();
                     if(_pPr != null)
                         _pPr.AdjustRightIndent = _adjustRightInd;
                     else if(_spPr != null)
@@ -664,7 +682,7 @@ namespace Berry.Docx.Formatting
             {
                 if (_snapToGrid == null)
                 {
-                    _snapToGrid = new OOxml.SnapToGrid();
+                    _snapToGrid = new W.SnapToGrid();
                     if (_pPr != null)
                         _pPr.SnapToGrid = _snapToGrid;
                     else if (_spPr != null)
@@ -676,6 +694,9 @@ namespace Berry.Docx.Formatting
                     _snapToGrid.Val = false;
             }
         }
+        #endregion
+
+        #region Public Methods
         /// <summary>
         /// 去除文本框选项
         /// </summary>
@@ -686,6 +707,6 @@ namespace Berry.Docx.Formatting
             else if (_spPr != null)
                 _spPr.FrameProperties = null;
         }
-
+        #endregion
     }
 }

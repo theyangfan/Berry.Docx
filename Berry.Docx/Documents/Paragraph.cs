@@ -21,7 +21,7 @@ namespace Berry.Docx.Documents
     /// <summary>
     /// Represent the paragraph.
     /// </summary>
-    public class Paragraph : DocumentElement
+    public class Paragraph : DocumentItem
     {
         #region Private Members
         private Document _doc;
@@ -156,7 +156,7 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Private Methods
-        private IEnumerable<DocumentElement> ChildObjectsPrivate()
+        private IEnumerable<DocumentItem> ChildObjectsPrivate()
         {
             foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
             {

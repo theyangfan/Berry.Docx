@@ -47,7 +47,7 @@ namespace Berry.Docx
             }
             _settings = new Settings(_doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
-#endregion
+        #endregion
 
         #region Public Properties
         /// <summary>

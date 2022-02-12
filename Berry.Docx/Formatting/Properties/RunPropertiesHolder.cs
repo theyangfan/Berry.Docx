@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using P = DocumentFormat.OpenXml.Packaging;
+﻿using P = DocumentFormat.OpenXml.Packaging;
 using OOxml = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
-    public class RunPropertiesHolder
+    /// <summary>
+    /// Represent an OpenXML RunProperties holder.
+    /// </summary>
+    internal class RunPropertiesHolder
     {
+        #region Private Members
         private P.WordprocessingDocument _document;
         private OOxml.RunProperties _rPr = null;
         private OOxml.ParagraphMarkRunProperties _mark_rPr = null;
@@ -19,7 +19,14 @@ namespace Berry.Docx.Formatting
         private OOxml.FontSizeComplexScript _fontSizeCs = null;
         private OOxml.Bold _bold = null;
         private OOxml.Italic _italic = null;
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML RunProperties element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.RunProperties rPr)
         {
             _document = doc;
@@ -31,6 +38,11 @@ namespace Berry.Docx.Formatting
             _italic = rPr.Italic;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML ParagraphMarkRunProperties element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.ParagraphMarkRunProperties rPr)
         {
             _document = doc;
@@ -42,6 +54,11 @@ namespace Berry.Docx.Formatting
             _italic = rPr.GetFirstChild<OOxml.Italic>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML StyleRunProperties element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.StyleRunProperties rPr)
         {
             _document = doc;
@@ -53,6 +70,11 @@ namespace Berry.Docx.Formatting
             _italic = rPr.Italic;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML RunPropertiesBaseStyle element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.RunPropertiesBaseStyle rPr)
         {
             _document = doc;
@@ -62,11 +84,13 @@ namespace Berry.Docx.Formatting
             _bold = rPr.Bold;
             _italic = rPr.Italic;
         }
+        #endregion
 
+        #region Public Properties
         /// <summary>
-        /// 中文字体
+        /// Gets or sets East Asian font name.
         /// </summary>
-        public string FontCN
+        public string FontNameEastAsia
         {
             get
             {
@@ -94,9 +118,10 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 英文字体
+        /// Gets or sets the font used for Latin text (characters with character codes from
+        /// 0 through 127).
         /// </summary>
-        public string FontEN
+        public string FontNameAscii
         {
             get
             {
@@ -125,7 +150,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 字号
+        /// Gets or sets font size specified in points.
         /// </summary>
         public float FontSize
         {
@@ -173,7 +198,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 加粗
+        /// Gets or sets bold style.
         /// </summary>
         public Zbool Bold
         {
@@ -202,7 +227,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 斜体
+        /// Gets or sets italic style.
         /// </summary>
         public Zbool Italic
         {
@@ -230,5 +255,6 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+        #endregion
     }
 }
