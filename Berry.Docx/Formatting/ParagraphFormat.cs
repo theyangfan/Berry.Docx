@@ -9,10 +9,12 @@ using P = DocumentFormat.OpenXml.Packaging;
 namespace Berry.Docx.Formatting
 {
     /// <summary>
-    /// 段落格式
+    /// Represent the paragraph format.
     /// </summary>
     public class ParagraphFormat
     {
+        #region Private Members
+
         private Document _document = null;
 
         #region Private Paragraph Members
@@ -54,9 +56,18 @@ namespace Berry.Docx.Formatting
         private Zbool _snapToGrid = true;
         #endregion
 
-        #region Constructors
-        internal ParagraphFormat() { }
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the ParagraphFormat class. 
+        /// </summary>
+        internal ParagraphFormat() { }
+        /// <summary>
+        /// Represent the paragraph format of a Paragraph. 
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="ownerParagraph"></param>
         internal ParagraphFormat(Document document, OOxml.Paragraph ownerParagraph)
         {
             _document = document;
@@ -66,7 +77,12 @@ namespace Berry.Docx.Formatting
             _curPHld = new ParagraphPropertiesHolder(document, ownerParagraph.ParagraphProperties);
             _inheritFromStyleFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
         }
-        
+
+        /// <summary>
+        /// Represent the paragraph format of a ParagraphStyle. 
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="ownerStyle"></param>
         internal ParagraphFormat(Document document, OOxml.Style ownerStyle)
         {
             _document = document;
@@ -74,46 +90,10 @@ namespace Berry.Docx.Formatting
             _curSHld = new ParagraphPropertiesHolder(document, ownerStyle.StyleParagraphProperties);
             _inheritFromBaseStyleFormat = GetStyleParagraphFormatRecursively(ownerStyle);
         }
+
         #endregion
 
-        private ParagraphFormat GetStyleParagraphFormatRecursively(OOxml.Style style)
-        {
-            ParagraphFormat format = new ParagraphFormat();
-            ParagraphFormat baseFormat = new ParagraphFormat();
-            OOxml.Style baseStyle = style.GetBaseStyle();
-            if (baseStyle != null)
-                baseFormat = GetStyleParagraphFormatRecursively(baseStyle);
-
-            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(_document, style.StyleParagraphProperties);
-
-            format.NumberingFormat = curSHld.NumberingFormat ?? baseFormat.NumberingFormat;
-
-            format.Justification = curSHld.Justification != JustificationType.None ? curSHld.Justification : baseFormat.Justification;
-            format.OutlineLevel = curSHld.OutlineLevel != OutlineLevelType.None ? curSHld.OutlineLevel : baseFormat.OutlineLevel;
-            format.LeftIndent = curSHld.LeftIndent >= 0 ? curSHld.LeftIndent : baseFormat.LeftIndent;
-            format.LeftCharsIndent = curSHld.LeftCharsIndent >= 0 ? curSHld.LeftCharsIndent : baseFormat.LeftCharsIndent;
-            format.RightIndent = curSHld.RightIndent >= 0 ? curSHld.RightIndent : baseFormat.RightIndent;
-            format.RightCharsIndent = curSHld.RightCharsIndent >= 0 ? curSHld.RightCharsIndent : baseFormat.RightCharsIndent;
-            format.FirstLineIndent = curSHld.FirstLineIndent >= 0 ? curSHld.FirstLineIndent : baseFormat.FirstLineIndent;
-            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent >= 0 ? curSHld.FirstLineCharsIndent : baseFormat.FirstLineCharsIndent;
-            format.HangingIndent = curSHld.HangingIndent >= 0 ? curSHld.HangingIndent : baseFormat.HangingIndent;
-            format.HangingCharsIndent = curSHld.HangingCharsIndent >= 0 ? curSHld.HangingCharsIndent : baseFormat.HangingCharsIndent;
-            format.BeforeSpacing = curSHld.BeforeSpacing >= 0 ? curSHld.BeforeSpacing : baseFormat.BeforeSpacing;
-            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing >= 0 ? curSHld.BeforeLinesSpacing : baseFormat.BeforeLinesSpacing;
-            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
-            format.AfterSpacing = curSHld.AfterSpacing >= 0 ? curSHld.AfterSpacing : baseFormat.AfterSpacing;
-            format.AfterLinesSpacing = curSHld.AfterLinesSpacing >= 0 ? curSHld.AfterLinesSpacing : baseFormat.AfterLinesSpacing;
-            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
-            format.LineSpacing = curSHld.LineSpacing > 0 ? curSHld.LineSpacing : baseFormat.LineSpacing;
-            format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
-                ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;
-            format.OverflowPunctuation = curSHld.OverflowPunctuation ?? baseFormat.OverflowPunctuation;
-            format.TopLinePunctuation = curSHld.TopLinePunctuation ?? baseFormat.TopLinePunctuation;
-            format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
-            format.SnapToGrid = curSHld.SnapToGrid ?? baseFormat.SnapToGrid;
-            return format;
-        }
-
+        #region Public Properties
         /// <summary>
         /// Gets paragraph numbering format.
         /// </summary>
@@ -141,7 +121,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 对齐方式
+        /// Gets or sets the justification.
         /// </summary>
         public JustificationType Justification
         {
@@ -178,7 +158,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 大纲级别
+        /// Gets or sets the outline level.
         /// </summary>
         public OutlineLevelType OutlineLevel
         {
@@ -215,7 +195,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 左侧缩进(磅)
+        /// Gets or sets the left indent (in points) for paragraph.
         /// </summary>
         public float LeftIndent
         {
@@ -251,7 +231,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 左侧缩进(字符)
+        /// Gets or sets the left indent (in chars) for paragraph.
         /// </summary>
         public float LeftCharsIndent
         {
@@ -287,7 +267,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 右侧缩进(磅)
+        /// Gets or sets the right indent (in points) for paragraph.
         /// </summary>
         public float RightIndent
         {
@@ -323,7 +303,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 右侧缩进(字符)
+        /// Gets or sets the right indent (in chars) for paragraph.
         /// </summary>
         public float RightCharsIndent
         {
@@ -359,7 +339,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 首行缩进(磅)
+        /// Gets or sets the first line indent (in points) for paragraph.
         /// </summary>
         public float FirstLineIndent
         {
@@ -395,7 +375,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 首行缩进(字符)
+        /// Gets or sets the first line indent (in chars) for paragraph.
         /// </summary>
         public float FirstLineCharsIndent
         {
@@ -431,7 +411,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 悬挂缩进(磅)
+        /// Gets or sets the hanging indent (in points) for paragraph.
         /// </summary>
         public float HangingIndent
         {
@@ -467,7 +447,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 悬挂缩进(字符)
+        /// Gets or sets the hanging indent (in chars) for paragraph.
         /// </summary>
         public float HangingCharsIndent
         {
@@ -503,7 +483,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 段前间距(磅)
+        /// Gets or sets the spacing (in points) before the paragraph.
         /// </summary>
         public float BeforeSpacing
         {
@@ -539,7 +519,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 段前间距(行)
+        /// Gets or sets the spacing (in lines) before the paragraph.
         /// </summary>
         public float BeforeLinesSpacing
         {
@@ -575,7 +555,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 自动调整段前间距
+        /// Gets or sets a value indicating whether spacing before is automatic.
         /// </summary>
         public bool BeforeAutoSpacing
         {
@@ -611,7 +591,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 段后间距(磅)
+        /// Gets or sets the spacing (in points) after the paragraph.
         /// </summary>
         public float AfterSpacing
         {
@@ -647,7 +627,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 段后间距(行)
+        /// Gets or sets the spacing (in lines) after the paragraph.
         /// </summary>
         public float AfterLinesSpacing
         {
@@ -684,7 +664,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 自动调整段后间距
+        /// Gets or sets a value indicating whether spacing after is automatic.
         /// </summary>
         public bool AfterAutoSpacing
         {
@@ -720,7 +700,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 行距(磅)
+        /// Gets or sets the line spacing (in points) for paragraph.
         /// </summary>
         public float LineSpacing
         {
@@ -756,7 +736,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 行距类型
+        /// Gets or sets the line spacing rule of paragraph.
         /// </summary>
         public LineSpacingRule LineSpacingRule
         {
@@ -793,7 +773,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 允许标点溢出边界
+        /// Gets or sets a value indicating whether allow punctuation to overflow boundaries.
         /// </summary>
         public bool OverflowPunctuation
         {
@@ -830,7 +810,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 允许行首标点压缩
+        /// Gets or sets a value indicating whether allow top line punctuation compression.
         /// </summary>
         public bool TopLinePunctuation
         {
@@ -866,7 +846,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 如果定义了文档网格，则自动调整右缩进
+        /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
         /// </summary>
         public bool AdjustRightIndent
         {
@@ -903,7 +883,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 如果定义了文档网格，则对齐到网格
+        /// Gets or sets a value indicating whether snap to the grid if a document grid is defined.
         /// </summary>
         public bool SnapToGrid
         {
@@ -938,9 +918,11 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+        #endregion
 
+        #region Public Methods
         /// <summary>
-        /// 去除文本框选项
+        /// Remove the text box options of paragraph.
         /// </summary>
         public void RemoveFrame()
         {
@@ -953,6 +935,52 @@ namespace Berry.Docx.Formatting
                 _curSHld.RemoveFrame();
             }
         }
+        #endregion
 
+        #region Private Methods
+        /// <summary>
+        /// Returns the paragraph format that specified in the style hierarchy of a style.
+        /// </summary>
+        /// <param name="style"> The style</param>
+        /// <returns>The paragraph format that specified in the style hierarchy.</returns>
+        private ParagraphFormat GetStyleParagraphFormatRecursively(OOxml.Style style)
+        {
+            ParagraphFormat format = new ParagraphFormat();
+            ParagraphFormat baseFormat = new ParagraphFormat();
+            // Gets base style format.
+            OOxml.Style baseStyle = style.GetBaseStyle();
+            if (baseStyle != null)
+                baseFormat = GetStyleParagraphFormatRecursively(baseStyle);
+
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(_document, style.StyleParagraphProperties);
+
+            format.NumberingFormat = curSHld.NumberingFormat ?? baseFormat.NumberingFormat;
+
+            format.Justification = curSHld.Justification != JustificationType.None ? curSHld.Justification : baseFormat.Justification;
+            format.OutlineLevel = curSHld.OutlineLevel != OutlineLevelType.None ? curSHld.OutlineLevel : baseFormat.OutlineLevel;
+            format.LeftIndent = curSHld.LeftIndent >= 0 ? curSHld.LeftIndent : baseFormat.LeftIndent;
+            format.LeftCharsIndent = curSHld.LeftCharsIndent >= 0 ? curSHld.LeftCharsIndent : baseFormat.LeftCharsIndent;
+            format.RightIndent = curSHld.RightIndent >= 0 ? curSHld.RightIndent : baseFormat.RightIndent;
+            format.RightCharsIndent = curSHld.RightCharsIndent >= 0 ? curSHld.RightCharsIndent : baseFormat.RightCharsIndent;
+            format.FirstLineIndent = curSHld.FirstLineIndent >= 0 ? curSHld.FirstLineIndent : baseFormat.FirstLineIndent;
+            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent >= 0 ? curSHld.FirstLineCharsIndent : baseFormat.FirstLineCharsIndent;
+            format.HangingIndent = curSHld.HangingIndent >= 0 ? curSHld.HangingIndent : baseFormat.HangingIndent;
+            format.HangingCharsIndent = curSHld.HangingCharsIndent >= 0 ? curSHld.HangingCharsIndent : baseFormat.HangingCharsIndent;
+            format.BeforeSpacing = curSHld.BeforeSpacing >= 0 ? curSHld.BeforeSpacing : baseFormat.BeforeSpacing;
+            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing >= 0 ? curSHld.BeforeLinesSpacing : baseFormat.BeforeLinesSpacing;
+            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
+            format.AfterSpacing = curSHld.AfterSpacing >= 0 ? curSHld.AfterSpacing : baseFormat.AfterSpacing;
+            format.AfterLinesSpacing = curSHld.AfterLinesSpacing >= 0 ? curSHld.AfterLinesSpacing : baseFormat.AfterLinesSpacing;
+            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
+            format.LineSpacing = curSHld.LineSpacing > 0 ? curSHld.LineSpacing : baseFormat.LineSpacing;
+            format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
+                ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;
+            format.OverflowPunctuation = curSHld.OverflowPunctuation ?? baseFormat.OverflowPunctuation;
+            format.TopLinePunctuation = curSHld.TopLinePunctuation ?? baseFormat.TopLinePunctuation;
+            format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
+            format.SnapToGrid = curSHld.SnapToGrid ?? baseFormat.SnapToGrid;
+            return format;
+        }
+        #endregion
     }
 }

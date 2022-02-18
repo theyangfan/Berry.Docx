@@ -45,7 +45,7 @@ namespace Berry.Docx.Formatting
         internal CharacterFormat() { }
 
         /// <summary>
-        /// Initializes a new instance of the CharacterFormat class using the supplied OpenXML Run element.
+        /// Represent the character format of a TextRange.
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerRun"></param>
@@ -61,7 +61,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Initializes a new instance of the CharacterFormat class using the supplied OpenXML Paragraph element.
+        /// Represent the character format of a Paragraph.
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerParagraph"></param>
@@ -78,7 +78,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Initializes a new instance of the CharacterFormat class using the supplied OpenXML Style element.
+        /// Represent the character format of a Style.
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerStyle"></param>
@@ -402,11 +402,16 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Returns the character format that specified in the style hierarchy of a style.
+        /// </summary>
+        /// <param name="style"> The style</param>
+        /// <returns>The character format that specified in the style hierarchy.</returns> 
         private CharacterFormat GetStyleCharacterFormatRecursively(OOxml.Style style)
         {
             CharacterFormat format = new CharacterFormat();
             CharacterFormat baseFormat = new CharacterFormat();
-            // 获取默认值
+            // Gets DOcDefaults
             OOxml.Styles styles = style.Parent as OOxml.Styles;
             if (styles.DocDefaults != null && styles.DocDefaults.RunPropertiesDefault != null
                 && styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle != null)
@@ -419,7 +424,7 @@ namespace Berry.Docx.Formatting
                 baseFormat.Bold = rPr.Bold ?? false;
                 baseFormat.Italic = rPr.Italic ?? false;
             }
-            //获取基类样式
+            // Gets base style format
             OOxml.Style baseStyle = style.GetBaseStyle();
             if (baseStyle != null)
                 baseFormat = GetStyleCharacterFormatRecursively(baseStyle);

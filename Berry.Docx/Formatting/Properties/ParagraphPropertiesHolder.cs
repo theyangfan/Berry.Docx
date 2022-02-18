@@ -611,7 +611,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether allow line header punctuation compression.
+        /// Gets or sets a value indicating whether allow top line punctuation compression.
         /// </summary>
         public Zbool TopLinePunctuation
         {
@@ -639,7 +639,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 如果定义了文档网格，则自动调整右缩进
+        /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
         /// </summary>
         public Zbool AdjustRightIndent
         {
@@ -668,7 +668,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 如果定义了文档网格，则对齐到网格
+        /// Gets or sets a value indicating whether snap to the grid if a document grid is defined.
         /// </summary>
         public Zbool SnapToGrid
         {
@@ -698,7 +698,7 @@ namespace Berry.Docx.Formatting
 
         #region Public Methods
         /// <summary>
-        /// 去除文本框选项
+        /// Remove the text box options of paragraph.
         /// </summary>
         public void RemoveFrame()
         {
