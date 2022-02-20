@@ -18,6 +18,11 @@ namespace Berry.Docx
 {
     internal class DocumentGenerator
     {
+        /// <summary>
+        /// Generate an empty document.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static WordprocessingDocument Generate(string filename)
         {
             DocumentGenerator gen = new DocumentGenerator();

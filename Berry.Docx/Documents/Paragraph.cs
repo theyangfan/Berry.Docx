@@ -176,11 +176,11 @@ namespace Berry.Docx.Documents
             get
             {
                 if (_pFormat.NumberingFormat == null) return string.Empty;
-                string lvlText = _pFormat.NumberingFormat.LevelText;
-                if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.Decimal)
+                string lvlText = _pFormat.NumberingFormat.Format;
+                if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.Decimal)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "1");
-                else if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCounting
-                    || _pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCountingThousand)
+                else if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCounting
+                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "一");
 
                 return lvlText;

@@ -31,7 +31,7 @@ namespace Berry.Docx.Formatting
 
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the ParagraphPropertiesHolder class using the supplied OpenXML ParagraphProperties element.
+        /// Initializes a new instance of the ParagraphPropertiesHolder class using the supplied <see cref="W.ParagraphProperties"/> element.
         /// </summary>
         /// <param name="document"></param>
         /// <param name="pPr"></param>
@@ -436,7 +436,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether spacing before is automatic.
         /// </summary>
-        public Zbool BeforeAutoSpacing
+        public ZBool BeforeAutoSpacing
         {
             get
             {
@@ -505,7 +505,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether spacing after is automatic.
         /// </summary>
-        public Zbool AfterAutoSpacing
+        public ZBool AfterAutoSpacing
         {
             get
             {
@@ -585,7 +585,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether allow punctuation to overflow boundaries.
         /// </summary>
-        public Zbool OverflowPunctuation
+        public ZBool OverflowPunctuation
         {
             get
             {
@@ -613,7 +613,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether allow top line punctuation compression.
         /// </summary>
-        public Zbool TopLinePunctuation
+        public ZBool TopLinePunctuation
         {
             get
             {
@@ -641,7 +641,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
         /// </summary>
-        public Zbool AdjustRightIndent
+        public ZBool AdjustRightIndent
         {
             get
             {
@@ -670,7 +670,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether snap to the grid if a document grid is defined.
         /// </summary>
-        public Zbool SnapToGrid
+        public ZBool SnapToGrid
         {
             get
             {

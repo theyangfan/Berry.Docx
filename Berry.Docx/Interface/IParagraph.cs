@@ -6,6 +6,6 @@ namespace Berry.Docx.Interface
 {
     public interface IParagraph
     {
-
+        //TODO
     }
 }

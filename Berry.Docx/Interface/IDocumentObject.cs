@@ -8,6 +8,7 @@ namespace Berry.Docx.Interface
 {
     public interface IDocumentObject
     {
+        //TODO
         DocumentObject Owner { get; }
         IDocumentObject PreviousSibling { get; }
         IDocumentObject NextSibling { get; }

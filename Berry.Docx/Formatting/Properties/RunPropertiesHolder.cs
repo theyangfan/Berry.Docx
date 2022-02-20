@@ -200,7 +200,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets bold style.
         /// </summary>
-        public Zbool Bold
+        public ZBool Bold
         {
             get
             {
@@ -229,7 +229,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets italic style.
         /// </summary>
-        public Zbool Italic
+        public ZBool Italic
         {
             get
             {

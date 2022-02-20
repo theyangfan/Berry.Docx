@@ -9,8 +9,8 @@ using Berry.Docx;
 using Berry.Docx.Documents;
 using Berry.Docx.Field;
 
-using OP = DocumentFormat.OpenXml.Packaging;
-using OW = DocumentFormat.OpenXml.Wordprocessing;
+using P = DocumentFormat.OpenXml.Packaging;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Test
 {
@@ -19,7 +19,8 @@ namespace Test
         public static void Main() {
             string src = @"C:\Users\zhailiao123\Desktop\test.docx";
             string dst = @"C:\Users\tomato\Desktop\test2.docx";
-
+            
+            
             Document doc = new Document(src);
             Section s = doc.LastSection;
             Table t1 = s.Tables[0];

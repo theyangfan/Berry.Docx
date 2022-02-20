@@ -50,10 +50,10 @@ namespace Berry.Docx.Formatting
         private LineSpacingRule _lineSpacingRule = LineSpacingRule.Multiple;
         private NumberingFormat _numFormat = null;
 
-        private Zbool _overflowPunctuation = true;
-        private Zbool _topLinePunctuation = false;
-        private Zbool _adjustRightIndent = true;
-        private Zbool _snapToGrid = true;
+        private ZBool _overflowPunctuation = true;
+        private ZBool _topLinePunctuation = false;
+        private ZBool _adjustRightIndent = true;
+        private ZBool _snapToGrid = true;
         #endregion
 
         #endregion

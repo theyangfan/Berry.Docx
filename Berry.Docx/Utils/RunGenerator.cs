@@ -8,6 +8,11 @@ namespace Berry.Docx.Utils
 {
     internal class RunGenerator
     {
+        /// <summary>
+        /// Generate a <see cref="Run"/> class instance with the text.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static Run Generate(string text)
         {
             Run run = new Run();

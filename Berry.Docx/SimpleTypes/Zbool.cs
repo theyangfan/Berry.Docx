@@ -5,36 +5,62 @@ using System.Text;
 
 namespace Berry.Docx
 {
-    public class Zbool
+    /// <summary>
+    /// Represent the <see cref="bool"/> value.
+    /// </summary>
+    public class ZBool
     {
         private bool _value = false;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZBool"/> class.
+        /// </summary>
+        public ZBool() { }
 
-        public Zbool() { }
-
-        public Zbool(bool value)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZBool"/> class using the supplied <see cref="bool"/> value.
+        /// </summary>
+        /// <param name="value">The <see cref="bool"/> value.</param>
+        public ZBool(bool value)
         {
             _value = value;
         }
 
-        public Zbool(Zbool val)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZBool"/> class by deep copying
+        /// the supplied <see cref="ZBool"/> class.
+        /// </summary>
+        /// <param name="source">The source <see cref="ZBool"/> class.</param>
+        public ZBool(ZBool source)
         {
-            _value = val.Val;
+            _value = source.Val;
         }
 
+        /// <summary>
+        /// Gets or sets the inner <see cref="bool"/> value.
+        /// </summary>
         public bool Val
         {
             get => _value;
             set => _value = value;
         }
 
-        public static implicit operator bool(Zbool value)
+        /// <summary>
+        /// Implicitly converting the <see cref="ZBool"/> value to <see cref="bool"/> value.
+        /// </summary>
+        /// <param name="value">The <see cref="ZBool"/> value.</param>
+        public static implicit operator bool(ZBool value)
         {
             return value.Val;
         }
 
-        public static implicit operator Zbool(bool value)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZBool"/> class by implicitly
+        /// converting the supplied <see cref="bool"/> value.
+        /// </summary>
+        /// <param name="value">The <see cref="bool"/> value.</param>
+        public static implicit operator ZBool(bool value)
         {
-            return new Zbool(value);
+            return new ZBool(value);
         }
     }
 }
