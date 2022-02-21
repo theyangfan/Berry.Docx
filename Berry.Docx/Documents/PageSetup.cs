@@ -6,6 +6,9 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Documents
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class PageSetup
     {
         private W.SectionProperties _sectPr = null;
@@ -18,7 +21,6 @@ namespace Berry.Docx.Documents
                 _docGrid = new W.DocGrid();
             sectPr.AddChild(_docGrid);
         }
-
 
         /// <summary>
         /// 网格类型

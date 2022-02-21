@@ -214,4 +214,27 @@ namespace Berry.Docx
         /// </summary>
         BodyText = 9
     }
+
+    /// <summary>
+    /// Defines the SectionBreakType enumeration.
+    /// </summary>
+    public enum SectionBreakType
+    {
+        /// <summary>
+        /// Next Page Section Break.
+        /// </summary>
+        NextPage = 0,
+        /// <summary>
+        /// Continuous Section Break.
+        /// </summary>
+        Continuous = 1,
+        /// <summary>
+        /// Odd Page Section Break.
+        /// </summary>
+        OddPage = 2,
+        /// <summary>
+        /// Even Page Section Break.
+        /// </summary>
+        EvenPage = 3
+    }
 }

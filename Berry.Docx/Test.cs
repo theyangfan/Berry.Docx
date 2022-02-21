@@ -20,11 +20,7 @@ namespace Test
             string src = @"C:\Users\zhailiao123\Desktop\test.docx";
             string dst = @"C:\Users\tomato\Desktop\test2.docx";
             
-            
             Document doc = new Document(src);
-            Section s = doc.LastSection;
-            Table t1 = s.Tables[0];
-            s.Tables.RemoveAt(1);
 
             doc.Save();
             doc.Close();

@@ -9,6 +9,9 @@ using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class ParagraphStyle : Style
     {
         internal ParagraphStyle(Document doc, W.Style style):base(doc, style)

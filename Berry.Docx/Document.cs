@@ -10,6 +10,7 @@ using P = DocumentFormat.OpenXml.Packaging;
 
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
+using Berry.Docx.Utils;
 
 namespace Berry.Docx
 {

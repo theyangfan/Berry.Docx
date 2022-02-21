@@ -146,13 +146,83 @@ namespace Berry.Docx.Documents
                 return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
             }
         }
+
+        /// <summary>
+        /// Gets the owener section of the current paragraph.
+        /// </summary>
+        public Section Section
+        {
+            get
+            {
+                foreach(Section section in _doc.Sections)
+                {
+                    if (section.Paragraphs.Contains(this))
+                        return section;
+                }
+                return null;
+            }
+        }
         #endregion
 
-        #region Internal Methods
-        internal void Remove()
+        #region Public Methods
+        /// <summary>
+        /// Insert a section break with the specified type to the current paragraph. 
+        /// <para>The current paragraph must have an owner section, otherwise an exception will be thrown.</para>
+        /// </summary>
+        /// <param name="type">Type of section break.</param>
+        /// <exception cref="NullReferenceException"/>
+        /// <returns>The section.</returns>
+        public Section InsertSectionBreak(SectionBreakType type)
         {
-            if (_paragraph != null) _paragraph.Remove();
+            if (Section != null)
+            {
+                W.SectionProperties curSectPr = Section.XElement;
+                // Clone a new SectionProperties from current section.
+                W.SectionProperties newSectPr = (W.SectionProperties)curSectPr.CloneNode(true);
+                // Set the current section type
+                W.SectionType curSectType = curSectPr.Elements<W.SectionType>().FirstOrDefault();
+                if (curSectType == null)
+                {
+                    curSectType = new W.SectionType();
+                    curSectPr.AddChild(curSectType);
+                }
+                switch (type)
+                {
+                    case SectionBreakType.Continuous:
+                        curSectType.Val = W.SectionMarkValues.Continuous;
+                        break;
+                    case SectionBreakType.OddPage:
+                        curSectType.Val = W.SectionMarkValues.OddPage;
+                        break;
+                    case SectionBreakType.EvenPage:
+                        curSectType.Val = W.SectionMarkValues.EvenPage;
+                        break;
+                    default:
+                        curSectType.Remove();
+                        break;
+                }
+                // Move current section to the next new paragraph if SectionProperties is present in current paragraph.
+                if (_paragraph.Descendants<W.SectionProperties>().Any())
+                {
+                    W.Paragraph paragraph = new W.Paragraph() { ParagraphProperties = new W.ParagraphProperties() };
+                    curSectPr.Remove();
+                    paragraph.ParagraphProperties.AddChild(curSectPr);
+                    _paragraph.InsertAfterSelf(paragraph);
+                }
+                // Add the new SectionProperties to the ParagraphProperties of the current paragraph
+                if (_paragraph.ParagraphProperties == null)
+                    _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                _paragraph.ParagraphProperties.AddChild(newSectPr);
+
+                return new Section(_doc, newSectPr);
+            }
+            else
+            {
+                throw new NullReferenceException("The owner section of the current paragraph is null.");
+            }
         }
+
+
         #endregion
 
         #region Private Methods
