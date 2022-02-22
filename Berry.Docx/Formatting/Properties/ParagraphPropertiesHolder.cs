@@ -21,10 +21,24 @@ namespace Berry.Docx.Formatting
         private W.AdjustRightIndent _adjustRightInd = null;
         // Spacing
         private W.SpacingBetweenLines _spacing = null;
+        private W.ContextualSpacing _contextualSpacing = null;
         private W.SnapToGrid _snapToGrid = null;
-        // Others
+        // Pagination
+        private W.WidowControl _widowControl;
+        private W.KeepNext _keepNext;
+        private W.KeepLines _keepLines;
+        private W.PageBreakBefore _pageBreakBefore;
+        // Format Exception
+        private W.SuppressLineNumbers _suppressLineNumbers;
+        private W.SuppressAutoHyphens _suppressAutoHyphens;
+        // Wrapping Lines
+        private W.Kinsoku _kinsoku;
+        private W.WordWrap _wordWrap;
         private W.OverflowPunctuation _overflowPunct = null;
+        // Character Spacing
         private W.TopLinePunctuation _topLinePunct = null;
+        private W.AutoSpaceDE _autoSpaceDE;
+        private W.AutoSpaceDN _autoSpaceDN;
         // Numbering
         private W.Level _lvl = null;
         #endregion
@@ -41,21 +55,38 @@ namespace Berry.Docx.Formatting
             if (pPr == null)
                 pPr = new W.ParagraphProperties();
             _pPr = pPr;
-
+            // Normal
             _justification = pPr.Justification;
             _outlineLevel = pPr.OutlineLevel;
-
+            // Indentation
             if (pPr.Indentation == null)
                 pPr.Indentation = new W.Indentation();
             _indentation = pPr.Indentation;
+            _mirrorIndents = pPr.MirrorIndents;
+            _adjustRightInd = pPr.AdjustRightIndent;
+            // Spacing
             if (pPr.SpacingBetweenLines == null)
                 pPr.SpacingBetweenLines = new W.SpacingBetweenLines();
             _spacing = pPr.SpacingBetweenLines;
-
-            _overflowPunct = pPr.OverflowPunctuation;
-            _topLinePunct = pPr.TopLinePunctuation;
-            _adjustRightInd = pPr.AdjustRightIndent;
+            _contextualSpacing = pPr.ContextualSpacing;
             _snapToGrid = pPr.SnapToGrid;
+            // Pagination
+            _widowControl = pPr.WidowControl;
+            _keepNext = pPr.KeepNext;
+            _keepLines = pPr.KeepLines;
+            _pageBreakBefore = pPr.PageBreakBefore;
+            // Format Exception
+            _suppressLineNumbers = pPr.SuppressLineNumbers;
+            _suppressAutoHyphens = pPr.SuppressAutoHyphens;
+            // Wrapping Lines
+            _kinsoku = pPr.Kinsoku;
+            _wordWrap = pPr.WordWrap;
+            _overflowPunct = pPr.OverflowPunctuation;
+            // Character Spacing
+            _topLinePunct = pPr.TopLinePunctuation;
+            _autoSpaceDE = pPr.AutoSpaceDE;
+            _autoSpaceDN = pPr.AutoSpaceDN;
+            // Numbering
             if(pPr.NumberingProperties != null)
             {
                 if(pPr.NumberingProperties.NumberingId != null)
@@ -88,21 +119,39 @@ namespace Berry.Docx.Formatting
             if (spPr == null)
                 spPr = new W.StyleParagraphProperties();
             _spPr = spPr;
+            // Normal
             _justification = spPr.Justification;
             _outlineLevel = spPr.OutlineLevel;
-
+            // Indentation
             if (spPr.Indentation == null)
                 spPr.Indentation = new W.Indentation();
             _indentation = spPr.Indentation;
+            _mirrorIndents = spPr.MirrorIndents;
+            _adjustRightInd = spPr.AdjustRightIndent;
+            // Spacing
             if (spPr.SpacingBetweenLines == null)
                 spPr.SpacingBetweenLines = new W.SpacingBetweenLines();
             _spacing = spPr.SpacingBetweenLines;
-
-            _overflowPunct = spPr.OverflowPunctuation;
-            _topLinePunct = spPr.TopLinePunctuation;
-            _adjustRightInd = spPr.AdjustRightIndent;
+            _contextualSpacing = spPr.ContextualSpacing;
             _snapToGrid = spPr.SnapToGrid;
-            if(spPr.NumberingProperties != null)
+            // Pagination
+            _widowControl = spPr.WidowControl;
+            _keepNext = spPr.KeepNext;
+            _keepLines = spPr.KeepLines;
+            _pageBreakBefore = spPr.PageBreakBefore;
+            // Format Exception
+            _suppressLineNumbers = spPr.SuppressLineNumbers;
+            _suppressAutoHyphens = spPr.SuppressAutoHyphens;
+            // Wrapping Lines
+            _kinsoku = spPr.Kinsoku;
+            _wordWrap = spPr.WordWrap;
+            _overflowPunct = spPr.OverflowPunctuation;
+            // Character Spacing
+            _topLinePunct = spPr.TopLinePunctuation;
+            _autoSpaceDE = spPr.AutoSpaceDE;
+            _autoSpaceDN = spPr.AutoSpaceDN;
+            // Numbering
+            if (spPr.NumberingProperties != null)
             {
                 if (spPr.NumberingProperties.NumberingId != null)
                 {
@@ -134,6 +183,7 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        #region Normal
         /// <summary>
         /// Gets or sets the justification.
         /// </summary>
@@ -184,7 +234,9 @@ namespace Berry.Docx.Formatting
                     _outlineLevel = null;
             }
         }
+        #endregion
 
+        #region Indentation
         /// <summary>
         /// Gets or sets the left indent (in points) for paragraph.
         /// </summary>
@@ -383,6 +435,66 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
+        /// </summary>
+        public ZBool AdjustRightIndent
+        {
+            get
+            {
+                if (_adjustRightInd == null) return null;
+                if (_adjustRightInd.Val == null) return true;
+                return _adjustRightInd.Val.Value;
+            }
+            set
+            {
+                if (_adjustRightInd == null)
+                {
+                    _adjustRightInd = new W.AdjustRightIndent();
+                    if (_pPr != null)
+                        _pPr.AdjustRightIndent = _adjustRightInd;
+                    else if (_spPr != null)
+                        _spPr.AdjustRightIndent = _adjustRightInd;
+                }
+
+                if (value)
+                    _adjustRightInd.Val = null;
+                else
+                    _adjustRightInd.Val = false;
+            }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether the paragraph indents should be interpreted as mirrored indents.
+        /// </summary>
+        public ZBool MirrorIndents
+        {
+            get
+            {
+                if (_mirrorIndents == null) return null;
+                if (_mirrorIndents.Val == null) return true;
+                return _mirrorIndents.Val.Value;
+            }
+            set
+            {
+                if (_mirrorIndents == null)
+                {
+                    _mirrorIndents = new W.MirrorIndents();
+                    if (_pPr != null)
+                        _pPr.MirrorIndents = _mirrorIndents;
+                    else if (_spPr != null)
+                        _spPr.MirrorIndents = _mirrorIndents;
+                }
+
+                if (value)
+                    _mirrorIndents.Val = null;
+                else
+                    _mirrorIndents.Val = false;
+            }
+        }
+        #endregion
+
+        #region Spacing
         /// <summary>
         /// Gets or sets the spacing (in points) before the paragraph.
         /// </summary>
@@ -583,87 +695,30 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether allow punctuation to overflow boundaries.
+        /// Gets or sets a value indicating whether ignore spacing above and below when using identical styles.
         /// </summary>
-        public ZBool OverflowPunctuation
+        public ZBool ContextualSpacing
         {
             get
             {
-                if (_overflowPunct == null) return null;
-                if (_overflowPunct.Val == null) return true;
-                return _overflowPunct.Val.Value;
+                if (_contextualSpacing == null) return null;
+                if (_contextualSpacing.Val == null) return true;
+                return _contextualSpacing.Val.Value;
             }
             set
             {
-                if (_overflowPunct == null)
+                if (_contextualSpacing == null)
                 {
-                    _overflowPunct = new W.OverflowPunctuation();
+                    _contextualSpacing = new W.ContextualSpacing();
                     if (_pPr != null)
-                        _pPr.OverflowPunctuation = _overflowPunct;
+                        _pPr.ContextualSpacing = _contextualSpacing;
                     else if (_spPr != null)
-                        _spPr.OverflowPunctuation = _overflowPunct;
+                        _spPr.ContextualSpacing = _contextualSpacing;
                 }
                 if (value)
-                    _overflowPunct.Val = null;
+                    _contextualSpacing.Val = null;
                 else
-                    _overflowPunct.Val = false;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether allow top line punctuation compression.
-        /// </summary>
-        public ZBool TopLinePunctuation
-        {
-            get
-            {
-                if (_topLinePunct == null) return null;
-                if (_topLinePunct.Val == null) return true;
-                return _topLinePunct.Val.Value;
-            }
-            set
-            {
-                if (_topLinePunct == null)
-                {
-                    _topLinePunct = new W.TopLinePunctuation();
-                    if (_pPr != null)
-                        _pPr.TopLinePunctuation = _topLinePunct;
-                    else if (_spPr != null)
-                        _spPr.TopLinePunctuation = _topLinePunct;
-                }
-                if (value)
-                    _topLinePunct.Val = null;
-                else
-                    _topLinePunct.Val = false;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
-        /// </summary>
-        public ZBool AdjustRightIndent
-        {
-            get
-            {
-                if (_adjustRightInd == null) return null;
-                if (_adjustRightInd.Val == null) return true;
-                return _adjustRightInd.Val.Value;
-            }
-            set
-            {
-                if (_adjustRightInd == null)
-                {
-                    _adjustRightInd = new W.AdjustRightIndent();
-                    if(_pPr != null)
-                        _pPr.AdjustRightIndent = _adjustRightInd;
-                    else if(_spPr != null)
-                        _spPr.AdjustRightIndent = _adjustRightInd;
-                }
-                    
-                if (value)
-                    _adjustRightInd.Val = null;
-                else
-                    _adjustRightInd.Val = false;
+                    _contextualSpacing.Val = false;
             }
         }
 
@@ -694,6 +749,355 @@ namespace Berry.Docx.Formatting
                     _snapToGrid.Val = false;
             }
         }
+        #endregion
+
+        #region Pagination
+        /// <summary>
+        /// Gets or sets a value indicating whether a consumer shall prevent first/last line of this paragraph 
+        /// from being displayed on a separate page.
+        /// </summary>
+        public ZBool WidowControl
+        {
+            get
+            {
+                if (_widowControl == null) return null;
+                if (_widowControl.Val == null) return true;
+                return _widowControl.Val.Value;
+            }
+            set
+            {
+                if (_widowControl == null)
+                {
+                    _widowControl = new W.WidowControl();
+                    if (_pPr != null)
+                        _pPr.WidowControl = _widowControl;
+                    else if (_spPr != null)
+                        _spPr.WidowControl = _widowControl;
+                }
+                if (value)
+                    _widowControl.Val = null;
+                else
+                    _widowControl.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether keep paragraph with next paragraph on the same page.
+        /// </summary>
+        public ZBool KeepNext
+        {
+            get
+            {
+                if (_keepNext == null) return null;
+                if (_keepNext.Val == null) return true;
+                return _keepNext.Val.Value;
+            }
+            set
+            {
+                if (_keepNext == null)
+                {
+                    _keepNext = new W.KeepNext();
+                    if (_pPr != null)
+                        _pPr.KeepNext = _keepNext;
+                    else if (_spPr != null)
+                        _spPr.KeepNext = _keepNext;
+                }
+                if (value)
+                    _keepNext.Val = null;
+                else
+                    _keepNext.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether keep all lines of this paragraph on one page.
+        /// </summary>
+        public ZBool KeepLines
+        {
+            get
+            {
+                if (_keepLines == null) return null;
+                if (_keepLines.Val == null) return true;
+                return _keepLines.Val.Value;
+            }
+            set
+            {
+                if (_keepLines == null)
+                {
+                    _keepLines = new W.KeepLines();
+                    if (_pPr != null)
+                        _pPr.KeepLines = _keepLines;
+                    else if (_spPr != null)
+                        _spPr.KeepLines = _keepLines;
+                }
+                if (value)
+                    _keepLines.Val = null;
+                else
+                    _keepLines.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether start paragraph on next page.
+        /// </summary>
+        public ZBool PageBreakBefore
+        {
+            get
+            {
+                if (_pageBreakBefore == null) return null;
+                if (_pageBreakBefore.Val == null) return true;
+                return _pageBreakBefore.Val.Value;
+            }
+            set
+            {
+                if (_pageBreakBefore == null)
+                {
+                    _pageBreakBefore = new W.PageBreakBefore();
+                    if (_pPr != null)
+                        _pPr.PageBreakBefore = _pageBreakBefore;
+                    else if (_spPr != null)
+                        _spPr.PageBreakBefore = _pageBreakBefore;
+                }
+                if (value)
+                    _pageBreakBefore.Val = null;
+                else
+                    _pageBreakBefore.Val = false;
+            }
+        }
+        #endregion
+
+        #region Format Exception
+        /// <summary>
+        /// Gets or sets a value indicating whether suppress line numbers for paragraph.
+        /// </summary>
+        public ZBool SuppressLineNumbers
+        {
+            get
+            {
+                if (_suppressLineNumbers == null) return null;
+                if (_suppressLineNumbers.Val == null) return true;
+                return _suppressLineNumbers.Val.Value;
+            }
+            set
+            {
+                if (_suppressLineNumbers == null)
+                {
+                    _suppressLineNumbers = new W.SuppressLineNumbers();
+                    if (_pPr != null)
+                        _pPr.SuppressLineNumbers = _suppressLineNumbers;
+                    else if (_spPr != null)
+                        _spPr.SuppressLineNumbers = _suppressLineNumbers;
+                }
+                if (value)
+                    _suppressLineNumbers.Val = null;
+                else
+                    _suppressLineNumbers.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether suppress hyphenation for paragraph.
+        /// </summary>
+        public ZBool SuppressAutoHyphens
+        {
+            get
+            {
+                if (_suppressAutoHyphens == null) return null;
+                if (_suppressAutoHyphens.Val == null) return true;
+                return _suppressAutoHyphens.Val.Value;
+            }
+            set
+            {
+                if (_suppressAutoHyphens == null)
+                {
+                    _suppressAutoHyphens = new W.SuppressAutoHyphens();
+                    if (_pPr != null)
+                        _pPr.SuppressAutoHyphens = _suppressAutoHyphens;
+                    else if (_spPr != null)
+                        _spPr.SuppressAutoHyphens = _suppressAutoHyphens;
+                }
+                if (value)
+                    _suppressAutoHyphens.Val = null;
+                else
+                    _suppressAutoHyphens.Val = false;
+            }
+        }
+        #endregion
+
+        #region Wrapping Lines
+        /// <summary>
+        /// Gets or sets a value indicating whether use east asian typography rules for first and last character per line.
+        /// </summary>
+        public ZBool Kinsoku
+        {
+            get
+            {
+                if (_kinsoku == null) return null;
+                if (_kinsoku.Val == null) return true;
+                return _kinsoku.Val.Value;
+            }
+            set
+            {
+                if (_kinsoku == null)
+                {
+                    _kinsoku = new W.Kinsoku();
+                    if (_pPr != null)
+                        _pPr.Kinsoku = _kinsoku;
+                    else if (_spPr != null)
+                        _spPr.Kinsoku = _kinsoku;
+                }
+                if (value)
+                    _kinsoku.Val = null;
+                else
+                    _kinsoku.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating that should break text which exceeds the text extents of a line 
+        /// by moving the word to the following line (breaking on the word level) if true,
+        /// otherwies breaking the word across two lines (breaking on the character level).
+        /// </summary>
+        public ZBool WordWrap
+        {
+            get
+            {
+                if (_wordWrap == null) return null;
+                if (_wordWrap.Val == null) return true;
+                return _wordWrap.Val.Value;
+            }
+            set
+            {
+                if (_wordWrap == null)
+                {
+                    _wordWrap = new W.WordWrap();
+                    if (_pPr != null)
+                        _pPr.WordWrap = _wordWrap;
+                    else if (_spPr != null)
+                        _spPr.WordWrap = _wordWrap;
+                }
+                if (value)
+                    _wordWrap.Val = null;
+                else
+                    _wordWrap.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allow punctuation to extend past text extents.
+        /// </summary>
+        public ZBool OverflowPunctuation
+        {
+            get
+            {
+                if (_overflowPunct == null) return null;
+                if (_overflowPunct.Val == null) return true;
+                return _overflowPunct.Val.Value;
+            }
+            set
+            {
+                if (_overflowPunct == null)
+                {
+                    _overflowPunct = new W.OverflowPunctuation();
+                    if (_pPr != null)
+                        _pPr.OverflowPunctuation = _overflowPunct;
+                    else if (_spPr != null)
+                        _spPr.OverflowPunctuation = _overflowPunct;
+                }
+                if (value)
+                    _overflowPunct.Val = null;
+                else
+                    _overflowPunct.Val = false;
+            }
+        }
+        #endregion
+
+        #region Character Spacing
+        /// <summary>
+        /// Gets or sets a value indicating whether compress punctuation at start of a line.
+        /// </summary>
+        public ZBool TopLinePunctuation
+        {
+            get
+            {
+                if (_topLinePunct == null) return null;
+                if (_topLinePunct.Val == null) return true;
+                return _topLinePunct.Val.Value;
+            }
+            set
+            {
+                if (_topLinePunct == null)
+                {
+                    _topLinePunct = new W.TopLinePunctuation();
+                    if (_pPr != null)
+                        _pPr.TopLinePunctuation = _topLinePunct;
+                    else if (_spPr != null)
+                        _spPr.TopLinePunctuation = _topLinePunct;
+                }
+                if (value)
+                    _topLinePunct.Val = null;
+                else
+                    _topLinePunct.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether automatically adjust spacing of latin and east asian text.
+        /// </summary>
+        public ZBool AutoSpaceDE
+        {
+            get
+            {
+                if (_autoSpaceDE == null) return null;
+                if (_autoSpaceDE.Val == null) return true;
+                return _autoSpaceDE.Val.Value;
+            }
+            set
+            {
+                if (_autoSpaceDE == null)
+                {
+                    _autoSpaceDE = new W.AutoSpaceDE();
+                    if (_pPr != null)
+                        _pPr.AutoSpaceDE = _autoSpaceDE;
+                    else if (_spPr != null)
+                        _spPr.AutoSpaceDE = _autoSpaceDE;
+                }
+                if (value)
+                    _autoSpaceDE.Val = null;
+                else
+                    _autoSpaceDE.Val = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether automatically adjust spacing of east asian text and numbers.
+        /// </summary>
+        public ZBool AutoSpaceDN
+        {
+            get
+            {
+                if (_autoSpaceDN == null) return null;
+                if (_autoSpaceDN.Val == null) return true;
+                return _autoSpaceDN.Val.Value;
+            }
+            set
+            {
+                if (_autoSpaceDN == null)
+                {
+                    _autoSpaceDN = new W.AutoSpaceDN();
+                    if (_pPr != null)
+                        _pPr.AutoSpaceDN = _autoSpaceDN;
+                    else if (_spPr != null)
+                        _spPr.AutoSpaceDN = _autoSpaceDN;
+                }
+                if (value)
+                    _autoSpaceDN.Val = null;
+                else
+                    _autoSpaceDN.Val = false;
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Public Methods
