@@ -21,7 +21,9 @@ namespace Test
             string dst = @"C:\Users\tomato\Desktop\test2.docx";
             
             Document doc = new Document(src);
+            Paragraph p = doc.Sections[0].Paragraphs[0];
 
+            p.AppendComment("test", "5");
             doc.Save();
             doc.Close();
 

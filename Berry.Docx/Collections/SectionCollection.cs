@@ -52,6 +52,7 @@ namespace Berry.Docx.Collections
         {
             return _sections.GetEnumerator();
         }
+
         #endregion
     }
 }

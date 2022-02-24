@@ -156,60 +156,55 @@ namespace Berry.Docx
 
         #region TODO
 
-                /// <summary>
-                /// 全局设置
-                /// </summary>
-                private Settings Settings { get => _settings; }
+        /// <summary>
+        /// 全局设置
+        /// </summary>
+        private Settings Settings { get => _settings; }
 
-                /// <summary>
-                /// 返回文档中指定文本内容的所有段落。
-                /// <br/><br/>
-                /// Return a list of paragraphs with specified text in the document.
-                /// </summary>
-                /// <param name="text">段落文本<br/><br/>Paragraph text</param>
-                /// <returns>找到的段落列表。<br/><br/>A list of paragraphs found</returns>
-                private List<Paragraph> Find(string text)
-                {
-                    List<Paragraph> paras = new List<Paragraph>();
-                    foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-                    {
-                        if (p.InnerText.Trim() == text)
-                            paras.Add(new Paragraph(this, p));
-                    }
-                    return paras;
-                }
+        /// <summary>
+        /// 返回文档中指定文本内容的所有段落。
+        /// <br/><br/>
+        /// Return a list of paragraphs with specified text in the document.
+        /// </summary>
+        /// <param name="text">段落文本<br/><br/>Paragraph text</param>
+        /// <returns>找到的段落列表。<br/><br/>A list of paragraphs found</returns>
+        private List<Paragraph> Find(string text)
+        {
+            List<Paragraph> paras = new List<Paragraph>();
+            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
+            {
+                if (p.InnerText.Trim() == text)
+                    paras.Add(new Paragraph(this, p));
+            }
+            return paras;
+        }
 
-                /// <summary>
-                /// 返回匹配成功的所有段落
-                /// </summary>
-                /// <param name="pattern"></param>
-                /// <param name="options"></param>
-                /// <returns></returns>
-                private List<Paragraph> Find(string pattern, RegexOptions options)
-                {
-                    List<Paragraph> paras = new List<Paragraph>();
-                    foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-                    {
-                        if (Regex.IsMatch(p.InnerText, pattern, options))
-                            paras.Add(new Paragraph(this, p));
-                    }
-                    return paras;
-                }
+        /// <summary>
+        /// 返回匹配成功的所有段落
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        private List<Paragraph> Find(string pattern, RegexOptions options)
+        {
+            List<Paragraph> paras = new List<Paragraph>();
+            return paras;
+        }
 
-                /// <summary>
-                /// 更新域代码
-                /// </summary>
-                private void UpdateFields()
-                {
-                    if (_doc != null)
-                    {
-                        P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
-                        W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
-                        updateFields.Val = new O.OnOffValue(true);
-                        settings.Settings.PrependChild(updateFields);
-                        settings.Settings.Save();
-                    }
-                }
+        /// <summary>
+        /// 更新域代码
+        /// </summary>
+        private void UpdateFields()
+        {
+            if (_doc != null)
+            {
+                P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
+                W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
+                updateFields.Val = new O.OnOffValue(true);
+                settings.Settings.PrependChild(updateFields);
+                settings.Settings.Save();
+            }
+        }
 
         #endregion
 
