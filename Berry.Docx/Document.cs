@@ -21,6 +21,8 @@ namespace Berry.Docx
     {
         #region Private Members
         private string _filename = string.Empty;
+        private Stream _stream = null;
+        private MemoryStream _mstream = null;
         private P.WordprocessingDocument _doc;
         private Settings _settings;
         #endregion
@@ -47,6 +49,14 @@ namespace Berry.Docx
                 _doc = DocumentGenerator.Generate(filename);
             }
             _settings = new Settings(_doc.MainDocumentPart.DocumentSettingsPart.Settings);
+        }
+        /// <summary>
+        /// Creates a new instance of the Document class from the IO stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        public Document(Stream stream)
+        {
+            _doc = P.WordprocessingDocument.Open(stream, true);
         }
         #endregion
 
@@ -99,7 +109,10 @@ namespace Berry.Docx
         /// </summary>
         public void Save()
         {
-            SaveAs(_filename);
+            if (!string.IsNullOrEmpty(_filename))
+            {
+                SaveAs(_filename);
+            }
         }
         /// <summary>
         /// Save the contents and changes to specified file.
@@ -107,8 +120,16 @@ namespace Berry.Docx
         /// <param name="filename">Name of file</param>
         public void SaveAs(string filename)
         {
-            if (_doc != null)
+            if (_doc != null && !string.IsNullOrEmpty(filename))
                 _doc.SaveAs(filename).Close();
+        }
+
+        public void SaveAs(Stream stream)
+        {
+            if(_doc != null)
+            {
+                _doc.Clone(stream);
+            }
         }
 
         /// <summary>
@@ -116,10 +137,7 @@ namespace Berry.Docx
         /// </summary>
         public void Close()
         {
-            if (_doc != null)
-            {
-                Dispose();
-            }
+            Dispose();
         }
 
         /// <summary>
@@ -127,7 +145,8 @@ namespace Berry.Docx
         /// </summary>
         public void Dispose()
         {
-            _doc.Close();
+            _stream?.Close();
+            _doc?.Close();
         }
         #endregion
 

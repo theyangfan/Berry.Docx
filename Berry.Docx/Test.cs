@@ -18,12 +18,19 @@ namespace Test
     {
         public static void Main() {
             string src = @"C:\Users\zhailiao123\Desktop\test.docx";
-            string dst = @"C:\Users\tomato\Desktop\test2.docx";
+            string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
             
-            Document doc = new Document(src);
+            Document doc = new Document(File.Open(src, FileMode.OpenOrCreate));
             Paragraph p = doc.Sections[0].Paragraphs[0];
-
-            p.AppendComment("test", "5");
+            p.AppendComment("1", "2");
+            using(MemoryStream stream = new MemoryStream())
+            {
+                doc.SaveAs(stream);
+                using(FileStream fs = File.Open(dst, FileMode.OpenOrCreate))
+                {
+                    stream.WriteTo(fs);
+                }
+            }
             doc.Save();
             doc.Close();
 

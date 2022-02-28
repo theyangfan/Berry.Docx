@@ -145,22 +145,27 @@ namespace Berry.Docx
         /// <summary>
         /// Align Left.
         /// </summary>
+        [Description("左对齐")]
         Left = 0,
         /// <summary>
         /// Align Center.
         /// </summary>
+        [Description("居中")]
         Center = 1,
         /// <summary>
         /// Align Right.
         /// </summary>
+        [Description("右对齐")]
         Right = 2,
         /// <summary>
         /// Justified.
         /// </summary>
+        [Description("两端对齐")]
         Both = 3,
         /// <summary>
         /// Distribute All Characters Equally.
         /// </summary>
+        [Description("分散对齐")]
         Distribute = 4
     }
 
@@ -176,42 +181,53 @@ namespace Berry.Docx
         /// <summary>
         /// Level 1.
         /// </summary>
+        [Description("1 级")]
         Level1 = 0,
         /// <summary>
         /// Level 2.
         /// </summary>
+        /// 
+        [Description("2 级")]
         Level2 = 1,
         /// <summary>
         /// Level 3.
         /// </summary>
+        [Description("3 级")]
         Level3 = 2,
         /// <summary>
         /// Level 4.
         /// </summary>
+        [Description("4 级")]
         Level4 = 3,
         /// <summary>
         /// Level 5.
         /// </summary>
+        [Description("5 级")]
         Level5 = 4,
         /// <summary>
         /// Level 6.
         /// </summary>
+        [Description("6 级")]
         Level6 = 5,
         /// <summary>
         /// Level 7.
         /// </summary>
+        [Description("7 级")]
         Level7 = 6,
         /// <summary>
         /// Level 8.
         /// </summary>
+        [Description("8 级")]
         Level8 = 7,
         /// <summary>
         /// Level 9.
         /// </summary>
+        [Description("9 级")]
         Level9 = 8,
         /// <summary>
         /// Body Text.
         /// </summary>
+        [Description("正文文本")]
         BodyText = 9
     }
 

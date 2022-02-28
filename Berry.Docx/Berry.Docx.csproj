@@ -17,7 +17,7 @@ Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 W
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.1.1</Version>
+    <Version>1.1.0</Version>
     <PackageReleaseNotes>- Supports add/remove paragraphs;
 
 - Supports add/remove tables, and add/insert rows, cloumns, cells, paragraphs to the table.
