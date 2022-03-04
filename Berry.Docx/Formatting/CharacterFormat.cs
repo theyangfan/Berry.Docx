@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OOxml = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
@@ -37,6 +38,9 @@ namespace Berry.Docx.Formatting
         private float _fontSizeCs = 10.5F;
         private bool _bold = false;
         private bool _italic = false;
+        private int _characterScale = 100;
+        private float _characterSpacing = 0;
+        private float _position = 0;
         #endregion
 
         #endregion
@@ -399,6 +403,159 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the percent value of the normal character width that each character shall be scaled.
+        /// <para>If the value is 100, then each character shall be displayed at 100% of its normal with.</para>
+        /// <para>The value must be between 1 and 600, otherwise an exception will be thrown.</para>
+        /// </summary>
+        /// <exception cref="InvalidOperationException"/>
+        public int CharacterScale
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    InitRun();
+                    if (_curRHld.CharacterScale != null)
+                    {
+                        return _curRHld.CharacterScale;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.CharacterScale : 100;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.CharacterScale ?? _inheritFromStyleFormat.CharacterScale;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.CharacterScale ?? _inheritFromBaseStyleFormat.CharacterScale;
+                }
+                else
+                {
+                    return _characterScale;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _curRHld.CharacterScale = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _curPHld.CharacterScale = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.CharacterScale = value;
+                }
+                else
+                {
+                    _characterScale = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount (in points) of character pitch which shall be added or removed after each character.
+        /// </summary>
+        public float CharacterSpacing
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    InitRun();
+                    if (_curRHld.CharacterSpacing != null)
+                    {
+                        return _curRHld.CharacterSpacing;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.CharacterSpacing : 0;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.CharacterSpacing ?? _inheritFromStyleFormat.CharacterSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.CharacterSpacing ?? _inheritFromBaseStyleFormat.CharacterSpacing;
+                }
+                else
+                {
+                    return _characterSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _curRHld.CharacterSpacing = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _curPHld.CharacterSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.CharacterSpacing = value;
+                }
+                else
+                {
+                    _characterSpacing = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount (in points) by which text shall be raised or lowered in relation to the default baseline location.
+        /// </summary>
+        public float Position
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    InitRun();
+                    if (_curRHld.Position != null)
+                    {
+                        return _curRHld.Position;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.Position : 0;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.Position ?? _inheritFromStyleFormat.Position;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.Position ?? _inheritFromBaseStyleFormat.Position;
+                }
+                else
+                {
+                    return _position;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _curRHld.Position = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _curPHld.Position = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.Position = value;
+                }
+                else
+                {
+                    _position = value;
+                }
+            }
+        }
         #endregion
 
         #region Private Methods
@@ -423,6 +580,9 @@ namespace Berry.Docx.Formatting
                 baseFormat.FontSizeCs = rPr.FontSizeCs;
                 baseFormat.Bold = rPr.Bold ?? false;
                 baseFormat.Italic = rPr.Italic ?? false;
+                baseFormat.CharacterScale = rPr.CharacterScale ?? 100;
+                baseFormat.CharacterSpacing = rPr.CharacterScale ?? 0;
+                baseFormat.Position = rPr.Position ?? 0;
             }
             // Gets base style format
             OOxml.Style baseStyle = style.GetBaseStyle();
@@ -437,6 +597,9 @@ namespace Berry.Docx.Formatting
             format.FontSizeCs = curSHld.FontSizeCs > 0 ? curSHld.FontSizeCs : baseFormat.FontSizeCs;
             format.Bold = curSHld.Bold ?? baseFormat.Bold;
             format.Italic = curSHld.Italic ?? baseFormat.Italic;
+            format.CharacterScale = curSHld.CharacterScale ?? baseFormat.CharacterScale;
+            format.CharacterSpacing = curSHld.CharacterSpacing ?? baseFormat.CharacterSpacing;
+            format.Position = curSHld.Position ?? baseFormat.Position;
             return format;
         }
         private void InitRun()

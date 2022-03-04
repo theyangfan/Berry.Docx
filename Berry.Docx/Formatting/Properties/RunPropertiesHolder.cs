@@ -1,4 +1,5 @@
-﻿using P = DocumentFormat.OpenXml.Packaging;
+﻿using System;
+using P = DocumentFormat.OpenXml.Packaging;
 using OOxml = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
@@ -19,6 +20,9 @@ namespace Berry.Docx.Formatting
         private OOxml.FontSizeComplexScript _fontSizeCs = null;
         private OOxml.Bold _bold = null;
         private OOxml.Italic _italic = null;
+        private OOxml.CharacterScale _characterScale = null;
+        private OOxml.Spacing _characterSpacing;
+        private OOxml.Position _position;
         #endregion
 
         #region Constructors
@@ -36,6 +40,9 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.FontSizeComplexScript;
             _bold = rPr.Bold;
             _italic = rPr.Italic;
+            _characterScale = rPr.CharacterScale;
+            _characterSpacing = rPr.Spacing;
+            _position = rPr.Position;
         }
 
         /// <summary>
@@ -52,6 +59,9 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.GetFirstChild<OOxml.FontSizeComplexScript>();
             _bold = rPr.GetFirstChild<OOxml.Bold>();
             _italic = rPr.GetFirstChild<OOxml.Italic>();
+            _characterScale = rPr.GetFirstChild<OOxml.CharacterScale>();
+            _characterSpacing = rPr.GetFirstChild<OOxml.Spacing>();
+            _position = rPr.GetFirstChild<OOxml.Position>();
         }
 
         /// <summary>
@@ -68,6 +78,9 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.FontSizeComplexScript;
             _bold = rPr.Bold;
             _italic = rPr.Italic;
+            _characterScale = rPr.CharacterScale;
+            _characterSpacing = rPr.Spacing;
+            _position = rPr.Position;
         }
 
         /// <summary>
@@ -83,6 +96,9 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.FontSizeComplexScript;
             _bold = rPr.Bold;
             _italic = rPr.Italic;
+            _characterScale = rPr.CharacterScale;
+            _characterSpacing = rPr.Spacing;
+            _position = rPr.Position;
         }
         #endregion
 
@@ -200,7 +216,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets bold style.
         /// </summary>
-        public ZBool Bold
+        public BooleanValue Bold
         {
             get
             {
@@ -229,7 +245,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets italic style.
         /// </summary>
-        public ZBool Italic
+        public BooleanValue Italic
         {
             get
             {
@@ -255,6 +271,92 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the percent value of the normal character width that each character shall be scaled.
+        /// <para>If the value is 100, then each character shall be displayed at 100% of its normal with.</para>
+        /// <para>The value must be between 1 and 600, otherwise an exception will be thrown.</para>
+        /// </summary>
+        /// <exception cref="InvalidOperationException"/>
+        public IntegerValue CharacterScale
+        {
+            get
+            {
+                if (_characterScale == null) return null;
+                return (int)_characterScale.Val;
+            }
+            set
+            {
+                if (value < 1 || value > 600)
+                {
+                    throw new InvalidOperationException("This is not a vaild measurement. The value must be between 1 and 600.");
+                }
+                if (_characterScale != null)
+                {
+                    _characterScale.Val = (int)value;
+                }
+                else
+                {
+                    _characterScale = new OOxml.CharacterScale() { Val = (int)value };
+                    if (_rPr != null) _rPr.CharacterScale = _characterScale;
+                    else if (_mark_rPr != null) _mark_rPr.AddChild(_characterScale);
+                    else if (_style_rPr != null) _style_rPr.CharacterScale = _characterScale;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount (in points) of character pitch which shall be added or removed after each character.
+        /// </summary>
+        public FloatValue CharacterSpacing
+        {
+            get
+            {
+                if (_characterSpacing == null) return null;
+                return _characterSpacing.Val / 20.0F;
+            }
+            set
+            {
+                if (_characterSpacing != null)
+                {
+                    _characterSpacing.Val = (int)(value * 20);
+                }
+                else
+                {
+                    _characterSpacing = new OOxml.Spacing() { Val = (int)(value * 20) };
+                    if (_rPr != null) _rPr.Spacing = _characterSpacing;
+                    else if (_mark_rPr != null) _mark_rPr.AddChild(_characterSpacing);
+                    else if (_style_rPr != null) _style_rPr.Spacing = _characterSpacing;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount (in points) by which text shall be raised or lowered in relation to the default baseline location.
+        /// </summary>
+        public FloatValue Position
+        {
+            get
+            {
+                if (_position == null) return null;
+                return _position.Val.ToString().ToFloat() / 2;
+            }
+            set
+            {
+                if (_position != null)
+                {
+                    _position.Val = Math.Round(value * 2).ToString();
+                }
+                else
+                {
+                    _position = new OOxml.Position() { Val = Math.Round(value * 2).ToString() };
+                    if (_rPr != null) _rPr.Position = _position;
+                    else if (_mark_rPr != null) _mark_rPr.AddChild(_position);
+                    else if (_style_rPr != null) _style_rPr.Position = _position;
+                }
+            }
+        }
+
         #endregion
     }
 }

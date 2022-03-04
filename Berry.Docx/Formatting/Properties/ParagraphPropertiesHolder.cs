@@ -439,7 +439,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
         /// </summary>
-        public ZBool AdjustRightIndent
+        public BooleanValue AdjustRightIndent
         {
             get
             {
@@ -467,7 +467,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether the paragraph indents should be interpreted as mirrored indents.
         /// </summary>
-        public ZBool MirrorIndents
+        public BooleanValue MirrorIndents
         {
             get
             {
@@ -548,7 +548,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether spacing before is automatic.
         /// </summary>
-        public ZBool BeforeAutoSpacing
+        public BooleanValue BeforeAutoSpacing
         {
             get
             {
@@ -617,7 +617,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether spacing after is automatic.
         /// </summary>
-        public ZBool AfterAutoSpacing
+        public BooleanValue AfterAutoSpacing
         {
             get
             {
@@ -697,7 +697,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether ignore spacing above and below when using identical styles.
         /// </summary>
-        public ZBool ContextualSpacing
+        public BooleanValue ContextualSpacing
         {
             get
             {
@@ -725,7 +725,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether snap to the grid if a document grid is defined.
         /// </summary>
-        public ZBool SnapToGrid
+        public BooleanValue SnapToGrid
         {
             get
             {
@@ -756,7 +756,7 @@ namespace Berry.Docx.Formatting
         /// Gets or sets a value indicating whether a consumer shall prevent first/last line of this paragraph 
         /// from being displayed on a separate page.
         /// </summary>
-        public ZBool WidowControl
+        public BooleanValue WidowControl
         {
             get
             {
@@ -784,7 +784,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether keep paragraph with next paragraph on the same page.
         /// </summary>
-        public ZBool KeepNext
+        public BooleanValue KeepNext
         {
             get
             {
@@ -812,7 +812,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether keep all lines of this paragraph on one page.
         /// </summary>
-        public ZBool KeepLines
+        public BooleanValue KeepLines
         {
             get
             {
@@ -840,7 +840,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether start paragraph on next page.
         /// </summary>
-        public ZBool PageBreakBefore
+        public BooleanValue PageBreakBefore
         {
             get
             {
@@ -870,7 +870,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether suppress line numbers for paragraph.
         /// </summary>
-        public ZBool SuppressLineNumbers
+        public BooleanValue SuppressLineNumbers
         {
             get
             {
@@ -898,7 +898,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether suppress hyphenation for paragraph.
         /// </summary>
-        public ZBool SuppressAutoHyphens
+        public BooleanValue SuppressAutoHyphens
         {
             get
             {
@@ -928,7 +928,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether use east asian typography rules for first and last character per line.
         /// </summary>
-        public ZBool Kinsoku
+        public BooleanValue Kinsoku
         {
             get
             {
@@ -958,7 +958,7 @@ namespace Berry.Docx.Formatting
         /// by moving the word to the following line (breaking on the word level) if true,
         /// otherwies breaking the word across two lines (breaking on the character level).
         /// </summary>
-        public ZBool WordWrap
+        public BooleanValue WordWrap
         {
             get
             {
@@ -986,7 +986,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether allow punctuation to extend past text extents.
         /// </summary>
-        public ZBool OverflowPunctuation
+        public BooleanValue OverflowPunctuation
         {
             get
             {
@@ -1016,7 +1016,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether compress punctuation at start of a line.
         /// </summary>
-        public ZBool TopLinePunctuation
+        public BooleanValue TopLinePunctuation
         {
             get
             {
@@ -1044,7 +1044,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether automatically adjust spacing of latin and east asian text.
         /// </summary>
-        public ZBool AutoSpaceDE
+        public BooleanValue AutoSpaceDE
         {
             get
             {
@@ -1072,7 +1072,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets a value indicating whether automatically adjust spacing of east asian text and numbers.
         /// </summary>
-        public ZBool AutoSpaceDN
+        public BooleanValue AutoSpaceDN
         {
             get
             {

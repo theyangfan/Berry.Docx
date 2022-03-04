@@ -20,21 +20,23 @@ namespace Test
             string src = @"C:\Users\zhailiao123\Desktop\test.docx";
             string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
             
-            Document doc = new Document(File.Open(src, FileMode.OpenOrCreate));
+            Document doc = new Document(src);
             Paragraph p = doc.Sections[0].Paragraphs[0];
-            p.AppendComment("1", "2");
-            using(MemoryStream stream = new MemoryStream())
-            {
-                doc.SaveAs(stream);
-                using(FileStream fs = File.Open(dst, FileMode.OpenOrCreate))
-                {
-                    stream.WriteTo(fs);
-                }
-            }
-            doc.Save();
+            TextRange tr = p.ChildObjects[0] as TextRange;
+
+            tr.CharacterFormat.Position = 1.2f;
+            p.CharacterFormat.Position = 1.3f;
+            p.Style.CharacterFormat.Position = -1.8f;
+
+            Console.WriteLine(tr.CharacterFormat.Position);
+            Console.WriteLine(p.CharacterFormat.Position);
+            Console.WriteLine(p.Style.CharacterFormat.Position);
+
+            doc.SaveAs(dst);
             doc.Close();
 
             //System.Diagnostics.Process.Start(dst);
         }
+
     }
 }

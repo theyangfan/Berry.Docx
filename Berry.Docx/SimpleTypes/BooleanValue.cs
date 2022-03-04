@@ -8,29 +8,29 @@ namespace Berry.Docx
     /// <summary>
     /// Represent the <see cref="bool"/> value.
     /// </summary>
-    public class ZBool
+    public class BooleanValue
     {
         private bool _value = false;
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZBool"/> class.
+        /// Initializes a new instance of the <see cref="BooleanValue"/> class.
         /// </summary>
-        public ZBool() { }
+        public BooleanValue() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZBool"/> class using the supplied <see cref="bool"/> value.
+        /// Initializes a new instance of the <see cref="BooleanValue"/> class using the supplied <see cref="bool"/> value.
         /// </summary>
         /// <param name="value">The <see cref="bool"/> value.</param>
-        public ZBool(bool value)
+        public BooleanValue(bool value)
         {
             _value = value;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZBool"/> class by deep copying
-        /// the supplied <see cref="ZBool"/> class.
+        /// Initializes a new instance of the <see cref="BooleanValue"/> class by deep copying
+        /// the supplied <see cref="BooleanValue"/> class.
         /// </summary>
-        /// <param name="source">The source <see cref="ZBool"/> class.</param>
-        public ZBool(ZBool source)
+        /// <param name="source">The source <see cref="BooleanValue"/> class.</param>
+        public BooleanValue(BooleanValue source)
         {
             _value = source.Val;
         }
@@ -45,22 +45,22 @@ namespace Berry.Docx
         }
 
         /// <summary>
-        /// Implicitly converting the <see cref="ZBool"/> value to <see cref="bool"/> value.
+        /// Implicitly converting the <see cref="BooleanValue"/> value to <see cref="bool"/> value.
         /// </summary>
-        /// <param name="value">The <see cref="ZBool"/> value.</param>
-        public static implicit operator bool(ZBool value)
+        /// <param name="value">The <see cref="BooleanValue"/> value.</param>
+        public static implicit operator bool(BooleanValue value)
         {
             return value.Val;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZBool"/> class by implicitly
+        /// Initializes a new instance of the <see cref="BooleanValue"/> class by implicitly
         /// converting the supplied <see cref="bool"/> value.
         /// </summary>
         /// <param name="value">The <see cref="bool"/> value.</param>
-        public static implicit operator ZBool(bool value)
+        public static implicit operator BooleanValue(bool value)
         {
-            return new ZBool(value);
+            return new BooleanValue(value);
         }
     }
 }
