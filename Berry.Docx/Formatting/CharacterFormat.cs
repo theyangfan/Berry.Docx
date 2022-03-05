@@ -558,6 +558,27 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Clears all character formats.
+        /// </summary>
+        public void ClearFormatting()
+        {
+            if (_ownerRun != null)
+            {
+                _curRHld.clearFormatting();
+            }
+            else if (_ownerParagraph != null)
+            {
+                _curPHld.clearFormatting();
+            }
+            else if (_ownerStyle != null)
+            {
+                _curSHld.clearFormatting();
+            }
+        }
+        #endregion
+
         #region Private Methods
         /// <summary>
         /// Returns the character format that specified in the style hierarchy of a style.

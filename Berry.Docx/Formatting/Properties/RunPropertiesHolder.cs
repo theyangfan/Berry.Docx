@@ -358,5 +358,17 @@ namespace Berry.Docx.Formatting
         }
 
         #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Clears all character formats.
+        /// </summary>
+        public void clearFormatting()
+        {
+            if (_rPr != null) _rPr.RemoveAllChildren();
+            else if (_mark_rPr != null) _mark_rPr.RemoveAllChildren();
+            else if (_style_rPr != null) _style_rPr.RemoveAllChildren();
+        }
+        #endregion
     }
 }

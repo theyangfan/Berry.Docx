@@ -17,8 +17,8 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\zhailiao123\Desktop\test.docx";
-            string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
+            string dst = @"C:\Users\tomato\Desktop\dst.docx";
             
             Document doc = new Document(src);
             Paragraph p = doc.Sections[0].Paragraphs[0];
