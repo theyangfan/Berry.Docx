@@ -10,18 +10,77 @@ using OD = DocumentFormat.OpenXml.Drawing;
 
 namespace Berry.Docx
 {
-    static class ExtendMethods
+    internal static class ExtendMethods
     {
-        public static OW.Body GetBody (this OP.WordprocessingDocument doc)
+        /// <summary>
+        /// Converts string to float.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static float ToFloat(this string str)
+        {
+            float val = 0;
+            float.TryParse(str, out val);
+            return val;
+        }
+
+        /// <summary>
+        /// Converts string to int.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static int ToInt(this string str)
+        {
+            int val = 0;
+            int.TryParse(str, out val);
+            return val;
+        }
+
+        /// <summary>
+        /// In current string, replaces all strings that match a specified regular
+        /// expression with a specified replacement string.
+        /// </summary>
+        /// <param name="input">The current string.</param>
+        /// <param name="pattern">The regular expression pattern to match.</param>
+        /// <param name="newStr">The replacement string.</param>
+        /// <returns>
+        /// A new string that is identical to the input string, except that the replacement
+        /// string takes the place of each matched string. If pattern is not matched in the
+        /// current instance, the method returns the current instance unchanged.
+        /// </returns>
+        public static string RxReplace(this string input, string pattern, string newStr)
+        {
+            return Regex.Replace(input, pattern, newStr);
+        }
+
+        #region OpenXMl Extend Methods
+        /// <summary>
+        /// Returns document body element.
+        /// </summary>
+        /// <param name="doc">The OpenXML WordprocessingDocument</param>
+        /// <returns>The body element.</returns>
+        internal static OW.Body GetBody (this OP.WordprocessingDocument doc)
         {
             return doc?.MainDocumentPart?.Document?.Body;
         }
 
-        public static OW.SectionProperties GetRootSectionProperties(this OP.WordprocessingDocument doc)
+        /// <summary>
+        /// Returns the root(last) child SectionProperties element of Document. 
+        /// </summary>
+        /// <param name="doc">The OpenXML WordprocessingDocument</param>
+        /// <returns>The SectionProperties</returns>
+        internal static OW.SectionProperties GetRootSectionProperties(this OP.WordprocessingDocument doc)
         {
             return doc.GetBody()?.LastChild as OW.SectionProperties;
         }
-        public static OW.Style GetStyle(this OW.Paragraph p, Document doc)
+
+        /// <summary>
+        /// Returns the OpenXML style that referenced by the paragraph.
+        /// </summary>
+        /// <param name="p">The OpenXMl paragraph element.</param>
+        /// <param name="doc">The document</param>
+        /// <returns>The OpenXML style</returns>
+        internal static OW.Style GetStyle(this OW.Paragraph p, Document doc)
         {
             OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
             if(p.ParagraphProperties != null && p.ParagraphProperties.ParagraphStyleId != null)
@@ -35,7 +94,12 @@ namespace Berry.Docx
             }
         }
 
-        public static OW.Style GetBaseStyle(this OW.Style style)
+        /// <summary>
+        /// Returns the OpenXML style that the current style based on.
+        /// </summary>
+        /// <param name="style">The OpenXMl style.</param>
+        /// <returns>The based-on OpenXMl style.</returns>
+        internal static OW.Style GetBaseStyle(this OW.Style style)
         {
             if(style.BasedOn != null)
             {
@@ -45,12 +109,7 @@ namespace Berry.Docx
             }
             return null;
         }
-
-        public static string RxReplace(this string input, string pattern, string newStr)
-        {
-            return Regex.Replace(input, pattern, newStr);
-        }
-
+        
         /// <summary>
         /// Get Theme Font.
         /// </summary>
@@ -88,32 +147,11 @@ namespace Berry.Docx
                     return string.Empty;
             }
         }
-
-        /// <summary>
-        /// 转换为单精度浮点数
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static float ToFloat(this string str)
-        {
-            float val = 0;
-            float.TryParse(str, out val);
-            return val;
-        }
-        /// <summary>
-        /// 转换为整型
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static int ToInt(this string str)
-        {
-            int val = 0;
-            int.TryParse(str, out val);
-            return val;
-        }
+        #endregion
 
         #region Enum Converter
-        public static JustificationType Convert(this OW.JustificationValues type)
+
+        internal static JustificationType Convert(this OW.JustificationValues type)
         {
             switch (type)
             {

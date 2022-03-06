@@ -9,6 +9,9 @@ using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class Style
     {
         private W.Style _style = null;

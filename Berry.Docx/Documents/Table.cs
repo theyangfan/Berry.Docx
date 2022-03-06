@@ -15,7 +15,7 @@ namespace Berry.Docx.Documents
     /// <summary>
     /// Represent the table.
     /// </summary>
-    public class Table : DocumentElement
+    public class Table : DocumentItem
     {
         #region Private Members
         private Document _doc;

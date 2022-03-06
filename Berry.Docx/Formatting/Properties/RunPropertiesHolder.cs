@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using P = DocumentFormat.OpenXml.Packaging;
 using OOxml = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
-    public class RunPropertiesHolder
+    /// <summary>
+    /// Represent an OpenXML RunProperties holder.
+    /// </summary>
+    internal class RunPropertiesHolder
     {
+        #region Private Members
         private P.WordprocessingDocument _document;
         private OOxml.RunProperties _rPr = null;
         private OOxml.ParagraphMarkRunProperties _mark_rPr = null;
@@ -19,7 +20,17 @@ namespace Berry.Docx.Formatting
         private OOxml.FontSizeComplexScript _fontSizeCs = null;
         private OOxml.Bold _bold = null;
         private OOxml.Italic _italic = null;
+        private OOxml.CharacterScale _characterScale = null;
+        private OOxml.Spacing _characterSpacing;
+        private OOxml.Position _position;
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML RunProperties element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.RunProperties rPr)
         {
             _document = doc;
@@ -29,8 +40,16 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.FontSizeComplexScript;
             _bold = rPr.Bold;
             _italic = rPr.Italic;
+            _characterScale = rPr.CharacterScale;
+            _characterSpacing = rPr.Spacing;
+            _position = rPr.Position;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML ParagraphMarkRunProperties element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.ParagraphMarkRunProperties rPr)
         {
             _document = doc;
@@ -40,8 +59,16 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.GetFirstChild<OOxml.FontSizeComplexScript>();
             _bold = rPr.GetFirstChild<OOxml.Bold>();
             _italic = rPr.GetFirstChild<OOxml.Italic>();
+            _characterScale = rPr.GetFirstChild<OOxml.CharacterScale>();
+            _characterSpacing = rPr.GetFirstChild<OOxml.Spacing>();
+            _position = rPr.GetFirstChild<OOxml.Position>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML StyleRunProperties element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.StyleRunProperties rPr)
         {
             _document = doc;
@@ -51,8 +78,16 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.FontSizeComplexScript;
             _bold = rPr.Bold;
             _italic = rPr.Italic;
+            _characterScale = rPr.CharacterScale;
+            _characterSpacing = rPr.Spacing;
+            _position = rPr.Position;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML RunPropertiesBaseStyle element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="rPr"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, OOxml.RunPropertiesBaseStyle rPr)
         {
             _document = doc;
@@ -61,12 +96,17 @@ namespace Berry.Docx.Formatting
             _fontSizeCs = rPr.FontSizeComplexScript;
             _bold = rPr.Bold;
             _italic = rPr.Italic;
+            _characterScale = rPr.CharacterScale;
+            _characterSpacing = rPr.Spacing;
+            _position = rPr.Position;
         }
+        #endregion
 
+        #region Public Properties
         /// <summary>
-        /// 中文字体
+        /// Gets or sets East Asian font name.
         /// </summary>
-        public string FontCN
+        public string FontNameEastAsia
         {
             get
             {
@@ -94,9 +134,10 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 英文字体
+        /// Gets or sets the font used for Latin text (characters with character codes from
+        /// 0 through 127).
         /// </summary>
-        public string FontEN
+        public string FontNameAscii
         {
             get
             {
@@ -125,13 +166,13 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 字号
+        /// Gets or sets font size specified in points.
         /// </summary>
-        public float FontSize
+        public FloatValue FontSize
         {
             get
             {
-                if (_fontSize == null) return -1;
+                if (_fontSize == null) return null;
                 return _fontSize.Val.Value.ToFloat() / 2;
             }
             set
@@ -150,11 +191,11 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        public float FontSizeCs
+        public FloatValue FontSizeCs
         {
             get
             {
-                if (_fontSizeCs == null) return -1;
+                if (_fontSizeCs == null) return null;
                 return _fontSizeCs.Val.Value.ToFloat() / 2;
             }
             set
@@ -173,9 +214,9 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 加粗
+        /// Gets or sets bold style.
         /// </summary>
-        public Zbool Bold
+        public BooleanValue Bold
         {
             get
             {
@@ -202,9 +243,9 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 斜体
+        /// Gets or sets italic style.
         /// </summary>
-        public Zbool Italic
+        public BooleanValue Italic
         {
             get
             {
@@ -230,5 +271,104 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the percent value of the normal character width that each character shall be scaled.
+        /// <para>If the value is 100, then each character shall be displayed at 100% of its normal with.</para>
+        /// <para>The value must be between 1 and 600, otherwise an exception will be thrown.</para>
+        /// </summary>
+        /// <exception cref="InvalidOperationException"/>
+        public IntegerValue CharacterScale
+        {
+            get
+            {
+                if (_characterScale == null) return null;
+                return (int)_characterScale.Val;
+            }
+            set
+            {
+                if (value < 1 || value > 600)
+                {
+                    throw new InvalidOperationException("This is not a vaild measurement. The value must be between 1 and 600.");
+                }
+                if (_characterScale != null)
+                {
+                    _characterScale.Val = (int)value;
+                }
+                else
+                {
+                    _characterScale = new OOxml.CharacterScale() { Val = (int)value };
+                    if (_rPr != null) _rPr.CharacterScale = _characterScale;
+                    else if (_mark_rPr != null) _mark_rPr.AddChild(_characterScale);
+                    else if (_style_rPr != null) _style_rPr.CharacterScale = _characterScale;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount (in points) of character pitch which shall be added or removed after each character.
+        /// </summary>
+        public FloatValue CharacterSpacing
+        {
+            get
+            {
+                if (_characterSpacing == null) return null;
+                return _characterSpacing.Val / 20.0F;
+            }
+            set
+            {
+                if (_characterSpacing != null)
+                {
+                    _characterSpacing.Val = (int)(value * 20);
+                }
+                else
+                {
+                    _characterSpacing = new OOxml.Spacing() { Val = (int)(value * 20) };
+                    if (_rPr != null) _rPr.Spacing = _characterSpacing;
+                    else if (_mark_rPr != null) _mark_rPr.AddChild(_characterSpacing);
+                    else if (_style_rPr != null) _style_rPr.Spacing = _characterSpacing;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount (in points) by which text shall be raised or lowered in relation to the default baseline location.
+        /// </summary>
+        public FloatValue Position
+        {
+            get
+            {
+                if (_position == null) return null;
+                return _position.Val.ToString().ToFloat() / 2;
+            }
+            set
+            {
+                if (_position != null)
+                {
+                    _position.Val = Math.Round(value * 2).ToString();
+                }
+                else
+                {
+                    _position = new OOxml.Position() { Val = Math.Round(value * 2).ToString() };
+                    if (_rPr != null) _rPr.Position = _position;
+                    else if (_mark_rPr != null) _mark_rPr.AddChild(_position);
+                    else if (_style_rPr != null) _style_rPr.Position = _position;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Clears all character formats.
+        /// </summary>
+        public void clearFormatting()
+        {
+            if (_rPr != null) _rPr.RemoveAllChildren();
+            else if (_mark_rPr != null) _mark_rPr.RemoveAllChildren();
+            else if (_style_rPr != null) _style_rPr.RemoveAllChildren();
+        }
+        #endregion
     }
 }

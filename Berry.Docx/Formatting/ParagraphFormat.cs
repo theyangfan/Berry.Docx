@@ -9,27 +9,29 @@ using P = DocumentFormat.OpenXml.Packaging;
 namespace Berry.Docx.Formatting
 {
     /// <summary>
-    /// 段落格式
+    /// Represent the paragraph format.
     /// </summary>
     public class ParagraphFormat
     {
+        #region Private Members
+
         private Document _document = null;
 
-        #region Private Paragraph Members
+        // Paragraph Members
         private OOxml.Paragraph _ownerParagraph = null;
         private ParagraphPropertiesHolder _curPHld = null;
-        private ParagraphFormat _inheritFromStyleFormat = null;
-        #endregion
+        private ParagraphFormat _styleFormat = null;
 
-        #region Private Style Members
+        // Style Members
         private OOxml.Style _ownerStyle = null;
         private ParagraphPropertiesHolder _curSHld = null;
-        private ParagraphFormat _inheritFromBaseStyleFormat = null;
-        #endregion
+        private ParagraphFormat _styleHierarchyFormat = null;
 
-        #region Private Formats Menbers
+        // Formats Members
+        // Normal
         private JustificationType _justification = JustificationType.Both;
         private OutlineLevelType _outlineLevel = OutlineLevelType.BodyText;
+        // Indentation
         private float _leftIndent = -1;
         private float _rightIndent = -1;
         private float _leftCharsIndent = -1;
@@ -38,6 +40,9 @@ namespace Berry.Docx.Formatting
         private float _firstLineCharsIndent = -1;
         private float _hangingIndent = -1;
         private float _hangingCharsIndent = -1;
+        private bool _mirrorIndents = false;
+        private bool _adjustRightIndent = true;
+        // Spacing
         private float _beforeSpacing = -1;
         private float _beforeLinesSpacing = -1;
         private bool _beforeAutoSpacing = false;
@@ -46,87 +51,67 @@ namespace Berry.Docx.Formatting
         private bool _afterAutoSpacing = false;
         private float _lineSpacing = 12;
         private LineSpacingRule _lineSpacingRule = LineSpacingRule.Multiple;
+        private bool _contextualSpacing = false;
+        private bool _snapToGrid = true;
+        // Pagination
+        private bool _widowControl = false;
+        private bool _keepNext = false;
+        private bool _keepLines = false;
+        private bool _pageBreakBefore = false;
+        // Formatting Exceptions
+        private bool _suppressLineNumbers = false;
+        private bool _suppressAutoHyphens = false;
+        // Line Break
+        private bool _kinsoku = true;
+        private bool _wordWrap = true;
+        private bool _overflowPunctuation = true;
+        // Character Spacing
+        private bool _topLinePunctuation = false;
+        private bool _autoSpaceDE = true;
+        private bool _autoSpaceDN = true;
+        // Numbering
         private NumberingFormat _numFormat = null;
 
-        private Zbool _overflowPunctuation = true;
-        private Zbool _topLinePunctuation = false;
-        private Zbool _adjustRightIndent = true;
-        private Zbool _snapToGrid = true;
         #endregion
 
+        #region Constructors
         /// <summary>
-        /// 空构造函数
+        /// Initializes a new instance of the ParagraphFormat class. 
         /// </summary>
-        public ParagraphFormat() { }
+        internal ParagraphFormat() { }
         /// <summary>
-        /// 构造函数，用于构造段落的段落格式
+        /// Represent the paragraph format of a Paragraph. 
         /// </summary>
+        /// <param name="document"></param>
         /// <param name="ownerParagraph"></param>
-        public ParagraphFormat(Document document, OOxml.Paragraph ownerParagraph)
+        internal ParagraphFormat(Document document, OOxml.Paragraph ownerParagraph)
         {
             _document = document;
             _ownerParagraph = ownerParagraph;
             if (ownerParagraph.ParagraphProperties == null)
                 ownerParagraph.ParagraphProperties = new OOxml.ParagraphProperties();
             _curPHld = new ParagraphPropertiesHolder(document, ownerParagraph.ParagraphProperties);
-            _inheritFromStyleFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
+            _styleFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
         }
+
         /// <summary>
-        /// 构造函数，用于构造样式的段落格式
+        /// Represent the paragraph format of a ParagraphStyle. 
         /// </summary>
+        /// <param name="document"></param>
         /// <param name="ownerStyle"></param>
-        public ParagraphFormat(Document document, OOxml.Style ownerStyle)
+        internal ParagraphFormat(Document document, OOxml.Style ownerStyle)
         {
             _document = document;
             _ownerStyle = ownerStyle;
             _curSHld = new ParagraphPropertiesHolder(document, ownerStyle.StyleParagraphProperties);
-            _inheritFromBaseStyleFormat = GetStyleParagraphFormatRecursively(ownerStyle);
-        }
-        /// <summary>
-        /// 递归地获取样式的段落格式
-        /// </summary>
-        /// <param name="style"></param>
-        /// <returns></returns>
-        private ParagraphFormat GetStyleParagraphFormatRecursively(OOxml.Style style)
-        {
-            ParagraphFormat format = new ParagraphFormat();
-            ParagraphFormat baseFormat = new ParagraphFormat();
-            OOxml.Style baseStyle = style.GetBaseStyle();
-            if (baseStyle != null)
-                baseFormat = GetStyleParagraphFormatRecursively(baseStyle);
-
-            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(_document, style.StyleParagraphProperties);
-
-            format.NumberingFormat = curSHld.NumberingFormat ?? baseFormat.NumberingFormat;
-
-            format.Justification = curSHld.Justification != JustificationType.None ? curSHld.Justification : baseFormat.Justification;
-            format.OutlineLevel = curSHld.OutlineLevel != OutlineLevelType.None ? curSHld.OutlineLevel : baseFormat.OutlineLevel;
-            format.LeftIndent = curSHld.LeftIndent >= 0 ? curSHld.LeftIndent : baseFormat.LeftIndent;
-            format.LeftCharsIndent = curSHld.LeftCharsIndent >= 0 ? curSHld.LeftCharsIndent : baseFormat.LeftCharsIndent;
-            format.RightIndent = curSHld.RightIndent >= 0 ? curSHld.RightIndent : baseFormat.RightIndent;
-            format.RightCharsIndent = curSHld.RightCharsIndent >= 0 ? curSHld.RightCharsIndent : baseFormat.RightCharsIndent;
-            format.FirstLineIndent = curSHld.FirstLineIndent >= 0 ? curSHld.FirstLineIndent : baseFormat.FirstLineIndent;
-            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent >= 0 ? curSHld.FirstLineCharsIndent : baseFormat.FirstLineCharsIndent;
-            format.HangingIndent = curSHld.HangingIndent >= 0 ? curSHld.HangingIndent : baseFormat.HangingIndent;
-            format.HangingCharsIndent = curSHld.HangingCharsIndent >= 0 ? curSHld.HangingCharsIndent : baseFormat.HangingCharsIndent;
-            format.BeforeSpacing = curSHld.BeforeSpacing >= 0 ? curSHld.BeforeSpacing : baseFormat.BeforeSpacing;
-            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing >= 0 ? curSHld.BeforeLinesSpacing : baseFormat.BeforeLinesSpacing;
-            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
-            format.AfterSpacing = curSHld.AfterSpacing >= 0 ? curSHld.AfterSpacing : baseFormat.AfterSpacing;
-            format.AfterLinesSpacing = curSHld.AfterLinesSpacing >= 0 ? curSHld.AfterLinesSpacing : baseFormat.AfterLinesSpacing;
-            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
-            format.LineSpacing = curSHld.LineSpacing > 0 ? curSHld.LineSpacing : baseFormat.LineSpacing;
-            format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
-                ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;
-            format.OverflowPunctuation = curSHld.OverflowPunctuation ?? baseFormat.OverflowPunctuation;
-            format.TopLinePunctuation = curSHld.TopLinePunctuation ?? baseFormat.TopLinePunctuation;
-            format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
-            format.SnapToGrid = curSHld.SnapToGrid ?? baseFormat.SnapToGrid;
-            return format;
+            _styleHierarchyFormat = GetStyleParagraphFormatRecursively(ownerStyle);
         }
 
+        #endregion
+
+        #region Public Properties
         /// <summary>
-        /// 编号格式
+        /// Gets paragraph numbering format.
         /// </summary>
         public NumberingFormat NumberingFormat
         {
@@ -134,11 +119,11 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerParagraph != null)
                 {
-                    return _ownerParagraph.ParagraphProperties != null && _ownerParagraph.ParagraphProperties.NumberingProperties != null ? _curPHld.NumberingFormat : _inheritFromStyleFormat.NumberingFormat;
+                    return _ownerParagraph.ParagraphProperties != null && _ownerParagraph.ParagraphProperties.NumberingProperties != null ? _curPHld.NumberingFormat : _styleFormat.NumberingFormat;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.NumberingFormat;
+                    return _styleHierarchyFormat.NumberingFormat;
                 }
                 else
                 {
@@ -151,8 +136,10 @@ namespace Berry.Docx.Formatting
                     _numFormat = value;
             }
         }
+
+        #region Normal
         /// <summary>
-        /// 对齐方式
+        /// Gets or sets the justification.
         /// </summary>
         public JustificationType Justification
         {
@@ -160,11 +147,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.Justification != JustificationType.None ? _curPHld.Justification : _inheritFromStyleFormat.Justification;
+                    return _curPHld.Justification != JustificationType.None ? _curPHld.Justification : _styleFormat.Justification;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.Justification;
+                    return _curSHld.Justification != JustificationType.None ? _curSHld.Justification : _styleHierarchyFormat.Justification;
                 }
                 else
                 {
@@ -189,7 +176,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 大纲级别
+        /// Gets or sets the outline level.
         /// </summary>
         public OutlineLevelType OutlineLevel
         {
@@ -197,11 +184,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.OutlineLevel != OutlineLevelType.None ? _curPHld.OutlineLevel : _inheritFromStyleFormat.OutlineLevel;
+                    return _curPHld.OutlineLevel != OutlineLevelType.None ? _curPHld.OutlineLevel : _styleFormat.OutlineLevel;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.OutlineLevel;
+                    return _curSHld.OutlineLevel != OutlineLevelType.None ? _curSHld.OutlineLevel : _styleHierarchyFormat.OutlineLevel;
                 }
                 else
                 {
@@ -224,9 +211,11 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+        #endregion
 
+        #region Indentation
         /// <summary>
-        /// 左侧缩进(磅)
+        /// Gets or sets the left indent (in points) for paragraph.
         /// </summary>
         public float LeftIndent
         {
@@ -234,11 +223,11 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerParagraph != null)
                 {
-                    return _curPHld.LeftIndent >= 0 ? _curPHld.LeftIndent : _inheritFromStyleFormat.LeftIndent;
+                    return _curPHld.LeftIndent ?? _styleFormat.LeftIndent;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.LeftIndent;
+                    return _curSHld.LeftIndent ?? _styleHierarchyFormat.LeftIndent;
                 }
                 else
                 {
@@ -262,7 +251,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 左侧缩进(字符)
+        /// Gets or sets the left indent (in chars) for paragraph.
         /// </summary>
         public float LeftCharsIndent
         {
@@ -270,11 +259,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.LeftCharsIndent >= 0 ? _curPHld.LeftCharsIndent : _inheritFromStyleFormat.LeftCharsIndent;
+                    return _curPHld.LeftCharsIndent ?? _styleFormat.LeftCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.LeftCharsIndent;
+                    return _curSHld.LeftCharsIndent ?? _styleHierarchyFormat.LeftCharsIndent;
                 }
                 else
                 {
@@ -298,7 +287,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 右侧缩进(磅)
+        /// Gets or sets the right indent (in points) for paragraph.
         /// </summary>
         public float RightIndent
         {
@@ -306,11 +295,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.RightIndent >= 0 ? _curPHld.RightIndent : _inheritFromStyleFormat.RightIndent;
+                    return _curPHld.RightIndent ?? _styleFormat.RightIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.RightIndent;
+                    return _curSHld.RightIndent ?? _styleHierarchyFormat.RightIndent;
                 }
                 else
                 {
@@ -334,7 +323,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 右侧缩进(字符)
+        /// Gets or sets the right indent (in chars) for paragraph.
         /// </summary>
         public float RightCharsIndent
         {
@@ -342,11 +331,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.RightCharsIndent >= 0 ? _curPHld.RightCharsIndent : _inheritFromStyleFormat.RightCharsIndent;
+                    return _curPHld.RightCharsIndent ?? _styleFormat.RightCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.RightCharsIndent;
+                    return _curSHld.RightCharsIndent ?? _styleHierarchyFormat.RightCharsIndent;
                 }
                 else
                 {
@@ -370,7 +359,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 首行缩进(磅)
+        /// Gets or sets the first line indent (in points) for paragraph.
         /// </summary>
         public float FirstLineIndent
         {
@@ -378,11 +367,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.FirstLineIndent >= 0 ? _curPHld.FirstLineIndent : _inheritFromStyleFormat.FirstLineIndent;
+                    return _curPHld.FirstLineIndent ?? _styleFormat.FirstLineIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.FirstLineIndent;
+                    return _curSHld.FirstLineIndent ?? _styleHierarchyFormat.FirstLineIndent;
                 }
                 else
                 {
@@ -406,7 +395,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 首行缩进(字符)
+        /// Gets or sets the first line indent (in chars) for paragraph.
         /// </summary>
         public float FirstLineCharsIndent
         {
@@ -414,11 +403,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.FirstLineCharsIndent >= 0 ? _curPHld.FirstLineCharsIndent : _inheritFromStyleFormat.FirstLineCharsIndent;
+                    return _curPHld.FirstLineCharsIndent ?? _styleFormat.FirstLineCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.FirstLineCharsIndent;
+                    return _curSHld.FirstLineCharsIndent ?? _styleHierarchyFormat.FirstLineCharsIndent;
                 }
                 else
                 {
@@ -442,7 +431,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 悬挂缩进(磅)
+        /// Gets or sets the hanging indent (in points) for paragraph.
         /// </summary>
         public float HangingIndent
         {
@@ -450,11 +439,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.HangingIndent >= 0 ? _curPHld.HangingIndent : _inheritFromStyleFormat.HangingIndent;
+                    return _curPHld.HangingIndent ?? _styleFormat.HangingIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.HangingIndent;
+                    return _curSHld.HangingIndent ?? _styleHierarchyFormat.HangingIndent;
                 }
                 else
                 {
@@ -478,7 +467,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 悬挂缩进(字符)
+        /// Gets or sets the hanging indent (in chars) for paragraph.
         /// </summary>
         public float HangingCharsIndent
         {
@@ -486,11 +475,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.HangingCharsIndent >= 0 ? _curPHld.HangingCharsIndent : _inheritFromStyleFormat.HangingCharsIndent;
+                    return _curPHld.HangingCharsIndent ?? _styleFormat.HangingCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.HangingCharsIndent;
+                    return _curSHld.HangingCharsIndent ?? _styleHierarchyFormat.HangingCharsIndent;
                 }
                 else
                 {
@@ -513,371 +502,9 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
-        /// <summary>
-        /// 段前间距(磅)
-        /// </summary>
-        public float BeforeSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.BeforeSpacing >= 0 ? _curPHld.BeforeSpacing : _inheritFromStyleFormat.BeforeSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.BeforeSpacing;
-                }
-                else
-                {
-                    return _beforeSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.BeforeSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.BeforeSpacing = value;
-                }
-                else
-                {
-                    _beforeSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// 段前间距(行)
-        /// </summary>
-        public float BeforeLinesSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.BeforeLinesSpacing >= 0 ? _curPHld.BeforeLinesSpacing : _inheritFromStyleFormat.BeforeLinesSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.BeforeLinesSpacing;
-                }
-                else
-                {
-                    return _beforeLinesSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.BeforeLinesSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.BeforeLinesSpacing = value;
-                }
-                else
-                {
-                    _beforeLinesSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// 自动调整段前间距
-        /// </summary>
-        public bool BeforeAutoSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.BeforeAutoSpacing ?? _inheritFromStyleFormat.BeforeAutoSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.BeforeAutoSpacing;
-                }
-                else
-                {
-                    return _beforeAutoSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.BeforeAutoSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.BeforeAutoSpacing = value;
-                }
-                else
-                {
-                    _beforeAutoSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// 段后间距(磅)
-        /// </summary>
-        public float AfterSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.AfterSpacing >= 0 ? _curPHld.AfterSpacing : _inheritFromStyleFormat.AfterSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.AfterSpacing;
-                }
-                else
-                {
-                    return _afterSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.AfterSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.AfterSpacing = value;
-                }
-                else
-                {
-                    _afterSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// 段后间距(行)
-        /// </summary>
-        public float AfterLinesSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.AfterLinesSpacing >= 0 ? _curPHld.AfterLinesSpacing : _inheritFromStyleFormat.AfterLinesSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.AfterLinesSpacing;
-                }
-                else
-                {
-                    return _afterLinesSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.AfterLinesSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.AfterLinesSpacing = value;
-                }
-                else
-                {
-                    _afterLinesSpacing = value;
-                }
-            }
-        }
 
         /// <summary>
-        /// 自动调整段后间距
-        /// </summary>
-        public bool AfterAutoSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.AfterAutoSpacing ?? _inheritFromStyleFormat.AfterAutoSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.AfterAutoSpacing;
-                }
-                else
-                {
-                    return _afterAutoSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.AfterAutoSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.AfterAutoSpacing = value;
-                }
-                else
-                {
-                    _afterAutoSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// 行距(磅)
-        /// </summary>
-        public float LineSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.LineSpacing >= 0 ? _curPHld.LineSpacing : _inheritFromStyleFormat.LineSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.LineSpacing;
-                }
-                else
-                {
-                    return _lineSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.LineSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.LineSpacing = value;
-                }
-                else
-                {
-                    _lineSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// 行距类型
-        /// </summary>
-        public LineSpacingRule LineSpacingRule
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.LineSpacingRule != LineSpacingRule.None ? _curPHld.LineSpacingRule : _inheritFromStyleFormat.LineSpacingRule;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.LineSpacingRule;
-                }
-                else
-                {
-                    return _lineSpacingRule;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.LineSpacingRule = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.LineSpacingRule = value;
-                }
-                else
-                {
-                    _lineSpacingRule = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 允许标点溢出边界
-        /// </summary>
-        public bool OverflowPunctuation
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.OverflowPunctuation ?? _inheritFromStyleFormat.OverflowPunctuation;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.OverflowPunctuation;
-                }
-                else
-                {
-                    return _overflowPunctuation;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.OverflowPunctuation = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.OverflowPunctuation = value;
-                }
-                else
-                {
-                    _overflowPunctuation = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 允许行首标点压缩
-        /// </summary>
-        public bool TopLinePunctuation
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.TopLinePunctuation ?? _inheritFromStyleFormat.TopLinePunctuation;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _inheritFromBaseStyleFormat.TopLinePunctuation;
-                }
-                else
-                {
-                    return _topLinePunctuation;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.TopLinePunctuation = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.TopLinePunctuation = value;
-                }
-                else
-                {
-                    _topLinePunctuation = value;
-                }
-            }
-        }
-        /// <summary>
-        /// 如果定义了文档网格，则自动调整右缩进
+        /// Gets or sets a value indicating whether automatically adjust right indent when document grid is defined.
         /// </summary>
         public bool AdjustRightIndent
         {
@@ -885,11 +512,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AdjustRightIndent ?? _inheritFromStyleFormat.AdjustRightIndent;
+                    return _curPHld.AdjustRightIndent ?? _styleFormat.AdjustRightIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.AdjustRightIndent;
+                    return _curSHld.AdjustRightIndent ?? _styleHierarchyFormat.AdjustRightIndent;
                 }
                 else
                 {
@@ -914,7 +541,373 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 如果定义了文档网格，则对齐到网格
+        /// Gets or sets a value indicating whether the paragraph indents should be interpreted as mirrored indents.
+        /// </summary>
+        public bool MirrorIndents
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.MirrorIndents ?? _styleFormat.MirrorIndents;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.MirrorIndents ?? _styleHierarchyFormat.MirrorIndents;
+                }
+                else
+                {
+                    return _mirrorIndents;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.MirrorIndents = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.MirrorIndents = value;
+                }
+                else
+                {
+                    _mirrorIndents = value;
+                }
+            }
+        }
+        #endregion
+
+        #region Spacing
+        /// <summary>
+        /// Gets or sets the spacing (in points) before the paragraph.
+        /// </summary>
+        public float BeforeSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.BeforeSpacing ?? _styleFormat.BeforeSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.BeforeSpacing ?? _styleHierarchyFormat.BeforeSpacing;
+                }
+                else
+                {
+                    return _beforeSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.BeforeSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.BeforeSpacing = value;
+                }
+                else
+                {
+                    _beforeSpacing = value;
+                }
+            }
+        }
+        /// <summary>
+        /// Gets or sets the spacing (in lines) before the paragraph.
+        /// </summary>
+        public float BeforeLinesSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.BeforeLinesSpacing ?? _styleFormat.BeforeLinesSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.BeforeLinesSpacing ?? _styleHierarchyFormat.BeforeLinesSpacing;
+                }
+                else
+                {
+                    return _beforeLinesSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.BeforeLinesSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.BeforeLinesSpacing = value;
+                }
+                else
+                {
+                    _beforeLinesSpacing = value;
+                }
+            }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether spacing before is automatic.
+        /// </summary>
+        public bool BeforeAutoSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.BeforeAutoSpacing ?? _styleFormat.BeforeAutoSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.BeforeAutoSpacing ?? _styleHierarchyFormat.BeforeAutoSpacing;
+                }
+                else
+                {
+                    return _beforeAutoSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.BeforeAutoSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.BeforeAutoSpacing = value;
+                }
+                else
+                {
+                    _beforeAutoSpacing = value;
+                }
+            }
+        }
+        /// <summary>
+        /// Gets or sets the spacing (in points) after the paragraph.
+        /// </summary>
+        public float AfterSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.AfterSpacing ??_styleFormat.AfterSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.AfterSpacing ?? _styleHierarchyFormat.AfterSpacing;
+                }
+                else
+                {
+                    return _afterSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.AfterSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.AfterSpacing = value;
+                }
+                else
+                {
+                    _afterSpacing = value;
+                }
+            }
+        }
+        /// <summary>
+        /// Gets or sets the spacing (in lines) after the paragraph.
+        /// </summary>
+        public float AfterLinesSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.AfterLinesSpacing ?? _styleFormat.AfterLinesSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.AfterLinesSpacing ?? _styleHierarchyFormat.AfterLinesSpacing;
+                }
+                else
+                {
+                    return _afterLinesSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.AfterLinesSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.AfterLinesSpacing = value;
+                }
+                else
+                {
+                    _afterLinesSpacing = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether spacing after is automatic.
+        /// </summary>
+        public bool AfterAutoSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.AfterAutoSpacing ?? _styleFormat.AfterAutoSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.AfterAutoSpacing ?? _styleHierarchyFormat.AfterAutoSpacing;
+                }
+                else
+                {
+                    return _afterAutoSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.AfterAutoSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.AfterAutoSpacing = value;
+                }
+                else
+                {
+                    _afterAutoSpacing = value;
+                }
+            }
+        }
+        /// <summary>
+        /// Gets or sets the line spacing (in points) for paragraph.
+        /// </summary>
+        public float LineSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.LineSpacing ?? _styleFormat.LineSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.LineSpacing ?? _styleHierarchyFormat.LineSpacing;
+                }
+                else
+                {
+                    return _lineSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.LineSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.LineSpacing = value;
+                }
+                else
+                {
+                    _lineSpacing = value;
+                }
+            }
+        }
+        /// <summary>
+        /// Gets or sets the line spacing rule of paragraph.
+        /// </summary>
+        public LineSpacingRule LineSpacingRule
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.LineSpacingRule != LineSpacingRule.None ? _curPHld.LineSpacingRule : _styleFormat.LineSpacingRule;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.LineSpacingRule != LineSpacingRule.None ? _curSHld.LineSpacingRule : _styleHierarchyFormat.LineSpacingRule;
+                }
+                else
+                {
+                    return _lineSpacingRule;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.LineSpacingRule = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.LineSpacingRule = value;
+                }
+                else
+                {
+                    _lineSpacingRule = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether don't add space between paragraphs of the same style.
+        /// </summary>
+        public bool ContextualSpacing
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.ContextualSpacing ?? _styleFormat.ContextualSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.ContextualSpacing ?? _styleHierarchyFormat.ContextualSpacing;
+                }
+                else
+                {
+                    return _contextualSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.ContextualSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.ContextualSpacing = value;
+                }
+                else
+                {
+                    _contextualSpacing = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether snap to grid when document grid is defined.
         /// </summary>
         public bool SnapToGrid
         {
@@ -922,11 +915,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.SnapToGrid ?? _inheritFromStyleFormat.SnapToGrid;
+                    return _curPHld.SnapToGrid ?? _styleFormat.SnapToGrid;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _inheritFromBaseStyleFormat.SnapToGrid;
+                    return _curSHld.SnapToGrid ?? _styleHierarchyFormat.SnapToGrid;
                 }
                 else
                 {
@@ -949,9 +942,466 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+        #endregion
+
+        #region Pagination
+        /// <summary>
+        /// Gets or sets a value indicating whether a consumer shall prevent first/last line of this paragraph 
+        /// from being displayed on a separate page.
+        /// </summary>
+        public bool WidowControl
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.WidowControl ?? _styleFormat.WidowControl;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.WidowControl ?? _styleHierarchyFormat.WidowControl;
+                }
+                else
+                {
+                    return _widowControl;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.WidowControl = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.WidowControl = value;
+                }
+                else
+                {
+                    _widowControl = value;
+                }
+            }
+        }
 
         /// <summary>
-        /// 去除文本框选项
+        /// Gets or sets a value indicating whether keep paragraph with next paragraph on the same page.
+        /// </summary>
+        public bool KeepNext
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.KeepNext ?? _styleFormat.KeepNext;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.KeepNext ?? _styleHierarchyFormat.KeepNext;
+                }
+                else
+                {
+                    return _keepNext;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.KeepNext = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.KeepNext = value;
+                }
+                else
+                {
+                    _keepNext = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether keep all lines of this paragraph on one page.
+        /// </summary>
+        public bool KeepLines
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.KeepLines ?? _styleFormat.KeepLines;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.KeepLines ?? _styleHierarchyFormat.KeepLines;
+                }
+                else
+                {
+                    return _keepLines;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.KeepLines = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.KeepLines = value;
+                }
+                else
+                {
+                    _keepLines = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether start paragraph on next page.
+        /// </summary>
+        public bool PageBreakBefore
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.PageBreakBefore ?? _styleFormat.PageBreakBefore;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.PageBreakBefore ?? _styleHierarchyFormat.PageBreakBefore;
+                }
+                else
+                {
+                    return _pageBreakBefore;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.PageBreakBefore = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.PageBreakBefore = value;
+                }
+                else
+                {
+                    _pageBreakBefore = value;
+                }
+            }
+        }
+        #endregion
+
+        #region Formatting Exceptions
+        /// <summary>
+        /// Gets or sets a value indicating whether suppress line numbers for paragraph.
+        /// </summary>
+        public bool SuppressLineNumbers
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.SuppressLineNumbers ?? _styleFormat.SuppressLineNumbers;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.SuppressLineNumbers ?? _styleHierarchyFormat.SuppressLineNumbers;
+                }
+                else
+                {
+                    return _suppressLineNumbers;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.SuppressLineNumbers = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.SuppressLineNumbers = value;
+                }
+                else
+                {
+                    _suppressLineNumbers = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether suppress hyphenation for paragraph.
+        /// </summary>
+        public bool SuppressAutoHyphens
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.SuppressAutoHyphens ?? _styleFormat.SuppressAutoHyphens;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.SuppressAutoHyphens ?? _styleHierarchyFormat.SuppressAutoHyphens;
+                }
+                else
+                {
+                    return _suppressAutoHyphens;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.SuppressAutoHyphens = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.SuppressAutoHyphens = value;
+                }
+                else
+                {
+                    _suppressAutoHyphens = value;
+                }
+            }
+        }
+        #endregion
+
+        #region Line Break
+        /// <summary>
+        /// Gets or sets a value indicating whether use asian rules for controlling first and last character.
+        /// </summary>
+        public bool Kinsoku
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.Kinsoku ?? _styleFormat.Kinsoku;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.Kinsoku ?? _styleHierarchyFormat.Kinsoku;
+                }
+                else
+                {
+                    return _kinsoku;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.Kinsoku = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.Kinsoku = value;
+                }
+                else
+                {
+                    _kinsoku = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allow latin text to wrap in the middle of a word.
+        /// </summary>
+        public bool WordWrap
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.WordWrap ?? _styleFormat.WordWrap;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.WordWrap ?? _styleHierarchyFormat.WordWrap;
+                }
+                else
+                {
+                    return _wordWrap;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.WordWrap = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.WordWrap = value;
+                }
+                else
+                {
+                    _wordWrap = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allow hanging punctuation.
+        /// </summary>
+        public bool OverflowPunctuation
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.OverflowPunctuation ?? _styleFormat.OverflowPunctuation;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.OverflowPunctuation ?? _styleHierarchyFormat.OverflowPunctuation;
+                }
+                else
+                {
+                    return _overflowPunctuation;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.OverflowPunctuation = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.OverflowPunctuation = value;
+                }
+                else
+                {
+                    _overflowPunctuation = value;
+                }
+            }
+        }
+        #endregion
+
+        #region Character Spacing
+        /// <summary>
+        /// Gets or sets a value indicating whether allow punctuation at the start of a line to compress.
+        /// </summary>
+        public bool TopLinePunctuation
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.TopLinePunctuation ?? _styleFormat.TopLinePunctuation;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.TopLinePunctuation ?? _styleHierarchyFormat.TopLinePunctuation;
+                }
+                else
+                {
+                    return _topLinePunctuation;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.TopLinePunctuation = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.TopLinePunctuation = value;
+                }
+                else
+                {
+                    _topLinePunctuation = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether automatically adjust space between Asian and Latin text.
+        /// </summary>
+        public bool AutoSpaceDE
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.AutoSpaceDE ?? _styleFormat.AutoSpaceDE;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.AutoSpaceDE ?? _styleHierarchyFormat.AutoSpaceDE;
+                }
+                else
+                {
+                    return _autoSpaceDE;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.AutoSpaceDE = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.AutoSpaceDE = value;
+                }
+                else
+                {
+                    _autoSpaceDE = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether automatically adjust space between Asian text and numbers.
+        /// </summary>
+        public bool AutoSpaceDN
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    return _curPHld.AutoSpaceDN ?? _styleFormat.AutoSpaceDN;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.AutoSpaceDN ?? _styleHierarchyFormat.AutoSpaceDN;
+                }
+                else
+                {
+                    return _autoSpaceDN;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _curPHld.AutoSpaceDN = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.AutoSpaceDN = value;
+                }
+                else
+                {
+                    _autoSpaceDN = value;
+                }
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Remove the text box options of paragraph.
         /// </summary>
         public void RemoveFrame()
         {
@@ -964,6 +1414,70 @@ namespace Berry.Docx.Formatting
                 _curSHld.RemoveFrame();
             }
         }
+        #endregion
 
+        #region Private Methods
+        /// <summary>
+        /// Returns the paragraph format that specified in the style hierarchy of a style.
+        /// </summary>
+        /// <param name="style"> The style</param>
+        /// <returns>The paragraph format that specified in the style hierarchy.</returns>
+        private ParagraphFormat GetStyleParagraphFormatRecursively(OOxml.Style style)
+        {
+            ParagraphFormat format = new ParagraphFormat();
+            ParagraphFormat baseFormat = new ParagraphFormat();
+            // Gets base style format.
+            OOxml.Style baseStyle = style.GetBaseStyle();
+            if (baseStyle != null)
+                baseFormat = GetStyleParagraphFormatRecursively(baseStyle);
+
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(_document, style.StyleParagraphProperties);
+            // Normal
+            format.Justification = curSHld.Justification != JustificationType.None ? curSHld.Justification : baseFormat.Justification;
+            format.OutlineLevel = curSHld.OutlineLevel != OutlineLevelType.None ? curSHld.OutlineLevel : baseFormat.OutlineLevel;
+            // Indentation
+            format.LeftIndent = curSHld.LeftIndent ?? baseFormat.LeftIndent;
+            format.LeftCharsIndent = curSHld.LeftCharsIndent ?? baseFormat.LeftCharsIndent;
+            format.RightIndent = curSHld.RightIndent ?? baseFormat.RightIndent;
+            format.RightCharsIndent = curSHld.RightCharsIndent ?? baseFormat.RightCharsIndent;
+            format.FirstLineIndent = curSHld.FirstLineIndent ?? baseFormat.FirstLineIndent;
+            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent ?? baseFormat.FirstLineCharsIndent;
+            format.HangingIndent = curSHld.HangingIndent ?? baseFormat.HangingIndent;
+            format.HangingCharsIndent = curSHld.HangingCharsIndent ?? baseFormat.HangingCharsIndent;
+            format.MirrorIndents = curSHld.MirrorIndents ?? baseFormat.MirrorIndents;
+            format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
+            // Spacing
+            format.BeforeSpacing = curSHld.BeforeSpacing ?? baseFormat.BeforeSpacing;
+            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing ?? baseFormat.BeforeLinesSpacing;
+            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
+            format.AfterSpacing = curSHld.AfterSpacing ?? baseFormat.AfterSpacing;
+            format.AfterLinesSpacing = curSHld.AfterLinesSpacing ?? baseFormat.AfterLinesSpacing;
+            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
+            format.LineSpacing = curSHld.LineSpacing ?? baseFormat.LineSpacing;
+            format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
+                ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;
+            format.ContextualSpacing = curSHld.ContextualSpacing ?? baseFormat.ContextualSpacing;
+            format.SnapToGrid = curSHld.SnapToGrid ?? baseFormat.SnapToGrid;
+            // Pagination
+            format.WidowControl = curSHld.WidowControl ?? baseFormat.WidowControl;
+            format.KeepNext = curSHld.KeepNext ?? baseFormat.KeepNext;
+            format.KeepLines = curSHld.KeepLines ?? baseFormat.KeepLines;
+            format.PageBreakBefore = curSHld.PageBreakBefore ?? baseFormat.PageBreakBefore;
+            // Formatting Exceptions
+            format.SuppressLineNumbers = curSHld.SuppressLineNumbers ?? baseFormat.SuppressLineNumbers;
+            format.SuppressAutoHyphens = curSHld.SuppressAutoHyphens ?? baseFormat.SuppressAutoHyphens;
+            // Line Break
+            format.Kinsoku = curSHld.Kinsoku ?? baseFormat.Kinsoku;
+            format.WordWrap = curSHld.WordWrap ?? baseFormat.WordWrap;
+            format.OverflowPunctuation = curSHld.OverflowPunctuation ?? baseFormat.OverflowPunctuation;
+            // Character Spacing
+            format.TopLinePunctuation = curSHld.TopLinePunctuation ?? baseFormat.TopLinePunctuation;
+            format.AutoSpaceDE = curSHld.AutoSpaceDE ?? baseFormat.AutoSpaceDE;
+            format.AutoSpaceDN = curSHld.AutoSpaceDN ?? baseFormat.AutoSpaceDN;
+            // Numbering
+            format.NumberingFormat = curSHld.NumberingFormat ?? baseFormat.NumberingFormat;
+            return format;
+        }
+        #endregion
     }
 }

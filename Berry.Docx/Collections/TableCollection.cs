@@ -1,135 +1,95 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using O = DocumentFormat.OpenXml;
-using W = DocumentFormat.OpenXml.Wordprocessing;
-using P = DocumentFormat.OpenXml.Packaging;
-
 using Berry.Docx.Documents;
 
 namespace Berry.Docx.Collections
 {
-    public class TableCollection : IEnumerable
+    /// <summary>
+    /// Represent a table collection.
+    /// </summary>
+    public class TableCollection : DocumentItemCollection
     {
-        private O.OpenXmlElement _owner;
-        private IEnumerable<Table> _tables;
-        internal TableCollection(O.OpenXmlElement owner, IEnumerable<Table> tables)
+        #region Constructors
+        internal TableCollection(O.OpenXmlElement owner, IEnumerable<Table> tables) : base(owner, tables)
         {
-            _owner = owner;
-            _tables = tables;
+        }
+        #endregion
+
+        #region Public Properties
+        /// <summary>
+        /// Gets the table at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index.</param>
+        /// <returns>The table at the specified index.</returns>
+        public new Table this[int index] => (Table)base[index];
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Returns the first table of the current collection.
+        /// </summary>
+        /// <returns>The first table in the current collection.</returns>
+        public new Table First()
+        {
+            return (Table)base.First();
         }
 
-        public Table this[int index] => _tables.ElementAt(index);
+        /// <summary>
+        /// Returns the last table of the current collection.
+        /// </summary>
+        /// <returns>The last table in the current collection.</returns>
+        public new Table Last()
+        {
+            return (Table)base.Last();
+        }
 
         /// <summary>
-        /// 返回集合数量
+        /// Determines whether this collection contains a specified table.
         /// </summary>
-        public int Count => _tables.Count();
-
+        /// <param name="table">The specified DocumentObject.</param>
+        /// <returns>true if the collection contains the specified DocumentObject; otherwise, false.</returns>
         public bool Contains(Table table)
         {
-            return _tables.Contains(table);
+            return base.Contains(table);
         }
 
         /// <summary>
-        /// 在集合末尾添加段落
+        /// Adds the specified table to the end of the current collection.
         /// </summary>
-        /// <param name="table">段落</param>
+        /// <param name="table">The table instance that was added.</param>
         public void Add(Table table)
         {
-            W.Table newTable = table.XElement as W.Table;
-            if (_tables.Count() == 0)
-            {
-                if(_owner is W.Body)
-                {
-                    _owner.InsertBefore(newTable, _owner.LastChild);
-                    return;
-                }
-                _owner.AppendChild(newTable);
-            }
-            else
-            {
-                _tables.Last().XElement.InsertAfterSelf(newTable);
-            }
+            base.Add(table);
         }
 
         /// <summary>
-        /// 返回段落在集合中从零开始的索引
+        /// Searchs for the specified table and returns the zero-based index of the first occurrence within the entire collection.
         /// </summary>
-        /// <param name="table">段落</param>
-        /// <returns></returns>
+        /// <param name="table">The specified table.</param>
+        /// <returns>The zero-based index of the first occurrence of table within the entire collection,if found; otherwise, -1.</returns>
         public int IndexOf(Table table)
         {
-            return _tables.ToList().IndexOf(table);
+            return base.IndexOf(table);
         }
 
         /// <summary>
-        /// 在集合指定位置插入段落
+        /// Insert the specified table immediately to the specified index of the current collection.
         /// </summary>
-        /// <param name="table">段落</param>
-        /// <param name="index">段落位置，从零开始的索引</param>
+        /// <param name="table">The inserted table instance.</param>
+        /// <param name="index">The zero-based index.</param>
         public void InsertAt(Table table, int index)
         {
-            W.Table newTable = table.XElement as W.Table;
-            if (_tables.Count() == 0)
-            {
-                if (index == 0)
-                {
-                    if (_owner is W.Body)
-                    {
-                        _owner.InsertBefore(newTable, _owner.LastChild);
-                        return;
-                    }
-                    _owner.AppendChild(newTable);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("index", index, "索引超出范围, 必须为非负值并小于集合大小。");
-                }
-            }
-            else
-            {
-                _tables.ElementAt(index).XElement.InsertBeforeSelf(newTable);
-            }
-                
+            base.InsertAt(table, index);
         }
 
         /// <summary>
-        /// 移除段落
+        /// Removes the specified table immediately from the current collection.
         /// </summary>
-        /// <param name="table">表格</param>
+        /// <param name="table"> The table instance that was removed.</param>
         public void Remove(Table table)
         {
-            if (!Contains(table)) return;
-            table.Remove();
+            base.Remove(table);
         }
-
-        /// <summary>
-        /// 移除指定位置处的段落
-        /// </summary>
-        /// <param name="index">段落位置，从零开始的索引</param>
-        public void RemoveAt(int index)
-        {
-            _tables.ElementAt(index).Remove();
-        }
-
-        /// <summary>
-        /// 移除所有段落
-        /// </summary>
-        public void Clear()
-        {
-            foreach (Table table in _tables)
-                table.Remove();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return _tables.GetEnumerator();
-        }
-
-        
+        #endregion
     }
 }

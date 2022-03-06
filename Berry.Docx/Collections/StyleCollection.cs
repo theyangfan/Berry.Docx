@@ -8,105 +8,55 @@ using Berry.Docx.Documents;
 namespace Berry.Docx.Collections
 {
     /// <summary>
-    /// 样式集合
+    /// Represent a style collection.
     /// </summary>
     public class StyleCollection : IEnumerable
     {
+        #region Private Members
         private IEnumerable<Style> _styles;
-        /// <summary>
-        /// 样式集合
-        /// </summary>
-        /// <param name="styles"></param>
-        public StyleCollection(IEnumerable<Style> styles)
+        #endregion
+
+        #region Constructors
+        internal StyleCollection(IEnumerable<Style> styles)
         {
             _styles = styles;
         }
+        #endregion
+
+        #region Public Properties
         /// <summary>
-        /// 返回所以为index的样式
+        /// Gets the style at the specified index.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public Style this[int index]
-        {
-            get
-            {
-                return _styles.ElementAt(index);
-            }
-        }
+        /// <param name="index">The zero-based index.</param>
+        /// <returns>The style at the specified index in the current collection.</returns>
+        public Style this[int index] => _styles.ElementAt(index);
 
         /// <summary>
-        /// 返回集合数量
+        /// Gets the number of styles in the collection.
         /// </summary>
-        public int Count { get => _styles.Count(); }
-        /// <summary>
-        /// 返回样式枚举器
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator GetEnumerator()
-        {
-            return _styles.GetEnumerator();
-        }
+        public int Count => _styles.Count();
+        #endregion
 
+        #region Public Methods
         /// <summary>
-        /// 
+        /// Searchs for the style with the specified stylename and type within the entire collection.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public Style FindByName(string name)
-        {
-            return _styles.Where(s => s.Name.ToLower() == name.ToLower()).FirstOrDefault();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="name">The name of style.</param>
+        /// <param name="type">The StyleType of style.</param>
+        /// <returns>The style with the specified stylename and type</returns>
         public Style FindByName(string name, StyleType type)
         {
             return _styles.Where(s => s.Name.ToLower() == name.ToLower() && s.Type == type).FirstOrDefault();
         }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator GetEnumerator()
+        {
+            return _styles.GetEnumerator();
+        }
+        #endregion
     }
-
-    /*
-    public class StyleEnumerator : IEnumerator
-    {
-        private List<Style> _styles;
-        int _position = -1;
-        public StyleEnumerator(List<Style> styles)
-        {
-            _styles = styles;
-        }
-
-        public object Current
-        {
-            get
-            {
-                if (_position == -1)
-                    throw new InvalidOperationException();
-                if (_position >= _styles.Count)
-                    throw new InvalidOperationException();
-                return _styles[_position];
-            }
-        }
-
-        public bool MoveNext()
-        {
-            if (_position < _styles.Count - 1)
-            {
-                _position++;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void Reset()
-        {
-            _position = -1;
-        }
-    }
-    */
 }

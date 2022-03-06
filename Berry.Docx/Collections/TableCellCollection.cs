@@ -1,26 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using O = DocumentFormat.OpenXml;
-
 using Berry.Docx.Documents;
+
 namespace Berry.Docx.Collections
 {
-    public class TableCellCollection : DocumentElementCollection
+    /// <summary>
+    /// Represent a table cell collection.
+    /// </summary>
+    public class TableCellCollection : DocumentItemCollection
     {
-        private IEnumerable<TableCell> _cells;
+        #region Constructors
         internal TableCellCollection(O.OpenXmlElement owner, IEnumerable<TableCell> cells)
             : base(owner, cells)
         {
-            _cells = cells;
         }
+        #endregion
 
-        public new TableCell this[int index] => _cells.ElementAt(index);
+        #region Public Properties
+        /// <summary>
+        /// Gets the table cell at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index.</param>
+        /// <returns>The table cell at the specified index.</returns>
+        public new TableCell this[int index] => (TableCell)base[index];
+        #endregion
 
-        public TableCell Last()
+        #region Public Methods
+        /// <summary>
+        /// Returns the first table cell of the current collection.
+        /// </summary>
+        /// <returns>The first table cell in the current collection.</returns>
+        public new TableCell First()
         {
-            return _cells.Last();
+            return (TableCell)base.First();
         }
+
+        /// <summary>
+        /// Returns the last table cell of the current collection.
+        /// </summary>
+        /// <returns>The last table cell in the current collection.</returns>
+        public new TableCell Last()
+        {
+            return (TableCell)base.Last();
+        }
+        #endregion
     }
 }

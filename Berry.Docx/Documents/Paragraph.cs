@@ -21,7 +21,7 @@ namespace Berry.Docx.Documents
     /// <summary>
     /// Represent the paragraph.
     /// </summary>
-    public class Paragraph : DocumentElement
+    public class Paragraph : DocumentItem
     {
         #region Private Members
         private Document _doc;
@@ -146,17 +146,195 @@ namespace Berry.Docx.Documents
                 return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
             }
         }
-        #endregion
 
-        #region Internal Methods
-        internal void Remove()
+        /// <summary>
+        /// Gets the owener section of the current paragraph.
+        /// </summary>
+        public Section Section
         {
-            if (_paragraph != null) _paragraph.Remove();
+            get
+            {
+                foreach(Section section in _doc.Sections)
+                {
+                    if (section.Paragraphs.Contains(this))
+                        return section;
+                }
+                return null;
+            }
         }
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Insert a section break with the specified type to the current paragraph. 
+        /// <para>The current paragraph must have an owner section, otherwise an exception will be thrown.</para>
+        /// </summary>
+        /// <param name="type">Type of section break.</param>
+        /// <exception cref="NullReferenceException"/>
+        /// <returns>The section.</returns>
+        public Section InsertSectionBreak(SectionBreakType type)
+        {
+            if (Section != null)
+            {
+                W.SectionProperties curSectPr = Section.XElement;
+                // Clone a new SectionProperties from current section.
+                W.SectionProperties newSectPr = (W.SectionProperties)curSectPr.CloneNode(true);
+                // Set the current section type
+                W.SectionType curSectType = curSectPr.Elements<W.SectionType>().FirstOrDefault();
+                if (curSectType == null)
+                {
+                    curSectType = new W.SectionType();
+                    curSectPr.AddChild(curSectType);
+                }
+                switch (type)
+                {
+                    case SectionBreakType.Continuous:
+                        curSectType.Val = W.SectionMarkValues.Continuous;
+                        break;
+                    case SectionBreakType.OddPage:
+                        curSectType.Val = W.SectionMarkValues.OddPage;
+                        break;
+                    case SectionBreakType.EvenPage:
+                        curSectType.Val = W.SectionMarkValues.EvenPage;
+                        break;
+                    default:
+                        curSectType.Remove();
+                        break;
+                }
+                // Move current section to the next new paragraph if SectionProperties is present in current paragraph.
+                if (_paragraph.Descendants<W.SectionProperties>().Any())
+                {
+                    W.Paragraph paragraph = new W.Paragraph() { ParagraphProperties = new W.ParagraphProperties() };
+                    curSectPr.Remove();
+                    paragraph.ParagraphProperties.AddChild(curSectPr);
+                    _paragraph.InsertAfterSelf(paragraph);
+                }
+                // Add the new SectionProperties to the ParagraphProperties of the current paragraph
+                if (_paragraph.ParagraphProperties == null)
+                    _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                _paragraph.ParagraphProperties.AddChild(newSectPr);
+
+                return new Section(_doc, newSectPr);
+            }
+            else
+            {
+                throw new NullReferenceException("The owner section of the current paragraph is null.");
+            }
+        }
+
+        /// <summary>
+        /// Appends a comment to the current paragraph.
+        /// </summary>
+        /// <param name="author">The author of the comment.</param>
+        /// <param name="contents">The paragraphs content of the comment.</param>
+        public void AppendComment(string author, params string[] contents)
+        {
+            int id = 0; // comment id
+            P.WordprocessingCommentsPart part = _doc.Package.MainDocumentPart.WordprocessingCommentsPart;
+            if (part == null)
+            {
+                part = _doc.Package.MainDocumentPart.AddNewPart<P.WordprocessingCommentsPart>();
+                part.Comments = new W.Comments();
+            }
+            W.Comments comments = part.Comments;
+            // max id + 1
+            List<int> ids = new List<int>();
+            foreach (W.Comment c in comments)
+                ids.Add(c.Id.Value.ToInt());
+            if (ids.Count > 0)
+            {
+                ids.Sort();
+                id = ids.Last() + 1;
+            }
+            // comments content
+            
+            W.Comment comment = new W.Comment() { Id = id.ToString(), Author = author };
+            foreach(string content in contents)
+            {
+                W.Paragraph paragraph = new W.Paragraph(new W.Run(new W.Text(content)));
+                comment.Append(paragraph);
+            }
+            comments.Append(comment);
+            // comment mark
+            W.CommentRangeStart startMark = new W.CommentRangeStart() { Id = id.ToString() };
+            W.CommentRangeEnd endMark = new W.CommentRangeEnd() { Id = id.ToString() };
+            W.Run referenceRun = new W.Run(new W.CommentReference() { Id = id.ToString() });
+            // Insert comment mark
+            O.OpenXmlElement ele = _paragraph.FirstChild;
+            if(ele is W.ParagraphProperties || ele is W.CommentRangeStart)
+            {
+                while(ele.NextSibling() != null && ele.NextSibling() is W.CommentRangeStart)
+                {
+                    ele = ele.NextSibling();
+                }
+                ele.InsertAfterSelf(startMark);
+            }
+            else
+            {
+                _paragraph.InsertAt(startMark, 0);
+            }
+            _paragraph.Append(endMark);
+            _paragraph.Append(referenceRun);
+        }
+
+        /// <summary>
+        /// Appends a comment to the current paragraph.
+        /// </summary>
+        /// <param name="author">The author of the comment.</param>
+        /// <param name="contents">The paragraphs content of the comment.</param>
+        public void AppendComment(string author, IEnumerable<string> contents)
+        {
+            int id = 0; // comment id
+            P.WordprocessingCommentsPart part = _doc.Package.MainDocumentPart.WordprocessingCommentsPart;
+            if (part == null)
+            {
+                part = _doc.Package.MainDocumentPart.AddNewPart<P.WordprocessingCommentsPart>();
+                part.Comments = new W.Comments();
+            }
+            W.Comments comments = part.Comments;
+            // max id + 1
+            List<int> ids = new List<int>();
+            foreach (W.Comment c in comments)
+                ids.Add(c.Id.Value.ToInt());
+            if (ids.Count > 0)
+            {
+                ids.Sort();
+                id = ids.Last() + 1;
+            }
+            // comments content
+            W.Comment comment = new W.Comment() { Id = id.ToString(), Author = author };
+            foreach (string content in contents)
+            {
+                W.Paragraph paragraph = new W.Paragraph(new W.Run(new W.Text(content)));
+                comment.Append(paragraph);
+            }
+            comments.Append(comment);
+            // comment mark
+            W.CommentRangeStart startMark = new W.CommentRangeStart() { Id = id.ToString() };
+            W.CommentRangeEnd endMark = new W.CommentRangeEnd() { Id = id.ToString() };
+            W.Run referenceRun = new W.Run(new W.CommentReference() { Id = id.ToString() });
+            // Insert comment mark
+            O.OpenXmlElement ele = _paragraph.FirstChild;
+            if (ele is W.ParagraphProperties || ele is W.CommentRangeStart)
+            {
+                while (ele.NextSibling() != null && ele.NextSibling() is W.CommentRangeStart)
+                {
+                    ele = ele.NextSibling();
+                }
+                ele.InsertAfterSelf(startMark);
+            }
+            else
+            {
+                _paragraph.InsertAt(startMark, 0);
+            }
+            _paragraph.Append(endMark);
+            _paragraph.Append(referenceRun);
+        }
+
+        #endregion
+
         #region Private Methods
-        private IEnumerable<DocumentElement> ChildObjectsPrivate()
+        private IEnumerable<DocumentItem> ChildObjectsPrivate()
         {
             foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
             {
@@ -176,11 +354,11 @@ namespace Berry.Docx.Documents
             get
             {
                 if (_pFormat.NumberingFormat == null) return string.Empty;
-                string lvlText = _pFormat.NumberingFormat.LevelText;
-                if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.Decimal)
+                string lvlText = _pFormat.NumberingFormat.Format;
+                if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.Decimal)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "1");
-                else if (_pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCounting
-                    || _pFormat.NumberingFormat.NumberingType == W.NumberFormatValues.ChineseCountingThousand)
+                else if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCounting
+                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "一");
 
                 return lvlText;
@@ -228,44 +406,6 @@ namespace Berry.Docx.Documents
                 return new FieldCodeCollection(fieldcodes);
             }
         }
-
-        /// <summary>
-        /// 添加批注
-        /// </summary>
-        /// <param name="author">作者</param>
-        /// <param name="content">内容</param>
-        private void AppendComment(string author, string content)
-        {
-            int id = 0; // 新批注Id
-            P.WordprocessingCommentsPart part = _doc.Package.MainDocumentPart.WordprocessingCommentsPart;
-            if (part == null)
-            {
-                part = _doc.Package.MainDocumentPart.AddNewPart<P.WordprocessingCommentsPart>();
-                part.Comments = new W.Comments();
-            }
-            W.Comments comments = part.Comments;
-            // Id 值为当前批注最大值加1
-            List<int> ids = new List<int>();
-            foreach (W.Comment c in comments)
-                ids.Add(c.Id.Value.ToInt());
-            if (ids.Count > 0)
-            {
-                ids.Sort();
-                id = ids.Last() + 1;
-            }
-            // 设置批注内容
-            W.Paragraph paragraph = new W.Paragraph(new W.Run(new W.Text(content)));
-            W.Comment comment = new W.Comment(paragraph) { Id = id.ToString(), Author = author };
-            comments.AppendChild(comment);
-            // 插入批注标记
-            W.CommentRangeStart start = new W.CommentRangeStart() { Id = id.ToString() };
-            W.Run run = new W.Run(new W.CommentReference() { Id = id.ToString() });
-            W.CommentRangeEnd end = new W.CommentRangeEnd() { Id = id.ToString() };
-            _paragraph.InsertAt(start, 0);
-            _paragraph.AppendChild(end);
-            _paragraph.AppendChild(run);
-        }
-
         #endregion
     }
 }

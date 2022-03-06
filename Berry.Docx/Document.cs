@@ -10,6 +10,7 @@ using P = DocumentFormat.OpenXml.Packaging;
 
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
+using Berry.Docx.Utils;
 
 namespace Berry.Docx
 {
@@ -20,6 +21,8 @@ namespace Berry.Docx
     {
         #region Private Members
         private string _filename = string.Empty;
+        private Stream _stream = null;
+        private MemoryStream _mstream = null;
         private P.WordprocessingDocument _doc;
         private Settings _settings;
         #endregion
@@ -47,7 +50,15 @@ namespace Berry.Docx
             }
             _settings = new Settings(_doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
-#endregion
+        /// <summary>
+        /// Creates a new instance of the Document class from the IO stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        public Document(Stream stream)
+        {
+            _doc = P.WordprocessingDocument.Open(stream, true);
+        }
+        #endregion
 
         #region Public Properties
         /// <summary>
@@ -98,7 +109,10 @@ namespace Berry.Docx
         /// </summary>
         public void Save()
         {
-            SaveAs(_filename);
+            if (!string.IsNullOrEmpty(_filename))
+            {
+                SaveAs(_filename);
+            }
         }
         /// <summary>
         /// Save the contents and changes to specified file.
@@ -106,8 +120,16 @@ namespace Berry.Docx
         /// <param name="filename">Name of file</param>
         public void SaveAs(string filename)
         {
-            if (_doc != null)
+            if (_doc != null && !string.IsNullOrEmpty(filename))
                 _doc.SaveAs(filename).Close();
+        }
+
+        public void SaveAs(Stream stream)
+        {
+            if(_doc != null)
+            {
+                _doc.Clone(stream);
+            }
         }
 
         /// <summary>
@@ -115,10 +137,7 @@ namespace Berry.Docx
         /// </summary>
         public void Close()
         {
-            if (_doc != null)
-            {
-                Dispose();
-            }
+            Dispose();
         }
 
         /// <summary>
@@ -126,7 +145,8 @@ namespace Berry.Docx
         /// </summary>
         public void Dispose()
         {
-            _doc.Close();
+            _stream?.Close();
+            _doc?.Close();
         }
         #endregion
 
@@ -155,60 +175,55 @@ namespace Berry.Docx
 
         #region TODO
 
-                /// <summary>
-                /// 全局设置
-                /// </summary>
-                private Settings Settings { get => _settings; }
+        /// <summary>
+        /// 全局设置
+        /// </summary>
+        private Settings Settings { get => _settings; }
 
-                /// <summary>
-                /// 返回文档中指定文本内容的所有段落。
-                /// <br/><br/>
-                /// Return a list of paragraphs with specified text in the document.
-                /// </summary>
-                /// <param name="text">段落文本<br/><br/>Paragraph text</param>
-                /// <returns>找到的段落列表。<br/><br/>A list of paragraphs found</returns>
-                private List<Paragraph> Find(string text)
-                {
-                    List<Paragraph> paras = new List<Paragraph>();
-                    foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-                    {
-                        if (p.InnerText.Trim() == text)
-                            paras.Add(new Paragraph(this, p));
-                    }
-                    return paras;
-                }
+        /// <summary>
+        /// 返回文档中指定文本内容的所有段落。
+        /// <br/><br/>
+        /// Return a list of paragraphs with specified text in the document.
+        /// </summary>
+        /// <param name="text">段落文本<br/><br/>Paragraph text</param>
+        /// <returns>找到的段落列表。<br/><br/>A list of paragraphs found</returns>
+        private List<Paragraph> Find(string text)
+        {
+            List<Paragraph> paras = new List<Paragraph>();
+            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
+            {
+                if (p.InnerText.Trim() == text)
+                    paras.Add(new Paragraph(this, p));
+            }
+            return paras;
+        }
 
-                /// <summary>
-                /// 返回匹配成功的所有段落
-                /// </summary>
-                /// <param name="pattern"></param>
-                /// <param name="options"></param>
-                /// <returns></returns>
-                private List<Paragraph> Find(string pattern, RegexOptions options)
-                {
-                    List<Paragraph> paras = new List<Paragraph>();
-                    foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-                    {
-                        if (Regex.IsMatch(p.InnerText, pattern, options))
-                            paras.Add(new Paragraph(this, p));
-                    }
-                    return paras;
-                }
+        /// <summary>
+        /// 返回匹配成功的所有段落
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        private List<Paragraph> Find(string pattern, RegexOptions options)
+        {
+            List<Paragraph> paras = new List<Paragraph>();
+            return paras;
+        }
 
-                /// <summary>
-                /// 更新域代码
-                /// </summary>
-                private void UpdateFields()
-                {
-                    if (_doc != null)
-                    {
-                        P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
-                        W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
-                        updateFields.Val = new O.OnOffValue(true);
-                        settings.Settings.PrependChild(updateFields);
-                        settings.Settings.Save();
-                    }
-                }
+        /// <summary>
+        /// 更新域代码
+        /// </summary>
+        private void UpdateFields()
+        {
+            if (_doc != null)
+            {
+                P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
+                W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
+                updateFields.Val = new O.OnOffValue(true);
+                settings.Settings.PrependChild(updateFields);
+                settings.Settings.Save();
+            }
+        }
 
         #endregion
 

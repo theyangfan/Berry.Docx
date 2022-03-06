@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using OOxml = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
     /// <summary>
-    /// 字符格式
+    /// Represent the character format.
     /// </summary>
     public class CharacterFormat
     {
+        #region Private Members
+
         private Document _doc;
 
         #region TextRange
@@ -39,11 +38,22 @@ namespace Berry.Docx.Formatting
         private float _fontSizeCs = 10.5F;
         private bool _bold = false;
         private bool _italic = false;
+        private int _characterScale = 100;
+        private float _characterSpacing = 0;
+        private float _position = 0;
         #endregion
 
-        public CharacterFormat() { }
+        #endregion
 
-        public CharacterFormat(Document doc, OOxml.Run ownerRun)
+        #region Constructors
+        internal CharacterFormat() { }
+
+        /// <summary>
+        /// Represent the character format of a TextRange.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="ownerRun"></param>
+        internal CharacterFormat(Document doc, OOxml.Run ownerRun)
         {
             _doc = doc;
             _ownerRun = ownerRun;
@@ -54,7 +64,12 @@ namespace Berry.Docx.Formatting
                 _inheritFromParagraphFormat = new CharacterFormat(doc, ownerRun.Parent as OOxml.Paragraph);
         }
 
-        public CharacterFormat(Document doc, OOxml.Paragraph ownerParagraph)
+        /// <summary>
+        /// Represent the character format of a Paragraph.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="ownerParagraph"></param>
+        internal CharacterFormat(Document doc, OOxml.Paragraph ownerParagraph)
         {
             _doc = doc;
             _ownerParagraph = ownerParagraph;
@@ -65,8 +80,13 @@ namespace Berry.Docx.Formatting
             _curPHld = new RunPropertiesHolder(doc.Package, ownerParagraph.ParagraphProperties.ParagraphMarkRunProperties);
             _inheritFromStyleFormat = new CharacterFormat(doc, ownerParagraph.GetStyle(doc));
         }
-        
-        public CharacterFormat(Document doc, OOxml.Style ownerStyle)
+
+        /// <summary>
+        /// Represent the character format of a Style.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="ownerStyle"></param>
+        internal CharacterFormat(Document doc, OOxml.Style ownerStyle)
         {
             _doc = doc;
             _ownerStyle = ownerStyle;
@@ -75,59 +95,28 @@ namespace Berry.Docx.Formatting
             _curSHld = new RunPropertiesHolder(doc.Package, ownerStyle.StyleRunProperties);
             _inheritFromBaseStyleFormat = GetStyleCharacterFormatRecursively(ownerStyle);
         }
+        #endregion
 
-        private CharacterFormat GetStyleCharacterFormatRecursively(OOxml.Style style)
-        {
-            CharacterFormat format = new CharacterFormat();
-            CharacterFormat baseFormat = new CharacterFormat();
-            // 获取默认值
-            OOxml.Styles styles = style.Parent as OOxml.Styles;
-            if (styles.DocDefaults != null && styles.DocDefaults.RunPropertiesDefault != null
-                && styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle != null)
-            {
-                RunPropertiesHolder rPr = new RunPropertiesHolder(_doc.Package, styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle);
-                baseFormat.FontCN = rPr.FontCN;
-                baseFormat.FontEN = rPr.FontEN;
-                baseFormat.FontSize = rPr.FontSize;
-                baseFormat.FontSizeCs = rPr.FontSizeCs;
-                baseFormat.Bold = rPr.Bold ?? false;
-                baseFormat.Italic = rPr.Italic ?? false;
-            }
-            //获取基类样式
-            OOxml.Style baseStyle = style.GetBaseStyle();
-            if (baseStyle != null)
-                baseFormat = GetStyleCharacterFormatRecursively(baseStyle);
-            if (style.StyleRunProperties == null) style.StyleRunProperties = new OOxml.StyleRunProperties();
-            RunPropertiesHolder curSHld = new RunPropertiesHolder(_doc.Package, style.StyleRunProperties);
-
-            format.FontCN = curSHld.FontCN ?? baseFormat.FontCN;
-            format.FontEN = curSHld.FontEN ?? baseFormat.FontEN;
-            format.FontSize = curSHld.FontSize > 0 ? curSHld.FontSize : baseFormat.FontSize;
-            format.FontSizeCs = curSHld.FontSizeCs > 0 ? curSHld.FontSizeCs : baseFormat.FontSizeCs;
-            format.Bold = curSHld.Bold ?? baseFormat.Bold;
-            format.Italic = curSHld.Italic ?? baseFormat.Italic;
-            return format;
-        }
-
+        #region Public Properties
         /// <summary>
-        /// 中文字体
+        /// Gets or sets East Asian font name.
         /// </summary>
-        public string FontCN
+        public string FontNameEastAsia
         {
             get
             {
                 if(_ownerRun != null)
                 {
                     InitRun();
-                    return _curRHld.FontCN ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontCN : string.Empty);
+                    return _curRHld.FontNameEastAsia ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontNameEastAsia : string.Empty);
                 }
                 else if(_ownerParagraph != null)
                 {
-                    return _curPHld.FontCN ?? _inheritFromStyleFormat.FontCN;
+                    return _curPHld.FontNameEastAsia ?? _inheritFromStyleFormat.FontNameEastAsia;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _curSHld.FontCN ?? _inheritFromBaseStyleFormat.FontCN;
+                    return _curSHld.FontNameEastAsia ?? _inheritFromBaseStyleFormat.FontNameEastAsia;
                 }
                 else
                 {
@@ -138,15 +127,15 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.FontCN = value;
+                    _curRHld.FontNameEastAsia = value;
                 }
                 else if(_ownerParagraph != null)
                 {
-                    _curPHld.FontCN = value;
+                    _curPHld.FontNameEastAsia = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.FontCN = value;
+                    _curSHld.FontNameEastAsia = value;
                 }
                 else
                 {
@@ -156,24 +145,25 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 英文字体
+        /// Gets or sets the font used for Latin text (characters with character codes from
+        /// 0 through 127).
         /// </summary>
-        public string FontEN
+        public string FontNameAscii
         {
             get
             {
                 if (_ownerRun != null)
                 {
                     InitRun();
-                    return _curRHld.FontEN ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontEN : string.Empty);
+                    return _curRHld.FontNameAscii ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontNameAscii : string.Empty);
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _curPHld.FontEN ?? _inheritFromStyleFormat.FontEN;
+                    return _curPHld.FontNameAscii ?? _inheritFromStyleFormat.FontNameAscii;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontEN ?? _inheritFromBaseStyleFormat.FontEN;
+                    return _curSHld.FontNameAscii ?? _inheritFromBaseStyleFormat.FontNameAscii;
                 }
                 else
                 {
@@ -184,15 +174,15 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.FontEN = value;
+                    _curRHld.FontNameAscii = value;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    _curPHld.FontEN = value;
+                    _curPHld.FontNameAscii = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.FontEN = value;
+                    _curSHld.FontNameAscii = value;
                 }
                 else
                 {
@@ -201,7 +191,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 字号
+        /// Gets or sets font size specified in points.
         /// </summary>
         public float FontSize
         {
@@ -218,11 +208,11 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _curPHld.FontSize > 0 ? _curPHld.FontSize : _inheritFromStyleFormat.FontSize;
+                    return _curPHld.FontSize ?? _inheritFromStyleFormat.FontSize;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontSize > 0 ? _curSHld.FontSize : _inheritFromBaseStyleFormat.FontSize;
+                    return _curSHld.FontSize ?? _inheritFromBaseStyleFormat.FontSize;
                 }
                 else
                 {
@@ -250,7 +240,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 中文字号
+        /// Gets or sets font size in chinese.
         /// </summary>
         public string FontSizeCN
         {
@@ -276,7 +266,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 字号
+        /// 
         /// </summary>
         public float FontSizeCs
         {
@@ -293,11 +283,11 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _curPHld.FontSizeCs > 0 ? _curPHld.FontSizeCs : _inheritFromStyleFormat.FontSizeCs;
+                    return _curPHld.FontSizeCs ?? _inheritFromStyleFormat.FontSizeCs;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontSizeCs > 0 ?_curSHld.FontSizeCs : _inheritFromBaseStyleFormat.FontSizeCs;
+                    return _curSHld.FontSizeCs ?? _inheritFromBaseStyleFormat.FontSizeCs;
                 }
                 else
                 {
@@ -326,7 +316,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// 加粗
+        /// Gets or sets bold style.
         /// </summary>
         public bool Bold
         {
@@ -370,7 +360,7 @@ namespace Berry.Docx.Formatting
             }
         }
         /// <summary>
-        /// 斜体
+        /// Gets or sets italic style.
         /// </summary>
         public bool Italic
         {
@@ -414,12 +404,231 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        private void InitRun()
+        /// <summary>
+        /// Gets or sets the percent value of the normal character width that each character shall be scaled.
+        /// <para>If the value is 100, then each character shall be displayed at 100% of its normal with.</para>
+        /// <para>The value must be between 1 and 600, otherwise an exception will be thrown.</para>
+        /// </summary>
+        /// <exception cref="InvalidOperationException"/>
+        public int CharacterScale
         {
-            if(_ownerRun.Parent != null && _inheritFromParagraphFormat == null)
-                _inheritFromParagraphFormat = new CharacterFormat(_doc, _ownerRun.Parent as OOxml.Paragraph);
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    InitRun();
+                    if (_curRHld.CharacterScale != null)
+                    {
+                        return _curRHld.CharacterScale;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.CharacterScale : 100;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.CharacterScale ?? _inheritFromStyleFormat.CharacterScale;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.CharacterScale ?? _inheritFromBaseStyleFormat.CharacterScale;
+                }
+                else
+                {
+                    return _characterScale;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _curRHld.CharacterScale = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _curPHld.CharacterScale = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.CharacterScale = value;
+                }
+                else
+                {
+                    _characterScale = value;
+                }
+            }
         }
 
+        /// <summary>
+        /// Gets or sets the amount (in points) of character pitch which shall be added or removed after each character.
+        /// </summary>
+        public float CharacterSpacing
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    InitRun();
+                    if (_curRHld.CharacterSpacing != null)
+                    {
+                        return _curRHld.CharacterSpacing;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.CharacterSpacing : 0;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.CharacterSpacing ?? _inheritFromStyleFormat.CharacterSpacing;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.CharacterSpacing ?? _inheritFromBaseStyleFormat.CharacterSpacing;
+                }
+                else
+                {
+                    return _characterSpacing;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _curRHld.CharacterSpacing = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _curPHld.CharacterSpacing = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.CharacterSpacing = value;
+                }
+                else
+                {
+                    _characterSpacing = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount (in points) by which text shall be raised or lowered in relation to the default baseline location.
+        /// </summary>
+        public float Position
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    InitRun();
+                    if (_curRHld.Position != null)
+                    {
+                        return _curRHld.Position;
+                    }
+                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.Position : 0;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    return _curPHld.Position ?? _inheritFromStyleFormat.Position;
+                }
+                else if (_ownerStyle != null)
+                {
+                    return _curSHld.Position ?? _inheritFromBaseStyleFormat.Position;
+                }
+                else
+                {
+                    return _position;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _curRHld.Position = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _curPHld.Position = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _curSHld.Position = value;
+                }
+                else
+                {
+                    _position = value;
+                }
+            }
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Clears all character formats.
+        /// </summary>
+        public void ClearFormatting()
+        {
+            if (_ownerRun != null)
+            {
+                _curRHld.clearFormatting();
+            }
+            else if (_ownerParagraph != null)
+            {
+                _curPHld.clearFormatting();
+            }
+            else if (_ownerStyle != null)
+            {
+                _curSHld.clearFormatting();
+            }
+        }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// Returns the character format that specified in the style hierarchy of a style.
+        /// </summary>
+        /// <param name="style"> The style</param>
+        /// <returns>The character format that specified in the style hierarchy.</returns> 
+        private CharacterFormat GetStyleCharacterFormatRecursively(OOxml.Style style)
+        {
+            CharacterFormat format = new CharacterFormat();
+            CharacterFormat baseFormat = new CharacterFormat();
+            // Gets DOcDefaults
+            OOxml.Styles styles = style.Parent as OOxml.Styles;
+            if (styles.DocDefaults != null && styles.DocDefaults.RunPropertiesDefault != null
+                && styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle != null)
+            {
+                RunPropertiesHolder rPr = new RunPropertiesHolder(_doc.Package, styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle);
+                baseFormat.FontNameEastAsia = rPr.FontNameEastAsia;
+                baseFormat.FontNameAscii = rPr.FontNameAscii;
+                baseFormat.FontSize = rPr.FontSize;
+                baseFormat.FontSizeCs = rPr.FontSizeCs;
+                baseFormat.Bold = rPr.Bold ?? false;
+                baseFormat.Italic = rPr.Italic ?? false;
+                baseFormat.CharacterScale = rPr.CharacterScale ?? 100;
+                baseFormat.CharacterSpacing = rPr.CharacterScale ?? 0;
+                baseFormat.Position = rPr.Position ?? 0;
+            }
+            // Gets base style format
+            OOxml.Style baseStyle = style.GetBaseStyle();
+            if (baseStyle != null)
+                baseFormat = GetStyleCharacterFormatRecursively(baseStyle);
+            if (style.StyleRunProperties == null) style.StyleRunProperties = new OOxml.StyleRunProperties();
+            RunPropertiesHolder curSHld = new RunPropertiesHolder(_doc.Package, style.StyleRunProperties);
+
+            format.FontNameEastAsia = curSHld.FontNameEastAsia ?? baseFormat.FontNameEastAsia;
+            format.FontNameAscii = curSHld.FontNameAscii ?? baseFormat.FontNameAscii;
+            format.FontSize = curSHld.FontSize ?? baseFormat.FontSize;
+            format.FontSizeCs = curSHld.FontSizeCs ?? baseFormat.FontSizeCs;
+            format.Bold = curSHld.Bold ?? baseFormat.Bold;
+            format.Italic = curSHld.Italic ?? baseFormat.Italic;
+            format.CharacterScale = curSHld.CharacterScale ?? baseFormat.CharacterScale;
+            format.CharacterSpacing = curSHld.CharacterSpacing ?? baseFormat.CharacterSpacing;
+            format.Position = curSHld.Position ?? baseFormat.Position;
+            return format;
+        }
+        private void InitRun()
+        {
+            if (_ownerRun.Parent != null && _inheritFromParagraphFormat == null)
+                _inheritFromParagraphFormat = new CharacterFormat(_doc, _ownerRun.Parent as OOxml.Paragraph);
+        }
+        #endregion
     }
 
 }
