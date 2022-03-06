@@ -39,7 +39,7 @@ namespace Example
 			// Create a new paragraph
             Paragraph p1 = doc.CreateParagraph();
             p1.Text = "This is a paragraph.";
-            p1.CharacterFormat.FontEN = "Times New Roman";
+            p1.CharacterFormat.FontNameAscii = "Times New Roman";
             p1.CharacterFormat.FontSize = 14;
             p1.Format.Justification = JustificationType.Center;
 			// Create a new table
@@ -49,8 +49,8 @@ namespace Example
             tbl1.Rows[1].Cells[0].Paragraphs[0].Text = "1st Row";
             tbl1.Rows[2].Cells[0].Paragraphs[0].Text = "2nd Row";
 			// Add to the document
-            doc.Sections[0].Range.ChildObjects.Add(p1);
-            doc.Sections[0].Range.ChildObjects.Add(tbl1);
+            doc.Sections[0].ChildObjects.Add(p1);
+            doc.Sections[0].ChildObjects.Add(tbl1);
 			// Save and close
             doc.Save();
             doc.Close();
@@ -76,17 +76,25 @@ namespace Example
 | Get table rows and cells                                     |
 | Insert Rows/Columns around table cells                       |
 | Get/Set table cell paragraphs                                |
+| Inserts section break                                        |
+| Appends comments                                             |
 
 <br/>
 
 # Documentation
 
 - [Examples](https://theyangfan.github.io/Berry.Docx/en-US/examples/paragraph/index.html)
-- [APIs References](https://theyangfan.github.io/Berry.Docx/en-US/api/index.html)
+- [API References](https://theyangfan.github.io/Berry.Docx/en-US/api/index.html)
 
 <br/>
 
 # Release History
+
+### v1.1.0 (2022-03-06)
+
+- Supports more character and paragraph advanced formats;
+- Supports insert section break;
+- Supports append paragraph comments.
 
 ### v1.0.1 (2022-02-11)
 

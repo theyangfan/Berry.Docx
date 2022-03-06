@@ -27,7 +27,7 @@ namespace Berry.Docx.Formatting
         private ParagraphPropertiesHolder _curSHld = null;
         private ParagraphFormat _styleHierarchyFormat = null;
 
-        // Formats Menbers
+        // Formats Members
         // Normal
         private JustificationType _justification = JustificationType.Both;
         private OutlineLevelType _outlineLevel = OutlineLevelType.BodyText;
@@ -58,10 +58,10 @@ namespace Berry.Docx.Formatting
         private bool _keepNext = false;
         private bool _keepLines = false;
         private bool _pageBreakBefore = false;
-        // Format Exception
+        // Formatting Exceptions
         private bool _suppressLineNumbers = false;
         private bool _suppressAutoHyphens = false;
-        // Wrapping Lines
+        // Line Break
         private bool _kinsoku = true;
         private bool _wordWrap = true;
         private bool _overflowPunctuation = true;
@@ -151,7 +151,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.Justification;
+                    return _curSHld.Justification != JustificationType.None ? _curSHld.Justification : _styleHierarchyFormat.Justification;
                 }
                 else
                 {
@@ -188,7 +188,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.OutlineLevel;
+                    return _curSHld.OutlineLevel != OutlineLevelType.None ? _curSHld.OutlineLevel : _styleHierarchyFormat.OutlineLevel;
                 }
                 else
                 {
@@ -223,11 +223,11 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerParagraph != null)
                 {
-                    return _curPHld.LeftIndent >= 0 ? _curPHld.LeftIndent : _styleFormat.LeftIndent;
+                    return _curPHld.LeftIndent ?? _styleFormat.LeftIndent;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.LeftIndent;
+                    return _curSHld.LeftIndent ?? _styleHierarchyFormat.LeftIndent;
                 }
                 else
                 {
@@ -259,11 +259,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.LeftCharsIndent >= 0 ? _curPHld.LeftCharsIndent : _styleFormat.LeftCharsIndent;
+                    return _curPHld.LeftCharsIndent ?? _styleFormat.LeftCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.LeftCharsIndent;
+                    return _curSHld.LeftCharsIndent ?? _styleHierarchyFormat.LeftCharsIndent;
                 }
                 else
                 {
@@ -295,11 +295,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.RightIndent >= 0 ? _curPHld.RightIndent : _styleFormat.RightIndent;
+                    return _curPHld.RightIndent ?? _styleFormat.RightIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.RightIndent;
+                    return _curSHld.RightIndent ?? _styleHierarchyFormat.RightIndent;
                 }
                 else
                 {
@@ -331,11 +331,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.RightCharsIndent >= 0 ? _curPHld.RightCharsIndent : _styleFormat.RightCharsIndent;
+                    return _curPHld.RightCharsIndent ?? _styleFormat.RightCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.RightCharsIndent;
+                    return _curSHld.RightCharsIndent ?? _styleHierarchyFormat.RightCharsIndent;
                 }
                 else
                 {
@@ -367,11 +367,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.FirstLineIndent >= 0 ? _curPHld.FirstLineIndent : _styleFormat.FirstLineIndent;
+                    return _curPHld.FirstLineIndent ?? _styleFormat.FirstLineIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.FirstLineIndent;
+                    return _curSHld.FirstLineIndent ?? _styleHierarchyFormat.FirstLineIndent;
                 }
                 else
                 {
@@ -403,11 +403,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.FirstLineCharsIndent >= 0 ? _curPHld.FirstLineCharsIndent : _styleFormat.FirstLineCharsIndent;
+                    return _curPHld.FirstLineCharsIndent ?? _styleFormat.FirstLineCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.FirstLineCharsIndent;
+                    return _curSHld.FirstLineCharsIndent ?? _styleHierarchyFormat.FirstLineCharsIndent;
                 }
                 else
                 {
@@ -439,11 +439,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.HangingIndent >= 0 ? _curPHld.HangingIndent : _styleFormat.HangingIndent;
+                    return _curPHld.HangingIndent ?? _styleFormat.HangingIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.HangingIndent;
+                    return _curSHld.HangingIndent ?? _styleHierarchyFormat.HangingIndent;
                 }
                 else
                 {
@@ -475,11 +475,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.HangingCharsIndent >= 0 ? _curPHld.HangingCharsIndent : _styleFormat.HangingCharsIndent;
+                    return _curPHld.HangingCharsIndent ?? _styleFormat.HangingCharsIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.HangingCharsIndent;
+                    return _curSHld.HangingCharsIndent ?? _styleHierarchyFormat.HangingCharsIndent;
                 }
                 else
                 {
@@ -504,7 +504,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
+        /// Gets or sets a value indicating whether automatically adjust right indent when document grid is defined.
         /// </summary>
         public bool AdjustRightIndent
         {
@@ -516,7 +516,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.AdjustRightIndent;
+                    return _curSHld.AdjustRightIndent ?? _styleHierarchyFormat.AdjustRightIndent;
                 }
                 else
                 {
@@ -553,7 +553,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.MirrorIndents;
+                    return _curSHld.MirrorIndents ?? _styleHierarchyFormat.MirrorIndents;
                 }
                 else
                 {
@@ -588,11 +588,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.BeforeSpacing >= 0 ? _curPHld.BeforeSpacing : _styleFormat.BeforeSpacing;
+                    return _curPHld.BeforeSpacing ?? _styleFormat.BeforeSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.BeforeSpacing;
+                    return _curSHld.BeforeSpacing ?? _styleHierarchyFormat.BeforeSpacing;
                 }
                 else
                 {
@@ -624,11 +624,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.BeforeLinesSpacing >= 0 ? _curPHld.BeforeLinesSpacing : _styleFormat.BeforeLinesSpacing;
+                    return _curPHld.BeforeLinesSpacing ?? _styleFormat.BeforeLinesSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.BeforeLinesSpacing;
+                    return _curSHld.BeforeLinesSpacing ?? _styleHierarchyFormat.BeforeLinesSpacing;
                 }
                 else
                 {
@@ -664,7 +664,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.BeforeAutoSpacing;
+                    return _curSHld.BeforeAutoSpacing ?? _styleHierarchyFormat.BeforeAutoSpacing;
                 }
                 else
                 {
@@ -696,11 +696,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AfterSpacing >= 0 ? _curPHld.AfterSpacing : _styleFormat.AfterSpacing;
+                    return _curPHld.AfterSpacing ??_styleFormat.AfterSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.AfterSpacing;
+                    return _curSHld.AfterSpacing ?? _styleHierarchyFormat.AfterSpacing;
                 }
                 else
                 {
@@ -732,11 +732,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AfterLinesSpacing >= 0 ? _curPHld.AfterLinesSpacing : _styleFormat.AfterLinesSpacing;
+                    return _curPHld.AfterLinesSpacing ?? _styleFormat.AfterLinesSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.AfterLinesSpacing;
+                    return _curSHld.AfterLinesSpacing ?? _styleHierarchyFormat.AfterLinesSpacing;
                 }
                 else
                 {
@@ -773,7 +773,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.AfterAutoSpacing;
+                    return _curSHld.AfterAutoSpacing ?? _styleHierarchyFormat.AfterAutoSpacing;
                 }
                 else
                 {
@@ -805,11 +805,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.LineSpacing >= 0 ? _curPHld.LineSpacing : _styleFormat.LineSpacing;
+                    return _curPHld.LineSpacing ?? _styleFormat.LineSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.LineSpacing;
+                    return _curSHld.LineSpacing ?? _styleHierarchyFormat.LineSpacing;
                 }
                 else
                 {
@@ -845,7 +845,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.LineSpacingRule;
+                    return _curSHld.LineSpacingRule != LineSpacingRule.None ? _curSHld.LineSpacingRule : _styleHierarchyFormat.LineSpacingRule;
                 }
                 else
                 {
@@ -870,7 +870,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether ignore spacing above and below when using identical styles.
+        /// Gets or sets a value indicating whether don't add space between paragraphs of the same style.
         /// </summary>
         public bool ContextualSpacing
         {
@@ -882,7 +882,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.ContextualSpacing;
+                    return _curSHld.ContextualSpacing ?? _styleHierarchyFormat.ContextualSpacing;
                 }
                 else
                 {
@@ -907,7 +907,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether snap to the grid if a document grid is defined.
+        /// Gets or sets a value indicating whether snap to grid when document grid is defined.
         /// </summary>
         public bool SnapToGrid
         {
@@ -919,7 +919,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.SnapToGrid;
+                    return _curSHld.SnapToGrid ?? _styleHierarchyFormat.SnapToGrid;
                 }
                 else
                 {
@@ -959,7 +959,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.WidowControl;
+                    return _curSHld.WidowControl ?? _styleHierarchyFormat.WidowControl;
                 }
                 else
                 {
@@ -996,7 +996,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.KeepNext;
+                    return _curSHld.KeepNext ?? _styleHierarchyFormat.KeepNext;
                 }
                 else
                 {
@@ -1033,7 +1033,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.KeepLines;
+                    return _curSHld.KeepLines ?? _styleHierarchyFormat.KeepLines;
                 }
                 else
                 {
@@ -1070,7 +1070,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.PageBreakBefore;
+                    return _curSHld.PageBreakBefore ?? _styleHierarchyFormat.PageBreakBefore;
                 }
                 else
                 {
@@ -1095,7 +1095,7 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
-        #region Format Exception
+        #region Formatting Exceptions
         /// <summary>
         /// Gets or sets a value indicating whether suppress line numbers for paragraph.
         /// </summary>
@@ -1109,7 +1109,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.SuppressLineNumbers;
+                    return _curSHld.SuppressLineNumbers ?? _styleHierarchyFormat.SuppressLineNumbers;
                 }
                 else
                 {
@@ -1146,7 +1146,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.SuppressAutoHyphens;
+                    return _curSHld.SuppressAutoHyphens ?? _styleHierarchyFormat.SuppressAutoHyphens;
                 }
                 else
                 {
@@ -1171,9 +1171,9 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
-        #region Wrapping Lines
+        #region Line Break
         /// <summary>
-        /// Gets or sets a value indicating whether use east asian typography rules for first and last character per line.
+        /// Gets or sets a value indicating whether use asian rules for controlling first and last character.
         /// </summary>
         public bool Kinsoku
         {
@@ -1185,7 +1185,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.Kinsoku;
+                    return _curSHld.Kinsoku ?? _styleHierarchyFormat.Kinsoku;
                 }
                 else
                 {
@@ -1210,9 +1210,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating that should break text which exceeds the text extents of a line 
-        /// by moving the word to the following line (breaking on the word level) if true,
-        /// otherwies breaking the word across two lines (breaking on the character level).
+        /// Gets or sets a value indicating whether allow latin text to wrap in the middle of a word.
         /// </summary>
         public bool WordWrap
         {
@@ -1224,7 +1222,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.WordWrap;
+                    return _curSHld.WordWrap ?? _styleHierarchyFormat.WordWrap;
                 }
                 else
                 {
@@ -1249,7 +1247,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether allow punctuation to extend past text extents.
+        /// Gets or sets a value indicating whether allow hanging punctuation.
         /// </summary>
         public bool OverflowPunctuation
         {
@@ -1261,7 +1259,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.OverflowPunctuation;
+                    return _curSHld.OverflowPunctuation ?? _styleHierarchyFormat.OverflowPunctuation;
                 }
                 else
                 {
@@ -1288,7 +1286,7 @@ namespace Berry.Docx.Formatting
 
         #region Character Spacing
         /// <summary>
-        /// Gets or sets a value indicating whether compress punctuation at start of a line.
+        /// Gets or sets a value indicating whether allow punctuation at the start of a line to compress.
         /// </summary>
         public bool TopLinePunctuation
         {
@@ -1300,7 +1298,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.TopLinePunctuation;
+                    return _curSHld.TopLinePunctuation ?? _styleHierarchyFormat.TopLinePunctuation;
                 }
                 else
                 {
@@ -1325,7 +1323,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether automatically adjust spacing of latin and east asian text.
+        /// Gets or sets a value indicating whether automatically adjust space between Asian and Latin text.
         /// </summary>
         public bool AutoSpaceDE
         {
@@ -1337,7 +1335,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.AutoSpaceDE;
+                    return _curSHld.AutoSpaceDE ?? _styleHierarchyFormat.AutoSpaceDE;
                 }
                 else
                 {
@@ -1362,7 +1360,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether automatically adjust spacing of east asian text and numbers.
+        /// Gets or sets a value indicating whether automatically adjust space between Asian text and numbers.
         /// </summary>
         public bool AutoSpaceDN
         {
@@ -1374,7 +1372,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _styleHierarchyFormat.AutoSpaceDN;
+                    return _curSHld.AutoSpaceDN ?? _styleHierarchyFormat.AutoSpaceDN;
                 }
                 else
                 {
@@ -1438,24 +1436,24 @@ namespace Berry.Docx.Formatting
             format.Justification = curSHld.Justification != JustificationType.None ? curSHld.Justification : baseFormat.Justification;
             format.OutlineLevel = curSHld.OutlineLevel != OutlineLevelType.None ? curSHld.OutlineLevel : baseFormat.OutlineLevel;
             // Indentation
-            format.LeftIndent = curSHld.LeftIndent >= 0 ? curSHld.LeftIndent : baseFormat.LeftIndent;
-            format.LeftCharsIndent = curSHld.LeftCharsIndent >= 0 ? curSHld.LeftCharsIndent : baseFormat.LeftCharsIndent;
-            format.RightIndent = curSHld.RightIndent >= 0 ? curSHld.RightIndent : baseFormat.RightIndent;
-            format.RightCharsIndent = curSHld.RightCharsIndent >= 0 ? curSHld.RightCharsIndent : baseFormat.RightCharsIndent;
-            format.FirstLineIndent = curSHld.FirstLineIndent >= 0 ? curSHld.FirstLineIndent : baseFormat.FirstLineIndent;
-            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent >= 0 ? curSHld.FirstLineCharsIndent : baseFormat.FirstLineCharsIndent;
-            format.HangingIndent = curSHld.HangingIndent >= 0 ? curSHld.HangingIndent : baseFormat.HangingIndent;
-            format.HangingCharsIndent = curSHld.HangingCharsIndent >= 0 ? curSHld.HangingCharsIndent : baseFormat.HangingCharsIndent;
+            format.LeftIndent = curSHld.LeftIndent ?? baseFormat.LeftIndent;
+            format.LeftCharsIndent = curSHld.LeftCharsIndent ?? baseFormat.LeftCharsIndent;
+            format.RightIndent = curSHld.RightIndent ?? baseFormat.RightIndent;
+            format.RightCharsIndent = curSHld.RightCharsIndent ?? baseFormat.RightCharsIndent;
+            format.FirstLineIndent = curSHld.FirstLineIndent ?? baseFormat.FirstLineIndent;
+            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent ?? baseFormat.FirstLineCharsIndent;
+            format.HangingIndent = curSHld.HangingIndent ?? baseFormat.HangingIndent;
+            format.HangingCharsIndent = curSHld.HangingCharsIndent ?? baseFormat.HangingCharsIndent;
             format.MirrorIndents = curSHld.MirrorIndents ?? baseFormat.MirrorIndents;
             format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
             // Spacing
-            format.BeforeSpacing = curSHld.BeforeSpacing >= 0 ? curSHld.BeforeSpacing : baseFormat.BeforeSpacing;
-            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing >= 0 ? curSHld.BeforeLinesSpacing : baseFormat.BeforeLinesSpacing;
+            format.BeforeSpacing = curSHld.BeforeSpacing ?? baseFormat.BeforeSpacing;
+            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing ?? baseFormat.BeforeLinesSpacing;
             format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
-            format.AfterSpacing = curSHld.AfterSpacing >= 0 ? curSHld.AfterSpacing : baseFormat.AfterSpacing;
-            format.AfterLinesSpacing = curSHld.AfterLinesSpacing >= 0 ? curSHld.AfterLinesSpacing : baseFormat.AfterLinesSpacing;
+            format.AfterSpacing = curSHld.AfterSpacing ?? baseFormat.AfterSpacing;
+            format.AfterLinesSpacing = curSHld.AfterLinesSpacing ?? baseFormat.AfterLinesSpacing;
             format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
-            format.LineSpacing = curSHld.LineSpacing > 0 ? curSHld.LineSpacing : baseFormat.LineSpacing;
+            format.LineSpacing = curSHld.LineSpacing ?? baseFormat.LineSpacing;
             format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
                 ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;
             format.ContextualSpacing = curSHld.ContextualSpacing ?? baseFormat.ContextualSpacing;
@@ -1465,10 +1463,10 @@ namespace Berry.Docx.Formatting
             format.KeepNext = curSHld.KeepNext ?? baseFormat.KeepNext;
             format.KeepLines = curSHld.KeepLines ?? baseFormat.KeepLines;
             format.PageBreakBefore = curSHld.PageBreakBefore ?? baseFormat.PageBreakBefore;
-            // Format Exception
+            // Formatting Exceptions
             format.SuppressLineNumbers = curSHld.SuppressLineNumbers ?? baseFormat.SuppressLineNumbers;
             format.SuppressAutoHyphens = curSHld.SuppressAutoHyphens ?? baseFormat.SuppressAutoHyphens;
-            // Wrapping Lines
+            // Line Break
             format.Kinsoku = curSHld.Kinsoku ?? baseFormat.Kinsoku;
             format.WordWrap = curSHld.WordWrap ?? baseFormat.WordWrap;
             format.OverflowPunctuation = curSHld.OverflowPunctuation ?? baseFormat.OverflowPunctuation;

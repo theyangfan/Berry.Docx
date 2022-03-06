@@ -41,8 +41,8 @@ namespace Example
 			// 新增一个段落
             Paragraph p1 = doc.CreateParagraph();
             p1.Text = "这是一个段落。";
-            p1.CharacterFormat.FontCN = "微软雅黑";
-            p1.CharacterFormat.FontSizeCN = "小四";
+            p1.CharacterFormat.FontNameEastAsia = "微软雅黑";
+            p1.CharacterFormat.FontSize = 12;
             p1.Format.Justification = JustificationType.Center;
 			// 新增一个表格
             Table tbl1 = doc.CreateTable(3, 3);
@@ -51,8 +51,8 @@ namespace Example
             tbl1.Rows[1].Cells[0].Paragraphs[0].Text = "第1行";
             tbl1.Rows[2].Cells[0].Paragraphs[0].Text = "第2行";
 			// 添加至文档中
-            doc.Sections[0].Range.ChildObjects.Add(p1);
-            doc.Sections[0].Range.ChildObjects.Add(tbl1);
+            doc.Sections[0].ChildObjects.Add(p1);
+            doc.Sections[0].ChildObjects.Add(tbl1);
 			// 保存并关闭
             doc.Save();
             doc.Close();
@@ -77,17 +77,25 @@ namespace Example
 | 获取节中的表格或者添加/插入新的表格                     |
 | 在表格单元格四周插入新的行或列                          |
 | 获取/设置表格单元格中的段落                             |
+| 插入分节符                                              |
+| 添加批注                                                |
 
 <br/>
 
 # 文档
 
 - [示例](https://theyangfan.github.io/Berry.Docx/zh-CN/examples/paragraph/index.html)
-- [APIs 文档](https://theyangfan.github.io/Berry.Docx/zh-CN/api/index.html)
+- [API 文档](https://theyangfan.github.io/Berry.Docx/zh-CN/api/index.html)
 
 <br/>
 
 # 更新日志
+
+### v1.1.0 (2022-03-06)
+
+- 支持更多字符和段落高级格式；
+- 支持插入分节符；
+- 支持插入批注。
 
 ### v1.0.1 (2022-02-11)
 

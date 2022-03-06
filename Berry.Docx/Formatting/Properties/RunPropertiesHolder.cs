@@ -168,11 +168,11 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets font size specified in points.
         /// </summary>
-        public float FontSize
+        public FloatValue FontSize
         {
             get
             {
-                if (_fontSize == null) return -1;
+                if (_fontSize == null) return null;
                 return _fontSize.Val.Value.ToFloat() / 2;
             }
             set
@@ -191,11 +191,11 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        public float FontSizeCs
+        public FloatValue FontSizeCs
         {
             get
             {
-                if (_fontSizeCs == null) return -1;
+                if (_fontSizeCs == null) return null;
                 return _fontSizeCs.Val.Value.ToFloat() / 2;
             }
             set

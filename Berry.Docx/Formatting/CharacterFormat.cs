@@ -208,11 +208,11 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _curPHld.FontSize > 0 ? _curPHld.FontSize : _inheritFromStyleFormat.FontSize;
+                    return _curPHld.FontSize ?? _inheritFromStyleFormat.FontSize;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontSize > 0 ? _curSHld.FontSize : _inheritFromBaseStyleFormat.FontSize;
+                    return _curSHld.FontSize ?? _inheritFromBaseStyleFormat.FontSize;
                 }
                 else
                 {
@@ -283,11 +283,11 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _curPHld.FontSizeCs > 0 ? _curPHld.FontSizeCs : _inheritFromStyleFormat.FontSizeCs;
+                    return _curPHld.FontSizeCs ?? _inheritFromStyleFormat.FontSizeCs;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontSizeCs > 0 ?_curSHld.FontSizeCs : _inheritFromBaseStyleFormat.FontSizeCs;
+                    return _curSHld.FontSizeCs ?? _inheritFromBaseStyleFormat.FontSizeCs;
                 }
                 else
                 {
@@ -614,8 +614,8 @@ namespace Berry.Docx.Formatting
 
             format.FontNameEastAsia = curSHld.FontNameEastAsia ?? baseFormat.FontNameEastAsia;
             format.FontNameAscii = curSHld.FontNameAscii ?? baseFormat.FontNameAscii;
-            format.FontSize = curSHld.FontSize > 0 ? curSHld.FontSize : baseFormat.FontSize;
-            format.FontSizeCs = curSHld.FontSizeCs > 0 ? curSHld.FontSizeCs : baseFormat.FontSizeCs;
+            format.FontSize = curSHld.FontSize ?? baseFormat.FontSize;
+            format.FontSizeCs = curSHld.FontSizeCs ?? baseFormat.FontSizeCs;
             format.Bold = curSHld.Bold ?? baseFormat.Bold;
             format.Italic = curSHld.Italic ?? baseFormat.Italic;
             format.CharacterScale = curSHld.CharacterScale ?? baseFormat.CharacterScale;

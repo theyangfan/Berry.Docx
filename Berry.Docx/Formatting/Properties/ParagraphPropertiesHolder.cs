@@ -28,10 +28,10 @@ namespace Berry.Docx.Formatting
         private W.KeepNext _keepNext;
         private W.KeepLines _keepLines;
         private W.PageBreakBefore _pageBreakBefore;
-        // Format Exception
+        // Formatting Exceptions
         private W.SuppressLineNumbers _suppressLineNumbers;
         private W.SuppressAutoHyphens _suppressAutoHyphens;
-        // Wrapping Lines
+        // Line Break
         private W.Kinsoku _kinsoku;
         private W.WordWrap _wordWrap;
         private W.OverflowPunctuation _overflowPunct = null;
@@ -240,12 +240,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the left indent (in points) for paragraph.
         /// </summary>
-        public float LeftIndent
+        public FloatValue LeftIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.Left == null) return -1;
+                if (_indentation.Left == null) return null;
                 float.TryParse(_indentation.Left, out val);
                 val = val / 20;
                 if (HangingCharsIndent > 0)
@@ -272,12 +272,12 @@ namespace Berry.Docx.Formatting
         /// Gets or sets the right indent (in points) for paragraph.
         /// </summary>
 
-        public float RightIndent
+        public FloatValue RightIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.Right == null) return -1;
+                if (_indentation.Right == null) return null;
                 float.TryParse(_indentation.Right, out val);
                 return val / 20;
             }
@@ -293,12 +293,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the left indent (in chars) for paragraph.
         /// </summary>
-        public float LeftCharsIndent
+        public FloatValue LeftCharsIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.LeftChars == null) return -1;
+                if (_indentation.LeftChars == null) return null;
                 float.TryParse(_indentation.LeftChars, out val);
                 return val / 100;
             }
@@ -313,12 +313,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the right indent (in chars) for paragraph.
         /// </summary>
-        public float RightCharsIndent
+        public FloatValue RightCharsIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.RightChars == null) return -1;
+                if (_indentation.RightChars == null) return null;
                 float.TryParse(_indentation.RightChars, out val);
                 return val / 100;
             }
@@ -333,12 +333,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the first line indent (in points) for paragraph.
         /// </summary>
-        public float FirstLineIndent
+        public FloatValue FirstLineIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.FirstLine == null) return -1;
+                if (_indentation.FirstLine == null) return null;
                 float.TryParse(_indentation.FirstLine, out val);
                 return val / 20;
             }
@@ -360,12 +360,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the first line indent (in chars) for paragraph.
         /// </summary>
-        public float FirstLineCharsIndent
+        public FloatValue FirstLineCharsIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.FirstLineChars == null) return -1;
+                if (_indentation.FirstLineChars == null) return null;
                 float.TryParse(_indentation.FirstLineChars, out val);
                 return val / 100;
             }
@@ -386,12 +386,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the hanging indent (in points) for paragraph.
         /// </summary>
-        public float HangingIndent
+        public FloatValue HangingIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.Hanging == null) return -1;
+                if (_indentation.Hanging == null) return null;
                 float.TryParse(_indentation.Hanging, out val);
                 return val / 20;
             }
@@ -412,12 +412,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the hanging indent (in chars) for paragraph.
         /// </summary>
-        public float HangingCharsIndent
+        public FloatValue HangingCharsIndent
         {
             get
             {
                 float val = 0;
-                if (_indentation.HangingChars == null) return -1;
+                if (_indentation.HangingChars == null) return null;
                 float.TryParse(_indentation.HangingChars, out val);
                 return val / 100;
             }
@@ -437,7 +437,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the right indentation is automatically adjusted if a document grid is defined.
+        /// Gets or sets a value indicating whether automatically adjust right indent when document grid is defined.
         /// </summary>
         public BooleanValue AdjustRightIndent
         {
@@ -498,12 +498,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the spacing (in points) before the paragraph.
         /// </summary>
-        public float BeforeSpacing
+        public FloatValue BeforeSpacing
         {
             get
             {
                 float val = 0;
-                if (_spacing.Before == null) return -1;
+                if (_spacing.Before == null) return null;
                 float.TryParse(_spacing.Before, out val);
                 return val / 20;
             }
@@ -523,12 +523,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the spacing (in lines) before the paragraph.
         /// </summary>
-        public float BeforeLinesSpacing
+        public FloatValue BeforeLinesSpacing
         {
             get
             {
                 float val = 0;
-                if (_spacing.BeforeLines == null) return -1;
+                if (_spacing.BeforeLines == null) return null;
                 float.TryParse(_spacing.BeforeLines, out val);
                 return val / 100;
             }
@@ -567,12 +567,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the spacing (in points) after the paragraph.
         /// </summary>
-        public float AfterSpacing
+        public FloatValue AfterSpacing
         {
             get
             {
                 float val = 0;
-                if (_spacing.After == null) return -1;
+                if (_spacing.After == null) return null;
                 float.TryParse(_spacing.After, out val);
                 return val / 20;
             }
@@ -592,12 +592,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the spacing (in lines) after the paragraph.
         /// </summary>
-        public float AfterLinesSpacing
+        public FloatValue AfterLinesSpacing
         {
             get
             {
                 float val = 0;
-                if (_spacing.AfterLines == null) return -1;
+                if (_spacing.AfterLines == null) return null;
                 float.TryParse(_spacing.AfterLines, out val);
                 return val / 100;
             }
@@ -636,12 +636,12 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the line spacing (in points) for paragraph.
         /// </summary>
-        public float LineSpacing
+        public FloatValue LineSpacing
         {
             get
             {
                 float val = 0;
-                if (_spacing.Line == null) return -1;
+                if (_spacing.Line == null) return null;
                 float.TryParse(_spacing.Line, out val);
                 return val / 20;
             }
@@ -695,7 +695,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether ignore spacing above and below when using identical styles.
+        /// Gets or sets a value indicating whether don't add space between paragraphs of the same style.
         /// </summary>
         public BooleanValue ContextualSpacing
         {
@@ -723,7 +723,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether snap to the grid if a document grid is defined.
+        /// Gets or sets a value indicating whether snap to grid when document grid is defined.
         /// </summary>
         public BooleanValue SnapToGrid
         {
@@ -866,7 +866,7 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
-        #region Format Exception
+        #region Formatting Exceptions
         /// <summary>
         /// Gets or sets a value indicating whether suppress line numbers for paragraph.
         /// </summary>
@@ -924,9 +924,9 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
-        #region Wrapping Lines
+        #region Line Break
         /// <summary>
-        /// Gets or sets a value indicating whether use east asian typography rules for first and last character per line.
+        /// Gets or sets a value indicating whether use asian rules for controlling first and last character.
         /// </summary>
         public BooleanValue Kinsoku
         {
@@ -954,9 +954,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating that should break text which exceeds the text extents of a line 
-        /// by moving the word to the following line (breaking on the word level) if true,
-        /// otherwies breaking the word across two lines (breaking on the character level).
+        /// Gets or sets a value indicating whether allow latin text to wrap in the middle of a word.
         /// </summary>
         public BooleanValue WordWrap
         {
@@ -984,7 +982,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether allow punctuation to extend past text extents.
+        /// Gets or sets a value indicating whether allow hanging punctuation.
         /// </summary>
         public BooleanValue OverflowPunctuation
         {
@@ -1014,7 +1012,7 @@ namespace Berry.Docx.Formatting
 
         #region Character Spacing
         /// <summary>
-        /// Gets or sets a value indicating whether compress punctuation at start of a line.
+        /// Gets or sets a value indicating whether allow punctuation at the start of a line to compress.
         /// </summary>
         public BooleanValue TopLinePunctuation
         {
@@ -1042,7 +1040,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether automatically adjust spacing of latin and east asian text.
+        /// Gets or sets a value indicating whether automatically adjust space between Asian and Latin text.
         /// </summary>
         public BooleanValue AutoSpaceDE
         {
@@ -1070,7 +1068,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether automatically adjust spacing of east asian text and numbers.
+        /// Gets or sets a value indicating whether automatically adjust space between Asian text and numbers.
         /// </summary>
         public BooleanValue AutoSpaceDN
         {
