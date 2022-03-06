@@ -4,3 +4,5 @@ Berry.Docx/obj/*
 TestResults/*
 Berry.Docx.Tests/bin/*
 Berry.Docx.Tests/obj/*
+Berry.Docx.Examples/bin/*
+Berry.Docx.Examples/obj/*
