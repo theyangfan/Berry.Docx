@@ -83,8 +83,8 @@ namespace Example
 
 # Documentation
 
-- [Examples](https://theyangfan.github.io/Berry.Docx/en-US/examples/paragraph/index.html)
-- [API References](https://theyangfan.github.io/Berry.Docx/en-US/api/index.html)
+- [Examples](https://theyangfan.github.io/wiki/Berry.Docx/examples/ParagraphExample.html)
+- API References：Working
 
 <br/>
 
