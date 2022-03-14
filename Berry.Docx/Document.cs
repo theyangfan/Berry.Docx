@@ -181,7 +181,7 @@ namespace Berry.Docx
         /// <summary>
         /// 全局设置
         /// </summary>
-        private Settings Settings { get => _settings; }
+        public Settings Settings { get => _settings; }
 
         /// <summary>
         /// 返回文档中指定文本内容的所有段落。

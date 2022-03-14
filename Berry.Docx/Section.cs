@@ -16,7 +16,7 @@ namespace Berry.Docx
     /// <summary>
     /// Represent the section of document.
     /// </summary>
-    public class Section
+    public class Section : IEquatable<Section>
     {
         #region Private Members
         private Document _document;
@@ -53,6 +53,31 @@ namespace Berry.Docx
         /// Gets a collection of all tables in the current section.
         /// </summary>
         public TableCollection Tables => new TableCollection(_document.Package.GetBody(), ChildItems().OfType<Table>());
+
+        public Section PreviousSection
+        {
+            get
+            {
+                int index = _document.Sections.IndexOf(this);
+                Console.WriteLine(index);
+                if (index > 0)
+                    return _document.Sections[index - 1];
+                return null;
+            }
+        }
+
+        public Section NextSection
+        {
+            get
+            {
+                int index = _document.Sections.IndexOf(this);
+                if (index < _document.Sections.Count - 1)
+                    return _document.Sections[index + 1];
+                return null;
+            }
+        }
+
+        public HeaderFooters HeaderFooters => new HeaderFooters(_document, this);
         #endregion
 
         #region Public Methods
@@ -79,6 +104,31 @@ namespace Berry.Docx
             Table table = new Table(_document, rowCnt, columnCnt);
             ChildObjects.Add(table);
             return table;
+        }
+        #endregion
+
+        #region Public Operators
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static bool operator ==(Section lhs, Section rhs)
+        {
+            if (ReferenceEquals(lhs, rhs)) return true;
+            if (((object)lhs == null) || (object)rhs == null) return false;
+            return lhs.XElement == rhs.XElement;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static bool operator !=(DocumentObject lhs, DocumentObject rhs)
+        {
+            return !(lhs == rhs);
         }
         #endregion
 
