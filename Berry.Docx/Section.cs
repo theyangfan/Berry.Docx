@@ -59,7 +59,6 @@ namespace Berry.Docx
             get
             {
                 int index = _document.Sections.IndexOf(this);
-                Console.WriteLine(index);
                 if (index > 0)
                     return _document.Sections[index - 1];
                 return null;
@@ -105,6 +104,33 @@ namespace Berry.Docx
             ChildObjects.Add(table);
             return table;
         }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool Equals(Section obj)
+        {
+            return this == obj;
+        }
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            return this == (Section)obj;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
         #endregion
 
         #region Public Operators
@@ -126,7 +152,7 @@ namespace Berry.Docx
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
-        public static bool operator !=(DocumentObject lhs, DocumentObject rhs)
+        public static bool operator !=(Section lhs, Section rhs)
         {
             return !(lhs == rhs);
         }

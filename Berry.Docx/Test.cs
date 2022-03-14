@@ -17,13 +17,13 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\zhailiao123\Desktop\test.docx";
-            string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
+            string dst = @"C:\Users\tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
                 //Console.WriteLine(doc.Sections[1].HeaderFooters.OddHeader == null);
-                foreach (Paragraph p in doc.Sections[1].HeaderFooters.OddHeader.Paragraphs)
+                foreach (Paragraph p in doc.Sections[1].HeaderFooters.FirstPageHeader.Paragraphs)
                 {
                     Console.WriteLine(p.Text);
                 }

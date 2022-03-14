@@ -59,8 +59,7 @@ namespace Berry.Docx.Documents
                 }
                 else
                 {
-                    Console.WriteLine(_section.PreviousSection == null);
-                    return _section.PreviousSection?.HeaderFooters.EvenHeader;
+                    return _section.PreviousSection?.HeaderFooters.OddHeader;
                 }
             }
         }
