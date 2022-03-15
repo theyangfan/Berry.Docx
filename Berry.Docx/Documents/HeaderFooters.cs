@@ -5,6 +5,7 @@ using System.Text;
 using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx;
+using Berry.Docx.Utils;
 namespace Berry.Docx.Documents
 {
     public class HeaderFooters
@@ -23,6 +24,34 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Public Properties
+        public bool DifferentEvenAndOddHeaders
+        {
+            get => _doc.Settings.EvenAndOddHeaders;
+            set => _doc.Settings.EvenAndOddHeaders = value;
+        }
+
+        public bool DifferentFirstPageHeaders
+        {
+            get
+            {
+                return _section.XElement.Elements<W.TitlePage>().Any();
+            }
+            set
+            {
+                if (value)
+                {
+                    if (!_section.XElement.Elements<W.TitlePage>().Any())
+                        _section.XElement.AddChild(new W.TitlePage());
+                }
+                else
+                {
+                    _section.XElement.RemoveAllChildren<W.TitlePage>();
+                }
+            }
+        }
+
+        public HeaderFooter Header => OddHeader;
+
         public HeaderFooter FirstPageHeader
         {
             get
@@ -39,10 +68,7 @@ namespace Berry.Docx.Documents
                     {
                         return _section.PreviousSection?.HeaderFooters.FirstPageHeader;
                     }
-                    else
-                    {
-                        return OddHeader;
-                    }
+                    return null;
                 }
             }
         }
@@ -80,14 +106,51 @@ namespace Berry.Docx.Documents
                     {
                         return _section.PreviousSection?.HeaderFooters.EvenHeader;
                     }
-                    else
-                    {
-                        return OddHeader;
-                    }
+                    return null;
                 }
             }
         }
         #endregion
 
+        #region Public Methods
+        public HeaderFooter AddFirstPageHeader()
+        {
+            if(FirstPageHeader != null)
+            {
+                throw new InvalidOperationException("The first page header of this section already exists.");
+            }
+            string id = RelationshipIdGenerator.Generate(_doc);
+            P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
+            W.HeaderReference headerReference = new W.HeaderReference() { Type = W.HeaderFooterValues.First, Id = id };
+            _section.XElement.InsertAt(headerReference, 0);
+            return new HeaderFooter(_doc, hdrPart.Header);
+        }
+
+        public HeaderFooter AddOddHeader()
+        {
+            if (OddHeader != null)
+            {
+                throw new InvalidOperationException("The odd header of this section already exists.");
+            }
+            string id = RelationshipIdGenerator.Generate(_doc);
+            P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
+            W.HeaderReference headerReference = new W.HeaderReference() { Type = W.HeaderFooterValues.Default, Id = id };
+            _section.XElement.InsertAt(headerReference, 0);
+            return new HeaderFooter(_doc, hdrPart.Header);
+        }
+
+        public HeaderFooter AddEvenHeader()
+        {
+            if (EvenHeader != null)
+            {
+                throw new InvalidOperationException("The even header of this section already exists.");
+            }
+            string id = RelationshipIdGenerator.Generate(_doc);
+            P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
+            W.HeaderReference headerReference = new W.HeaderReference() { Type = W.HeaderFooterValues.Even, Id = id };
+            _section.XElement.InsertAt(headerReference, 0);
+            return new HeaderFooter(_doc, hdrPart.Header);
+        }
+        #endregion
     }
 }

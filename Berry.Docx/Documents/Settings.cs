@@ -14,7 +14,7 @@ namespace Berry.Docx.Documents
         {
             _settings = settings;
         }
-        public bool EvenAndOddHeaders
+        internal bool EvenAndOddHeaders
         {
             get
             {
@@ -29,9 +29,7 @@ namespace Berry.Docx.Documents
                 }
                 else
                 {
-                    OOxml.EvenAndOddHeaders evenAndOddHeaders = _settings.Elements<OOxml.EvenAndOddHeaders>().FirstOrDefault();
-                    if (evenAndOddHeaders != null)
-                        evenAndOddHeaders.Remove();
+                    _settings.RemoveAllChildren<OOxml.EvenAndOddHeaders>();
                 }
             }
         }
