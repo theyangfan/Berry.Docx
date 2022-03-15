@@ -60,13 +60,14 @@ namespace Berry.Docx.Documents
                 if(first != null)
                 {
                     P.HeaderPart headerPart = (P.HeaderPart)_doc.Package.MainDocumentPart.GetPartById(first.Id);
-                    return new HeaderFooter(_doc, headerPart.Header);
+                    return new HeaderFooter(_doc, _section, headerPart.Header, first.Id);
                 }
                 else
                 {
-                    if (_section.XElement.Elements<W.TitlePage>().Any())
+                    if (_section.XElement.Elements<W.TitlePage>().Any()
+                        && _section.PreviousSection?.HeaderFooters.FirstPageHeader != null)
                     {
-                        return _section.PreviousSection?.HeaderFooters.FirstPageHeader;
+                        return new HeaderFooter(_doc, _section, _section.PreviousSection?.HeaderFooters.FirstPageHeader);
                     }
                     return null;
                 }
@@ -81,11 +82,13 @@ namespace Berry.Docx.Documents
                 if (odd != null)
                 {
                     P.HeaderPart headerPart = (P.HeaderPart)_doc.Package.MainDocumentPart.GetPartById(odd.Id);
-                    return new HeaderFooter(_doc, headerPart.Header);
+                    return new HeaderFooter(_doc, _section, headerPart.Header, odd.Id);
                 }
                 else
                 {
-                    return _section.PreviousSection?.HeaderFooters.OddHeader;
+                    if(_section.PreviousSection?.HeaderFooters.OddHeader != null)
+                        return new HeaderFooter(_doc, _section, _section.PreviousSection?.HeaderFooters.OddHeader);
+                    return null;
                 }
             }
         }
@@ -98,13 +101,14 @@ namespace Berry.Docx.Documents
                 if (even != null)
                 {
                     P.HeaderPart headerPart = (P.HeaderPart)_doc.Package.MainDocumentPart.GetPartById(even.Id);
-                    return new HeaderFooter(_doc, headerPart.Header);
+                    return new HeaderFooter(_doc, _section, headerPart.Header, even.Id);
                 }
                 else
                 {
-                    if (_doc.Settings.EvenAndOddHeaders)
+                    if (_doc.Settings.EvenAndOddHeaders
+                        && _section.PreviousSection?.HeaderFooters.EvenHeader != null)
                     {
-                        return _section.PreviousSection?.HeaderFooters.EvenHeader;
+                        return new HeaderFooter(_doc, _section, _section.PreviousSection?.HeaderFooters.EvenHeader);
                     }
                     return null;
                 }
@@ -123,7 +127,7 @@ namespace Berry.Docx.Documents
             P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
             W.HeaderReference headerReference = new W.HeaderReference() { Type = W.HeaderFooterValues.First, Id = id };
             _section.XElement.InsertAt(headerReference, 0);
-            return new HeaderFooter(_doc, hdrPart.Header);
+            return new HeaderFooter(_doc, _section, hdrPart.Header, id);
         }
 
         public HeaderFooter AddOddHeader()
@@ -136,7 +140,7 @@ namespace Berry.Docx.Documents
             P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
             W.HeaderReference headerReference = new W.HeaderReference() { Type = W.HeaderFooterValues.Default, Id = id };
             _section.XElement.InsertAt(headerReference, 0);
-            return new HeaderFooter(_doc, hdrPart.Header);
+            return new HeaderFooter(_doc, _section, hdrPart.Header, id);
         }
 
         public HeaderFooter AddEvenHeader()
@@ -149,7 +153,7 @@ namespace Berry.Docx.Documents
             P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
             W.HeaderReference headerReference = new W.HeaderReference() { Type = W.HeaderFooterValues.Even, Id = id };
             _section.XElement.InsertAt(headerReference, 0);
-            return new HeaderFooter(_doc, hdrPart.Header);
+            return new HeaderFooter(_doc, _section, hdrPart.Header, id);
         }
         #endregion
     }
