@@ -17,37 +17,33 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\tomato\Desktop\test.docx";
-            string dst = @"C:\Users\tomato\Desktop\dst.docx";
+            string src = @"C:\Users\zhailiao123\Desktop\test.docx";
+            string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
-                /*
-                doc.Sections[0].HeaderFooters.DifferentEvenAndOddHeaders = true;
-                doc.Sections[0].HeaderFooters.DifferentFirstPageHeaders = true;
-                Console.WriteLine("奇偶页不同：{0}", doc.Sections[0].HeaderFooters.DifferentEvenAndOddHeaders);
-                Console.WriteLine("首页不同：{0}", doc.Sections[0].HeaderFooters.DifferentFirstPageHeaders);
-                foreach (Paragraph p in doc.Sections[0].HeaderFooters.Header?.Paragraphs)
-                {
-                    Console.WriteLine(p.Text);
-                }
-                */
-                /*      doc.Sections[0].HeaderFooters.DifferentFirstPageHeaders = true;
-                      doc.Sections[0].HeaderFooters.DifferentEvenAndOddHeaders = true;
-                      HeaderFooter h1 = doc.Sections[0].HeaderFooters.OddHeader;//.AddOddHeader();
-                      HeaderFooter h2 = doc.Sections[0].HeaderFooters.EvenHeader;//.AddEvenHeader();
-                      HeaderFooter h3 = doc.Sections[0].HeaderFooters.FirstPageHeader;//.AddFirstPageHeader();
-                      h1.Paragraphs[0].Text = "奇数";
-                      h2.Paragraphs[0].Text = "偶数";
-                      h3.Paragraphs[0].Text = "首页";*/
-                //Console.WriteLine(doc.Sections[1].HeaderFooters.Header == null);
-                Console.WriteLine(doc.Sections[1].HeaderFooters.FirstPageHeader.LinkToPrevious);
-                Console.WriteLine(doc.Sections[1].HeaderFooters.OddHeader.LinkToPrevious);
-                Console.WriteLine(doc.Sections[1].HeaderFooters.EvenHeader.LinkToPrevious);
-                //doc.SaveAs(dst);
-            }
+                Section s1 = doc.Sections[0];
+                Section s2 = doc.Sections[1];
+                Section s3 = doc.Sections[2];
 
-            //System.Diagnostics.Process.Start(dst);
+                s1.HeaderFooters.DifferentEvenAndOddHeaders = true;
+
+                s1.HeaderFooters.DifferentFirstPageHeaders = true;
+                s1.HeaderFooters.AddFirstPageHeader().Paragraphs[0].Text = "第1节首页页眉";
+                s1.HeaderFooters.AddOddHeader().Paragraphs[0].Text = "第1节奇数页眉";
+                s1.HeaderFooters.AddEvenHeader().Paragraphs[0].Text = "第1节偶数页眉";
+
+                s2.HeaderFooters.DifferentFirstPageHeaders = false;
+                s3.HeaderFooters.DifferentFirstPageHeaders = true;
+
+                //s3.HeaderFooters.LinkToPrevious(false);
+                //s3.HeaderFooters.Remove();
+                //s3.HeaderFooters.FirstPageHeader.LinkToPrevious = true;
+                //s3.HeaderFooters.OddHeader.LinkToPrevious = true;
+                //s3.HeaderFooters.EvenHeader.LinkToPrevious = true;
+
+                doc.SaveAs(dst);
+            }
         }
 
     }

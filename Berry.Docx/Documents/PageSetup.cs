@@ -52,14 +52,6 @@ namespace Berry.Docx.Documents
             }
         }
 
-        public int CharsCount
-        {
-            get
-            {
-                return 1/4096;
-            }
-        }
-
 
     }
 }

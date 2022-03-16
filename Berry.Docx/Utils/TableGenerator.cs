@@ -11,7 +11,6 @@ namespace Berry.Docx.Utils
 {
     internal class TableGenerator
     {
-        private static int TableWidth = 8296;
         public static Table GenerateTable(int rowCnt, int columnCnt)
         {
             Table table1 = new Table();

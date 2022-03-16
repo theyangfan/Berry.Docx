@@ -24,10 +24,10 @@ namespace Berry.Docx.Documents
     public class Paragraph : DocumentItem
     {
         #region Private Members
-        private Document _doc;
-        private W.Paragraph _paragraph;
-        private ParagraphFormat _pFormat;
-        private CharacterFormat _cFormat;
+        private readonly Document _doc;
+        private readonly W.Paragraph _paragraph;
+        private readonly ParagraphFormat _pFormat;
+        private readonly CharacterFormat _cFormat;
         #endregion
 
         #region Constructors

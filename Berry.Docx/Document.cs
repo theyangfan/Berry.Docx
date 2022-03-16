@@ -26,7 +26,7 @@ namespace Berry.Docx
         private string _filename = string.Empty;
         private Stream _stream = null;
         private MemoryStream _mstream = null;
-        private P.WordprocessingDocument _doc;
+        private readonly P.WordprocessingDocument _doc;
         private Settings _settings;
         #endregion
 

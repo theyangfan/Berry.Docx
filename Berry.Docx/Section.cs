@@ -19,8 +19,8 @@ namespace Berry.Docx
     public class Section : IEquatable<Section>
     {
         #region Private Members
-        private Document _document;
-        private W.SectionProperties _sectPr;
+        private readonly Document _document;
+        private readonly W.SectionProperties _sectPr;
         private PageSetup _pageSetup;
         #endregion
 
@@ -54,6 +54,9 @@ namespace Berry.Docx
         /// </summary>
         public TableCollection Tables => new TableCollection(_document.Package.GetBody(), ChildItems().OfType<Table>());
 
+        /// <summary>
+        /// Gets the previous section.
+        /// </summary>
         public Section PreviousSection
         {
             get
@@ -65,6 +68,9 @@ namespace Berry.Docx
             }
         }
 
+        /// <summary>
+        /// Gets the next section.
+        /// </summary>
         public Section NextSection
         {
             get
@@ -76,6 +82,9 @@ namespace Berry.Docx
             }
         }
 
+        /// <summary>
+        /// Gets the headers and footers of this section.
+        /// </summary>
         public HeaderFooters HeaderFooters => new HeaderFooters(_document, this);
         #endregion
 
