@@ -349,7 +349,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 段落编号(默认为1)
         /// </summary>
-        private string ListText
+        public string ListText
         {
             get
             {

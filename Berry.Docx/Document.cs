@@ -131,6 +131,7 @@ namespace Berry.Docx
         {
             if(_doc != null)
             {
+                _doc.Save();
                 _doc.Clone(stream);
             }
         }

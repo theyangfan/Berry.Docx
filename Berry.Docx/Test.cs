@@ -25,7 +25,7 @@ namespace Test
                 Section s1 = doc.Sections[0];
                 Section s2 = doc.Sections[1];
                 Section s3 = doc.Sections[2];
-
+                
                 s1.HeaderFooters.DifferentEvenAndOddHeaders = true;
 
                 s1.HeaderFooters.DifferentFirstPageHeaders = true;
