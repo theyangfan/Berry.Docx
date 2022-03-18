@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Berry.Docx;
@@ -23,26 +23,14 @@ namespace Test
             using (Document doc = new Document(src))
             {
                 Section s1 = doc.Sections[0];
-                Section s2 = doc.Sections[1];
-                Section s3 = doc.Sections[2];
-                
-                s1.HeaderFooters.DifferentEvenAndOddHeaders = true;
+                //Section s2 = doc.Sections[1];
+                //Section s3 = doc.Sections[2];
+                Regex rx = new Regex("社会关系");
 
-                s1.HeaderFooters.DifferentFirstPageHeaders = true;
-                s1.HeaderFooters.AddFirstPageHeader().Paragraphs[0].Text = "第1节首页页眉";
-                s1.HeaderFooters.AddOddHeader().Paragraphs[0].Text = "第1节奇数页眉";
-                s1.HeaderFooters.AddEvenHeader().Paragraphs[0].Text = "第1节偶数页眉";
+                doc.Find(rx);
 
-                s2.HeaderFooters.DifferentFirstPageHeaders = false;
-                s3.HeaderFooters.DifferentFirstPageHeaders = true;
 
-                //s3.HeaderFooters.LinkToPrevious(false);
-                //s3.HeaderFooters.Remove();
-                //s3.HeaderFooters.FirstPageHeader.LinkToPrevious = true;
-                //s3.HeaderFooters.OddHeader.LinkToPrevious = true;
-                //s3.HeaderFooters.EvenHeader.LinkToPrevious = true;
-
-                doc.SaveAs(dst);
+                //doc.SaveAs(dst);
             }
         }
 

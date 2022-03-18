@@ -200,11 +200,7 @@ namespace Berry.Docx.Formatting
                 if (_ownerRun != null)
                 {
                     InitRun();
-                    if(_curRHld.FontSize > 0)
-                    {
-                        return _curRHld.FontSize;
-                    }
-                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontSize : 0;
+                    return _curRHld.FontSize ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontSize : 0);
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -275,11 +271,7 @@ namespace Berry.Docx.Formatting
                 if(_ownerRun != null)
                 {
                     InitRun();
-                    if (_curRHld.FontSizeCs > 0)
-                    {
-                        return _curRHld.FontSizeCs;
-                    }
-                    return _inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontSizeCs : 0;
+                    return _curRHld.FontSizeCs ?? (_inheritFromParagraphFormat != null ? _inheritFromParagraphFormat.FontSizeCs : 0);
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -597,8 +589,8 @@ namespace Berry.Docx.Formatting
                 RunPropertiesHolder rPr = new RunPropertiesHolder(_doc.Package, styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle);
                 baseFormat.FontNameEastAsia = rPr.FontNameEastAsia;
                 baseFormat.FontNameAscii = rPr.FontNameAscii;
-                baseFormat.FontSize = rPr.FontSize;
-                baseFormat.FontSizeCs = rPr.FontSizeCs;
+                baseFormat.FontSize = rPr.FontSize ?? 10.5F;
+                baseFormat.FontSizeCs = rPr.FontSizeCs ?? 10.5F;
                 baseFormat.Bold = rPr.Bold ?? false;
                 baseFormat.Italic = rPr.Italic ?? false;
                 baseFormat.CharacterScale = rPr.CharacterScale ?? 100;

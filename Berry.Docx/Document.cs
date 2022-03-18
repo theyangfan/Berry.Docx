@@ -14,6 +14,7 @@ using P = DocumentFormat.OpenXml.Packaging;
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Utils;
+using Berry.Docx.Field;
 
 namespace Berry.Docx
 {
@@ -105,6 +106,22 @@ namespace Berry.Docx
         public Table CreateTable(int rowCnt, int columnCnt)
         {
             return new Table(this, rowCnt, columnCnt);
+        }
+
+        public TextSelection Find(Regex pattern)
+        {
+            foreach(Section section in Sections)
+            {
+                foreach(Paragraph p in section.Paragraphs)
+                {
+                    Match match = pattern.Match(p.Text);
+                    if (match.Success)
+                    {
+                        return new TextSelection(p, match.Index, match.Index + match.Length - 1);
+                    }
+                }
+            }
+            return null;
         }
 
         /// <summary>
