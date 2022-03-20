@@ -17,18 +17,18 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\zhailiao123\Desktop\test.docx";
-            string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
+            string dst = @"C:\Users\tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
                 Section s1 = doc.Sections[0];
                 //Section s2 = doc.Sections[1];
                 //Section s3 = doc.Sections[2];
-                Regex rx = new Regex("社会关系");
+                Regex rx = new Regex("长段落");
 
-                doc.Find(rx);
-
+                TextSelection selection = doc.Find(rx);
+                selection.GetAsOneRange();
 
                 //doc.SaveAs(dst);
             }

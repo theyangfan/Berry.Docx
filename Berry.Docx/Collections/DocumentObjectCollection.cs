@@ -61,6 +61,20 @@ namespace Berry.Docx.Collections
         }
 
         /// <summary>
+        /// Filters the elements of an <see cref="IEnumerable"/> based on a specified
+        /// type.
+        /// </summary>
+        /// <typeparam name="T">The type to filter the elements of the sequence on.</typeparam>
+        /// <returns>
+        /// An <see cref="IEnumerable"/> that contains elements from the input
+        /// sequence of type TResult.
+        /// </returns>
+        public IEnumerable<T> OfType<T>()
+        {
+            return _objects.OfType<T>();
+        }
+
+        /// <summary>
         /// Adds the specified object to the end of the current collection.
         /// </summary>
         /// <param name="obj">The DocumentObject instance that was added.</param>
