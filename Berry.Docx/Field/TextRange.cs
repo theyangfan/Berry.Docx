@@ -43,7 +43,19 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Public Properties
-
+        /// <summary>
+        /// Gets the owner paragraph.
+        /// </summary>
+        public Paragraph OwnerParagraph
+        {
+            get
+            {
+                W.Paragraph paragraph = _run.Ancestors<W.Paragraph>().FirstOrDefault();
+                if (paragraph != null)
+                    return new Paragraph(_doc, paragraph);
+                return null;
+            }
+        }
         /// <summary>
         /// The DocumentObject type.
         /// </summary>

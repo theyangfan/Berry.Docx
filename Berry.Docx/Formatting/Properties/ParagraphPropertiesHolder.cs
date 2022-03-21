@@ -248,9 +248,9 @@ namespace Berry.Docx.Formatting
                 if (_indentation.Left == null) return null;
                 float.TryParse(_indentation.Left, out val);
                 val = val / 20;
-                if (HangingCharsIndent > 0)
+                if (HangingCharsIndent != null && HangingCharsIndent > 0)
                     val = 0;
-                else if (HangingIndent > 0)
+                else if (HangingIndent != null && HangingIndent > 0)
                     val -= HangingIndent;
                 return val;
             }
@@ -258,7 +258,7 @@ namespace Berry.Docx.Formatting
             {
                 if (value >= 0)
                 {
-                    if (HangingIndent > 0)
+                    if (HangingIndent != null && HangingIndent > 0)
                         _indentation.Left = ((value + HangingIndent) * 20).ToString();
                     else
                         _indentation.Left = (value * 20).ToString();

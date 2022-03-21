@@ -108,7 +108,12 @@ namespace Berry.Docx
             return new Table(this, rowCnt, columnCnt);
         }
 
-        public TextSelection Find(Regex pattern)
+        /// <summary>
+        ///  Searches the document for the first occurrence of the specified regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>An object that contains information about the match.</returns>
+        public TextMatch Find(Regex pattern)
         {
             foreach(Section section in Sections)
             {
@@ -117,11 +122,37 @@ namespace Berry.Docx
                     Match match = pattern.Match(p.Text);
                     if (match.Success)
                     {
-                        return new TextSelection(p, match.Index, match.Index + match.Length - 1);
+                        return new TextMatch(p, match.Index, match.Index + match.Length - 1);
                     }
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Searches the document for all occurrences of a regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>
+        /// A list of the <see cref="TextMatch"/> objects found by the search.
+        /// </returns>
+        public List<TextMatch> FindAll(Regex pattern)
+        {
+            List<TextMatch> matches = new List<TextMatch>();
+            foreach (Section section in Sections)
+            {
+                foreach (Paragraph p in section.Paragraphs)
+                {
+                    foreach(Match match in pattern.Matches(p.Text))
+                    {
+                        if (match.Success)
+                        {
+                            matches.Add(new TextMatch(p, match.Index, match.Index + match.Length - 1));
+                        }
+                    }
+                }
+            }
+            return matches;
         }
 
         /// <summary>
@@ -202,36 +233,6 @@ namespace Berry.Docx
         public Settings Settings { get => _settings; }
 
         /// <summary>
-        /// 返回文档中指定文本内容的所有段落。
-        /// <br/><br/>
-        /// Return a list of paragraphs with specified text in the document.
-        /// </summary>
-        /// <param name="text">段落文本<br/><br/>Paragraph text</param>
-        /// <returns>找到的段落列表。<br/><br/>A list of paragraphs found</returns>
-        private List<Paragraph> Find(string text)
-        {
-            List<Paragraph> paras = new List<Paragraph>();
-            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-            {
-                if (p.InnerText.Trim() == text)
-                    paras.Add(new Paragraph(this, p));
-            }
-            return paras;
-        }
-
-        /// <summary>
-        /// 返回匹配成功的所有段落
-        /// </summary>
-        /// <param name="pattern"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        private List<Paragraph> Find(string pattern, RegexOptions options)
-        {
-            List<Paragraph> paras = new List<Paragraph>();
-            return paras;
-        }
-
-        /// <summary>
         /// 更新域代码
         /// </summary>
         private void UpdateFields()
@@ -245,7 +246,6 @@ namespace Berry.Docx
                 settings.Settings.Save();
             }
         }
-
         #endregion
 
     }
