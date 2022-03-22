@@ -4,15 +4,31 @@
 
 # Berry.Docx
 
+[![Downloads](https://img.shields.io/nuget/dt/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx)
+
 Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying [OpenXML](https://github.com/OfficeDev/Open-XML-SDK) API.
 
 <br/>
 
-# Install via NuGet
+# Packages
+
+The release NuGet packages for Berry.Docx are on NuGet.org:
+
+| Package    | Download                                                     |
+| ---------- | ------------------------------------------------------------ |
+| Berry.Docx | [![NuGet](https://img.shields.io/nuget/v/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx) |
+
+## Install via NuGet
 
 If you want to include Berry.Docx in your project, you can install it directly from NuGet.
 
-Run the following command in the Package Manager Console to install it.
+Open your project in Visual Studio, right-click the solution and select  **Manager NuGet Packages** , then enter "Berry.Docx" in the Browse input box, as follows:
+
+![image](https://theyangfan.github.io/wiki/Berry.Docx/images/01.png)
+
+Select and install.
+
+Or you could run the following command in the Package Manager Console to install it.
 
 ```sh
 PM> Install-Package Berry.Docx
@@ -78,19 +94,27 @@ namespace Example
 | Get/Set table cell paragraphs                                |
 | Inserts section break                                        |
 | Appends comments                                             |
+| Manipulates header and footers                               |
 
 <br/>
 
 # Documentation
 
-- [Examples](https://theyangfan.github.io/Berry.Docx/en-US/examples/paragraph/index.html)
-- [API References](https://theyangfan.github.io/Berry.Docx/en-US/api/index.html)
+- [Examples](https://theyangfan.github.io/wiki/Berry.Docx/examples/ParagraphExample.html)
 
 <br/>
 
 # Release History
 
+### v1.2.0 (2022-03-22)
+
+#### Added
+
+- Supports manipulating headers and footers.
+
 ### v1.1.0 (2022-03-06)
+
+#### Added
 
 - Supports more character and paragraph advanced formats;
 - Supports insert section break;
@@ -110,4 +134,27 @@ namespace Example
 
 - Supports create & open DOCX files；
 - Supports read and change the normal format(Font、Justification、Indentation、Spacing) of paragraph.
+
+<br/>
+
+# RoadMap
+
+Below are the future plans for the project.
+
+## April 2022 - 1.3.0
+
+- Support get/set page setup
+- Support add/remove styles
+- Support add/remove paragraph list styles
+- Support get/set table formats
+
+## May 2022 - 1.4.0
+
+- Support add/remove pictures and get/set picture formats
+- Support add/remove shapes and get/set shape formats
+
+## June 2022 - 1.5.0
+
+- Support insert field codes
+- Support insert footnote and endnote
 
