@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -11,6 +14,7 @@ using P = DocumentFormat.OpenXml.Packaging;
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Utils;
+using Berry.Docx.Field;
 
 namespace Berry.Docx
 {
@@ -23,7 +27,7 @@ namespace Berry.Docx
         private string _filename = string.Empty;
         private Stream _stream = null;
         private MemoryStream _mstream = null;
-        private P.WordprocessingDocument _doc;
+        private readonly P.WordprocessingDocument _doc;
         private Settings _settings;
         #endregion
 
@@ -105,6 +109,53 @@ namespace Berry.Docx
         }
 
         /// <summary>
+        ///  Searches the document for the first occurrence of the specified regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>An object that contains information about the match.</returns>
+        public TextMatch Find(Regex pattern)
+        {
+            foreach(Section section in Sections)
+            {
+                foreach(Paragraph p in section.Paragraphs)
+                {
+                    Match match = pattern.Match(p.Text);
+                    if (match.Success)
+                    {
+                        return new TextMatch(p, match.Index, match.Index + match.Length - 1);
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the document for all occurrences of a regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>
+        /// A list of the <see cref="TextMatch"/> objects found by the search.
+        /// </returns>
+        public List<TextMatch> FindAll(Regex pattern)
+        {
+            List<TextMatch> matches = new List<TextMatch>();
+            foreach (Section section in Sections)
+            {
+                foreach (Paragraph p in section.Paragraphs)
+                {
+                    foreach(Match match in pattern.Matches(p.Text))
+                    {
+                        if (match.Success)
+                        {
+                            matches.Add(new TextMatch(p, match.Index, match.Index + match.Length - 1));
+                        }
+                    }
+                }
+            }
+            return matches;
+        }
+
+        /// <summary>
         /// Save the contents and changes of the docuemnt.
         /// </summary>
         public void Save()
@@ -128,6 +179,7 @@ namespace Berry.Docx
         {
             if(_doc != null)
             {
+                _doc.Save();
                 _doc.Clone(stream);
             }
         }
@@ -178,37 +230,7 @@ namespace Berry.Docx
         /// <summary>
         /// 全局设置
         /// </summary>
-        private Settings Settings { get => _settings; }
-
-        /// <summary>
-        /// 返回文档中指定文本内容的所有段落。
-        /// <br/><br/>
-        /// Return a list of paragraphs with specified text in the document.
-        /// </summary>
-        /// <param name="text">段落文本<br/><br/>Paragraph text</param>
-        /// <returns>找到的段落列表。<br/><br/>A list of paragraphs found</returns>
-        private List<Paragraph> Find(string text)
-        {
-            List<Paragraph> paras = new List<Paragraph>();
-            foreach (W.Paragraph p in _doc.MainDocumentPart.Document.Body.Elements<W.Paragraph>())
-            {
-                if (p.InnerText.Trim() == text)
-                    paras.Add(new Paragraph(this, p));
-            }
-            return paras;
-        }
-
-        /// <summary>
-        /// 返回匹配成功的所有段落
-        /// </summary>
-        /// <param name="pattern"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        private List<Paragraph> Find(string pattern, RegexOptions options)
-        {
-            List<Paragraph> paras = new List<Paragraph>();
-            return paras;
-        }
+        public Settings Settings { get => _settings; }
 
         /// <summary>
         /// 更新域代码
@@ -224,7 +246,6 @@ namespace Berry.Docx
                 settings.Settings.Save();
             }
         }
-
         #endregion
 
     }

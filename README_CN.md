@@ -4,15 +4,31 @@
 
 # Berry.Docx
 
+[![Downloads](https://img.shields.io/nuget/dt/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx)
+
 Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 Word 应用程序。 旨在提供简便，完整，友好的接口来封装底层的 [OpenXML](https://github.com/OfficeDev/Open-XML-SDK) API。
 
 <br/>
 
-# 通过 NuGet 安装
+# 程序包
+
+Berry.Docx 的 NuGet 软件包发布在NuGet.org上:
+
+| 包         | 下载                                                         |
+| ---------- | ------------------------------------------------------------ |
+| Berry.Docx | [![NuGet](https://img.shields.io/nuget/v/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx) |
+
+## 通过 NuGet 安装
 
 如果你想在项目中使用 Berry.Docx，最简单的方法就是通过 NuGet 包管理器安装。
 
-请在 Visual Studio 程序包管理器控制台运行以下命令来安装：
+用 Visual Studio 打开自己的项目，在项目上右键选择【管理 NuGet 程序包】选项，在浏览输入框中输入“Berry.Docx”，如下所示：
+
+![image](https://theyangfan.github.io/wiki/Berry.Docx/images/01.png)
+
+选择安装即可。
+
+或者在 Visual Studio 程序包管理器控制台运行以下命令来安装：
 
 ```sh
 PM> Install-Package Berry.Docx
@@ -79,19 +95,27 @@ namespace Example
 | 获取/设置表格单元格中的段落                             |
 | 插入分节符                                              |
 | 添加批注                                                |
+| 操作页眉和页脚                                          |
 
 <br/>
 
 # 文档
 
-- [示例](https://theyangfan.github.io/Berry.Docx/zh-CN/examples/paragraph/index.html)
-- [API 文档](https://theyangfan.github.io/Berry.Docx/zh-CN/api/index.html)
+- [示例](https://theyangfan.github.io/wiki/Berry.Docx/examples/ParagraphExample.html)
 
 <br/>
 
 # 更新日志
 
+### v1.2.0 (2022-03-22)
+
+#### 新增功能
+
+- 支持操作页眉和页脚。
+
 ### v1.1.0 (2022-03-06)
+
+#### 新增功能
 
 - 支持更多字符和段落高级格式；
 - 支持插入分节符；
@@ -110,4 +134,29 @@ namespace Example
 
 - 支持创建、打开 DOCX 文档；
 - 支持读取、设置段落的常规格式(字体、对齐方式、缩进、间距)。
+
+<br/>
+
+# 路线图
+
+以下是此项目的未来计划。
+
+## 2022 年 4 月 - 1.3.0
+
+- 支持读写页面设置
+- 支持添加/删除样式
+- 支持添加/删除多级列表样式
+
+- 支持读写表格格式
+
+## 2022 年 5 月 - 1.4.0
+
+- 支持添加/删除图片以及读写图片格式
+
+- 支持添加/删除形状以及读写形状格式
+
+## 2022 年 6 月 - 1.5.0
+
+- 支持插入域代码
+- 支持插入脚注和尾注
 

@@ -1,6 +1,9 @@
 ﻿using System;
 using O = DocumentFormat.OpenXml;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Collections;
+using Berry.Docx.Documents;
+using Berry.Docx.Field;
 
 namespace Berry.Docx
 {
@@ -40,6 +43,38 @@ namespace Berry.Docx
         /// Gets the type value of the current object.
         /// </summary>
         public abstract DocumentObjectType DocumentObjectType { get; }
+
+        public virtual DocumentObject PreviousSibling
+        {
+            get
+            {
+                O.OpenXmlElement prev = _object.PreviousSibling();
+                if (prev == null) return null;
+                if (prev is W.Paragraph)
+                    return new Paragraph(_doc, (W.Paragraph)prev);
+                if (prev is W.Table)
+                    return new Table(_doc, (W.Table)prev);
+                if (prev is W.Run)
+                    return new TextRange(_doc, (W.Run)prev);
+                return null;
+            }
+        }
+
+        public virtual DocumentObject NextSibling
+        {
+            get
+            {
+                O.OpenXmlElement next = _object.NextSibling();
+                if (next == null) return null;
+                if (next is W.Paragraph)
+                    return new Paragraph(_doc, (W.Paragraph)next);
+                if (next is W.Table)
+                    return new Table(_doc, (W.Table)next);
+                if (next is W.Run)
+                    return new TextRange(_doc, (W.Run)next);
+                return null;
+            }
+        }
         #endregion
 
         #region Public Operators

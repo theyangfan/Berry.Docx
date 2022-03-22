@@ -14,6 +14,26 @@ namespace Berry.Docx.Documents
         {
             _settings = settings;
         }
+        internal bool EvenAndOddHeaders
+        {
+            get
+            {
+                return _settings.Elements<OOxml.EvenAndOddHeaders>().Any();
+            }
+            set
+            {
+                if (value)
+                {
+                    if (!_settings.Elements<OOxml.EvenAndOddHeaders>().Any())
+                        _settings.AddChild(new OOxml.EvenAndOddHeaders());
+                }
+                else
+                {
+                    _settings.RemoveAllChildren<OOxml.EvenAndOddHeaders>();
+                }
+            }
+        }
+
         /// <summary>
         /// 装订线位置为上，返回True，否则返回False
         /// </summary>

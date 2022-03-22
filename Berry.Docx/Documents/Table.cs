@@ -72,13 +72,6 @@ namespace Berry.Docx.Documents
         }
         #endregion
 
-        #region Internal
-        internal void Remove()
-        {
-            if (_table != null) _table.Remove();
-        }
-        #endregion
-
         #region Private Methods
         private IEnumerable<TableRow> TableRowsPrivate()
         {

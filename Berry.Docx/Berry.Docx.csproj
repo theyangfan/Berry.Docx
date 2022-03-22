@@ -10,23 +10,27 @@
     <Description>Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying OpenXML API.
 
 Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 Word 应用程序。 旨在提供简便，完整，友好的接口来封装底层的 OpenXML API。</Description>
-    <Authors>YangFan</Authors>
-    <Company>番茄就是西红柿</Company>
+    <Authors>番茄就是西红柿</Authors>
+    <Company></Company>
     <Copyright>© theyangfan 2022. All rights reserved.</Copyright>
     <PackageTags>word, docx, openxml, office</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.1.0</Version>
-    <PackageReleaseNotes>- Supports more character and paragraph advanced formats;
-- Supports insert section break;
-- Supports append paragraph comments.</PackageReleaseNotes>
+    <PackageProjectUrl>https://theyangfan.github.io/wiki/Berry.Docx/index.html</PackageProjectUrl>
+    <Version>1.2.0</Version>
+    <PackageReleaseNotes>- Supports manipulating headers and footers.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/theyangfan/Berry.Docx</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interface\**" />
+    <EmbeddedResource Remove="Interface\**" />
+    <None Remove="Interface\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />

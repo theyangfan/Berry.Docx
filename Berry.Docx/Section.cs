@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +16,11 @@ namespace Berry.Docx
     /// <summary>
     /// Represent the section of document.
     /// </summary>
-    public class Section
+    public class Section : IEquatable<Section>
     {
         #region Private Members
-        private Document _document;
-        private W.SectionProperties _sectPr;
+        private readonly Document _document;
+        private readonly W.SectionProperties _sectPr;
         private PageSetup _pageSetup;
         #endregion
 
@@ -50,6 +53,39 @@ namespace Berry.Docx
         /// Gets a collection of all tables in the current section.
         /// </summary>
         public TableCollection Tables => new TableCollection(_document.Package.GetBody(), ChildItems().OfType<Table>());
+
+        /// <summary>
+        /// Gets the previous section.
+        /// </summary>
+        public Section PreviousSection
+        {
+            get
+            {
+                int index = _document.Sections.IndexOf(this);
+                if (index > 0)
+                    return _document.Sections[index - 1];
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the next section.
+        /// </summary>
+        public Section NextSection
+        {
+            get
+            {
+                int index = _document.Sections.IndexOf(this);
+                if (index < _document.Sections.Count - 1)
+                    return _document.Sections[index + 1];
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the headers and footers of this section.
+        /// </summary>
+        public HeaderFooters HeaderFooters => new HeaderFooters(_document, this);
         #endregion
 
         #region Public Methods
@@ -76,6 +112,58 @@ namespace Berry.Docx
             Table table = new Table(_document, rowCnt, columnCnt);
             ChildObjects.Add(table);
             return table;
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool Equals(Section obj)
+        {
+            return this == obj;
+        }
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            return this == (Section)obj;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+        #endregion
+
+        #region Public Operators
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static bool operator ==(Section lhs, Section rhs)
+        {
+            if (ReferenceEquals(lhs, rhs)) return true;
+            if (((object)lhs == null) || (object)rhs == null) return false;
+            return lhs.XElement == rhs.XElement;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static bool operator !=(Section lhs, Section rhs)
+        {
+            return !(lhs == rhs);
         }
         #endregion
 

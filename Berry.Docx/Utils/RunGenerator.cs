@@ -17,14 +17,14 @@ namespace Berry.Docx.Utils
         {
             Run run = new Run();
 
-            RunProperties rPr = new RunProperties();
-            RunFonts rFonts = new RunFonts() { Hint = FontTypeHintValues.EastAsia };
-            rPr.AddChild(rFonts);
+            //RunProperties rPr = new RunProperties();
+            //RunFonts rFonts = new RunFonts() { Hint = FontTypeHintValues.EastAsia };
+            //rPr.AddChild(rFonts);
 
             Text text1 = new Text();
             text1.Text = text;
 
-            run.AddChild(rPr);
+            //run.AddChild(rPr);
             run.AddChild(text1);
 
             return run;
