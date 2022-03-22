@@ -43,7 +43,9 @@ namespace Berry.Docx
         /// Gets the type value of the current object.
         /// </summary>
         public abstract DocumentObjectType DocumentObjectType { get; }
-
+        /// <summary>
+        /// Gets the object that immediately precedes the current object. 
+        /// </summary>
         public virtual DocumentObject PreviousSibling
         {
             get
@@ -59,7 +61,9 @@ namespace Berry.Docx
                 return null;
             }
         }
-
+        /// <summary>
+        /// Gets the object that immediately follows the current object.
+        /// </summary>
         public virtual DocumentObject NextSibling
         {
             get
@@ -103,6 +107,23 @@ namespace Berry.Docx
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Inserts the specified object immediately before the current object.
+        /// </summary>
+        /// <param name="obj">The new object to insert.</param>
+        public void InserBeforeSelf(DocumentObject obj)
+        {
+            _object.InsertBeforeSelf(obj.XElement);
+        }
+
+        /// <summary>
+        /// Inserts the specified object immediately after the current object.
+        /// </summary>
+        /// <param name="obj">The new object to insert.</param>
+        public void InsertAfterSelf(DocumentObject obj)
+        {
+            _object.InsertAfterSelf(obj.XElement);
+        }
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>

@@ -131,7 +131,7 @@ namespace Berry.Docx.Documents
         public ParagraphFormat Format => _pFormat;
 
         /// <summary>
-        /// The common character format of paragraph.
+        /// The character format of paragraph mark for this paragraph.
         /// </summary>
         public CharacterFormat CharacterFormat => _cFormat;
 
