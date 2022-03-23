@@ -94,6 +94,17 @@ namespace Berry.Docx
             }
         }
 
+        internal static OW.Style GetStyle(this OW.Run run, Document doc)
+        {
+            OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
+            if (run?.RunProperties?.RunStyle != null)
+            {
+                string styleId = run.RunProperties.RunStyle.Val.ToString();
+                return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
+            }
+            return null;
+        }
+
         /// <summary>
         /// Returns the OpenXML style that the current style based on.
         /// </summary>

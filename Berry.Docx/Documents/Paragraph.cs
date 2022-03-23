@@ -44,7 +44,8 @@ namespace Berry.Docx.Documents
             _doc = doc;
             _paragraph = paragraph;
             _pFormat = new ParagraphFormat(_doc, paragraph);
-            _cFormat = new CharacterFormat(_doc, paragraph);
+            if(paragraph?.ParagraphProperties?.ParagraphMarkRunProperties != null)
+                _cFormat = new CharacterFormat(_doc, paragraph.ParagraphProperties.ParagraphMarkRunProperties);
         }
         #endregion
 
@@ -339,7 +340,12 @@ namespace Berry.Docx.Documents
             foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
             {
                 if (ele.GetType() == typeof(W.Run))
-                    yield return new TextRange(_doc, ele as W.Run);
+                {
+                    W.Run run = (W.Run)ele;
+                    if(run.Elements<W.Text>().Any())
+                        yield return new TextRange(_doc, run);
+                }
+                    
             }
         }
         #endregion

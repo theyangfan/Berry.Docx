@@ -25,8 +25,13 @@ namespace Berry.Docx.Documents
                 _pFormat = new ParagraphFormat(doc, style);
                 _cFormat = new CharacterFormat(doc, style);
             }
+            if (style.Type.Value == W.StyleValues.Character)
+            {
+                _cFormat = new CharacterFormat(doc, style);
+            }
         }
 
+        public CharacterFormat CharacterFormat => _cFormat;
         /// <summary>
         /// 
         /// </summary>
