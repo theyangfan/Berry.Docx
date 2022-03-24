@@ -36,6 +36,11 @@ namespace Berry.Docx
             return val;
         }
 
+        public static float Round(this float val, int decimals)
+        {
+            return (float)Math.Round(val, decimals);
+        }
+
         /// <summary>
         /// In current string, replaces all strings that match a specified regular
         /// expression with a specified replacement string.

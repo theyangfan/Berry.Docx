@@ -21,7 +21,6 @@ namespace Berry.Docx
         #region Private Members
         private readonly Document _document;
         private readonly W.SectionProperties _sectPr;
-        private PageSetup _pageSetup;
         #endregion
 
         #region Constructors
@@ -29,7 +28,6 @@ namespace Berry.Docx
         {
             _document = document;
             _sectPr = sectPr;
-            _pageSetup = new PageSetup(document, sectPr);
         }
         #endregion
 
@@ -37,7 +35,7 @@ namespace Berry.Docx
         /// <summary>
         /// The Page Layout setup.
         /// </summary>
-        public PageSetup PageSetup => _pageSetup;
+        public PageSetup PageSetup => new PageSetup(_document, this);
 
         /// <summary>
         /// Gets a collection of all child objects in the current section.

@@ -253,4 +253,21 @@ namespace Berry.Docx
         /// </summary>
         EvenPage = 3
     }
+
+    /// <summary>
+    /// Defines the PageOrientation enumeration.
+    /// </summary>
+    public enum PageOrientation
+    {
+        /// <summary>
+        /// Portrait Mode.
+        /// </summary>
+        [Description("纵向")]
+        Portrait = 0,
+        /// <summary>
+        /// Landscape Mode.
+        /// </summary>
+        [Description("横向")]
+        Landscape = 1
+    }
 }

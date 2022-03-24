@@ -17,20 +17,17 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\zhailiao123\Desktop\dst.docx";
+            string src = @"C:\Users\zhailiao123\Desktop\1.docx";
             string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
-                /*TextMatch m = doc.Find(new Regex("测"));
-                if(m != null)
-                {
-                    Console.WriteLine(m.GetAsOneRange().CharacterFormat.Bold);
-                }*/
-                Paragraph p = doc.Sections[0].Paragraphs[2];
-                Console.WriteLine(p.CharacterFormat.Bold);
-                Console.WriteLine(p.ChildObjects.OfType<TextRange>().Last().CharacterFormat.FontNameEastAsia);
-                //doc.SaveAs(dst);
+                //doc.Sections[0].PageSetup.PageSize = new System.Drawing.SizeF(590.9f, 384.1f);
+                //doc.Sections[0].PageSetup.Orientation = PageOrientation.Landscape;
+                Console.WriteLine(doc.Sections[0].PageSetup.PageSize);
+                Console.WriteLine(doc.Sections[0].PageSetup.Orientation);
+                Console.WriteLine(doc.Sections[0].PageSetup.Margins);
+                doc.SaveAs(dst);
             }
         }
 
