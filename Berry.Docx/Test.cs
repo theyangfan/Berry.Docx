@@ -17,8 +17,8 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\zhailiao123\Desktop\1.docx";
-            string dst = @"C:\Users\zhailiao123\Desktop\dst.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
+            string dst = @"C:\Users\tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
@@ -27,7 +27,10 @@ namespace Test
                 Console.WriteLine(doc.Sections[0].PageSetup.PageSize);
                 Console.WriteLine(doc.Sections[0].PageSetup.Orientation);
                 Console.WriteLine(doc.Sections[0].PageSetup.Margins);
-                doc.SaveAs(dst);
+                Console.WriteLine(doc.Sections[0].PageSetup.Gutter);
+                Console.WriteLine(doc.Sections[0].PageSetup.HeaderDistance);
+                Console.WriteLine(doc.Sections[0].PageSetup.FooterDistance);
+                //doc.SaveAs(dst);
             }
         }
 

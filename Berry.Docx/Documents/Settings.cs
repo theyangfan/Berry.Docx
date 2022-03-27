@@ -37,11 +37,12 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 装订线位置为上，返回True，否则返回False
         /// </summary>
-        public bool GutterAtTop
+        internal bool GutterAtTop
         {
             get
             {
-                return _settings.GutterAtTop != null;
+                if(_settings.GutterAtTop == null) return false;
+                return _settings.GutterAtTop.Val;
             }
             set
             {

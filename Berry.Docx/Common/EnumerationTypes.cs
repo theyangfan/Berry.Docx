@@ -270,4 +270,21 @@ namespace Berry.Docx
         [Description("横向")]
         Landscape = 1
     }
+
+    /// <summary>
+    /// Defines the page gutter location enumeration.
+    /// </summary>
+    public enum GutterLocation
+    {
+        /// <summary>
+        /// Position Gutter At Left of Page.
+        /// </summary>
+        [Description("靠左")]
+        Left = 0,
+        /// <summary>
+        /// Position Gutter At Top of Page.
+        /// </summary>
+        [Description("靠上")]
+        Top = 1
+    }
 }
