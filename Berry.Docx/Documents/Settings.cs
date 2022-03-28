@@ -42,6 +42,7 @@ namespace Berry.Docx.Documents
             get
             {
                 if(_settings.GutterAtTop == null) return false;
+                if (_settings.GutterAtTop.Val == null) return true;
                 return _settings.GutterAtTop.Val;
             }
             set

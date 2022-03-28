@@ -61,6 +61,7 @@ namespace Berry.Docx
         public Document(Stream stream)
         {
             _doc = P.WordprocessingDocument.Open(stream, true);
+            _settings = new Settings(_doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
         #endregion
 

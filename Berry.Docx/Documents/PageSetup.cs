@@ -17,6 +17,7 @@ namespace Berry.Docx.Documents
         private readonly Document _doc;
         private readonly W.PageSize _pgSz;
         private readonly W.PageMargin _pgMar;
+        private W.DocGrid _docGrid;
         #endregion
 
         #region Constructors
