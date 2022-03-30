@@ -17,20 +17,13 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\tomato\Desktop\test.docx";
-            string dst = @"C:\Users\tomato\Desktop\dst.docx";
+            string src = @"C:\Users\zhailiao123\Desktop\test\test.docx";
+            string dst = @"C:\Users\zhailiao123\Desktop\test\dst.docx";
 
             using (Document doc = new Document(src))
             {
-                //doc.Sections[0].PageSetup.PageSize = new System.Drawing.SizeF(590.9f, 384.1f);
-                //doc.Sections[0].PageSetup.Orientation = PageOrientation.Landscape;
-                Console.WriteLine(doc.Sections[0].PageSetup.PageSize);
-                Console.WriteLine(doc.Sections[0].PageSetup.Orientation);
-                Console.WriteLine(doc.Sections[0].PageSetup.Margins);
-                Console.WriteLine(doc.Sections[0].PageSetup.Gutter);
-                Console.WriteLine(doc.Sections[0].PageSetup.HeaderDistance);
-                Console.WriteLine(doc.Sections[0].PageSetup.FooterDistance);
-                //doc.SaveAs(dst);
+                string pattern = @"^（";
+                Console.WriteLine(Regex.IsMatch(doc.Sections[0].Paragraphs[0].ListText, pattern));
             }
         }
 

@@ -361,10 +361,12 @@ namespace Berry.Docx.Documents
             {
                 if (_pFormat.NumberingFormat == null) return string.Empty;
                 string lvlText = _pFormat.NumberingFormat.Format;
+                Console.WriteLine($"{lvlText},{_pFormat.NumberingFormat.Style}");
                 if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.Decimal)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "1");
                 else if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCounting
-                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand)
+                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand
+                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.JapaneseCounting)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "一");
 
                 return lvlText;
