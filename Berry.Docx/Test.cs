@@ -22,8 +22,9 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                string pattern = @"^（";
-                Console.WriteLine(Regex.IsMatch(doc.Sections[0].Paragraphs[0].ListText, pattern));
+                Paragraph p = doc.LastSection.Paragraphs[0];
+                Console.WriteLine(p.Text);
+                Console.WriteLine(p.ChildObjects.OfType<TextRange>().Count());
             }
         }
 

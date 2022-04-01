@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text;
 
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
@@ -70,6 +70,16 @@ namespace Berry.Docx.Documents
         {
             get
             {
+                StringBuilder text = new StringBuilder();
+                foreach(DocumentObject item in ChildObjects)
+                {
+                    if(item is TextRange)
+                    {
+                        text.Append(((TextRange)item).Text);
+                    }
+                }
+                return text.ToString();
+                /*
                 string text = "";
                 bool begin = false;
                 bool separate = false;
@@ -117,6 +127,7 @@ namespace Berry.Docx.Documents
                     }
                 }
                 return text;
+                */
             }
             set
             {
