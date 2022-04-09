@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using OOxml = DocumentFormat.OpenXml.Wordprocessing;
 
@@ -67,8 +68,9 @@ namespace Berry.Docx.Formatting
             _curRHld = new RunPropertiesHolder(doc.Package, ownerRun.RunProperties);
             if (ownerRun.RunProperties.RunStyle != null)
                 _rStyleFormat = new CharacterFormat(doc, ownerRun.GetStyle(doc));
-            if(ownerRun.Parent != null)
-                _inheritFromParagraphFormat = new CharacterFormat(doc, ownerRun.Parent as OOxml.Paragraph);
+            OOxml.Paragraph paragraph = ownerRun.Ancestors<OOxml.Paragraph>().FirstOrDefault();
+            if (paragraph != null)
+                _inheritFromParagraphFormat = new CharacterFormat(doc, paragraph);
         }
 
         /// <summary>

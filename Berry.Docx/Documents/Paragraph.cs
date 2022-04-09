@@ -44,6 +44,7 @@ namespace Berry.Docx.Documents
             _doc = doc;
             _paragraph = paragraph;
             _pFormat = new ParagraphFormat(_doc, paragraph);
+            _cFormat = new CharacterFormat();
             if(paragraph?.ParagraphProperties?.ParagraphMarkRunProperties != null)
                 _cFormat = new CharacterFormat(_doc, paragraph.ParagraphProperties.ParagraphMarkRunProperties);
         }
@@ -350,11 +351,27 @@ namespace Berry.Docx.Documents
         {
             foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
             {
-                if (ele.GetType() == typeof(W.Run))
+                if (ele is W.Run)
                 {
                     W.Run run = (W.Run)ele;
                     if(run.Elements<W.Text>().Any())
                         yield return new TextRange(_doc, run);
+                    foreach(W.Drawing drawing in run.Descendants<W.Drawing>())
+                    {
+                        yield return new Picture(_doc, drawing);
+                    }
+                }
+                if(ele is W.Hyperlink)
+                {
+                    foreach (O.OpenXmlElement e in ele.ChildElements)
+                    {
+                        if (e is W.Run)
+                        {
+                            W.Run run = (W.Run)e;
+                            if (run.Elements<W.Text>().Any())
+                                yield return new TextRange(_doc, run);
+                        }
+                    }
                 }
                     
             }
@@ -372,7 +389,7 @@ namespace Berry.Docx.Documents
             {
                 if (_pFormat.NumberingFormat == null) return string.Empty;
                 string lvlText = _pFormat.NumberingFormat.Format;
-                Console.WriteLine($"{lvlText},{_pFormat.NumberingFormat.Style}");
+                //Console.WriteLine($"{lvlText},{_pFormat.NumberingFormat.Style}");
                 if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.Decimal)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "1");
                 else if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCounting

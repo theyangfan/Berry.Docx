@@ -41,7 +41,11 @@ namespace Berry.Docx
         /// <summary>
         /// Body range.
         /// </summary>
-        BodyRange
+        BodyRange,
+        /// <summary>
+        /// Picture.
+        /// </summary>
+        Picture
     }
 
     /// <summary>

@@ -86,6 +86,46 @@ namespace Berry.Docx
         /// Return a collection of styles in the document.
         /// </summary>
         public StyleCollection Styles => new StyleCollection(StylesPrivate());
+
+        /// <summary>
+        /// Return a collection of footnotes in the document.
+        /// </summary>
+        public List<Footnote> Footnotes
+        {
+            get
+            {
+                List<Footnote> footnotes = new List<Footnote>();
+                P.FootnotesPart part = _doc.MainDocumentPart.FootnotesPart;
+                if(part != null)
+                {
+                    foreach(W.Footnote fn in part.Footnotes.Elements<W.Footnote>())
+                    {
+                        footnotes.Add(new Footnote(this, fn));
+                    }
+                }
+                return footnotes;
+            }
+        }
+
+        /// <summary>
+        /// Return a collection of endnotes in the document.
+        /// </summary>
+        public List<Endnote> Endnotes
+        {
+            get
+            {
+                List<Endnote> endnotes = new List<Endnote>();
+                P.EndnotesPart part = _doc.MainDocumentPart.EndnotesPart;
+                if (part != null)
+                {
+                    foreach (W.Endnote en in part.Endnotes.Elements<W.Endnote>())
+                    {
+                        endnotes.Add(new Endnote(this, en));
+                    }
+                }
+                return endnotes;
+            }
+        }
         #endregion
 
         #region Public Methods

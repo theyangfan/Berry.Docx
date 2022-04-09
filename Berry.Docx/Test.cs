@@ -22,9 +22,19 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.LastSection.Paragraphs[0];
-                Console.WriteLine(p.Text);
-                Console.WriteLine(p.ChildObjects.OfType<TextRange>().Count());
+                /*Paragraph p = doc.LastSection.Paragraphs[0];
+                foreach(DocumentObject obj in p.ChildObjects)
+                {
+                    Console.WriteLine(obj.DocumentObjectType);
+                }*/
+                foreach(Footnote fn in doc.Footnotes)
+                {
+                    Console.WriteLine(fn.ReferencedParagraph?.Text);
+                }
+                foreach (Endnote en in doc.Endnotes)
+                {
+                    Console.WriteLine(en.ReferencedParagraph?.Text);
+                }
             }
         }
 
