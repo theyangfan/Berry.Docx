@@ -15,6 +15,7 @@ using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Utils;
 using Berry.Docx.Field;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx
 {
@@ -52,7 +53,7 @@ namespace Berry.Docx
                 // create new doc
                 _doc = DocumentGenerator.Generate(filename);
             }
-            _settings = new Settings(_doc.MainDocumentPart.DocumentSettingsPart.Settings);
+            _settings = new Settings(this, _doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
         /// <summary>
         /// Creates a new instance of the Document class from the IO stream.
@@ -61,7 +62,7 @@ namespace Berry.Docx
         public Document(Stream stream)
         {
             _doc = P.WordprocessingDocument.Open(stream, true);
-            _settings = new Settings(_doc.MainDocumentPart.DocumentSettingsPart.Settings);
+            _settings = new Settings(this, _doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
         #endregion
 
@@ -90,17 +91,17 @@ namespace Berry.Docx
         /// <summary>
         /// Return a collection of footnotes in the document.
         /// </summary>
-        public List<Footnote> Footnotes
+        public List<FootEndnote> Footnotes
         {
             get
             {
-                List<Footnote> footnotes = new List<Footnote>();
+                List<FootEndnote> footnotes = new List<FootEndnote>();
                 P.FootnotesPart part = _doc.MainDocumentPart.FootnotesPart;
                 if(part != null)
                 {
                     foreach(W.Footnote fn in part.Footnotes.Elements<W.Footnote>())
                     {
-                        footnotes.Add(new Footnote(this, fn));
+                        footnotes.Add(new FootEndnote(this, fn));
                     }
                 }
                 return footnotes;
@@ -110,22 +111,29 @@ namespace Berry.Docx
         /// <summary>
         /// Return a collection of endnotes in the document.
         /// </summary>
-        public List<Endnote> Endnotes
+        public List<FootEndnote> Endnotes
         {
             get
             {
-                List<Endnote> endnotes = new List<Endnote>();
+                List<FootEndnote> endnotes = new List<FootEndnote>();
                 P.EndnotesPart part = _doc.MainDocumentPart.EndnotesPart;
                 if (part != null)
                 {
                     foreach (W.Endnote en in part.Endnotes.Elements<W.Endnote>())
                     {
-                        endnotes.Add(new Endnote(this, en));
+                        endnotes.Add(new FootEndnote(this, en));
                     }
                 }
                 return endnotes;
             }
         }
+
+        public FootEndnoteFormat FootnoteFormat => _settings.FootnoteFormt;
+        public FootEndnoteFormat EndnoteFormat => _settings.EndnoteFormt;
+        #endregion
+
+        #region Internal Settings
+        internal Settings Settings { get => _settings; }
         #endregion
 
         #region Public Methods
@@ -267,11 +275,6 @@ namespace Berry.Docx
 #endregion
 
         #region TODO
-
-        /// <summary>
-        /// 全局设置
-        /// </summary>
-        public Settings Settings { get => _settings; }
 
         /// <summary>
         /// 更新域代码

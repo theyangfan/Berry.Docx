@@ -3,33 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using OOxml = DocumentFormat.OpenXml.Wordprocessing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {
-    public class Settings
+    internal class Settings
     {
-        private OOxml.Settings _settings;
-        public Settings(OOxml.Settings settings)
+        private readonly Document _doc;
+        private readonly W.Settings _settings;
+        public Settings(Document doc, W.Settings settings)
         {
+            _doc = doc;
             _settings = settings;
         }
-        internal bool EvenAndOddHeaders
+
+        public W.Settings XElement => _settings;
+
+        public bool EvenAndOddHeaders
         {
             get
             {
-                return _settings.Elements<OOxml.EvenAndOddHeaders>().Any();
+                return _settings.Elements<W.EvenAndOddHeaders>().Any();
             }
             set
             {
                 if (value)
                 {
-                    if (!_settings.Elements<OOxml.EvenAndOddHeaders>().Any())
-                        _settings.AddChild(new OOxml.EvenAndOddHeaders());
+                    if (!_settings.Elements<W.EvenAndOddHeaders>().Any())
+                        _settings.AddChild(new W.EvenAndOddHeaders());
                 }
                 else
                 {
-                    _settings.RemoveAllChildren<OOxml.EvenAndOddHeaders>();
+                    _settings.RemoveAllChildren<W.EvenAndOddHeaders>();
                 }
             }
         }
@@ -37,7 +43,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 装订线位置为上，返回True，否则返回False
         /// </summary>
-        internal bool GutterAtTop
+        public bool GutterAtTop
         {
             get
             {
@@ -48,7 +54,7 @@ namespace Berry.Docx.Documents
             set
             {
                 if (value)
-                    _settings.GutterAtTop = new OOxml.GutterAtTop();
+                    _settings.GutterAtTop = new W.GutterAtTop();
                 else
                     _settings.GutterAtTop = null;
             }
@@ -89,7 +95,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 对称页边距
         /// </summary>
-        private bool MirrorMargins
+        public bool MirrorMargins
         {
             get
             {
@@ -98,7 +104,7 @@ namespace Berry.Docx.Documents
             set
             {
                 if (value)
-                    _settings.MirrorMargins = new OOxml.MirrorMargins();
+                    _settings.MirrorMargins = new W.MirrorMargins();
                 else
                     _settings.MirrorMargins = null;
             }
@@ -106,27 +112,31 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 拼页
         /// </summary>
-        private bool PrintTwoOnOne
+        public bool PrintTwoOnOne
         {
             get
             {
-                return _settings.Elements<OOxml.PrintTwoOnOne>().Count() > 0;
+                return _settings.Elements<W.PrintTwoOnOne>().Count() > 0;
             }
             set
             {
                 if (value)
                 {
-                    if (_settings.Elements<OOxml.PrintTwoOnOne>().Count() == 0)
-                        _settings.AddChild(new OOxml.PrintTwoOnOne());
+                    if (_settings.Elements<W.PrintTwoOnOne>().Count() == 0)
+                        _settings.AddChild(new W.PrintTwoOnOne());
                 }
                 else
                 {
-                    OOxml.PrintTwoOnOne printTwoOnOne = _settings.Elements<OOxml.PrintTwoOnOne>().FirstOrDefault();
+                    W.PrintTwoOnOne printTwoOnOne = _settings.Elements<W.PrintTwoOnOne>().FirstOrDefault();
                     if (printTwoOnOne != null)
                         printTwoOnOne.Remove();
                 }
             }
         }
+
+        public FootEndnoteFormat FootnoteFormt => new FootEndnoteFormat(_doc, this, NoteType.DocumentWideFootnote);
+
+        public FootEndnoteFormat EndnoteFormt => new FootEndnoteFormat(_doc, this, NoteType.DocumentWideEndnote);
 
     }
 }

@@ -27,14 +27,18 @@ namespace Test
                 {
                     Console.WriteLine(obj.DocumentObjectType);
                 }*/
-                foreach(Footnote fn in doc.Footnotes)
-                {
-                    Console.WriteLine(fn.ReferencedParagraph?.Text);
-                }
-                foreach (Endnote en in doc.Endnotes)
-                {
-                    Console.WriteLine(en.ReferencedParagraph?.Text);
-                }
+                doc.FootnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachSection;
+                doc.EndnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachSection;
+                //doc.Sections[0].FootnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachPage;
+                //doc.Sections[0].EndnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachSection;
+                Console.WriteLine(doc.FootnoteFormat.RestartRule);
+                Console.WriteLine(doc.EndnoteFormat.RestartRule);
+                Console.WriteLine(doc.Sections[0].FootnoteFormat.RestartRule);
+                Console.WriteLine(doc.Sections[0].EndnoteFormat.RestartRule);
+                Console.WriteLine(doc.Sections[1].FootnoteFormat.RestartRule);
+                Console.WriteLine(doc.Sections[1].EndnoteFormat.RestartRule);
+
+                doc.SaveAs(dst);
             }
         }
 

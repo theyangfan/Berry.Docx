@@ -10,6 +10,7 @@ using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx
 {
@@ -84,6 +85,11 @@ namespace Berry.Docx
         /// Gets the headers and footers of this section.
         /// </summary>
         public HeaderFooters HeaderFooters => new HeaderFooters(_document, this);
+
+        public FootEndnoteFormat FootnoteFormat => new FootEndnoteFormat(_document, this, NoteType.SectionWideFootnote);
+
+        public FootEndnoteFormat EndnoteFormat => new FootEndnoteFormat(_document, this, NoteType.SectionWideEndnote);
+
         #endregion
 
         #region Public Methods

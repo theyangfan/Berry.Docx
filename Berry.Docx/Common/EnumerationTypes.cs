@@ -291,4 +291,26 @@ namespace Berry.Docx
         [Description("靠上")]
         Top = 1
     }
+
+    /// <summary>
+    /// Defines the footnote and endnote numbering restart rule enumeration. 
+    /// </summary>
+    public enum FootEndnoteNumberRestartRule
+    {
+        /// <summary>
+        /// Continue Numbering From Previous Section.
+        /// </summary>
+        [Description("连续")]
+        Continuous = 0,
+        /// <summary>
+        /// Restart Numbering For Each Section.
+        /// </summary>
+        [Description("每节重新编号")]
+        EachSection = 1,
+        /// <summary>
+        /// Restart Numbering On Each Page.
+        /// </summary>
+        [Description("每页重新编号")]
+        EachPage = 2
+    }
 }
