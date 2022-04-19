@@ -91,17 +91,17 @@ namespace Berry.Docx
         /// <summary>
         /// Return a collection of footnotes in the document.
         /// </summary>
-        public List<FootEndnote> Footnotes
+        public List<Footnote> Footnotes
         {
             get
             {
-                List<FootEndnote> footnotes = new List<FootEndnote>();
+                List<Footnote> footnotes = new List<Footnote>();
                 P.FootnotesPart part = _doc.MainDocumentPart.FootnotesPart;
                 if(part != null)
                 {
                     foreach(W.Footnote fn in part.Footnotes.Elements<W.Footnote>())
                     {
-                        footnotes.Add(new FootEndnote(this, fn));
+                        footnotes.Add(new Footnote(this, fn));
                     }
                 }
                 return footnotes;
@@ -111,17 +111,17 @@ namespace Berry.Docx
         /// <summary>
         /// Return a collection of endnotes in the document.
         /// </summary>
-        public List<FootEndnote> Endnotes
+        public List<Endnote> Endnotes
         {
             get
             {
-                List<FootEndnote> endnotes = new List<FootEndnote>();
+                List<Endnote> endnotes = new List<Endnote>();
                 P.EndnotesPart part = _doc.MainDocumentPart.EndnotesPart;
                 if (part != null)
                 {
                     foreach (W.Endnote en in part.Endnotes.Elements<W.Endnote>())
                     {
-                        endnotes.Add(new FootEndnote(this, en));
+                        endnotes.Add(new Endnote(this, en));
                     }
                 }
                 return endnotes;

@@ -16,7 +16,7 @@ namespace Berry.Docx.Field
     /// <summary>
     /// Represent the text range.
     /// </summary>
-    public class TextRange : DocumentItem
+    public class TextRange : ParagraphItem
     {
         #region Private Members
         private Document _doc;
@@ -33,7 +33,7 @@ namespace Berry.Docx.Field
         public TextRange(Document doc) : this(doc, RunGenerator.Generate(""))
         {
         }
-        internal TextRange(Document doc, W.Run run) : base(doc, run)
+        internal TextRange(Document doc, W.Run run) : base(doc, run, run)
         {
             _doc = doc;
             _run = run;

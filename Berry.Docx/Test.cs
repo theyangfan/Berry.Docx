@@ -22,22 +22,13 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                /*Paragraph p = doc.LastSection.Paragraphs[0];
+                Paragraph p = doc.Sections[0].Paragraphs[0];
                 foreach(DocumentObject obj in p.ChildObjects)
                 {
                     Console.WriteLine(obj.DocumentObjectType);
-                }*/
-                doc.FootnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachSection;
-                doc.EndnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachSection;
-                //doc.Sections[0].FootnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachPage;
-                //doc.Sections[0].EndnoteFormat.RestartRule = FootEndnoteNumberRestartRule.EachSection;
-                Console.WriteLine(doc.FootnoteFormat.RestartRule);
-                Console.WriteLine(doc.EndnoteFormat.RestartRule);
-                Console.WriteLine(doc.Sections[0].FootnoteFormat.RestartRule);
-                Console.WriteLine(doc.Sections[0].EndnoteFormat.RestartRule);
-                Console.WriteLine(doc.Sections[1].FootnoteFormat.RestartRule);
-                Console.WriteLine(doc.Sections[1].EndnoteFormat.RestartRule);
-
+                }
+                p.ChildItems[1].AppendComment("123", "456");
+                p.ChildItems[5].AppendComment("456", "789");
                 doc.SaveAs(dst);
             }
         }

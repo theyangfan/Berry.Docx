@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
@@ -57,12 +58,16 @@ namespace Berry.Docx.Documents
         public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Paragraph; }
 
         /// <summary>
-        /// The child DocumentObjects of this paragraph.
+        ///Gets all child <see cref="ParagraphItem"/> of this paragraph.
         /// </summary>
-        public override DocumentObjectCollection ChildObjects
-        {
-            get => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
-        }
+        public ParagraphItemCollection ChildItems => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
+
+        /// <summary>
+        /// Gets all child <see cref="DocumentObject"/> of this paragraph. 
+        /// </summary>
+        public override DocumentObjectCollection ChildObjects => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
+
+        
 
         /// <summary>
         /// The paragraph text.
@@ -80,55 +85,6 @@ namespace Berry.Docx.Documents
                     }
                 }
                 return text.ToString();
-                /*
-                string text = "";
-                bool begin = false;
-                bool separate = false;
-                foreach (O.OpenXmlElement ele in _paragraph.Descendants())
-                {
-                    if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.Run"))
-                    {
-                        W.Run run = (W.Run)ele;
-                        if (run.Ancestors<W.SimpleField>().Any())
-                            continue;
-                        if (run.Elements<W.FieldChar>().Any() && run.Elements<W.FieldChar>().First().FieldCharType != null)
-                        {
-                            string field_type = run.Elements<W.FieldChar>().First().FieldCharType.ToString();
-                            if (field_type == "begin")
-                            {
-                                begin = true;
-                                continue;
-                            }
-                            if (field_type == "separate")
-                            {
-                                separate = true;
-                                continue;
-                            }
-                            if (field_type == "end")
-                            {
-                                begin = false;
-                                separate = false;
-                                continue;
-                            }
-                        }
-                        if (begin && !separate) continue;
-                        foreach (O.OpenXmlElement e in run.Elements())
-                        {
-                            if (e.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.Text"))
-                                text += (e as W.Text).Text;
-                            if (e.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.FieldCode"))
-                                text += (e as W.FieldCode).Text;
-                            if (e.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.NoBreakHyphen"))
-                                text += "-";
-                        }
-                    }
-                    else if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.SimpleField"))
-                    {
-                        text += ele.InnerText;
-                    }
-                }
-                return text;
-                */
             }
             set
             {
@@ -233,6 +189,41 @@ namespace Berry.Docx.Documents
             {
                 throw new NullReferenceException("The owner section of the current paragraph is null.");
             }
+        }
+
+        /// <summary>
+        ///  Searches the paragraph for the first occurrence of the specified regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>An object that contains information about the match.</returns>
+        public TextMatch Find(Regex pattern)
+        {
+            Match match = pattern.Match(Text);
+            if (match.Success)
+            {
+                return new TextMatch(this, match.Index, match.Index + match.Length - 1);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the paragraph for all occurrences of a regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>
+        /// A list of the <see cref="TextMatch"/> objects found by the search.
+        /// </returns>
+        public List<TextMatch> FindAll(Regex pattern)
+        {
+            List<TextMatch> matches = new List<TextMatch>();
+            foreach (Match match in pattern.Matches(Text))
+            {
+                if (match.Success)
+                {
+                    matches.Add(new TextMatch(this, match.Index, match.Index + match.Length - 1));
+                }
+            }
+            return matches;
         }
 
         /// <summary>
@@ -347,18 +338,32 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Private Methods
-        private IEnumerable<DocumentItem> ChildObjectsPrivate()
+        private IEnumerable<ParagraphItem> ChildObjectsPrivate()
         {
             foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
             {
                 if (ele is W.Run)
                 {
                     W.Run run = (W.Run)ele;
+                    // text range
                     if(run.Elements<W.Text>().Any())
                         yield return new TextRange(_doc, run);
-                    foreach(W.Drawing drawing in run.Descendants<W.Drawing>())
+                    
+                    // footnote reference
+                    if(run.Elements<W.FootnoteReference>().Any())
                     {
-                        yield return new Picture(_doc, drawing);
+                        yield return new FootnoteReference(_doc, run, run.Elements<W.FootnoteReference>().First());
+                    }
+                    // endnote reference
+                    if (run.Elements<W.EndnoteReference>().Any())
+                    {
+                        yield return new EndnoteReference(_doc, run, run.Elements<W.EndnoteReference>().First());
+                    }
+                    // picture
+                    foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
+                    {
+                        if (drawing.Descendants<Pic.Picture>().Any())
+                            yield return new Picture(_doc, run, drawing);
                     }
                 }
                 if(ele is W.Hyperlink)

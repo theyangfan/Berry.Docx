@@ -45,7 +45,15 @@ namespace Berry.Docx
         /// <summary>
         /// Picture.
         /// </summary>
-        Picture
+        Picture,
+        /// <summary>
+        /// FootnoteReference.
+        /// </summary>
+        FootnoteReference,
+        /// <summary>
+        /// EndnoteReference.
+        /// </summary>
+        EndnoteReference
     }
 
     /// <summary>
@@ -312,5 +320,11 @@ namespace Berry.Docx
         /// </summary>
         [Description("每页重新编号")]
         EachPage = 2
+    }
+
+    public enum TextWrappingStyle
+    {
+        Inline = 0,
+        Floating = 1
     }
 }

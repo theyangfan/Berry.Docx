@@ -5,13 +5,16 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
-    public class Picture : DocumentItem
+    public class Picture : ParagraphItem
     {
-        internal Picture(Document doc, W.Drawing drawing) : base(doc, drawing)
+        private readonly W.Drawing _drawing;
+        internal Picture(Document doc, W.Run ownerRun, W.Drawing drawing) : base(doc, ownerRun, drawing)
         {
-
+            _drawing = drawing;
         }
 
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Picture;
+
+
     }
 }
