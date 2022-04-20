@@ -47,13 +47,37 @@ namespace Berry.Docx
         /// </summary>
         Picture,
         /// <summary>
+        /// Shape.
+        /// </summary>
+        Shape,
+        /// <summary>
+        /// Shape group.
+        /// </summary>
+        GroupShape,
+        /// <summary>
+        /// Canvas.
+        /// </summary>
+        Canvas,
+        /// <summary>
+        /// Diagram.
+        /// </summary>
+        Diagram,
+        /// <summary>
+        /// Chart.
+        /// </summary>
+        Chart,
+        /// <summary>
         /// FootnoteReference.
         /// </summary>
         FootnoteReference,
         /// <summary>
         /// EndnoteReference.
         /// </summary>
-        EndnoteReference
+        EndnoteReference,
+        /// <summary>
+        /// Embedded Object.
+        /// </summary>
+        EmbeddedObject
     }
 
     /// <summary>
@@ -322,9 +346,18 @@ namespace Berry.Docx
         EachPage = 2
     }
 
+    /// <summary>
+    /// Defines picture text wrapping style enumeration.
+    /// </summary>
     public enum TextWrappingStyle
     {
         Inline = 0,
         Floating = 1
+    }
+
+    public enum OleObjectType
+    {
+        Embed = 0,
+        Link = 1
     }
 }

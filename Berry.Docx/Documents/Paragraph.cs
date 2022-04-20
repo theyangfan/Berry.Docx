@@ -7,7 +7,13 @@ using System.Text.RegularExpressions;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using P = DocumentFormat.OpenXml.Packaging;
+using A = DocumentFormat.OpenXml.Drawing;
 using Pic = DocumentFormat.OpenXml.Drawing.Pictures;
+using Wps = DocumentFormat.OpenXml.Office2010.Word.DrawingShape;
+using Wpg = DocumentFormat.OpenXml.Office2010.Word.DrawingGroup;
+using Wpc = DocumentFormat.OpenXml.Office2010.Word.DrawingCanvas;
+using Dgm = DocumentFormat.OpenXml.Drawing.Diagrams;
+using C = DocumentFormat.OpenXml.Drawing.Charts;
 using M = DocumentFormat.OpenXml.Math;
 using V = DocumentFormat.OpenXml.Vml;
 using Office = DocumentFormat.OpenXml.Vml.Office;
@@ -362,8 +368,27 @@ namespace Berry.Docx.Documents
                     // picture
                     foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
                     {
-                        if (drawing.Descendants<Pic.Picture>().Any())
-                            yield return new Picture(_doc, run, drawing);
+                        A.GraphicData graphicData = drawing.Descendants<A.GraphicData>().FirstOrDefault();
+                        if(graphicData != null)
+                        {
+                            if(graphicData.FirstChild is Pic.Picture)
+                                yield return new Picture(_doc, run, drawing);
+                            else if(graphicData.FirstChild is Wps.WordprocessingShape)
+                                yield return new Shape(_doc, run, drawing);
+                            else if (graphicData.FirstChild is Wpg.WordprocessingGroup)
+                                yield return new GroupShape(_doc, run, drawing);
+                            else if (graphicData.FirstChild is Wpc.WordprocessingCanvas)
+                                yield return new Canvas(_doc, run, drawing);
+                            else if (graphicData.FirstChild is Dgm.RelationshipIds)
+                                yield return new Diagram(_doc, run, drawing);
+                            else if (graphicData.FirstChild is C.ChartReference)
+                                yield return new Chart(_doc, run, drawing);
+                        }
+                    }
+                    // embedded object
+                    foreach(W.EmbeddedObject obj in run.Elements<W.EmbeddedObject>())
+                    {
+                        yield return new EmbeddedObject(_doc, run, obj);
                     }
                 }
                 if(ele is W.Hyperlink)

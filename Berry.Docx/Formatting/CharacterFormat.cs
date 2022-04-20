@@ -134,7 +134,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if(_paragraphMark != null)
                 {
-                    return _curPMarkHld.FontNameEastAsia;
+                    return _curPMarkHld.FontNameEastAsia ?? _fontCN;
                 }
                 else
                 {
@@ -188,7 +188,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_paragraphMark != null)
                 {
-                    return _curPMarkHld.FontNameAscii;
+                    return _curPMarkHld.FontNameAscii ?? _fontEN;
                 }
                 else
                 {
@@ -240,7 +240,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_paragraphMark != null)
                 {
-                    return _curPMarkHld.FontSize ?? -1;
+                    return _curPMarkHld.FontSize ?? _fontSize;
                 }
                 else
                 {
@@ -318,7 +318,7 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_paragraphMark != null)
                 {
-                    return _curPMarkHld.FontSizeCs ?? -1;
+                    return _curPMarkHld.FontSizeCs ?? _fontSizeCs;
                 }
                 else
                 {

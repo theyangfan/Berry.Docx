@@ -22,14 +22,20 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.Sections[0].Paragraphs[0];
-                foreach(DocumentObject obj in p.ChildObjects)
+                foreach(Paragraph p in doc.Sections[0].Paragraphs)
                 {
-                    Console.WriteLine(obj.DocumentObjectType);
+                    foreach(DocumentObject obj in p.ChildObjects)
+                    {
+                        Console.WriteLine(obj.DocumentObjectType);
+                        if(obj is EmbeddedObject)
+                        {
+                            Console.WriteLine((obj as EmbeddedObject).OleType);
+                            Console.WriteLine((obj as EmbeddedObject).OleProgId);
+                        }
+                    }
+                    Console.WriteLine("-------");
                 }
-                p.ChildItems[1].AppendComment("123", "456");
-                p.ChildItems[5].AppendComment("456", "789");
-                doc.SaveAs(dst);
+                //doc.SaveAs(dst);
             }
         }
 
