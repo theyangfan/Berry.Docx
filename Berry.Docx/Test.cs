@@ -27,10 +27,10 @@ namespace Test
                     foreach(DocumentObject obj in p.ChildObjects)
                     {
                         Console.WriteLine(obj.DocumentObjectType);
-                        if(obj is EmbeddedObject)
+                        if(obj is OfficeMath)
                         {
-                            Console.WriteLine((obj as EmbeddedObject).OleType);
-                            Console.WriteLine((obj as EmbeddedObject).OleProgId);
+                            Console.WriteLine((obj as OfficeMath).IsInline());
+                            Console.WriteLine((obj as OfficeMath).Justification);
                         }
                     }
                     Console.WriteLine("-------");

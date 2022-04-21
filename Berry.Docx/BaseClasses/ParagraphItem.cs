@@ -17,14 +17,32 @@ namespace Berry.Docx.Field
         private readonly Document _doc;
         // the owner openxml run element.
         private readonly W.Run _ownerRun;
+        private readonly O.OpenXmlElement _element;
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// When the ele is a part of run element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="ownerRun"></param>
+        /// <param name="ele"></param>
         internal ParagraphItem(Document doc,  W.Run ownerRun, O.OpenXmlElement ele)
             : base(doc, ele)
         {
             _doc = doc;
             _ownerRun = ownerRun;
+        }
+        /// <summary>
+        /// When the ele is not a part of run element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="ele"></param>
+        internal ParagraphItem(Document doc, O.OpenXmlElement ele)
+            : base(doc, ele)
+        {
+            _doc = doc;
+            _element = ele;
         }
         #endregion
 
@@ -32,7 +50,17 @@ namespace Berry.Docx.Field
         /// <summary>
         /// Gets the parent paragraph of the current item.
         /// </summary>
-        public Paragraph OwnerParagraph => new Paragraph(_doc, _ownerRun.Ancestors<W.Paragraph>().First());
+        public Paragraph OwnerParagraph
+        {
+            get
+            {
+                if(_ownerRun != null)
+                    return new Paragraph(_doc, _ownerRun.Ancestors<W.Paragraph>().First());
+                else
+                    return new Paragraph(_doc, _element.Ancestors<W.Paragraph>().First());
+            }
+        }
+        
         #endregion
 
         #region Public Methods
@@ -74,8 +102,16 @@ namespace Berry.Docx.Field
             W.CommentRangeEnd endMark = new W.CommentRangeEnd() { Id = id.ToString() };
             W.Run referenceRun = new W.Run(new W.CommentReference() { Id = id.ToString() });
             // Insert comment mark
-            _ownerRun.InsertBeforeSelf(startMark);
-            _ownerRun.InsertAfterSelf(endMark);
+            if(_ownerRun != null)
+            {
+                _ownerRun.InsertBeforeSelf(startMark);
+                _ownerRun.InsertAfterSelf(endMark);
+            }
+            else
+            {
+                _element.InsertBeforeSelf(startMark);
+                _element.InsertAfterSelf(endMark);
+            }
             endMark.InsertAfterSelf(referenceRun);
         }
 
@@ -116,8 +152,16 @@ namespace Berry.Docx.Field
             W.CommentRangeEnd endMark = new W.CommentRangeEnd() { Id = id.ToString() };
             W.Run referenceRun = new W.Run(new W.CommentReference() { Id = id.ToString() });
             // Insert comment mark
-            _ownerRun.InsertBeforeSelf(startMark);
-            _ownerRun.InsertAfterSelf(endMark);
+            if (_ownerRun != null)
+            {
+                _ownerRun.InsertBeforeSelf(startMark);
+                _ownerRun.InsertAfterSelf(endMark);
+            }
+            else
+            {
+                _element.InsertBeforeSelf(startMark);
+                _element.InsertAfterSelf(endMark);
+            }
             endMark.InsertAfterSelf(referenceRun);
         }
         #endregion

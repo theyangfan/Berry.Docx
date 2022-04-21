@@ -391,7 +391,7 @@ namespace Berry.Docx.Documents
                         yield return new EmbeddedObject(_doc, run, obj);
                     }
                 }
-                if(ele is W.Hyperlink)
+                else if(ele is W.Hyperlink)
                 {
                     foreach (O.OpenXmlElement e in ele.ChildElements)
                     {
@@ -403,7 +403,15 @@ namespace Berry.Docx.Documents
                         }
                     }
                 }
-                    
+                else if(ele is M.OfficeMath) // Office Math
+                {
+                    yield return new OfficeMath(_doc, ele as M.OfficeMath);
+                }
+                else if(ele is M.Paragraph)
+                {
+                    foreach (M.OfficeMath oMath in ele.Elements<M.OfficeMath>())
+                        yield return new OfficeMath(_doc, oMath);
+                }
             }
         }
         #endregion

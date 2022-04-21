@@ -77,7 +77,11 @@ namespace Berry.Docx
         /// <summary>
         /// Embedded Object.
         /// </summary>
-        EmbeddedObject
+        EmbeddedObject,
+        /// <summary>
+        /// Office Mathematical Text.
+        /// </summary>
+        OfficeMath
     }
 
     /// <summary>
@@ -359,5 +363,33 @@ namespace Berry.Docx
     {
         Embed = 0,
         Link = 1
+    }
+
+    public enum OfficeMathJustificationType
+    {
+        /// <summary>
+        /// Invalid Justification.
+        /// </summary>
+        Invalid = -1,
+        /// <summary>
+        /// Left Justification.
+        /// </summary>
+        [Description("左对齐")]
+        Left = 0,
+        /// <summary>
+        /// Right Justification. 
+        /// </summary>
+        [Description("右对齐")]
+        Right = 1,
+        /// <summary>
+        /// Center Justification. 
+        /// </summary>
+        [Description("居中")]
+        Center = 2,
+        /// <summary>
+        /// Center as Group Justification.
+        /// </summary>
+        [Description("整体居中")]
+        CenterGroup = 3
     }
 }
