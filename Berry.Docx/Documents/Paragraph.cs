@@ -73,8 +73,6 @@ namespace Berry.Docx.Documents
         /// </summary>
         public override DocumentObjectCollection ChildObjects => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
 
-        
-
         /// <summary>
         /// The paragraph text.
         /// </summary>
@@ -350,46 +348,8 @@ namespace Berry.Docx.Documents
             {
                 if (ele is W.Run)
                 {
-                    W.Run run = (W.Run)ele;
-                    // text range
-                    if(run.Elements<W.Text>().Any())
-                        yield return new TextRange(_doc, run);
-                    
-                    // footnote reference
-                    if(run.Elements<W.FootnoteReference>().Any())
-                    {
-                        yield return new FootnoteReference(_doc, run, run.Elements<W.FootnoteReference>().First());
-                    }
-                    // endnote reference
-                    if (run.Elements<W.EndnoteReference>().Any())
-                    {
-                        yield return new EndnoteReference(_doc, run, run.Elements<W.EndnoteReference>().First());
-                    }
-                    // picture
-                    foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
-                    {
-                        A.GraphicData graphicData = drawing.Descendants<A.GraphicData>().FirstOrDefault();
-                        if(graphicData != null)
-                        {
-                            if(graphicData.FirstChild is Pic.Picture)
-                                yield return new Picture(_doc, run, drawing);
-                            else if(graphicData.FirstChild is Wps.WordprocessingShape)
-                                yield return new Shape(_doc, run, drawing);
-                            else if (graphicData.FirstChild is Wpg.WordprocessingGroup)
-                                yield return new GroupShape(_doc, run, drawing);
-                            else if (graphicData.FirstChild is Wpc.WordprocessingCanvas)
-                                yield return new Canvas(_doc, run, drawing);
-                            else if (graphicData.FirstChild is Dgm.RelationshipIds)
-                                yield return new Diagram(_doc, run, drawing);
-                            else if (graphicData.FirstChild is C.ChartReference)
-                                yield return new Chart(_doc, run, drawing);
-                        }
-                    }
-                    // embedded object
-                    foreach(W.EmbeddedObject obj in run.Elements<W.EmbeddedObject>())
-                    {
-                        yield return new EmbeddedObject(_doc, run, obj);
-                    }
+                    foreach (ParagraphItem item in RunItems((W.Run)ele))
+                        yield return item;
                 }
                 else if(ele is W.Hyperlink)
                 {
@@ -397,9 +357,8 @@ namespace Berry.Docx.Documents
                     {
                         if (e is W.Run)
                         {
-                            W.Run run = (W.Run)e;
-                            if (run.Elements<W.Text>().Any())
-                                yield return new TextRange(_doc, run);
+                            foreach (ParagraphItem item in RunItems((W.Run)e))
+                                yield return item;
                         }
                     }
                 }
@@ -412,6 +371,49 @@ namespace Berry.Docx.Documents
                     foreach (M.OfficeMath oMath in ele.Elements<M.OfficeMath>())
                         yield return new OfficeMath(_doc, oMath);
                 }
+            }
+        }
+
+        private IEnumerable<ParagraphItem> RunItems(W.Run run)
+        {
+            // text range
+            if (run.Elements<W.Text>().Any())
+                yield return new TextRange(_doc, run);
+
+            // footnote reference
+            if (run.Elements<W.FootnoteReference>().Any())
+            {
+                yield return new FootnoteReference(_doc, run, run.Elements<W.FootnoteReference>().First());
+            }
+            // endnote reference
+            if (run.Elements<W.EndnoteReference>().Any())
+            {
+                yield return new EndnoteReference(_doc, run, run.Elements<W.EndnoteReference>().First());
+            }
+            // picture
+            foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
+            {
+                A.GraphicData graphicData = drawing.Descendants<A.GraphicData>().FirstOrDefault();
+                if (graphicData != null)
+                {
+                    if (graphicData.FirstChild is Pic.Picture)
+                        yield return new Picture(_doc, run, drawing);
+                    else if (graphicData.FirstChild is Wps.WordprocessingShape)
+                        yield return new Shape(_doc, run, drawing);
+                    else if (graphicData.FirstChild is Wpg.WordprocessingGroup)
+                        yield return new GroupShape(_doc, run, drawing);
+                    else if (graphicData.FirstChild is Wpc.WordprocessingCanvas)
+                        yield return new Canvas(_doc, run, drawing);
+                    else if (graphicData.FirstChild is Dgm.RelationshipIds)
+                        yield return new Diagram(_doc, run, drawing);
+                    else if (graphicData.FirstChild is C.ChartReference)
+                        yield return new Chart(_doc, run, drawing);
+                }
+            }
+            // embedded object
+            foreach (W.EmbeddedObject obj in run.Elements<W.EmbeddedObject>())
+            {
+                yield return new EmbeddedObject(_doc, run, obj);
             }
         }
         #endregion

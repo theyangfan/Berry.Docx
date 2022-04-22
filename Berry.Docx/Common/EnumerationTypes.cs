@@ -81,7 +81,10 @@ namespace Berry.Docx
         /// <summary>
         /// Office Mathematical Text.
         /// </summary>
-        OfficeMath
+        OfficeMath,
+        SdtBlock,
+        SdtContent,
+        SdtProperties
     }
 
     /// <summary>

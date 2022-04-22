@@ -22,19 +22,14 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                foreach(Paragraph p in doc.Sections[0].Paragraphs)
-                {
-                    foreach(DocumentObject obj in p.ChildObjects)
-                    {
-                        Console.WriteLine(obj.DocumentObjectType);
-                        if(obj is OfficeMath)
-                        {
-                            Console.WriteLine((obj as OfficeMath).IsInline());
-                            Console.WriteLine((obj as OfficeMath).Justification);
-                        }
-                    }
-                    Console.WriteLine("-------");
-                }
+                PageSetup page = doc.Sections[0].PageSetup;
+                Console.WriteLine(page.PageSize);
+                Console.WriteLine(page.Orientation);
+                Console.WriteLine(page.Margins);
+                Console.WriteLine(page.Gutter);
+                Console.WriteLine(page.GutterLocation);
+                Console.WriteLine(page.HeaderDistance);
+                Console.WriteLine(page.FooterDistance);
                 //doc.SaveAs(dst);
             }
         }

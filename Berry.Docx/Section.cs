@@ -209,6 +209,10 @@ namespace Berry.Docx
                 {
                     yield return new Table(_document, (W.Table)ele);
                 }
+                else if(ele is W.SdtBlock)
+                {
+                    yield return new SdtBlock(_document, (W.SdtBlock)ele);
+                }
             }
         }
         #endregion
