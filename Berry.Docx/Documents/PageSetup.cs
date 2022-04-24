@@ -324,7 +324,18 @@ namespace Berry.Docx.Documents
                 if (_docGrid?.CharacterSpace == null) return 0;
                 ParagraphStyle normal = _doc.Styles.FindByName("normal", StyleType.Paragraph) as ParagraphStyle;
                 float normalSz = normal?.CharacterFormat?.FontSize ?? 11.0F;
-                return (_docGrid.CharacterSpace / 4096.0F + normalSz).Round(1);
+                return (_docGrid.CharacterSpace / 4096.0F + normalSz).Round(2);
+            }
+            set
+            {
+                if(_docGrid == null)
+                {
+                    _docGrid = new W.DocGrid();
+                    _sect.XElement.AddChild(_docGrid);
+                }
+                ParagraphStyle normal = _doc.Styles.FindByName("normal", StyleType.Paragraph) as ParagraphStyle;
+                float normalSz = normal?.CharacterFormat?.FontSize ?? 11.0F;
+                _docGrid.CharacterSpace = (int)((value - normalSz) * 4096.0F.Round(0));
             }
         }
 

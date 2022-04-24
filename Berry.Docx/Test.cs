@@ -17,15 +17,15 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\zhailiao123\Desktop\test\test.docx";
-            string dst = @"C:\Users\zhailiao123\Desktop\test\dst.docx";
+            string src = @"C:\Users\Tomato\Desktop\test.docx";
+            string dst = @"C:\Users\Tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
                 PageSetup page = doc.Sections[0].PageSetup;
-                //page.VerticalJustification = VerticalJustificationType.Bottom;
+                page.CharSpace = 29.98f;
                 Console.WriteLine(page.CharSpace);
-                //doc.SaveAs(dst);
+                doc.SaveAs(dst);
             }
         }
 
