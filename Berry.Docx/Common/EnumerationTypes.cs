@@ -361,13 +361,18 @@ namespace Berry.Docx
         Inline = 0,
         Floating = 1
     }
-
+    /// <summary>
+    /// Defines OLE object type enumeration.
+    /// </summary>
     public enum OleObjectType
     {
         Embed = 0,
         Link = 1
     }
 
+    /// <summary>
+    /// Defines office math justification type enumeration.
+    /// </summary>
     public enum OfficeMathJustificationType
     {
         /// <summary>
@@ -394,5 +399,28 @@ namespace Berry.Docx
         /// </summary>
         [Description("整体居中")]
         CenterGroup = 3
+    }
+
+    /// <summary>
+    /// Defines the vertical text alignment on page enumeration.
+    /// </summary>
+    public enum VerticalJustificationType
+    {
+        /// <summary>
+        /// Align Top. 
+        /// </summary>
+        Top = 0,
+        /// <summary>
+        /// Align Center.
+        /// </summary>
+        Center = 1,
+        /// <summary>
+        /// Vertical Justification.
+        /// </summary>
+        Both = 2,
+        /// <summary>
+        /// Align Bottom.
+        /// </summary>
+        Bottom = 3
     }
 }

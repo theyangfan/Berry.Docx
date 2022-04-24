@@ -277,7 +277,7 @@ namespace Berry.Docx.Formatting
                 Dictionary<float, string> sizeList = new Dictionary<float, string> { 
                     { 6.5F, "小六" }, { 7.5F, "六号" }, { 9, "小五" }, { 10.5F, "五号" }, { 12, "小四" }, 
                     { 14, "四号" }, { 15, "小三" }, { 16, "三号" }, { 18, "小二" }, { 22, "二号" }, 
-                    { 24, "小一" }, { 26, "一号" }, { 36, "小初" }, { 42, "初号" } 
+                    { 24, "小一" }, { 26, "一号" }, { 36, "小初" }, { 42, "初号" }
                 };
                 float size = FontSize;
                 return sizeList.ContainsKey(size) ? sizeList[size] : size.ToString();

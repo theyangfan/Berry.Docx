@@ -59,39 +59,7 @@ namespace Berry.Docx.Documents
                     _settings.GutterAtTop = null;
             }
         }
-        /// <summary>
-        /// 页码范围-多页
-        /// </summary>
-        public MultiPage MultiPage
-        {
-            get
-            {
-                if (MirrorMargins)
-                    return MultiPage.MirrorMargins;
-                else if (PrintTwoOnOne)
-                    return MultiPage.PrintTwoOnOne;
-                else
-                    return MultiPage.Normal;
-            }
-            set
-            {
-                switch (value)
-                {
-                    case MultiPage.MirrorMargins:
-                        MirrorMargins = true;
-                        PrintTwoOnOne = false;
-                        break;
-                    case MultiPage.PrintTwoOnOne:
-                        MirrorMargins = false;
-                        PrintTwoOnOne = true;
-                        break;
-                    default:
-                        MirrorMargins = false;
-                        PrintTwoOnOne = false;
-                        break;
-                }
-            }
-        }
+        
         /// <summary>
         /// 对称页边距
         /// </summary>

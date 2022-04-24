@@ -15,8 +15,10 @@ namespace Berry.Docx.Documents
     {
         #region Private Members
         private readonly Document _doc;
+        private readonly Section _sect;
         private readonly W.PageSize _pgSz;
         private readonly W.PageMargin _pgMar;
+        private W.VerticalTextAlignmentOnPage _vAlign;
         private W.DocGrid _docGrid;
         #endregion
 
@@ -24,8 +26,11 @@ namespace Berry.Docx.Documents
         internal PageSetup(Document doc, Section section)
         {
             _doc = doc;
+            _sect = section;
             _pgSz = section.XElement.GetFirstChild<W.PageSize>();
             _pgMar = section.XElement.GetFirstChild<W.PageMargin>();
+            _vAlign = section.XElement.GetFirstChild<W.VerticalTextAlignmentOnPage>();
+            _docGrid = section.XElement.GetFirstChild<W.DocGrid>();
         }
         #endregion
 
@@ -263,6 +268,65 @@ namespace Berry.Docx.Documents
             }
         }
 
+        public MultiPage MultiPage
+        {
+            get
+            {
+                if (_doc.Settings.MirrorMargins)
+                    return MultiPage.MirrorMargins;
+                else if (_doc.Settings.PrintTwoOnOne)
+                    return MultiPage.PrintTwoOnOne;
+                else
+                    return MultiPage.Normal;
+            }
+            set
+            {
+                switch (value)
+                {
+                    case MultiPage.MirrorMargins:
+                        _doc.Settings.MirrorMargins = true;
+                        _doc.Settings.PrintTwoOnOne = false;
+                        break;
+                    case MultiPage.PrintTwoOnOne:
+                        _doc.Settings.MirrorMargins = false;
+                        _doc.Settings.PrintTwoOnOne = true;
+                        break;
+                    default:
+                        _doc.Settings.MirrorMargins = false;
+                        _doc.Settings.PrintTwoOnOne = false;
+                        break;
+                }
+            }
+        }
+
+        public VerticalJustificationType VerticalJustification
+        {
+            get
+            {
+                if (_vAlign == null) return VerticalJustificationType.Top;
+                return (VerticalJustificationType)(int)_vAlign.Val.Value;
+            }
+            set
+            {
+                if(_vAlign == null)
+                {
+                    _vAlign = new W.VerticalTextAlignmentOnPage();
+                    _sect.XElement.AddChild(_vAlign);
+                }
+                _vAlign.Val = (W.VerticalJustificationValues)(int)value;
+            }
+        }
+
+        public float CharSpace
+        {
+            get
+            {
+                if (_docGrid?.CharacterSpace == null) return 0;
+                ParagraphStyle normal = _doc.Styles.FindByName("normal", StyleType.Paragraph) as ParagraphStyle;
+                float normalSz = normal?.CharacterFormat?.FontSize ?? 11.0F;
+                return (_docGrid.CharacterSpace / 4096.0F + normalSz).Round(1);
+            }
+        }
 
         #endregion
 

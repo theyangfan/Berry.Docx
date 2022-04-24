@@ -23,13 +23,8 @@ namespace Test
             using (Document doc = new Document(src))
             {
                 PageSetup page = doc.Sections[0].PageSetup;
-                Console.WriteLine(page.PageSize);
-                Console.WriteLine(page.Orientation);
-                Console.WriteLine(page.Margins);
-                Console.WriteLine(page.Gutter);
-                Console.WriteLine(page.GutterLocation);
-                Console.WriteLine(page.HeaderDistance);
-                Console.WriteLine(page.FooterDistance);
+                //page.VerticalJustification = VerticalJustificationType.Bottom;
+                Console.WriteLine(page.CharSpace);
                 //doc.SaveAs(dst);
             }
         }
