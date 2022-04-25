@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
+using Berry.Docx.Collections;
 
 namespace Berry.Docx.Documents
 {
@@ -20,6 +21,8 @@ namespace Berry.Docx.Documents
         private readonly W.PageMargin _pgMar;
         private W.VerticalTextAlignmentOnPage _vAlign;
         private W.DocGrid _docGrid;
+        private W.TextDirection _textDirection;
+        private W.Columns _columns;
         #endregion
 
         #region Constructors
@@ -31,6 +34,7 @@ namespace Berry.Docx.Documents
             _pgMar = section.XElement.GetFirstChild<W.PageMargin>();
             _vAlign = section.XElement.GetFirstChild<W.VerticalTextAlignmentOnPage>();
             _docGrid = section.XElement.GetFirstChild<W.DocGrid>();
+            _textDirection = section.XElement.GetFirstChild<W.TextDirection>();
         }
         #endregion
 
@@ -303,7 +307,7 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                if (_vAlign == null) return VerticalJustificationType.Top;
+                if (_vAlign?.Val == null) return VerticalJustificationType.Top;
                 return (VerticalJustificationType)(int)_vAlign.Val.Value;
             }
             set
@@ -314,6 +318,112 @@ namespace Berry.Docx.Documents
                     _sect.XElement.AddChild(_vAlign);
                 }
                 _vAlign.Val = (W.VerticalJustificationValues)(int)value;
+            }
+        }
+
+        public TextFlowDirection TextDirection
+        {
+            get
+            {
+                if (_textDirection?.Val == null) return TextFlowDirection.Horizontal;
+                if (_textDirection.Val == W.TextDirectionValues.TopToBottomRightToLeft)
+                    return TextFlowDirection.Vertical;
+                else if (_textDirection.Val == W.TextDirectionValues.LefttoRightTopToBottomRotated)
+                    return TextFlowDirection.RotateAsianChars270;
+                else
+                    return TextFlowDirection.Horizontal;
+            }
+            set
+            {
+                if(_textDirection == null)
+                {
+                    _textDirection = new W.TextDirection();
+                    _sect.XElement.AddChild(_textDirection);
+                }
+                if (value == TextFlowDirection.Horizontal)
+                    _textDirection.Val = W.TextDirectionValues.LefToRightTopToBottom;
+                else if (value == TextFlowDirection.Vertical)
+                    _textDirection.Val = W.TextDirectionValues.TopToBottomRightToLeft;
+                else
+                    _textDirection.Val = W.TextDirectionValues.LefttoRightTopToBottomRotated;
+            }
+        }
+
+        public bool EqualColumnWidth
+        {
+            get
+            {
+                if (_columns?.EqualWidth == null) return true;
+                return _columns.EqualWidth;
+            }
+            set
+            {
+                if(_columns == null)
+                {
+                    _columns = new W.Columns();
+                    _sect.XElement.AddChild(_columns);
+                }
+                _columns.EqualWidth = value;
+            }
+        }
+
+        public int ColumnsCount
+        {
+            get
+            {
+                if (_columns?.ColumnCount == null) return 1;
+                return _columns.ColumnCount;
+            }
+            set
+            {
+                if (_columns == null)
+                {
+                    _columns = new W.Columns();
+                    _sect.XElement.AddChild(_columns);
+                }
+                _columns.ColumnCount = (short)value;
+            }
+        }
+
+        public float ColumnsSpace
+        {
+            get
+            {
+                if (_columns?.Space == null) return 0;
+                return (_columns.Space.ToString().ToInt() / 20.0F).Round(2);
+            }
+            set
+            {
+                if (_columns == null)
+                {
+                    _columns = new W.Columns();
+                    _sect.XElement.AddChild(_columns);
+                }
+                _columns.Space = (value * 20).Round(0).ToString();
+            }
+        }
+
+        public Columns Columns
+        {
+
+        }
+
+        public DocGridType DocGrid
+        {
+            get
+            {
+                if (_docGrid?.Type == null) return DocGridType.None;
+                return (DocGridType)(int)_docGrid.Type.Value;
+            }
+            set
+            {
+                if (_docGrid == null)
+                {
+                    _docGrid = new W.DocGrid();
+                    _sect.XElement.AddChild(_docGrid);
+                }
+                if (value == DocGridType.None) _docGrid.Type = null;
+                else _docGrid.Type = (W.DocGridValues)(int)value;
             }
         }
 
@@ -335,37 +445,51 @@ namespace Berry.Docx.Documents
                 }
                 ParagraphStyle normal = _doc.Styles.FindByName("normal", StyleType.Paragraph) as ParagraphStyle;
                 float normalSz = normal?.CharacterFormat?.FontSize ?? 11.0F;
-                _docGrid.CharacterSpace = (int)((value - normalSz) * 4096.0F.Round(0));
+                _docGrid.CharacterSpace = (int)((value - normalSz) * 4096.0F).Round(0);
             }
         }
 
-        #endregion
-
-        #region TODO
-        private DocGridType DocGridType
+        public float LineSpace
         {
             get
             {
-                if (_docGrid.Type == null) return DocGridType.None;
-                if (_docGrid.Type == W.DocGridValues.Lines)
-                    return DocGridType.Lines;
-                else if (_docGrid.Type == W.DocGridValues.LinesAndChars)
-                    return DocGridType.LinesAndChars;
-                else if (_docGrid.Type == W.DocGridValues.SnapToChars)
-                    return DocGridType.SnapToChars;
-                else
-                    return DocGridType.None;
+                if (_docGrid?.LinePitch == null) return 0;
+                return (_docGrid.LinePitch / 20.0F).Round(2);
             }
             set
             {
-                if (value == DocGridType.Lines)
-                    _docGrid.Type = W.DocGridValues.Lines;
-                else if (value == DocGridType.LinesAndChars)
-                    _docGrid.Type = W.DocGridValues.LinesAndChars;
-                else if (value == DocGridType.SnapToChars)
-                    _docGrid.Type = W.DocGridValues.SnapToChars;
-                else
-                    _docGrid.Type = null;
+                if (_docGrid == null)
+                {
+                    _docGrid = new W.DocGrid();
+                    _sect.XElement.AddChild(_docGrid);
+                }
+                _docGrid.LinePitch = (int)(value * 20.0F).Round(0);
+            }
+        }
+        #endregion
+
+
+        #region Private Methods
+        private IEnumerable<Column> columns()
+        {
+            if (_columns == null)
+            {
+                _columns = new W.Columns();
+                _sect.XElement.AddChild(_columns);
+            }
+            if (EqualColumnWidth)
+            {
+                for(int i = 1; i <= ColumnsCount; i++)
+                {
+                    yield return new Column(_doc) { Space = ColumnsSpace };
+                }
+            }
+            else
+            {
+                foreach (W.Column column in _columns.Elements<W.Column>())
+                {
+                    yield return new Column(_doc, column);
+                }
             }
         }
         #endregion

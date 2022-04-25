@@ -129,7 +129,24 @@ namespace Berry.Docx
         /// </summary>
         PrintTwoOnOne = 2
     }
-
+    /// <summary>
+    /// Defines the Text flow Direction enumeration.
+    /// </summary>
+    public enum TextFlowDirection
+    {
+        /// <summary>
+        /// Lef to Right, Top to Bottom.
+        /// </summary>
+        Horizontal = 0,
+        /// <summary>
+        /// Top to Bottom, Right to Left.
+        /// </summary>
+        Vertical = 1,
+        /// <summary>
+        /// Left to Right, Top to Bottom Rotated.
+        /// </summary>
+        RotateAsianChars270 = 2
+    }
     /// <summary>
     /// Defines the DocGridType enumeration.
     /// </summary>
@@ -148,7 +165,7 @@ namespace Berry.Docx
         /// </summary>
         LinesAndChars = 2,
         /// <summary>
-        /// Character Grid Only.
+        /// Snap to Character Grid.
         /// </summary>
         SnapToChars = 3
     }
