@@ -35,6 +35,7 @@ namespace Berry.Docx.Documents
             _vAlign = section.XElement.GetFirstChild<W.VerticalTextAlignmentOnPage>();
             _docGrid = section.XElement.GetFirstChild<W.DocGrid>();
             _textDirection = section.XElement.GetFirstChild<W.TextDirection>();
+            _columns = section.XElement.GetFirstChild<W.Columns>();
         }
         #endregion
 
@@ -349,63 +350,17 @@ namespace Berry.Docx.Documents
             }
         }
 
-        public bool EqualColumnWidth
-        {
-            get
-            {
-                if (_columns?.EqualWidth == null) return true;
-                return _columns.EqualWidth;
-            }
-            set
-            {
-                if(_columns == null)
-                {
-                    _columns = new W.Columns();
-                    _sect.XElement.AddChild(_columns);
-                }
-                _columns.EqualWidth = value;
-            }
-        }
-
-        public int ColumnsCount
-        {
-            get
-            {
-                if (_columns?.ColumnCount == null) return 1;
-                return _columns.ColumnCount;
-            }
-            set
-            {
-                if (_columns == null)
-                {
-                    _columns = new W.Columns();
-                    _sect.XElement.AddChild(_columns);
-                }
-                _columns.ColumnCount = (short)value;
-            }
-        }
-
-        public float ColumnsSpace
-        {
-            get
-            {
-                if (_columns?.Space == null) return 0;
-                return (_columns.Space.ToString().ToInt() / 20.0F).Round(2);
-            }
-            set
-            {
-                if (_columns == null)
-                {
-                    _columns = new W.Columns();
-                    _sect.XElement.AddChild(_columns);
-                }
-                _columns.Space = (value * 20).Round(0).ToString();
-            }
-        }
-
         public Columns Columns
         {
-
+            get
+            {
+                if (_columns == null)
+                {
+                    _columns = new W.Columns();
+                    _sect.XElement.AddChild(_columns);
+                }
+                return new Columns(_doc, _sect, _columns);
+            }
         }
 
         public DocGridType DocGrid
@@ -427,7 +382,7 @@ namespace Berry.Docx.Documents
             }
         }
 
-        public float CharSpace
+        public float CharPitch
         {
             get
             {
@@ -449,7 +404,7 @@ namespace Berry.Docx.Documents
             }
         }
 
-        public float LineSpace
+        public float LinePitch
         {
             get
             {
@@ -464,32 +419,6 @@ namespace Berry.Docx.Documents
                     _sect.XElement.AddChild(_docGrid);
                 }
                 _docGrid.LinePitch = (int)(value * 20.0F).Round(0);
-            }
-        }
-        #endregion
-
-
-        #region Private Methods
-        private IEnumerable<Column> columns()
-        {
-            if (_columns == null)
-            {
-                _columns = new W.Columns();
-                _sect.XElement.AddChild(_columns);
-            }
-            if (EqualColumnWidth)
-            {
-                for(int i = 1; i <= ColumnsCount; i++)
-                {
-                    yield return new Column(_doc) { Space = ColumnsSpace };
-                }
-            }
-            else
-            {
-                foreach (W.Column column in _columns.Elements<W.Column>())
-                {
-                    yield return new Column(_doc, column);
-                }
             }
         }
         #endregion

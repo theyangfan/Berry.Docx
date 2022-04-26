@@ -25,14 +25,9 @@ namespace Test
                 PageSetup page = doc.Sections[0].PageSetup;
                 //page.CharSpace = 29.3f;
                 //page.LineSpace = 10f;
-                page.DocGrid = DocGridType.SnapToChars;
-                Console.WriteLine(page.DocGrid);
-                Console.WriteLine(page.CharSpace);
-                Console.WriteLine(page.LineSpace);
-                
-                doc.SaveAs(dst);
+
+                //doc.SaveAs(dst);
             }
         }
-
     }
 }

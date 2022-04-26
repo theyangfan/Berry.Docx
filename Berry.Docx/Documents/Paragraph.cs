@@ -276,7 +276,7 @@ namespace Berry.Docx.Documents
                     ele = ele.NextSibling();
                 }
                 ele.InsertAfterSelf(startMark);
-            }
+            } 
             else
             {
                 _paragraph.InsertAt(startMark, 0);

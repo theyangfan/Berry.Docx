@@ -1,45 +1,107 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Documents;
 
-namespace Berry.Docx.Collections
+namespace Berry.Docx.Documents
 {
     public class Columns : IEnumerable
     {
+        private readonly Document _doc;
+        private readonly Section _sect;
         private readonly W.Columns _columns;
-        private readonly IEnumerable<Column> _column_list;
         
-        internal Columns(Document doc, Section section, W.Columns columns, IEnumerable<Column> column_list)
+        internal Columns(Document doc, Section section, W.Columns columns)
         {
+            _doc = doc;
+            _sect = section;
             _columns = columns;
-            _column_list = column_list;
         }
 
-        public void Add(Column column)
+        public Column this[int index] => GetColumns().ElementAt(index);
+
+        public bool EqualColumnWidth
         {
-            _columns.Append(column.XElement);
+            get
+            {
+                return _columns.EqualWidth ?? true;
+            }
+            set
+            {
+                _columns.EqualWidth = value;
+            }
+        }
+
+        public int EqualWidthColumnsCount
+        {
+            get
+            {
+                return _columns.ColumnCount ?? 1;
+            }
+            set
+            {
+                _columns.ColumnCount = (short)value;
+            }
+        }
+
+        public float EqualWidthColumnsSpacing
+        {
+            get
+            {
+                if (_columns.Space == null) return 0;
+                return (_columns.Space.ToString().ToInt() / 20.0F).Round(2);
+            }
+            set
+            {
+                _columns.Space = (value * 20).Round(0).ToString();
+            }
         }
 
         public bool LineBetweenColumns
         {
             get
             {
-                if (_columns?.Separator == null) return false;
-                return _columns.Separator;
+                return _columns.Separator ?? false;
             }
             set
             {
-                if (_columns == null)
-                {
-                    _columns = new W.Columns();
-                    _sect.XElement.AddChild(_columns);
-                }
                 _columns.Separator = value;
             }
         }
 
+        public int Count()
+        {
+            return GetColumns().Count();
+        }
+        public void Add(Column column)
+        {
+            _columns.Append(column.XElement);
+        }
+
+        public void Clear()
+        {
+            _columns.ColumnCount = null;
+            _columns.RemoveAllChildren();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return GetColumns().GetEnumerator();
+        }
+        private IEnumerable<Column> GetColumns()
+        {
+            if (EqualColumnWidth)
+            {
+                for (int i = 1; i <= EqualWidthColumnsCount; i++)
+                    yield return new Column(_doc) { Spacing = EqualWidthColumnsSpacing };
+            }
+            else
+            {
+                foreach (W.Column column in _columns.Elements<W.Column>())
+                    yield return new Column(_doc, column);
+            }
+        }
     }
 }

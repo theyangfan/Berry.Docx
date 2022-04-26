@@ -32,7 +32,7 @@ namespace Berry.Docx.Documents
                 _column.Width = (value * 20).Round(0).ToString();
             }
         }
-        public float Space
+        public float Spacing
         {
             get
             {
