@@ -17,16 +17,17 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
-            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
+            string src = @"C:\Users\Tomato\Desktop\test.docx";
+            string dst = @"C:\Users\Tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
+                Paragraph p = doc.LastSection.Paragraphs[1];
                 PageSetup page = doc.Sections[0].PageSetup;
                 //page.CharSpace = 29.3f;
                 //page.LineSpace = 10f;
-
-                //doc.SaveAs(dst);
+                p.AppendComment("test", "tets");
+                doc.SaveAs(dst);
             }
         }
     }

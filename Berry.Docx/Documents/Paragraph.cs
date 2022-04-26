@@ -275,11 +275,24 @@ namespace Berry.Docx.Documents
                 {
                     ele = ele.NextSibling();
                 }
+                // Exclude page break
+                if(ele.NextSibling() is W.Run 
+                    && ele.NextSibling().Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    ele = ele.NextSibling();
+                }
                 ele.InsertAfterSelf(startMark);
-            } 
+            }
             else
             {
-                _paragraph.InsertAt(startMark, 0);
+                int index = 0;
+                // Exclude page break
+                if (ele is W.Run
+                    && ele.Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    index = 1;
+                }
+                _paragraph.InsertAt(startMark, index);
             }
             _paragraph.Append(endMark);
             _paragraph.Append(referenceRun);
@@ -329,11 +342,24 @@ namespace Berry.Docx.Documents
                 {
                     ele = ele.NextSibling();
                 }
+                // Exclude page break
+                if (ele.NextSibling() is W.Run
+                    && ele.NextSibling().Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    ele = ele.NextSibling();
+                }
                 ele.InsertAfterSelf(startMark);
             }
             else
             {
-                _paragraph.InsertAt(startMark, 0);
+                int index = 0;
+                // Exclude page break
+                if (ele is W.Run
+                    && ele.Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    index = 1;
+                }
+                _paragraph.InsertAt(startMark, index);
             }
             _paragraph.Append(endMark);
             _paragraph.Append(referenceRun);

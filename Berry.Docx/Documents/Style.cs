@@ -17,7 +17,7 @@ namespace Berry.Docx.Documents
         private W.Style _style = null;
         protected ParagraphFormat _pFormat = null;
         protected CharacterFormat _cFormat = null;
-        public Style(Document doc, W.Style style)
+        internal Style(Document doc, W.Style style)
         {
             _style = style;
             if(style.Type.Value == W.StyleValues.Paragraph)
