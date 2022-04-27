@@ -273,6 +273,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public MultiPage MultiPage
         {
             get

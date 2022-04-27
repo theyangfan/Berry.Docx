@@ -119,7 +119,7 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerParagraph != null)
                 {
-                    return _ownerParagraph.ParagraphProperties != null && _ownerParagraph.ParagraphProperties.NumberingProperties != null ? _curPHld.NumberingFormat : _styleFormat.NumberingFormat;
+                    return _ownerParagraph.ParagraphProperties?.NumberingProperties != null ? _curPHld.NumberingFormat : _styleFormat.NumberingFormat;
                 }
                 else if(_ownerStyle != null)
                 {
@@ -1475,7 +1475,15 @@ namespace Berry.Docx.Formatting
             format.AutoSpaceDE = curSHld.AutoSpaceDE ?? baseFormat.AutoSpaceDE;
             format.AutoSpaceDN = curSHld.AutoSpaceDN ?? baseFormat.AutoSpaceDN;
             // Numbering
-            format.NumberingFormat = curSHld.NumberingFormat ?? baseFormat.NumberingFormat;
+            if(curSHld.NumberingFormat != null)
+            {
+                format.NumberingFormat = curSHld.NumberingFormat;
+            }
+            else if(baseFormat.NumberingFormat != null)
+            {
+                format.NumberingFormat = new NumberingFormat(_document, baseFormat.NumberingFormat, style.StyleId);
+            }
+            
             return format;
         }
         #endregion

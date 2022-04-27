@@ -40,6 +40,7 @@ namespace Berry.Docx.Formatting
         private W.AutoSpaceDE _autoSpaceDE;
         private W.AutoSpaceDN _autoSpaceDN;
         // Numbering
+        private NumberingFormat _numFmt;
         private W.Level _lvl = null;
         #endregion
 
@@ -87,22 +88,21 @@ namespace Berry.Docx.Formatting
             _autoSpaceDE = pPr.AutoSpaceDE;
             _autoSpaceDN = pPr.AutoSpaceDN;
             // Numbering
-            if(pPr.NumberingProperties != null)
+            if (pPr.NumberingProperties?.NumberingId != null)
             {
-                if(pPr.NumberingProperties.NumberingId != null)
+                int numId = pPr.NumberingProperties.NumberingId.Val;
+                if (pPr.NumberingProperties.NumberingLevelReference != null)
                 {
-                    int numId = pPr.NumberingProperties.NumberingId.Val;
-                    if(pPr.NumberingProperties.NumberingLevelReference != null)
+                    int ilvl = pPr.NumberingProperties.NumberingLevelReference.Val;
+                    if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
+                    W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                    W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
+                    if (num == null) return;
+                    int abstractNumId = num.AbstractNumId.Val;
+                    W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
+                    if (abstractNum != null)
                     {
-                        int ilvl = pPr.NumberingProperties.NumberingLevelReference.Val;
-                        if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
-                        W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
-                        W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
-                        if (num == null) return;
-                        int abstractNumId = num.AbstractNumId.Val;
-                        W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
-                        if (abstractNum == null) return;
-                        _lvl = abstractNum.Elements<W.Level>().Where(l => l.LevelIndex == ilvl).FirstOrDefault();
+                        _numFmt = new NumberingFormat(document, abstractNum, ilvl);
                     }
                 }
             }
@@ -151,20 +151,19 @@ namespace Berry.Docx.Formatting
             _autoSpaceDE = spPr.AutoSpaceDE;
             _autoSpaceDN = spPr.AutoSpaceDN;
             // Numbering
-            if (spPr.NumberingProperties != null)
+            if (spPr.NumberingProperties?.NumberingId != null)
             {
-                if (spPr.NumberingProperties.NumberingId != null)
+                int numId = spPr.NumberingProperties.NumberingId.Val;
+                string styleId = (spPr.Parent as W.Style).StyleId;
+                if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
+                W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
+                if (num == null) return;
+                int abstractNumId = num.AbstractNumId.Val;
+                W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
+                if (abstractNum != null)
                 {
-                    int numId = spPr.NumberingProperties.NumberingId.Val;
-                    string styleId = (spPr.Parent as W.Style).StyleId;
-                    if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
-                    W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
-                    W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
-                    if (num == null) return;
-                    int abstractNumId = num.AbstractNumId.Val;
-                    W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
-                    if (abstractNum == null) return;
-                    _lvl = abstractNum.Elements<W.Level>().Where(l => l.ParagraphStyleIdInLevel != null && l.ParagraphStyleIdInLevel.Val == styleId).FirstOrDefault();
+                    _numFmt = new NumberingFormat(document, abstractNum, styleId);
                 }
             }
         }
@@ -174,14 +173,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets paragraph numbering format.
         /// </summary>
-        public NumberingFormat NumberingFormat
-        {
-            get
-            {
-                if (_lvl == null) return null;
-                return new NumberingFormat(_lvl);
-            }
-        }
+        public NumberingFormat NumberingFormat => _numFmt;
 
         #region Normal
         /// <summary>

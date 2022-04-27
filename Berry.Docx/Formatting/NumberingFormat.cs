@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OOxml = DocumentFormat.OpenXml.Wordprocessing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
@@ -12,18 +12,30 @@ namespace Berry.Docx.Formatting
     public class NumberingFormat
     {
         #region Private Members
-        private OOxml.Level _lvl = null;
+        private readonly W.AbstractNum _abstractNum;
+        private readonly W.Level _curLevel;
         #endregion
 
         #region Constructors
-
         /// <summary>
-        /// Initializes a new instance of the NumberingFormat class using the supplied OpenXML Level element.
+        /// Initializes a new instance of the NumberingFormat class using the supplied OpenXML AbstractNum element.
         /// </summary>
-        /// <param name="lvl"></param>
-        internal NumberingFormat(OOxml.Level lvl)
+        /// <param name="doc"></param>
+        /// <param name="num"></param>
+        internal NumberingFormat(Document doc, W.AbstractNum num, int levelIndex)
         {
-            _lvl = lvl;
+            _abstractNum = num;
+            _curLevel = num.Elements<W.Level>().Where(l => l.LevelIndex == levelIndex).FirstOrDefault();
+        }
+        internal NumberingFormat(Document doc, W.AbstractNum num, string styleId)
+        {
+            _abstractNum = num;
+            _curLevel = num.Elements<W.Level>().Where(l => l.ParagraphStyleIdInLevel?.Val == styleId).FirstOrDefault();
+        }
+        internal NumberingFormat(Document doc, NumberingFormat format, string styleId)
+        {
+            _abstractNum = format.AbstractNum;
+            _curLevel = _abstractNum.Elements<W.Level>().Where(l => l.ParagraphStyleIdInLevel?.Val == styleId).FirstOrDefault();
         }
         #endregion
 
@@ -33,15 +45,15 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public int Start
         {
-            get => _lvl.StartNumberingValue.Val;
+            get => _curLevel.StartNumberingValue.Val;
         }
 
         /// <summary>
         /// Gets number style.
         /// </summary>
-        public OOxml.NumberFormatValues Style
+        public W.NumberFormatValues Style
         {
-            get => _lvl.NumberingFormat.Val;
+            get => _curLevel.NumberingFormat.Val;
         }
 
         /// <summary>
@@ -49,8 +61,13 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public string Format
         {
-            get => _lvl.LevelText.Val;
+            get => _curLevel.LevelText.Val;
         }
         #endregion
+
+        #region Internal Properties
+        internal W.AbstractNum AbstractNum => _abstractNum;
+        #endregion
+
     }
 }
