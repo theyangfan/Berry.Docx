@@ -10,7 +10,7 @@ namespace Berry.Docx.Collections
     /// <summary>
     /// Represent a style collection.
     /// </summary>
-    public class StyleCollection : IEnumerable
+    public class StyleCollection : IEnumerable<Style>
     {
         #region Private Members
         private IEnumerable<Style> _styles;
@@ -53,7 +53,11 @@ namespace Berry.Docx.Collections
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Style> GetEnumerator()
+        {
+            return _styles.GetEnumerator();
+        }
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _styles.GetEnumerator();
         }

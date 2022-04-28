@@ -14,9 +14,11 @@ namespace Berry.Docx.Documents
     /// </summary>
     public abstract class Style
     {
-        private W.Style _style = null;
-        protected ParagraphFormat _pFormat = null;
-        protected CharacterFormat _cFormat = null;
+        private readonly Document _doc;
+        private readonly W.Style _style;
+        protected ParagraphFormat _pFormat;
+        protected CharacterFormat _cFormat;
+
         internal Style(Document doc, W.Style style)
         {
             _style = style;
@@ -56,6 +58,22 @@ namespace Berry.Docx.Documents
         {
             get => _style.StyleName.Val;
             set => _style.StyleName.Val = value;
+        }
+
+        public Style BaseStyle
+        {
+            get
+            {
+                if(_style.BasedOn != null)
+                {
+                    return _doc.Styles.Where(s => s.StyleId == _style.BasedOn.Val).FirstOrDefault();
+                }
+                return null;
+            }
+            set
+            {
+                _style.BasedOn = new W.BasedOn() { Val = value.StyleId};
+            }
         }
 
         /// <summary>
