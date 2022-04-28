@@ -12,7 +12,7 @@ namespace Berry.Docx.Documents
     /// <summary>
     /// TODO
     /// </summary>
-    public class Style
+    public abstract class Style
     {
         private W.Style _style = null;
         protected ParagraphFormat _pFormat = null;
@@ -20,73 +20,42 @@ namespace Berry.Docx.Documents
         internal Style(Document doc, W.Style style)
         {
             _style = style;
-            if(style.Type.Value == W.StyleValues.Paragraph)
+            if(Type == StyleType.Paragraph)
             {
                 _pFormat = new ParagraphFormat(doc, style);
                 _cFormat = new CharacterFormat(doc, style);
             }
-            if (style.Type.Value == W.StyleValues.Character)
+            else if (Type == StyleType.Character)
             {
                 _cFormat = new CharacterFormat(doc, style);
             }
         }
 
         public CharacterFormat CharacterFormat => _cFormat;
+
         /// <summary>
         /// 
         /// </summary>
         public StyleType Type
         {
-            get
-            {
-                if (_style.Type.Value == W.StyleValues.Paragraph)
-                    return StyleType.Paragraph;
-                else if (_style.Type.Value == W.StyleValues.Character)
-                    return StyleType.Character;
-                else if (_style.Type.Value == W.StyleValues.Table)
-                    return StyleType.Table;
-                else 
-                    return StyleType.Numbering;
-            }
-            set
-            {
-                if (value == StyleType.Paragraph)
-                    _style.Type.Value = W.StyleValues.Paragraph;
-                else if (value == StyleType.Character)
-                    _style.Type.Value = W.StyleValues.Character;
-                else if (value == StyleType.Table)
-                    _style.Type.Value = W.StyleValues.Table;
-                else
-                    _style.Type.Value = W.StyleValues.Numbering;
-            }
+            get => (StyleType)(int)_style.Type.Value;
+            set => _style.Type.Value = (W.StyleValues)(int)value;
         }
         /// <summary>
         /// 
         /// </summary>
         public string StyleId
         {
-            get
-            {
-                return _style.StyleId;
-            }
-            set
-            {
-                _style.StyleId = value;
-            }
+            get => _style.StyleId;
+            set => _style.StyleId = value;
         }
         /// <summary>
         /// 
         /// </summary>
         public string Name
         {
-            get
-            {
-                return _style.StyleName.Val;
-            }
-            set
-            {
-                _style.StyleName.Val = value;
-            }
+            get => _style.StyleName.Val;
+            set => _style.StyleName.Val = value;
         }
 
         /// <summary>
