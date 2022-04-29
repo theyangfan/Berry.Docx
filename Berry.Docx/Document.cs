@@ -86,7 +86,7 @@ namespace Berry.Docx
         /// <summary>
         /// Return a collection of styles in the document.
         /// </summary>
-        public StyleCollection Styles => new StyleCollection(StylesPrivate());
+        public StyleCollection Styles => new StyleCollection(this);
 
         /// <summary>
         /// Return a collection of footnotes in the document.
@@ -260,17 +260,6 @@ namespace Berry.Docx
         {
             foreach (W.SectionProperties sectPr in _doc.MainDocumentPart.Document.Body.Descendants<W.SectionProperties>())
                 yield return new Section(this, sectPr);
-        }
-
-        private IEnumerable<Style> StylesPrivate()
-        {
-            foreach (W.Style style in _doc.MainDocumentPart.StyleDefinitionsPart.Styles.Elements<W.Style>())
-            {
-                if (style.Type.Value == W.StyleValues.Paragraph)
-                    yield return new ParagraphStyle(this, style);
-                else
-                    yield return new Style(this, style);
-            }
         }
 #endregion
 

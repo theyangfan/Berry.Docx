@@ -10,6 +10,7 @@ namespace Berry.Docx.Utils
 {
     internal class IDGenerator
     {
+        public static int CUSTOM_STYLE_ID = 1000;
         public static string GenerateRelationshipID(Document doc)
         {
             List<int> ids = new List<int>();
@@ -23,15 +24,16 @@ namespace Berry.Docx.Utils
 
         public static string GenerateStyleID(Document doc)
         {
-            int newId = 1; 
             List<string> ids = new List<string>();
             foreach(Style style in doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Elements<Style>())
             {
                 ids.Add(style.StyleId);
             }
-            while (ids.Contains(newId.ToString())) newId++;
-            3
-            return newId.ToString();
+            do
+            {
+                CUSTOM_STYLE_ID++;
+            } while (ids.Contains(CUSTOM_STYLE_ID.ToString()));
+            return CUSTOM_STYLE_ID.ToString();
         }
     }
 }

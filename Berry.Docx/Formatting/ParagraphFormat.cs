@@ -1427,7 +1427,7 @@ namespace Berry.Docx.Formatting
             ParagraphFormat format = new ParagraphFormat();
             ParagraphFormat baseFormat = new ParagraphFormat();
             // Gets base style format.
-            OOxml.Style baseStyle = style.GetBaseStyle();
+            OOxml.Style baseStyle = style.GetBaseStyle(_document);
             if (baseStyle != null)
                 baseFormat = GetStyleParagraphFormatRecursively(baseStyle);
 

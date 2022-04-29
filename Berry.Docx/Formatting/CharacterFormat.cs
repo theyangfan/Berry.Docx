@@ -658,9 +658,8 @@ namespace Berry.Docx.Formatting
             CharacterFormat format = new CharacterFormat();
             CharacterFormat baseFormat = new CharacterFormat();
             // Gets DOcDefaults
-            OOxml.Styles styles = style.Parent as OOxml.Styles;
-            if (styles.DocDefaults != null && styles.DocDefaults.RunPropertiesDefault != null
-                && styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle != null)
+            OOxml.Styles styles = _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
+            if (styles?.DocDefaults?.RunPropertiesDefault?.RunPropertiesBaseStyle != null)
             {
                 RunPropertiesHolder rPr = new RunPropertiesHolder(_doc.Package, styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle);
                 baseFormat.FontNameEastAsia = rPr.FontNameEastAsia;
@@ -674,7 +673,7 @@ namespace Berry.Docx.Formatting
                 baseFormat.Position = rPr.Position ?? 0;
             }
             // Gets base style format
-            OOxml.Style baseStyle = style.GetBaseStyle();
+            OOxml.Style baseStyle = style.GetBaseStyle(_doc);
             if (baseStyle != null)
                 baseFormat = GetStyleCharacterFormatRecursively(baseStyle);
             if (style.StyleRunProperties == null) style.StyleRunProperties = new OOxml.StyleRunProperties();

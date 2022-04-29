@@ -22,11 +22,14 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.LastSection.Paragraphs[0];
-                PageSetup page = doc.Sections[0].PageSetup;
-
-                Console.WriteLine(p.ListText);
-                //doc.SaveAs(dst);
+                ParagraphStyle style1 = new ParagraphStyle(doc);
+                style1.Name = "样式1";
+                style1.BaseStyle = ParagraphStyle.Default(doc);
+                style1.AddToGallery = true;
+                style1.IsCustom = true;
+                
+                doc.Styles.Add(style1);
+                doc.SaveAs(dst);
             }
         }
     }

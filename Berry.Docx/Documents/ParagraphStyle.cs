@@ -10,12 +10,18 @@ using Berry.Docx.Formatting;
 namespace Berry.Docx.Documents
 {
     /// <summary>
-    /// TODO
+    /// 
     /// </summary>
     public class ParagraphStyle : Style
     {
+        private readonly Document _doc;
+        public ParagraphStyle(Document doc) : base(doc, StyleType.Paragraph)
+        {
+            _doc = doc;
+        }
         internal ParagraphStyle(Document doc, W.Style style):base(doc, style)
         {
+            _doc = doc;
         }
 
         /// <summary>
@@ -26,5 +32,18 @@ namespace Berry.Docx.Documents
         /// 字符格式
         /// </summary>
         public CharacterFormat CharacterFormat { get => _cFormat; }
+
+        public new ParagraphStyle BaseStyle
+        {
+            get => base.BaseStyle as ParagraphStyle;
+            set => base.BaseStyle = value;
+        }
+
+        public static ParagraphStyle Default(Document doc)
+        {
+            return doc.Styles.Where(s => s.Type == StyleType.Paragraph && s.IsDefault).FirstOrDefault() as ParagraphStyle;
+        }
+
+        
     }
 }

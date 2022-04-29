@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Berry.Docx.Documents;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Collections
 {
@@ -13,13 +14,15 @@ namespace Berry.Docx.Collections
     public class StyleCollection : IEnumerable<Style>
     {
         #region Private Members
+        private readonly Document _doc;
         private IEnumerable<Style> _styles;
         #endregion
 
         #region Constructors
-        internal StyleCollection(IEnumerable<Style> styles)
+        internal StyleCollection(Document doc)
         {
-            _styles = styles;
+            _doc = doc;
+            _styles = GetStyles();
         }
         #endregion
 
@@ -38,6 +41,11 @@ namespace Berry.Docx.Collections
         #endregion
 
         #region Public Methods
+
+        public void Add(Style style)
+        {
+            _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Append(style.XElement);
+        }
         /// <summary>
         /// Searchs for the style with the specified stylename and type within the entire collection.
         /// </summary>
@@ -62,5 +70,14 @@ namespace Berry.Docx.Collections
             return _styles.GetEnumerator();
         }
         #endregion
+
+        private IEnumerable<Style> GetStyles()
+        {
+            foreach (W.Style style in _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Elements<W.Style>())
+            {
+                if (style.Type == W.StyleValues.Paragraph)
+                    yield return new ParagraphStyle(_doc, style);
+            }
+        }
     }
 }

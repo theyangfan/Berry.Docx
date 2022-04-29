@@ -6,6 +6,7 @@ using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 using Berry.Docx.Formatting;
+using Berry.Docx.Utils;
 
 namespace Berry.Docx.Documents
 {
@@ -18,6 +19,22 @@ namespace Berry.Docx.Documents
         private readonly W.Style _style;
         protected ParagraphFormat _pFormat;
         protected CharacterFormat _cFormat;
+
+        public Style(Document doc, StyleType type)
+        {
+            _style = new W.Style();
+            StyleId = IDGenerator.GenerateStyleID(doc);
+            Type = type;
+            if (type == StyleType.Paragraph)
+            {
+                _pFormat = new ParagraphFormat(doc, _style);
+                _cFormat = new CharacterFormat(doc, _style);
+            }
+            else if (type == StyleType.Character)
+            {
+                _cFormat = new CharacterFormat(doc, _style);
+            }
+        }
 
         internal Style(Document doc, W.Style style)
         {
@@ -33,6 +50,7 @@ namespace Berry.Docx.Documents
             }
         }
 
+        internal W.Style XElement => _style;
         public CharacterFormat CharacterFormat => _cFormat;
 
         /// <summary>
@@ -41,23 +59,26 @@ namespace Berry.Docx.Documents
         public StyleType Type
         {
             get => (StyleType)(int)_style.Type.Value;
-            set => _style.Type.Value = (W.StyleValues)(int)value;
+            private set => _style.Type = (W.StyleValues)(int)value;
         }
         /// <summary>
         /// 
         /// </summary>
-        public string StyleId
+        public string StyleId   
         {
             get => _style.StyleId;
-            set => _style.StyleId = value;
+            private set => _style.StyleId = value;
         }
+
+        public bool IsDefault => _style.Default ?? false;
+
         /// <summary>
         /// 
         /// </summary>
         public string Name
         {
-            get => _style.StyleName.Val;
-            set => _style.StyleName.Val = value;
+            get => _style.StyleName?.Val ?? string.Empty;
+            set => _style.StyleName = new W.StyleName() { Val = value };
         }
 
         public Style BaseStyle
@@ -72,15 +93,22 @@ namespace Berry.Docx.Documents
             }
             set
             {
-                _style.BasedOn = new W.BasedOn() { Val = value.StyleId};
+                if(value != null)
+                    _style.BasedOn = new W.BasedOn() { Val = value.StyleId};
             }
+        }
+
+        public bool IsCustom
+        {
+            get => _style.CustomStyle ?? false;
+            set => _style.CustomStyle = value;
         }
 
         /// <summary>
         /// 是否添加到样式库
         /// (This element specifies whether this style shall be treated as a primary style when this document is loaded by an application).
         /// </summary>
-        public bool PrimaryStyle
+        public bool AddToGallery
         {
             get
             {

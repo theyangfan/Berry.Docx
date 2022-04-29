@@ -115,11 +115,11 @@ namespace Berry.Docx
         /// </summary>
         /// <param name="style">The OpenXMl style.</param>
         /// <returns>The based-on OpenXMl style.</returns>
-        internal static OW.Style GetBaseStyle(this OW.Style style)
+        internal static OW.Style GetBaseStyle(this OW.Style style, Document doc)
         {
             if(style.BasedOn != null)
             {
-                OW.Styles styles = style.Parent as OW.Styles;
+                OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
                 string styleId = style.BasedOn.Val.ToString();
                 return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
             }
