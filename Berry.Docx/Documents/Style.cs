@@ -132,6 +132,21 @@ namespace Berry.Docx.Documents
             }
         }
 
-
+        internal Style LinkedStyle
+        {
+            get
+            {
+                if(_style.LinkedStyle != null)
+                {
+                    string id = _style.LinkedStyle.Val;
+                    return _doc.Styles.Where(s => s.StyleId == id).FirstOrDefault();
+                }
+                return null;
+            }
+            set
+            {
+                _style.LinkedStyle = new W.LinkedStyle() { Val = value.StyleId };
+            }
+        }
     }
 }

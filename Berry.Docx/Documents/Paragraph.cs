@@ -53,7 +53,7 @@ namespace Berry.Docx.Documents
             _pFormat = new ParagraphFormat(_doc, paragraph);
             _cFormat = new CharacterFormat();
             if(paragraph?.ParagraphProperties?.ParagraphMarkRunProperties != null)
-                _cFormat = new CharacterFormat(_doc, paragraph.ParagraphProperties.ParagraphMarkRunProperties);
+                _cFormat = new CharacterFormat(_doc, paragraph);
         }
         #endregion
 

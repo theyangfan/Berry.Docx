@@ -44,6 +44,26 @@ namespace Berry.Docx.Documents
             return doc.Styles.Where(s => s.Type == StyleType.Paragraph && s.IsDefault).FirstOrDefault() as ParagraphStyle;
         }
 
-        
+        public CharacterStyle GetLinkedStyle()
+        {
+            return LinkedStyle as CharacterStyle;
+        }
+
+        public CharacterStyle CreateLinkedStyle()
+        {
+            if(LinkedStyle != null)
+            {
+                return LinkedStyle as CharacterStyle;
+            }
+            CharacterStyle linked = new CharacterStyle(_doc);
+            linked.Name = this.Name + " 字符";
+            linked.BaseStyle = CharacterStyle.Default(_doc);
+            linked.LinkedStyle = this;
+            linked.IsCustom = true;
+            this.LinkedStyle = linked;
+            _doc.Styles.Add(linked);
+            return linked;
+        }
+
     }
 }

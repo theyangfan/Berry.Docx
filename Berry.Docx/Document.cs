@@ -130,6 +130,8 @@ namespace Berry.Docx
 
         public FootEndnoteFormat FootnoteFormat => _settings.FootnoteFormt;
         public FootEndnoteFormat EndnoteFormat => _settings.EndnoteFormt;
+
+        public DocDefaultFormat DefaultFormat => new DocDefaultFormat(this);
         #endregion
 
         #region Internal Settings

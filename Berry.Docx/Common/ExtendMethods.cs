@@ -88,14 +88,14 @@ namespace Berry.Docx
         internal static OW.Style GetStyle(this OW.Paragraph p, Document doc)
         {
             OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
-            if(p.ParagraphProperties != null && p.ParagraphProperties.ParagraphStyleId != null)
+            if(p?.ParagraphProperties?.ParagraphStyleId != null)
             {
                 string styleId = p.ParagraphProperties.ParagraphStyleId.Val.ToString();
                 return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
             }
             else
             {
-                return styles.Elements<OW.Style>().Where(s => s.Type.Value == OW.StyleValues.Paragraph && s.Default != null && s.Default.Value == true).FirstOrDefault();
+                return styles.Elements<OW.Style>().Where(s => s.Type.Value == OW.StyleValues.Paragraph &&  s.Default?.Value == true).FirstOrDefault();
             }
         }
 

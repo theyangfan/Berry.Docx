@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using OOxml = DocumentFormat.OpenXml.Wordprocessing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
@@ -15,26 +15,17 @@ namespace Berry.Docx.Formatting
         private Document _doc;
 
         #region TextRange
-        private OOxml.Run _ownerRun = null;
-        private RunPropertiesHolder _curRHld = null;
-        private CharacterFormat _rStyleFormat;
-        private CharacterFormat _inheritFromParagraphFormat = null;
+        private W.Run _ownerRun = null;
+        private RunPropertiesHolder _directRHld = null;
         #endregion
 
         #region Paragraph
-        private OOxml.Paragraph _ownerParagraph = null;
-        private CharacterFormat _pStyleFormat = null;
-        #endregion
-
-        #region ParagraphMark
-        private OOxml.ParagraphMarkRunProperties _paragraphMark;
-        private RunPropertiesHolder _curPMarkHld = null;
+        private W.Paragraph _ownerParagraph = null;
         #endregion
 
         #region Style
-        private OOxml.Style _ownerStyle = null;
-        private RunPropertiesHolder _curSHld = null;
-        private CharacterFormat _inheritFromBaseStyleFormat = null;
+        private W.Style _ownerStyle = null;
+        private RunPropertiesHolder _directSHld = null;
         #endregion
 
         #region Formats
@@ -59,18 +50,11 @@ namespace Berry.Docx.Formatting
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerRun"></param>
-        internal CharacterFormat(Document doc, OOxml.Run ownerRun)
+        internal CharacterFormat(Document doc, W.Run ownerRun)
         {
             _doc = doc;
             _ownerRun = ownerRun;
-            if (ownerRun.RunProperties == null)
-                ownerRun.RunProperties = new OOxml.RunProperties();
-            _curRHld = new RunPropertiesHolder(doc.Package, ownerRun.RunProperties);
-            if (ownerRun.RunProperties.RunStyle != null)
-                _rStyleFormat = new CharacterFormat(doc, ownerRun.GetStyle(doc));
-            OOxml.Paragraph paragraph = ownerRun.Ancestors<OOxml.Paragraph>().FirstOrDefault();
-            if (paragraph != null)
-                _inheritFromParagraphFormat = new CharacterFormat(doc, paragraph);
+            _directRHld = new RunPropertiesHolder(doc.Package, ownerRun);
         }
 
         /// <summary>
@@ -78,11 +62,10 @@ namespace Berry.Docx.Formatting
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerParagraph"></param>
-        internal CharacterFormat(Document doc, OOxml.Paragraph ownerParagraph)
+        internal CharacterFormat(Document doc, W.Paragraph ownerParagraph)
         {
             _doc = doc;
             _ownerParagraph = ownerParagraph;
-            _pStyleFormat = new CharacterFormat(doc, ownerParagraph.GetStyle(doc));
         }
 
         /// <summary>
@@ -90,22 +73,13 @@ namespace Berry.Docx.Formatting
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerStyle"></param>
-        internal CharacterFormat(Document doc, OOxml.Style ownerStyle)
+        internal CharacterFormat(Document doc, W.Style ownerStyle)
         {
             _doc = doc;
             _ownerStyle = ownerStyle;
-            if (ownerStyle.StyleRunProperties == null)
-                ownerStyle.StyleRunProperties = new OOxml.StyleRunProperties();
-            _curSHld = new RunPropertiesHolder(doc.Package, ownerStyle.StyleRunProperties);
-            _inheritFromBaseStyleFormat = GetStyleCharacterFormatRecursively(ownerStyle);
+            _directSHld = new RunPropertiesHolder(doc.Package, ownerStyle);
         }
 
-        internal CharacterFormat(Document doc, OOxml.ParagraphMarkRunProperties paragraphMark)
-        {
-            _doc = doc;
-            _paragraphMark = paragraphMark;
-            _curPMarkHld = new RunPropertiesHolder(doc.Package, paragraphMark);
-        }
         #endregion
 
         #region Public Properties
@@ -118,23 +92,51 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.FontNameEastAsia != null) return _curRHld.FontNameEastAsia;
-                    if (_rStyleFormat?.FontNameEastAsia != null) return _rStyleFormat.FontNameEastAsia;
-                    if (_inheritFromParagraphFormat?.FontNameEastAsia != null) return _inheritFromParagraphFormat.FontNameEastAsia;
-                    return string.Empty;
+                    // direct formatting
+                    if (_directRHld.FontNameEastAsia != null)
+                    {
+                        return _directRHld.FontNameEastAsia;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.FontNameEastAsia != null)
+                            return rStyle.FontNameEastAsia;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if(paragraph.FontNameEastAsia != null)
+                            return paragraph.FontNameEastAsia;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameEastAsia;
                 }
                 else if(_ownerParagraph != null)
                 {
-                    return _pStyleFormat.FontNameEastAsia;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.FontNameEastAsia != null)
+                        return paragraph.FontNameEastAsia;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameEastAsia;
                 }
                 else if(_ownerStyle != null)
                 {
-                    return _curSHld.FontNameEastAsia ?? _inheritFromBaseStyleFormat.FontNameEastAsia;
-                }
-                else if(_paragraphMark != null)
-                {
-                    return _curPMarkHld.FontNameEastAsia ?? _fontCN;
+                    // direct formatting
+                    if (_directSHld.FontNameEastAsia != null)
+                    {
+                        return _directSHld.FontNameEastAsia;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if(style.FontNameEastAsia != null)
+                        return style.FontNameEastAsia;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameEastAsia;
                 }
                 else
                 {
@@ -145,15 +147,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.FontNameEastAsia = value;
+                    _directRHld.FontNameEastAsia = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.FontNameEastAsia = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.FontNameEastAsia = value;
+                    _directSHld.FontNameEastAsia = value;
                 }
                 else
                 {
@@ -172,23 +170,51 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.FontNameAscii != null) return _curRHld.FontNameAscii;
-                    if (_rStyleFormat?.FontNameAscii != null) return _rStyleFormat.FontNameAscii;
-                    if (_inheritFromParagraphFormat?.FontNameAscii != null) return _inheritFromParagraphFormat.FontNameAscii;
-                    return string.Empty;
+                    // direct formatting
+                    if (_directRHld.FontNameAscii != null)
+                    {
+                        return _directRHld.FontNameAscii;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.FontNameAscii != null)
+                            return rStyle.FontNameAscii;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.FontNameAscii != null)
+                            return paragraph.FontNameAscii;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameAscii;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.FontNameAscii;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.FontNameAscii != null)
+                        return paragraph.FontNameAscii;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameAscii;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontNameAscii ?? _inheritFromBaseStyleFormat.FontNameAscii;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.FontNameAscii ?? _fontEN;
+                    // direct formatting
+                    if (_directSHld.FontNameAscii != null)
+                    {
+                        return _directSHld.FontNameAscii;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.FontNameAscii != null)
+                        return style.FontNameAscii;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameAscii;
                 }
                 else
                 {
@@ -199,15 +225,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.FontNameAscii = value;
+                    _directRHld.FontNameAscii = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.FontNameAscii = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.FontNameAscii = value;
+                    _directSHld.FontNameAscii = value;
                 }
                 else
                 {
@@ -224,23 +246,51 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.FontSize != null) return _curRHld.FontSize;
-                    if (_rStyleFormat?.FontSize != null) return _rStyleFormat.FontSize;
-                    if (_inheritFromParagraphFormat?.FontSize != null) return _inheritFromParagraphFormat.FontSize;
-                    return 10.5F;
+                    // direct formatting
+                    if (_directRHld.FontSize != null)
+                    {
+                        return _directRHld.FontSize;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.FontSize != null)
+                            return rStyle.FontSize;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.FontSize != null)
+                            return paragraph.FontSize;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontSize;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.FontSize;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.FontSize != null)
+                        return paragraph.FontSize;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontSize;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontSize ?? _inheritFromBaseStyleFormat.FontSize;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.FontSize ?? _fontSize;
+                    // direct formatting
+                    if (_directSHld.FontSize != null)
+                    {
+                        return _directSHld.FontSize;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.FontSize != null)
+                        return style.FontSize;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontSize;
                 }
                 else
                 {
@@ -251,15 +301,11 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerRun != null)
                 {
-                    _curRHld.FontSize = value;
+                    _directRHld.FontSize = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.FontSize = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.FontSize = value;
+                    _directSHld.FontSize = value;
                 }
                 else
                 {
@@ -300,25 +346,53 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_ownerRun != null)
+                if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.FontSizeCs != null) return _curRHld.FontSizeCs;
-                    if (_rStyleFormat?.FontSizeCs != null) return _rStyleFormat.FontSizeCs;
-                    if (_inheritFromParagraphFormat?.FontSizeCs != null) return _inheritFromParagraphFormat.FontSizeCs;
-                    return 10.5F;
+                    // direct formatting
+                    if (_directRHld.FontSizeCs != null)
+                    {
+                        return _directRHld.FontSizeCs;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.FontSizeCs != null)
+                            return rStyle.FontSizeCs;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.FontSizeCs != null)
+                            return paragraph.FontSizeCs;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontSizeCs;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.FontSizeCs;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.FontSizeCs != null)
+                        return paragraph.FontSizeCs;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontSizeCs;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.FontSizeCs ?? _inheritFromBaseStyleFormat.FontSizeCs;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.FontSizeCs ?? _fontSizeCs;
+                    // direct formatting
+                    if (_directSHld.FontSizeCs != null)
+                    {
+                        return _directSHld.FontSizeCs;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.FontSizeCs != null)
+                        return style.FontSizeCs;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontSizeCs;
                 }
                 else
                 {
@@ -329,15 +403,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.FontSizeCs = value;
+                    _directRHld.FontSizeCs = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.FontSizeCs = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.FontSizeCs = value;
+                    _directSHld.FontSizeCs = value;
                 }
                 else
                 {
@@ -353,31 +423,60 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_ownerRun != null)
+                if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.Bold != null) return _curRHld.Bold;
-                    if(_inheritFromParagraphFormat != null)
+                    // direct formatting
+                    if (_directRHld.Bold != null)
                     {
-                        if(_rStyleFormat != null)
-                        {
-                            return _rStyleFormat.Bold == _inheritFromParagraphFormat.Bold ? false : true;
-                        }
-                        return _inheritFromParagraphFormat.Bold;
+                        return _directRHld.Bold;
                     }
-                    return false;
+                    if (_doc.DefaultFormat.CharacterFormat.Bold)
+                        return true;
+                    // character & paragraph
+                    BooleanValue cVal = null;
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        cVal = rStyle.Bold;
+                    }
+                    BooleanValue pVal = null;
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        pVal = paragraph.Bold;
+                    }
+                    if (cVal != null && pVal != null)
+                        return cVal == pVal ? false : true;
+                    else if (cVal != null)
+                        return cVal;
+                    else if (pVal != null)
+                        return pVal;
+                    else 
+                        return false;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.Bold;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.Bold != null)
+                        return paragraph.Bold;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.Bold;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.Bold ?? _inheritFromBaseStyleFormat.Bold;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.Bold ?? false;
+                    // direct formatting
+                    if (_directSHld.Bold != null)
+                    {
+                        return _directSHld.Bold;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.Bold != null)
+                        return style.Bold;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.Bold;
                 }
                 else
                 {
@@ -388,15 +487,11 @@ namespace Berry.Docx.Formatting
             {
                 if(_ownerRun != null)
                 {
-                    _curRHld.Bold = value;
+                    _directRHld.Bold = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.Bold = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.Bold = value;
+                    _directSHld.Bold = value;
                 }
                 else
                 {
@@ -411,31 +506,60 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_ownerRun != null)
+                if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.Italic != null) return _curRHld.Italic;
-                    if (_inheritFromParagraphFormat != null)
+                    // direct formatting
+                    if (_directRHld.Italic != null)
                     {
-                        if (_rStyleFormat != null)
-                        {
-                            return _rStyleFormat.Italic == _inheritFromParagraphFormat.Italic ? false : true;
-                        }
-                        return _inheritFromParagraphFormat.Italic;
+                        return _directRHld.Italic;
                     }
-                    return false;
+                    if (_doc.DefaultFormat.CharacterFormat.Italic)
+                        return true;
+                    // character & paragraph
+                    BooleanValue cVal = null;
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        cVal = rStyle.Italic;
+                    }
+                    BooleanValue pVal = null;
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        pVal = paragraph.Italic;
+                    }
+                    if (cVal != null && pVal != null)
+                        return cVal == pVal ? false : true;
+                    else if (cVal != null)
+                        return cVal;
+                    else if (pVal != null)
+                        return pVal;
+                    else
+                        return false;
                 }
-                if (_ownerParagraph != null)
+                else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.Italic;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.Italic != null)
+                        return paragraph.Italic;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.Italic;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.Italic ?? _inheritFromBaseStyleFormat.Italic;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.Italic ?? false;
+                    // direct formatting
+                    if (_directSHld.Italic != null)
+                    {
+                        return _directSHld.Italic;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.Italic != null)
+                        return style.Italic;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.Italic;
                 }
                 else
                 {
@@ -446,15 +570,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.Italic = value;
+                    _directRHld.Italic = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.Italic = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.Italic = value;
+                    _directSHld.Italic = value;
                 }
                 else
                 {
@@ -475,23 +595,51 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.CharacterScale != null) return _curRHld.CharacterScale;
-                    if (_rStyleFormat?.CharacterScale != null) return _rStyleFormat.CharacterScale;
-                    if (_inheritFromParagraphFormat?.CharacterScale != null) return _inheritFromParagraphFormat.CharacterScale;
-                    return 100;
+                    // direct formatting
+                    if (_directRHld.CharacterScale != null)
+                    {
+                        return _directRHld.CharacterScale;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.CharacterScale != null)
+                            return rStyle.CharacterScale;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.CharacterScale != null)
+                            return paragraph.CharacterScale;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.CharacterScale;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.CharacterScale;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.CharacterScale != null)
+                        return paragraph.CharacterScale;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.CharacterScale;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.CharacterScale ?? _inheritFromBaseStyleFormat.CharacterScale;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.CharacterScale ?? 100;
+                    // direct formatting
+                    if (_directSHld.CharacterScale != null)
+                    {
+                        return _directSHld.CharacterScale;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.CharacterScale != null)
+                        return style.CharacterScale;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.CharacterScale;
                 }
                 else
                 {
@@ -502,15 +650,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.CharacterScale = value;
+                    _directRHld.CharacterScale = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.CharacterScale = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.CharacterScale = value;
+                    _directSHld.CharacterScale = value;
                 }
                 else
                 {
@@ -528,23 +672,51 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.CharacterSpacing != null) return _curRHld.CharacterSpacing;
-                    if (_rStyleFormat?.CharacterSpacing != null) return _rStyleFormat.CharacterSpacing;
-                    if (_inheritFromParagraphFormat?.CharacterSpacing != null) return _inheritFromParagraphFormat.CharacterSpacing;
-                    return 0;
+                    // direct formatting
+                    if (_directRHld.CharacterSpacing != null)
+                    {
+                        return _directRHld.CharacterSpacing;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.CharacterSpacing != null)
+                            return rStyle.CharacterSpacing;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.CharacterSpacing != null)
+                            return paragraph.CharacterSpacing;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.CharacterSpacing;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.CharacterSpacing;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.CharacterSpacing != null)
+                        return paragraph.CharacterSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.CharacterSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.CharacterSpacing ?? _inheritFromBaseStyleFormat.CharacterSpacing;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.CharacterSpacing ?? 0;
+                    // direct formatting
+                    if (_directSHld.CharacterSpacing != null)
+                    {
+                        return _directSHld.CharacterSpacing;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.CharacterSpacing != null)
+                        return style.CharacterSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.CharacterSpacing;
                 }
                 else
                 {
@@ -555,15 +727,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.CharacterSpacing = value;
+                    _directRHld.CharacterSpacing = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.CharacterSpacing = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.CharacterSpacing = value;
+                    _directSHld.CharacterSpacing = value;
                 }
                 else
                 {
@@ -581,23 +749,52 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    InitRun();
-                    if (_curRHld.Position != null) return _curRHld.Position;
-                    if (_rStyleFormat?.Position != null) return _rStyleFormat.Position;
-                    if (_inheritFromParagraphFormat?.Position != null) return _inheritFromParagraphFormat.Position;
-                    return 0;
+                    // direct formatting
+                    if (_directRHld.Position != null)
+                    {
+                        return _directRHld.Position;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.Position != null)
+                            return rStyle.Position;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.Position != null)
+                            return paragraph.Position;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.Position;
                 }
                 else if (_ownerParagraph != null)
                 {
-                    return _pStyleFormat.Position;
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                        (_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.Position != null)
+                        return paragraph.Position;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.Position;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.Position ?? _inheritFromBaseStyleFormat.Position;
-                }
-                else if (_paragraphMark != null)
-                {
-                    return _curPMarkHld.Position ?? 0;
+                    // direct formatting
+                    if (_directSHld.Position != null)
+                    {
+                        return _directSHld.Position;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc,_ownerStyle);
+                    if (style.Position != null)
+                        return style.Position;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.Position;
                 }
                 else
                 {
@@ -608,15 +805,11 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerRun != null)
                 {
-                    _curRHld.Position = value;
+                    _directRHld.Position = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.Position = value;
-                }
-                else if (_paragraphMark != null)
-                {
-                    _curPMarkHld.Position = value;
+                    _directSHld.Position = value;
                 }
                 else
                 {
@@ -634,66 +827,12 @@ namespace Berry.Docx.Formatting
         {
             if (_ownerRun != null)
             {
-                _curRHld.clearFormatting();
+                _directRHld.clearFormatting();
             }
             else if (_ownerStyle != null)
             {
-                _curSHld.clearFormatting();
+                _directSHld.clearFormatting();
             }
-            else if (_paragraphMark != null)
-            {
-                _curPMarkHld.clearFormatting();
-            }
-        }
-        #endregion
-
-        #region Private Methods
-        /// <summary>
-        /// Returns the character format that specified in the style hierarchy of a style.
-        /// </summary>
-        /// <param name="style"> The style</param>
-        /// <returns>The character format that specified in the style hierarchy.</returns> 
-        private CharacterFormat GetStyleCharacterFormatRecursively(OOxml.Style style)
-        {
-            CharacterFormat format = new CharacterFormat();
-            CharacterFormat baseFormat = new CharacterFormat();
-            // Gets DOcDefaults
-            OOxml.Styles styles = _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
-            if (styles?.DocDefaults?.RunPropertiesDefault?.RunPropertiesBaseStyle != null)
-            {
-                RunPropertiesHolder rPr = new RunPropertiesHolder(_doc.Package, styles.DocDefaults.RunPropertiesDefault.RunPropertiesBaseStyle);
-                baseFormat.FontNameEastAsia = rPr.FontNameEastAsia;
-                baseFormat.FontNameAscii = rPr.FontNameAscii;
-                baseFormat.FontSize = rPr.FontSize ?? 10.5F;
-                baseFormat.FontSizeCs = rPr.FontSizeCs ?? 10.5F;
-                baseFormat.Bold = rPr.Bold ?? false;
-                baseFormat.Italic = rPr.Italic ?? false;
-                baseFormat.CharacterScale = rPr.CharacterScale ?? 100;
-                baseFormat.CharacterSpacing = rPr.CharacterScale ?? 0;
-                baseFormat.Position = rPr.Position ?? 0;
-            }
-            // Gets base style format
-            OOxml.Style baseStyle = style.GetBaseStyle(_doc);
-            if (baseStyle != null)
-                baseFormat = GetStyleCharacterFormatRecursively(baseStyle);
-            if (style.StyleRunProperties == null) style.StyleRunProperties = new OOxml.StyleRunProperties();
-            RunPropertiesHolder curSHld = new RunPropertiesHolder(_doc.Package, style.StyleRunProperties);
-
-            format.FontNameEastAsia = curSHld.FontNameEastAsia ?? baseFormat.FontNameEastAsia;
-            format.FontNameAscii = curSHld.FontNameAscii ?? baseFormat.FontNameAscii;
-            format.FontSize = curSHld.FontSize ?? baseFormat.FontSize;
-            format.FontSizeCs = curSHld.FontSizeCs ?? baseFormat.FontSizeCs;
-            format.Bold = curSHld.Bold ?? baseFormat.Bold;
-            format.Italic = curSHld.Italic ?? baseFormat.Italic;
-            format.CharacterScale = curSHld.CharacterScale ?? baseFormat.CharacterScale;
-            format.CharacterSpacing = curSHld.CharacterSpacing ?? baseFormat.CharacterSpacing;
-            format.Position = curSHld.Position ?? baseFormat.Position;
-            return format;
-        }
-        private void InitRun()
-        {
-            if (_ownerRun.Parent != null && _inheritFromParagraphFormat == null)
-                _inheritFromParagraphFormat = new CharacterFormat(_doc, _ownerRun.Parent as OOxml.Paragraph);
         }
         #endregion
     }

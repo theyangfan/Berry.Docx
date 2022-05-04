@@ -17,18 +17,18 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
-            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
+            string src = @"C:\Users\Tomato\Desktop\test.docx";
+            string dst = @"C:\Users\Tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
-                ParagraphStyle style1 = new ParagraphStyle(doc);
-                style1.Name = "样式1";
-                style1.BaseStyle = ParagraphStyle.Default(doc);
-                style1.AddToGallery = true;
-                style1.IsCustom = true;
-                
-                doc.Styles.Add(style1);
+                ParagraphStyle style = new ParagraphStyle(doc);
+                style.BaseStyle = ParagraphStyle.Default(doc);
+                style.Name = "样式a";
+                style.AddToGallery = true;
+                style.CharacterFormat.Bold = true;
+                style.CharacterFormat.FontSize = 16;
+                doc.Styles.Add(style);
                 doc.SaveAs(dst);
             }
         }
