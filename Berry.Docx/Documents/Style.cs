@@ -25,7 +25,7 @@ namespace Berry.Docx.Documents
             _style = new W.Style();
             StyleId = IDGenerator.GenerateStyleID(doc);
             Type = type;
-            if (type == StyleType.Paragraph)
+            if (type == StyleType.Paragraph || type == StyleType.Table)
             {
                 _pFormat = new ParagraphFormat(doc, _style);
                 _cFormat = new CharacterFormat(doc, _style);

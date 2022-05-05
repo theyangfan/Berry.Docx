@@ -46,21 +46,32 @@ namespace Berry.Docx.Documents
 
         public CharacterStyle GetLinkedStyle()
         {
-            return LinkedStyle as CharacterStyle;
+            return base.LinkedStyle as CharacterStyle;
         }
 
         public CharacterStyle CreateLinkedStyle()
         {
-            if(LinkedStyle != null)
+            if(base.LinkedStyle != null)
             {
-                return LinkedStyle as CharacterStyle;
+                return base.LinkedStyle as CharacterStyle;
             }
             CharacterStyle linked = new CharacterStyle(_doc);
-            linked.Name = this.Name + " 字符";
+            linked.Name = this.Name.Replace("heading", "标题") + " 字符";
             linked.BaseStyle = CharacterStyle.Default(_doc);
             linked.LinkedStyle = this;
             linked.IsCustom = true;
             this.LinkedStyle = linked;
+            // copy character format
+            linked.CharacterFormat.FontNameEastAsia = this.CharacterFormat.FontNameEastAsia;
+            linked.CharacterFormat.FontNameAscii = this.CharacterFormat.FontNameAscii;
+            linked.CharacterFormat.FontSize = this.CharacterFormat.FontSize;
+            linked.CharacterFormat.FontSizeCs = this.CharacterFormat.FontSizeCs;
+            linked.CharacterFormat.Bold = this.CharacterFormat.Bold;
+            linked.CharacterFormat.Italic = this.CharacterFormat.Italic;
+            linked.CharacterFormat.CharacterScale = this.CharacterFormat.CharacterScale;
+            linked.CharacterFormat.CharacterSpacing = this.CharacterFormat.CharacterSpacing;
+            linked.CharacterFormat.Position = this.CharacterFormat.Position;
+            // add to style list
             _doc.Styles.Add(linked);
             return linked;
         }
