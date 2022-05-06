@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using Ap = DocumentFormat.OpenXml.ExtendedProperties;
@@ -32,6 +32,15 @@ namespace Berry.Docx
                 tempDoc.Save();
                 return (WordprocessingDocument)tempDoc.Clone();
             }
+        }
+
+        public static WordprocessingDocument Generate(Stream stream)
+        {
+            DocumentGenerator gen = new DocumentGenerator();
+            WordprocessingDocument tempDoc = WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document);
+            gen.CreateParts(tempDoc);
+            tempDoc.Save();
+            return tempDoc;
         }
 
         // Adds child parts and generates content of the specified part.

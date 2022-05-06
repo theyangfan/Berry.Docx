@@ -20,12 +20,16 @@ namespace Test
             string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
-            using (Document doc = new Document(src))
+            using(var file = File.Open(dst, FileMode.Open))
             {
-                Paragraph p = doc.LastSection.Paragraphs[0];
-                Console.WriteLine(p.ListText);
-                //doc.SaveAs(dst);
+                using (Document doc = new Document("example.docx"))
+                {
+                    // 一些操作
+                    ...
+                    doc.Save();
+                }
             }
+            
         }
     }
 }

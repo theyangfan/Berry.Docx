@@ -8,6 +8,7 @@ using System.Text;
 
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
+
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Formatting;
@@ -25,6 +26,11 @@ namespace Berry.Docx
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// 通过指定的 <see cref="W.SectionProperties"/> 元素创建一个 Section 类实例。
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="sectPr"></param>
         internal Section(Document document, W.SectionProperties sectPr)
         {
             _document = document;
@@ -40,6 +46,7 @@ namespace Berry.Docx
 
         /// <summary>
         /// Gets a collection of all child objects in the current section.
+        /// 
         /// </summary>
         public DocumentObjectCollection ChildObjects => new DocumentItemCollection(_document.Package.GetBody(), ChildItems());
 
