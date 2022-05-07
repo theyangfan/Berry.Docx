@@ -27,11 +27,11 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 段落格式
         /// </summary>
-        public ParagraphFormat ParagraphFormat { get => _pFormat; }
+        public ParagraphFormat ParagraphFormat => _pFormat;
         /// <summary>
         /// 字符格式
         /// </summary>
-        public CharacterFormat CharacterFormat { get => _cFormat; }
+        public CharacterFormat CharacterFormat => _cFormat;
 
         public new ParagraphStyle BaseStyle
         {

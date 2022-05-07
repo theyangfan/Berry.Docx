@@ -1,6 +1,12 @@
 ﻿// Copyright (c) theyangfan. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+/*
+ * Section.cs 定义了 Section 类，表示文档中的节。节中包含段落，
+ * 表格等块级内容，这些内容所在页面的特定属性也在节中定义。文档中的
+ * 节由分节符进行划分。
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +23,7 @@ namespace Berry.Docx
 {
     /// <summary>
     /// Represent the section of document.
+    /// <para>表示文档中的节，访问正文内容的入口。</para>
     /// </summary>
     public class Section : IEquatable<Section>
     {
@@ -26,11 +33,6 @@ namespace Berry.Docx
         #endregion
 
         #region Constructors
-        /// <summary>
-        /// 通过指定的 <see cref="W.SectionProperties"/> 元素创建一个 Section 类实例。
-        /// </summary>
-        /// <param name="document"></param>
-        /// <param name="sectPr"></param>
         internal Section(Document document, W.SectionProperties sectPr)
         {
             _document = document;
@@ -41,27 +43,31 @@ namespace Berry.Docx
         #region Public Properties
         /// <summary>
         /// The Page Layout setup.
+        /// <para>返回页面布局格式。</para>
         /// </summary>
         public PageSetup PageSetup => new PageSetup(_document, this);
 
         /// <summary>
-        /// Gets a collection of all child objects in the current section.
-        /// 
+        /// Gets a collection of all child <see cref="DocumentObject"/> in the current section.
+        /// <para>返回当前节中所有 DocumentObject 对象的集合。</para>
         /// </summary>
         public DocumentObjectCollection ChildObjects => new DocumentItemCollection(_document.Package.GetBody(), ChildItems());
 
         /// <summary>
-        /// Gets a collection of all paragraphs in the current section.
+        /// Gets a collection of all <see cref="Paragraph"/> in the current section.
+        /// <para>返回当前节中所有段落的集合。</para>
         /// </summary>
         public ParagraphCollection Paragraphs => new ParagraphCollection(_document.Package.GetBody(), ChildItems().OfType<Paragraph>());
 
         /// <summary>
-        /// Gets a collection of all tables in the current section.
+        /// Gets a collection of all <see cref="Table"/> in the current section.
+        /// <para>返回当前节中所有表格的集合。</para>
         /// </summary>
         public TableCollection Tables => new TableCollection(_document.Package.GetBody(), ChildItems().OfType<Table>());
 
         /// <summary>
         /// Gets the previous section.
+        /// <para>返回前一节。</para>
         /// </summary>
         public Section PreviousSection
         {
@@ -76,6 +82,7 @@ namespace Berry.Docx
 
         /// <summary>
         /// Gets the next section.
+        /// <para>返回后一节。</para>
         /// </summary>
         public Section NextSection
         {
@@ -90,11 +97,20 @@ namespace Berry.Docx
 
         /// <summary>
         /// Gets the headers and footers of this section.
+        /// <para>返回节中的页眉页脚。</para>
         /// </summary>
         public HeaderFooters HeaderFooters => new HeaderFooters(_document, this);
 
+        /// <summary>
+        /// Gets the footnote format in the current section.
+        /// <para>返回当前节的脚注格式。</para>
+        /// </summary>
         public FootEndnoteFormat FootnoteFormat => new FootEndnoteFormat(_document, this, NoteType.SectionWideFootnote);
 
+        /// <summary>
+        /// Gets the endnote format in the current section.
+        /// <para>返回当前节的尾注格式。</para>
+        /// </summary>
         public FootEndnoteFormat EndnoteFormat => new FootEndnoteFormat(_document, this, NoteType.SectionWideEndnote);
 
         #endregion
@@ -103,6 +119,7 @@ namespace Berry.Docx
 
         /// <summary>
         /// Add a new paragraph to the end of section.
+        /// <para>在节的末尾添加一个新段落。</para>
         /// </summary>
         /// <returns>The paragraph</returns>
         public Paragraph AddParagraph()
@@ -114,6 +131,7 @@ namespace Berry.Docx
 
         /// <summary>
         /// Add a new Table to the end of section.
+        /// <para>在节的末尾添加一个新表格。</para>
         /// </summary>
         /// <param name="rowCnt">Table row count</param>
         /// <param name="columnCnt">Table column count</param>
@@ -193,11 +211,11 @@ namespace Berry.Docx
             int startIndex = 0;
             int endIndex = 0;
 
-            int curentSectIndex = _document.Sections.IndexOf(this);
+            int curSectIndex = _document.Sections.IndexOf(this);
             // Get index of the first item in the current section 
-            if (curentSectIndex > 0)
+            if (curSectIndex > 0)
             {
-                Section prevSection = _document.Sections[curentSectIndex - 1];
+                Section prevSection = _document.Sections[curSectIndex - 1];
                 startIndex = allElements.FindIndex(
                     e => e.Descendants<W.SectionProperties>().Contains(prevSection.XElement)) + 1;
             }

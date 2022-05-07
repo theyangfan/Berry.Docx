@@ -52,7 +52,7 @@ namespace Berry.Docx
         #region Constructor
         /// <summary>
         /// Creates a new empty instance of the Document class.
-        /// <para>创建一个新的空白 Document 实例。</para>
+        /// <para>创建一个新的空白 Word 文档。</para>
         /// </summary>
         public Document()
         {

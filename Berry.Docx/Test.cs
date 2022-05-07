@@ -22,14 +22,12 @@ namespace Test
 
             using(var file = File.Open(dst, FileMode.Open))
             {
-                using (Document doc = new Document("example.docx"))
+                using (Document doc = new Document())
                 {
-                    // 一些操作
-                    ...
-                    doc.Save();
+                    
+                    doc.SaveAs(dst);
                 }
             }
-            
         }
     }
 }
