@@ -17,16 +17,12 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test\西华师范大学.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
-            using(var file = File.Open(dst, FileMode.Open))
+            using (Document doc = new Document(src))
             {
-                using (Document doc = new Document())
-                {
-                    
-                    doc.SaveAs(dst);
-                }
+                doc.SaveAs(dst);
             }
         }
     }
