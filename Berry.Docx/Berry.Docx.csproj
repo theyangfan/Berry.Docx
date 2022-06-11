@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netstandard2.0;NET4.6.1</TargetFrameworks>
+    <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon />
@@ -17,7 +17,7 @@ Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 W
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.2.28</Version>
+    <Version>1.2.30</Version>
     <PackageReleaseNotes>- Supports manipulating headers and footers.</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/theyangfan/Berry.Docx</RepositoryUrl>
   </PropertyGroup>
@@ -33,7 +33,7 @@ Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 W
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="[2.12.0,)" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.16.0" />
   </ItemGroup>
 
   <ItemGroup>

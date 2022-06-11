@@ -17,11 +17,13 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\西华师范大学.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
             using (Document doc = new Document(src))
             {
+                Paragraph p = doc.LastSection.Paragraphs.Last();
+                p.Format.OutlineLevel = OutlineLevelType.BodyText;
                 doc.SaveAs(dst);
             }
         }

@@ -212,18 +212,16 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if (_outlineLevel == null)
+                if (value != OutlineLevelType.BodyText && value != OutlineLevelType.None)
                 {
-                    _outlineLevel = new W.OutlineLevel();
-                    if (_pPr != null)
-                        _pPr.OutlineLevel = _outlineLevel;
-                    else if (_spPr != null)
-                        _spPr.OutlineLevel = _outlineLevel;
+                    if(_pPr != null) _pPr.OutlineLevel = new W.OutlineLevel() { Val = (int)value };
+                    if(_spPr != null) _spPr.OutlineLevel = new W.OutlineLevel() { Val = (int)value };
                 }
-                if (value != OutlineLevelType.BodyText)
-                    _outlineLevel.Val = (int)value;
                 else
-                    _outlineLevel = null;
+                {
+                    if (_pPr != null) _pPr.OutlineLevel = null;
+                    if (_spPr != null) _spPr.OutlineLevel = null;
+                }
             }
         }
         #endregion
