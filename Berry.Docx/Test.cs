@@ -22,8 +22,10 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.LastSection.Paragraphs.Last();
-                p.Format.OutlineLevel = OutlineLevelType.BodyText;
+                Paragraph p = doc.LastSection.Paragraphs[0];
+                var match = p.Find(new Regex(@"手机"));
+                match.GetAsOneRange().ApplyStyle("测试");
+
                 doc.SaveAs(dst);
             }
         }

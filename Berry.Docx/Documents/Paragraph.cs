@@ -41,7 +41,6 @@ using Office = DocumentFormat.OpenXml.Vml.Office;
 using Berry.Docx.Formatting;
 using Berry.Docx.Field;
 using Berry.Docx.Collections;
-using Berry.Docx.Utils;
 
 namespace Berry.Docx.Documents
 {
@@ -133,18 +132,6 @@ namespace Berry.Docx.Documents
         public CharacterFormat CharacterFormat => _cFormat;
 
         /// <summary>
-        /// The paragraph style. 
-        /// </summary>
-        public ParagraphStyle Style
-        {
-            get
-            {
-                if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return null;
-                return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
-            }
-        }
-
-        /// <summary>
         /// Gets the owener section of the current paragraph.
         /// </summary>
         public Section Section
@@ -162,6 +149,54 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// The paragraph style. 
+        /// </summary>
+        public ParagraphStyle GetStyle()
+        {
+            if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return null;
+            return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
+        }
+
+        public void ApplyStyle(string styleName)
+        {
+            if (_paragraph == null || string.IsNullOrEmpty(styleName)) return;
+            // 如果为内置样式，则应用内置样式
+            if (Style.NameToBuiltIn(styleName) != BuiltInStyle.None)
+            {
+                ApplyStyle(Style.NameToBuiltIn(styleName));
+                return;
+            }
+            var style = _doc.Styles.FindByName(styleName, StyleType.Paragraph);
+            if (style == null)
+            {
+                style = new ParagraphStyle(_doc, styleName);
+                _doc.Styles.Add(style);
+            }
+            if (_paragraph.ParagraphProperties == null)
+                _paragraph.ParagraphProperties = new W.ParagraphProperties();
+            _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
+        }
+
+        public void ApplyStyle(BuiltInStyle bstyle)
+        {
+            if (_paragraph == null) return;
+            var style = ParagraphStyle.CreateBuiltInStyle(bstyle, _doc);
+            if (style != null)
+            {
+                if (bstyle == BuiltInStyle.Normal)
+                {
+                    if (_paragraph.ParagraphProperties?.ParagraphStyleId != null)
+                        _paragraph.ParagraphProperties.ParagraphStyleId = null;
+                }
+                else
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
+                }
+            }
+        }
         /// <summary>
         /// Insert a section break with the specified type to the current paragraph. 
         /// <para>The current paragraph must have an owner section, otherwise an exception will be thrown.</para>

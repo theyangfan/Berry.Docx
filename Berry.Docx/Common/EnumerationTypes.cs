@@ -440,4 +440,19 @@ namespace Berry.Docx
         /// </summary>
         Bottom = 3
     }
+
+    public enum BuiltInStyle
+    {
+        None = -1,
+        Normal = 0,
+        Heading1 = 1,
+        Heading2 = 2,
+        Heading3 = 3,
+        Heading4 = 4,
+        Heading5 = 5,
+        Heading6 = 6,
+        Heading7 = 7,
+        Heading8 = 8,
+        Heading9 = 9
+    }
 }

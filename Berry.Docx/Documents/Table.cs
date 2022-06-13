@@ -8,7 +8,6 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 using Berry.Docx.Collections;
 using Berry.Docx.Field;
-using Berry.Docx.Utils;
 
 namespace Berry.Docx.Documents
 {

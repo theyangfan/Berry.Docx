@@ -5,7 +5,6 @@ using System.Text;
 using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx;
-using Berry.Docx.Utils;
 namespace Berry.Docx.Documents
 {
     /// <summary>

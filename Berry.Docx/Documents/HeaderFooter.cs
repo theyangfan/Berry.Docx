@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx;
-using Berry.Docx.Utils;
 using Berry.Docx.Collections;
 
 namespace Berry.Docx.Documents

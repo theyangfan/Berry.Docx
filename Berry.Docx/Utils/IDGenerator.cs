@@ -6,11 +6,11 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace Berry.Docx.Utils
+namespace Berry.Docx
 {
     internal class IDGenerator
     {
-        public static int CUSTOM_STYLE_ID = 1000;
+        public static int CUSTOM_STYLE_ID = 1;
         public static string GenerateRelationshipID(Document doc)
         {
             List<int> ids = new List<int>();

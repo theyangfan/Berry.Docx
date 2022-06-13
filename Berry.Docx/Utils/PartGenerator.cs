@@ -6,7 +6,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace Berry.Docx.Utils
+namespace Berry.Docx
 {
     internal class PartGenerator
     {

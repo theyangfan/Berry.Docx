@@ -6,7 +6,6 @@ using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 using Berry.Docx.Formatting;
-using Berry.Docx.Utils;
 
 namespace Berry.Docx.Documents
 {
@@ -20,7 +19,7 @@ namespace Berry.Docx.Documents
         protected ParagraphFormat _pFormat;
         protected CharacterFormat _cFormat;
 
-        public Style(Document doc, StyleType type)
+        internal Style(Document doc, StyleType type)
         {
             _style = new W.Style();
             StyleId = IDGenerator.GenerateStyleID(doc);
@@ -64,7 +63,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 
         /// </summary>
-        public string StyleId   
+        public string StyleId
         {
             get => _style.StyleId;
             private set => _style.StyleId = value;
@@ -78,7 +77,7 @@ namespace Berry.Docx.Documents
         public string Name
         {
             get => _style.StyleName?.Val ?? string.Empty;
-            set => _style.StyleName = new W.StyleName() { Val = value };
+            internal set => _style.StyleName = new W.StyleName() { Val = value };
         }
 
         public Style BaseStyle
@@ -101,14 +100,14 @@ namespace Berry.Docx.Documents
         public bool IsCustom
         {
             get => _style.CustomStyle ?? false;
-            set => _style.CustomStyle = value;
+            internal set => _style.CustomStyle = value;
         }
 
         /// <summary>
         /// 是否添加到样式库
         /// (This element specifies whether this style shall be treated as a primary style when this document is loaded by an application).
         /// </summary>
-        public bool AddToGallery
+        internal bool AddToGallery
         {
             get
             {
@@ -147,6 +146,33 @@ namespace Berry.Docx.Documents
             {
                 _style.LinkedStyle = new W.LinkedStyle() { Val = value.StyleId };
             }
+        }
+
+        public static BuiltInStyle NameToBuiltIn(string styleName)
+        {
+            styleName = styleName.ToLower();
+            if (styleName == "normal" || styleName == "正文")
+                return BuiltInStyle.Normal;
+            else if (styleName == "heading 1" || styleName == "标题 1")
+                return BuiltInStyle.Heading1;
+            else if (styleName == "heading 2" || styleName == "标题 2")
+                return BuiltInStyle.Heading2;
+            else if (styleName == "heading 3" || styleName == "标题 3")
+                return BuiltInStyle.Heading3;
+            else if (styleName == "heading 4" || styleName == "标题 4")
+                return BuiltInStyle.Heading4;
+            else if (styleName == "heading 5" || styleName == "标题 5")
+                return BuiltInStyle.Heading5;
+            else if (styleName == "heading 6" || styleName == "标题 6")
+                return BuiltInStyle.Heading6;
+            else if (styleName == "heading 7" || styleName == "标题 7")
+                return BuiltInStyle.Heading7;
+            else if (styleName == "heading 8" || styleName == "标题 8")
+                return BuiltInStyle.Heading8;
+            else if (styleName == "heading 9" || styleName == "标题 9")
+                return BuiltInStyle.Heading9;
+            else
+                return BuiltInStyle.None;
         }
     }
 }

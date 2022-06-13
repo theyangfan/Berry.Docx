@@ -8,7 +8,6 @@ using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
-using Berry.Docx.Utils;
 using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Field
@@ -87,6 +86,62 @@ namespace Berry.Docx.Field
         /// The character format.
         /// </summary>
         public CharacterFormat CharacterFormat => _cFormat;
+        #endregion
+
+        #region Public Methods
+        public CharacterStyle GetStyle()
+        {
+            if (_run?.RunProperties?.RunStyle != null)
+            {
+                W.Styles styles = _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
+                string styleId = _run.RunProperties.RunStyle.Val.ToString();
+                W.Style style =  styles.Elements<W.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
+                if(style != null)
+                    return new CharacterStyle(_doc, style);
+            }
+            return null;
+        }
+
+        public void ApplyStyle(string styleName)
+        {
+            if (_run == null || string.IsNullOrEmpty(styleName)) return;
+            if (Style.NameToBuiltIn(styleName) != BuiltInStyle.None)
+            {
+                ApplyStyle(Style.NameToBuiltIn(styleName));
+                return;
+            }
+            var style = _doc.Styles.FindByName(styleName, StyleType.Paragraph);
+            if (style == null)
+            {
+                style = new ParagraphStyle(_doc, styleName);
+                _doc.Styles.Add(style);
+            }
+            var linkedStyle = (style as ParagraphStyle).CreateLinkedStyle();
+            if (_run.RunProperties == null)
+                _run.RunProperties = new W.RunProperties();
+            _run.RunProperties.RunStyle = new W.RunStyle() { Val = linkedStyle.StyleId };
+        }
+
+        public void ApplyStyle(BuiltInStyle bstyle)
+        {
+            if(_run == null) return;
+            var style = ParagraphStyle.CreateBuiltInStyle(bstyle, _doc);
+            if (style != null)
+            {
+                if (bstyle == BuiltInStyle.Normal)
+                {
+                    if (_run.RunProperties?.RunStyle != null)
+                        _run.RunProperties.RunStyle = null;
+                }
+                else
+                {
+                    var linkedStyle = style.CreateLinkedStyle();
+                    if (_run.RunProperties == null)
+                        _run.RunProperties = new W.RunProperties();
+                    _run.RunProperties.RunStyle = new W.RunStyle() { Val = linkedStyle.StyleId };
+                }
+            }
+        }
         #endregion
     }
 }
