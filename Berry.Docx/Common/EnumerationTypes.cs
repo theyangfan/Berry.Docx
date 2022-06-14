@@ -200,10 +200,6 @@ namespace Berry.Docx
     public enum JustificationType
     {
         /// <summary>
-        /// Undefined.
-        /// </summary>
-        None = -1,
-        /// <summary>
         /// Align Left.
         /// </summary>
         [Description("左对齐")]
@@ -235,10 +231,6 @@ namespace Berry.Docx
     /// </summary>
     public enum OutlineLevelType
     {
-        /// <summary>
-        /// Undefined level.
-        /// </summary>
-        None = -1,
         /// <summary>
         /// Level 1.
         /// </summary>

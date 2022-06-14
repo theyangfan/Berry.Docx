@@ -164,45 +164,5 @@ namespace Berry.Docx
             }
         }
         #endregion
-
-        #region Enum Converter
-
-        internal static JustificationType Convert(this OW.JustificationValues type)
-        {
-            switch (type)
-            {
-                case OW.JustificationValues.Left:
-                    return JustificationType.Left;
-                case OW.JustificationValues.Center:
-                    return JustificationType.Center;
-                case OW.JustificationValues.Right:
-                    return JustificationType.Right;
-                case OW.JustificationValues.Both:
-                    return JustificationType.Both;
-                case OW.JustificationValues.Distribute:
-                    return JustificationType.Distribute;
-                default:
-                    return JustificationType.None;
-            }
-        }
-        public static OW.JustificationValues Convert(this JustificationType type)
-        {
-            switch (type)
-            {
-                case JustificationType.Left:
-                    return OW.JustificationValues.Left;
-                case JustificationType.Center:
-                    return OW.JustificationValues.Center;
-                case JustificationType.Right:
-                    return OW.JustificationValues.Right;
-                case JustificationType.Both:
-                    return OW.JustificationValues.Both;
-                case JustificationType.Distribute:
-                    return OW.JustificationValues.Distribute;
-                default:
-                    return OW.JustificationValues.Both;
-            }
-        }
-        #endregion
     }
 }

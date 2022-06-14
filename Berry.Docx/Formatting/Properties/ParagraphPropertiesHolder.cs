@@ -9,12 +9,13 @@ namespace Berry.Docx.Formatting
     internal class ParagraphPropertiesHolder
     {
         #region Private Members
-        private Document _document = null;
-        private W.ParagraphProperties _pPr = null;
-        private W.StyleParagraphProperties _spPr = null;
+        private readonly Document _doc;
+        private readonly W.Paragraph _paragraph;
+        private readonly W.Style _style;
+
         // Normal
-        private W.Justification _justification = null;
-        private W.OutlineLevel _outlineLevel = null;
+        private EnumValue<JustificationType> _justificaton;
+        private EnumValue<OutlineLevelType> _outlineLevel;
         // Indentation
         private W.Indentation _indentation = null;
         private W.MirrorIndents _mirrorIndents = null;
@@ -45,6 +46,17 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Constructors
+        public ParagraphPropertiesHolder(Document doc, W.Paragraph paragraph)
+        {
+            _doc = doc;
+            _paragraph = paragraph;
+        }
+
+        public ParagraphPropertiesHolder(Document doc, W.Style style)
+        {
+            _doc = doc;
+            _style = style;
+        }
         /// <summary>
         /// Initializes a new instance of the ParagraphPropertiesHolder class using the supplied <see cref="W.ParagraphProperties"/> element.
         /// </summary>
@@ -52,7 +64,7 @@ namespace Berry.Docx.Formatting
         /// <param name="pPr"></param>
         public ParagraphPropertiesHolder(Document document, W.ParagraphProperties pPr)
         {
-            _document = document;
+            _doc = document;
             if (pPr == null)
                 pPr = new W.ParagraphProperties();
             _pPr = pPr;
@@ -94,8 +106,8 @@ namespace Berry.Docx.Formatting
                 if (pPr.NumberingProperties.NumberingLevelReference != null)
                 {
                     int ilvl = pPr.NumberingProperties.NumberingLevelReference.Val;
-                    if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
-                    W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                    if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
+                    W.Numbering numbering = _doc.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
                     W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
                     if (num == null) return;
                     int abstractNumId = num.AbstractNumId.Val;
@@ -115,7 +127,7 @@ namespace Berry.Docx.Formatting
         /// <param name="spPr"></param>
         public ParagraphPropertiesHolder(Document document, W.StyleParagraphProperties spPr)
         {
-            _document = document;
+            _doc = document;
             if (spPr == null)
                 spPr = new W.StyleParagraphProperties();
             _spPr = spPr;
@@ -155,8 +167,8 @@ namespace Berry.Docx.Formatting
             {
                 int numId = spPr.NumberingProperties.NumberingId.Val;
                 string styleId = (spPr.Parent as W.Style).StyleId;
-                if (_document.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
-                W.Numbering numbering = _document.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
+                if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart == null) return;
+                W.Numbering numbering = _doc.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
                 W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
                 if (num == null) return;
                 int abstractNumId = num.AbstractNumId.Val;
@@ -179,48 +191,101 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets or sets the justification.
         /// </summary>
-        public JustificationType Justification
+        public EnumValue<JustificationType> Justification
         {
             get
             {
-                if (_justification == null) return JustificationType.None;
-                return _justification.Val.Value.Convert();
+                if(_paragraph != null)
+                {
+                    W.Justification jc = _paragraph.ParagraphProperties?.Justification;
+                    if(jc?.Val == null) return null;
+                    return jc.Val.Value.Convert<JustificationType>();
+                }
+                else if(_style != null)
+                {
+                    W.Justification jc = _style.StyleParagraphProperties?.Justification;
+                    if (jc?.Val == null) return null;
+                    return jc.Val.Value.Convert<JustificationType>();
+                }
+                else
+                {
+                    return _justificaton;
+                }
             }
             set
             {
-                if (_justification == null)
+                if(_paragraph != null)
                 {
-                    _justification = new W.Justification();
-                    if (_pPr != null)
-                        _pPr.Justification = _justification;
-                    else if (_spPr != null)
-                        _spPr.Justification = _justification;
+                    InitParagraph();
+                    if(_paragraph.ParagraphProperties.Justification == null)
+                    {
+                        _paragraph.ParagraphProperties.Justification = new W.Justification();
+                    }
+                    _paragraph.ParagraphProperties.Justification.Val = value.Val.Convert<W.JustificationValues>();
                 }
-                _justification.Val = value.Convert();
+                else if(_style != null)
+                {
+                    InitStyle();
+                    if(_style.StyleParagraphProperties.Justification == null)
+                    {
+                        _style.StyleParagraphProperties.Justification= new W.Justification();
+                    }
+                    _style.StyleParagraphProperties.Justification.Val = value.Val.Convert<W.JustificationValues>();
+                }
+                else
+                {
+                    _justificaton = value;
+                }
             }
         }
 
         /// <summary>
         /// Gets or sets the outline level.
         /// </summary>
-        public OutlineLevelType OutlineLevel
+        public EnumValue<OutlineLevelType> OutlineLevel
         {
             get
             {
-                if (_outlineLevel == null) return OutlineLevelType.None;
-                return (OutlineLevelType)_outlineLevel.Val.Value;
-            }
-            set
-            {
-                if (value != OutlineLevelType.BodyText && value != OutlineLevelType.None)
+                if (_paragraph != null)
                 {
-                    if(_pPr != null) _pPr.OutlineLevel = new W.OutlineLevel() { Val = (int)value };
-                    if(_spPr != null) _spPr.OutlineLevel = new W.OutlineLevel() { Val = (int)value };
+                    W.OutlineLevel outline = _paragraph.ParagraphProperties?.OutlineLevel;
+                    if (outline?.Val == null) return null;
+                    return (OutlineLevelType)outline.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.OutlineLevel outline = _style.StyleParagraphProperties?.OutlineLevel;
+                    if (outline?.Val == null) return null;
+                    return (OutlineLevelType)outline.Val.Value;
                 }
                 else
                 {
-                    if (_pPr != null) _pPr.OutlineLevel = null;
-                    if (_spPr != null) _spPr.OutlineLevel = null;
+                    return _outlineLevel;
+                }
+            }
+            set
+            {
+                if (_paragraph != null)
+                {
+                    InitParagraph();
+                    if (_paragraph.ParagraphProperties.OutlineLevel == null)
+                    {
+                        _paragraph.ParagraphProperties.OutlineLevel = new W.OutlineLevel();
+                    }
+                    _paragraph.ParagraphProperties.OutlineLevel.Val = (int)value.Val;
+                }
+                else if (_style != null)
+                {
+                    InitStyle();
+                    if (_style.StyleParagraphProperties.OutlineLevel == null)
+                    {
+                        _style.StyleParagraphProperties.OutlineLevel = new W.OutlineLevel();
+                    }
+                    _style.StyleParagraphProperties.OutlineLevel.Val = (int)value.Val;
+                }
+                else
+                {
+                    _outlineLevel = value;
                 }
             }
         }
@@ -1098,6 +1163,24 @@ namespace Berry.Docx.Formatting
                 _pPr.FrameProperties = null;
             else if (_spPr != null)
                 _spPr.FrameProperties = null;
+        }
+        #endregion
+
+        #region Private Methods
+        private void InitParagraph()
+        {
+            if(_paragraph.ParagraphProperties == null)
+            {
+                _paragraph.ParagraphProperties = new W.ParagraphProperties();
+            }
+        }
+
+        private void InitStyle()
+        {
+            if(_style.StyleParagraphProperties == null)
+            {
+                _style.StyleParagraphProperties = new W.StyleParagraphProperties();
+            }
         }
         #endregion
     }
