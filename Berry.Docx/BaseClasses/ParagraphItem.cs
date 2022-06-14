@@ -32,6 +32,8 @@ namespace Berry.Docx.Field
         {
             _doc = doc;
             _ownerRun = ownerRun;
+            if(ele != ownerRun && !ownerRun.Contains(ele))
+                ownerRun.AddChild(ele);
         }
         /// <summary>
         /// When the ele is not a part of run element.
@@ -61,6 +63,9 @@ namespace Berry.Docx.Field
             }
         }
         
+        internal bool IsInRun => _ownerRun != null;
+
+        internal W.Run RunElement => _ownerRun;
         #endregion
 
         #region Public Methods
@@ -163,6 +168,42 @@ namespace Berry.Docx.Field
                 _element.InsertAfterSelf(endMark);
             }
             endMark.InsertAfterSelf(referenceRun);
+        }
+
+        public void InserBeforeSelf(ParagraphItem item)
+        {
+            if (IsInRun)
+            {
+                if (item.IsInRun)
+                    _ownerRun.InsertBeforeSelf(item.RunElement);
+                else
+                    _ownerRun.InsertBeforeSelf(item.XElement);
+            }
+            else
+            {
+                if (item.IsInRun)
+                    _element.InsertBeforeSelf(item.RunElement);
+                else
+                    _element.InsertBeforeSelf(item.XElement);
+            }
+        }
+
+        public  void InsertAfterSelf(ParagraphItem item)
+        {
+            if (IsInRun)
+            {
+                if (item.IsInRun)
+                    _ownerRun.InsertAfterSelf(item.RunElement);
+                else
+                    _ownerRun.InsertAfterSelf(item.XElement);
+            }
+            else
+            {
+                if (item.IsInRun)
+                    _element.InsertAfterSelf(item.RunElement);
+                else
+                    _element.InsertAfterSelf(item.XElement);
+            }
         }
         #endregion
     }

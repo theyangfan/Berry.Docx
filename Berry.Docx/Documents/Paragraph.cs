@@ -74,9 +74,7 @@ namespace Berry.Docx.Documents
             _doc = doc;
             _paragraph = paragraph;
             _pFormat = new ParagraphFormat(_doc, paragraph);
-            _cFormat = new CharacterFormat();
-            if(paragraph?.ParagraphProperties?.ParagraphMarkRunProperties != null)
-                _cFormat = new CharacterFormat(_doc, paragraph);
+            _cFormat = new CharacterFormat(_doc, paragraph);
         }
         #endregion
 
@@ -129,7 +127,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// The character format of paragraph mark for this paragraph.
         /// </summary>
-        public CharacterFormat CharacterFormat => _cFormat;
+        public CharacterFormat MarkFormat => _cFormat;
 
         /// <summary>
         /// Gets the owener section of the current paragraph.
@@ -252,6 +250,20 @@ namespace Berry.Docx.Documents
             {
                 throw new NullReferenceException("The owner section of the current paragraph is null.");
             }
+        }
+
+        /// <summary>
+        /// Append a Break to the end of the current paragraph.
+        /// </summary>
+        /// <param name="breakType">The BreakType.</param>
+        /// <returns>The Break.</returns>
+        public Break AppendBreak(BreakType breakType)
+        {
+            Break br = new Break(_doc, breakType);
+            if (breakType == BreakType.TextWrapping)
+                br.Clear = BreakTextRestartLocation.All;
+            this.ChildItems.Add(br);
+            return br;
         }
 
         /// <summary>
@@ -474,6 +486,11 @@ namespace Berry.Docx.Documents
             if (run.Elements<W.EndnoteReference>().Any())
             {
                 yield return new EndnoteReference(_doc, run, run.Elements<W.EndnoteReference>().First());
+            }
+            // break
+            if (run.Elements<W.Break>().Any())
+            {
+                yield return new Break(_doc, run, run.Elements<W.Break>().First());
             }
             // picture
             foreach (W.Drawing drawing in run.Descendants<W.Drawing>())

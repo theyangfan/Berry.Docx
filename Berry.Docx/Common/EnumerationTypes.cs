@@ -84,7 +84,8 @@ namespace Berry.Docx
         OfficeMath,
         SdtBlock,
         SdtContent,
-        SdtProperties
+        SdtProperties,
+        Break
     }
 
     /// <summary>
@@ -454,5 +455,145 @@ namespace Berry.Docx
         Heading7 = 7,
         Heading8 = 8,
         Heading9 = 9
+    }
+
+    /// <summary>
+    /// Defines the BreakType enumeration. 
+    /// </summary>
+    public enum BreakType
+    {
+        /// <summary>
+        /// Page Break.
+        /// </summary>
+        Page = 0,
+        /// <summary>
+        /// Column Break.
+        /// </summary>
+        Column = 1,
+        /// <summary>
+        /// Line Break.
+        /// </summary>
+        TextWrapping = 2
+    }
+
+    /// <summary>
+    /// Defines the BreakTextRestartLocation enumeration. 
+    /// </summary>
+    public enum BreakTextRestartLocation
+    {
+        /// <summary>
+        /// Restart On Next Line.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Restart In Next Text Region When In Leftmost Position. 
+        /// </summary>
+        Left = 1,
+        /// <summary>
+        /// Restart In Next Text Region When In Rightmost Position. 
+        /// </summary>
+        Right = 2,
+        /// <summary>
+        /// Restart On Next Full Line. 
+        /// </summary>
+        All = 3
+    }
+
+    /// <summary>
+    /// Defines the Subscript/Superscript Value enumeration. 
+    /// </summary>
+    public enum SubSuperScript
+    {
+        /// <summary>
+        /// Regular Vertical Positioning.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Superscript.
+        /// </summary>
+        SuperScript = 1,
+        /// <summary>
+        /// Subscript.
+        /// </summary>
+        SubScript = 2
+    }
+
+    /// <summary>
+    /// Defines the Underline Style enumeration. 
+    /// </summary>
+    public enum UnderlineStyle
+    {
+        /// <summary>
+        /// Single Underline.
+        /// </summary>
+        Single = 0,
+        /// <summary>
+        /// Underline Non-Space Characters Only.
+        /// </summary>
+        Words = 1,
+        /// <summary>
+        /// Double Underline.
+        /// </summary>
+        Double = 2,
+        /// <summary>
+        /// Thick Underline.
+        /// </summary>
+        Thick = 3,
+        /// <summary>
+        /// Dotted Underline.
+        /// </summary>
+        Dotted = 4,
+        /// <summary>
+        /// Thick Dotted Underline.
+        /// </summary>
+        DottedHeavy = 5,
+        /// <summary>
+        /// Dashed Underline.
+        /// </summary>
+        Dash = 6,
+        /// <summary>
+        /// Thick Dashed Underline.
+        /// </summary>
+        DashedHeavy = 7,
+        /// <summary>
+        /// Long Dashed Underline.
+        /// </summary>
+        DashLong = 8,
+        /// <summary>
+        /// Thick Long Dashed Underline.
+        /// </summary>
+        DashLongHeavy = 9,
+        /// <summary>
+        /// Dash-Dot Underline.
+        /// </summary>
+        DotDash = 10,
+        /// <summary>
+        /// Thick Dash-Dot Underline.
+        /// </summary>
+        DashDotHeavy = 11,
+        /// <summary>
+        /// Dash-Dot-Dot Underline.
+        /// </summary>
+        DotDotDash = 12,
+        /// <summary>
+        /// Thick Dash-Dot-Dot Underline.
+        /// </summary>
+        DashDotDotHeavy = 13,
+        /// <summary>
+        /// Wave Underline.
+        /// </summary>
+        Wave = 14,
+        /// <summary>
+        /// Heavy Wave Underline.
+        /// </summary>
+        WavyHeavy = 15,
+        /// <summary>
+        /// Double Wave Underline.
+        /// </summary>
+        WavyDouble = 16,
+        /// <summary>
+        /// No Underline.
+        /// </summary>
+        None = 17
     }
 }

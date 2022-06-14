@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Drawing;
 
 using Berry.Docx;
 using Berry.Docx.Documents;
@@ -22,11 +23,10 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.LastSection.Paragraphs[0];
-                var match = p.Find(new Regex(@"手机"));
-                match.GetAsOneRange().ApplyStyle("测试");
-
-                doc.SaveAs(dst);
+                Paragraph p = doc.LastSection.Paragraphs.Last();
+                TextRange tr = p.ChildItems[2] as TextRange;
+                Console.WriteLine(Berry.Docx.ColorConverter.FromHex("FF000F"));
+                //doc.SaveAs(dst);
             }
         }
     }

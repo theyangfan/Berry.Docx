@@ -115,6 +115,11 @@ namespace Berry.Docx
             {
                 yield return new EndnoteReference(_doc, run, run.Elements<W.EndnoteReference>().First());
             }
+            // break
+            if (run.Elements<W.Break>().Any())
+            {
+                yield return new Break(_doc, run, run.Elements<W.Break>().First());
+            }
             // picture
             foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
             {

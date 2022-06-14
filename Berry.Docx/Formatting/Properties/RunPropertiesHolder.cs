@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Drawing;
 using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
@@ -10,10 +12,11 @@ namespace Berry.Docx.Formatting
     internal class RunPropertiesHolder
     {
         #region Private Members
-        private P.WordprocessingDocument _document;
-        private W.Run _run;
-        private W.Style _style;
-        private W.RunPropertiesDefault _defaultRPr;
+        private readonly P.WordprocessingDocument _document;
+        private readonly W.Run _run;
+        private readonly W.Style _style;
+        private readonly W.RunPropertiesDefault _defaultRPr;
+        private readonly W.Paragraph _paragraph;
 
         private string _fontNameEastAsia;
         private string _fontNameAscii;
@@ -21,6 +24,9 @@ namespace Berry.Docx.Formatting
         private FloatValue _fontSizeCs;
         private BooleanValue _bold;
         private BooleanValue _italic;
+        private EnumValue<SubSuperScript> _subSuperScript;
+        private EnumValue<UnderlineStyle> _underlineStyle;
+        private Color _color = Color.Empty;
         private IntegerValue _characterScale;
         private FloatValue _characterSpacing;
         private FloatValue _position;
@@ -29,10 +35,10 @@ namespace Berry.Docx.Formatting
         #region Constructors
         public RunPropertiesHolder() { }
         /// <summary>
-        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML RunProperties element.
+        /// Run 元素下的字符属性。
         /// </summary>
         /// <param name="doc"></param>
-        /// <param name="rPr"></param>
+        /// <param name="run"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, W.Run run)
         {
             _document = doc;
@@ -40,10 +46,10 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML StyleRunProperties element.
+        /// 样式的字符属性。
         /// </summary>
         /// <param name="doc"></param>
-        /// <param name="rPr"></param>
+        /// <param name="style"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, W.Style style)
         {
             _document = doc;
@@ -51,14 +57,25 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Initializes a new instance of the RunPropertiesHolder class using the supplied OpenXML RunPropertiesBaseStyle element.
+        /// 文档默认字符属性。
         /// </summary>
         /// <param name="doc"></param>
-        /// <param name="rPr"></param>
+        /// <param name="rPrDefault"></param>
         public RunPropertiesHolder(P.WordprocessingDocument doc, W.RunPropertiesDefault rPrDefault)
         {
             _document = doc;
             _defaultRPr = rPrDefault;
+        }
+
+        /// <summary>
+        /// 段落标记的字符属性。
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="paragraph"></param>
+        public RunPropertiesHolder(P.WordprocessingDocument doc, W.Paragraph paragraph)
+        {
+            _document = doc;
+            _paragraph = paragraph;
         }
         #endregion
 
@@ -70,7 +87,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _fontNameEastAsia;
                 }
@@ -86,6 +103,10 @@ namespace Berry.Docx.Formatting
                 else if(_defaultRPr?.RunPropertiesBaseStyle?.RunFonts != null)
                 {
                     rFonts = _defaultRPr.RunPropertiesBaseStyle.RunFonts;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
+                {
+                    rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
                 }
                 if(rFonts?.EastAsiaTheme != null)
                 {
@@ -119,6 +140,17 @@ namespace Berry.Docx.Formatting
                     }
                     _style.StyleRunProperties.RunFonts.EastAsia = value;
                 }
+                else if(_paragraph != null)
+                {
+                    if(_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if(_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
+                    W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                    rFonts.EastAsia = value;
+                }
                 else
                 {
                     _fontNameEastAsia = value;
@@ -134,7 +166,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _fontNameAscii;
                 }
@@ -150,6 +182,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.RunFonts != null)
                 {
                     rFonts = _defaultRPr.RunPropertiesBaseStyle.RunFonts;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
+                {
+                    rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
                 }
                 if (rFonts?.AsciiTheme != null)
                 {
@@ -183,6 +219,17 @@ namespace Berry.Docx.Formatting
                     }
                     _style.StyleRunProperties.RunFonts.Ascii = value;
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
+                    W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                    rFonts.Ascii = value;
+                }
                 else
                 {
                     _fontNameAscii = value;
@@ -197,7 +244,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _fontSize;
                 }
@@ -213,6 +260,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.FontSize != null)
                 {
                     sz = _defaultRPr.RunPropertiesBaseStyle.FontSize;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.FontSize>() != null)
+                {
+                    sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSize>();
                 }
                 if (sz == null) return null;
                 return sz.Val.Value.ToFloat() / 2;
@@ -243,6 +294,17 @@ namespace Berry.Docx.Formatting
                     }
                     _style.StyleRunProperties.FontSize.Val = (value * 2).ToString();
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSize>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.FontSize());
+                    W.FontSize sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSize>();
+                    sz.Val = (value * 2).ToString();
+                }
                 else
                 {
                     _fontSize = value;
@@ -254,7 +316,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _fontSizeCs;
                 }
@@ -270,6 +332,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.FontSizeComplexScript != null)
                 {
                     sz = _defaultRPr.RunPropertiesBaseStyle.FontSizeComplexScript;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.FontSizeComplexScript>() != null)
+                {
+                    sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSizeComplexScript>();
                 }
                 if (sz == null) return null;
                 return sz.Val.Value.ToFloat() / 2;
@@ -300,6 +366,17 @@ namespace Berry.Docx.Formatting
                     }
                     _style.StyleRunProperties.FontSizeComplexScript.Val = (value * 2).ToString();
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSizeComplexScript>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.FontSizeComplexScript());
+                    W.FontSizeComplexScript sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSizeComplexScript>();
+                    sz.Val = (value * 2).ToString();
+                }
                 else
                 {
                     _fontSizeCs = value;
@@ -313,7 +390,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _bold;
                 }
@@ -329,6 +406,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.Bold != null)
                 {
                     bold = _defaultRPr.RunPropertiesBaseStyle.Bold;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Bold>() != null)
+                {
+                    bold = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Bold>();
                 }
                 if (bold == null) return null;
                 if (bold.Val == null) return true;
@@ -374,6 +455,18 @@ namespace Berry.Docx.Formatting
                         _style.StyleRunProperties.Bold.Val = false;
                     }
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Bold>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Bold());
+                    W.Bold bold = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Bold>();
+                    if (value) bold.Val = null;
+                    else bold.Val = false;
+                }
                 else
                 {
                     _bold = value;
@@ -387,7 +480,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _italic;
                 }
@@ -403,6 +496,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.Italic != null)
                 {
                     italic = _defaultRPr.RunPropertiesBaseStyle.Italic;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Italic>() != null)
+                {
+                    italic = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Italic>();
                 }
                 if (italic == null) return null;
                 if (italic.Val == null) return true;
@@ -448,9 +545,263 @@ namespace Berry.Docx.Formatting
                         _style.StyleRunProperties.Italic.Val = false;
                     }
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Italic>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Italic());
+                    W.Italic italic = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Italic>();
+                    if (value) italic.Val = null;
+                    else italic.Val = false;
+                }
                 else
                 {
                     _italic = value;
+                }
+            }
+        }
+
+        public EnumValue<SubSuperScript> SubSuperScript
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
+                {
+                    return _subSuperScript;
+                }
+                W.VerticalTextAlignment vAlign = null;
+                if (_run?.RunProperties?.VerticalTextAlignment != null)
+                {
+                    vAlign = _run.RunProperties.VerticalTextAlignment;
+                }
+                else if (_style?.StyleRunProperties?.VerticalTextAlignment != null)
+                {
+                    vAlign = _style.StyleRunProperties.VerticalTextAlignment;
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.VerticalTextAlignment != null)
+                {
+                    vAlign = _defaultRPr.RunPropertiesBaseStyle.VerticalTextAlignment;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.VerticalTextAlignment>() != null)
+                {
+                    vAlign = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.VerticalTextAlignment>();
+                }
+                if (vAlign == null) return null;
+                if (vAlign.Val == null || vAlign.Val.Value == W.VerticalPositionValues.Baseline) return Berry.Docx.SubSuperScript.None;
+                return vAlign.Val.Value.Convert<SubSuperScript>();
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.VerticalTextAlignment == null)
+                    {
+                        _run.RunProperties.VerticalTextAlignment = new W.VerticalTextAlignment();
+                    }
+                    if (value == Berry.Docx.SubSuperScript.None)
+                    {
+                        _run.RunProperties.VerticalTextAlignment.Val = W.VerticalPositionValues.Baseline;
+                    }
+                    else
+                    {
+                        _run.RunProperties.VerticalTextAlignment.Val = value.Val.Convert<W.VerticalPositionValues>();
+                    }
+                }
+                else if (_style != null)
+                {
+                    if (_style.StyleRunProperties == null)
+                    {
+                        _style.StyleRunProperties = new W.StyleRunProperties();
+                    }
+                    if (_style.StyleRunProperties.VerticalTextAlignment == null)
+                    {
+                        _style.StyleRunProperties.VerticalTextAlignment = new W.VerticalTextAlignment();
+                    }
+                    if (value == Berry.Docx.SubSuperScript.None)
+                    {
+                        _style.StyleRunProperties.VerticalTextAlignment.Val = W.VerticalPositionValues.Baseline;
+                    }
+                    else
+                    {
+                        _style.StyleRunProperties.VerticalTextAlignment.Val = value.Val.Convert<W.VerticalPositionValues>();
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.VerticalTextAlignment>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.VerticalTextAlignment());
+                    W.VerticalTextAlignment vAlign = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.VerticalTextAlignment>();
+                    if (value == Berry.Docx.SubSuperScript.None)
+                    {
+                        vAlign.Val = W.VerticalPositionValues.Baseline;
+                    }
+                    else
+                    {
+                        vAlign.Val = value.Val.Convert<W.VerticalPositionValues>();
+                    }
+                }
+                else
+                {
+                    _subSuperScript = value;
+                }
+            }
+        }
+
+        public EnumValue<UnderlineStyle> UnderlineStyle
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
+                {
+                    return _underlineStyle;
+                }
+                W.Underline underline = null;
+                if (_run?.RunProperties?.Underline != null)
+                {
+                    underline = _run.RunProperties.Underline;
+                }
+                else if (_style?.StyleRunProperties?.Underline != null)
+                {
+                    underline = _style.StyleRunProperties.Underline;
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.Underline != null)
+                {
+                    underline = _defaultRPr.RunPropertiesBaseStyle.Underline;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Underline>() != null)
+                {
+                    underline = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Underline>();
+                }
+                if (underline == null) return null;
+                if (underline.Val == null) return Berry.Docx.UnderlineStyle.None;
+                return underline.Val.Value.Convert<UnderlineStyle>();
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.Underline == null)
+                    {
+                        _run.RunProperties.Underline = new W.Underline();
+                    }
+                    _run.RunProperties.Underline.Val = value.Val.Convert<W.UnderlineValues>();
+                }
+                else if (_style != null)
+                {
+                    if (_style.StyleRunProperties == null)
+                    {
+                        _style.StyleRunProperties = new W.StyleRunProperties();
+                    }
+                    if (_style.StyleRunProperties.Underline == null)
+                    {
+                        _style.StyleRunProperties.Underline = new W.Underline();
+                    }
+                    _style.StyleRunProperties.Underline.Val = value.Val.Convert<W.UnderlineValues>();
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Underline>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Underline());
+                    W.Underline underline = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Underline>();
+                    underline.Val = value.Val.Convert<W.UnderlineValues>();
+                }
+                else
+                {
+                    _underlineStyle = value;
+                }
+            }
+        }
+
+        public Color TextColor
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
+                {
+                    return _color;
+                }
+                W.Color color = null;
+                if (_run?.RunProperties?.Color != null)
+                {
+                    color = _run.RunProperties.Color;
+                }
+                else if (_style?.StyleRunProperties?.Color != null)
+                {
+                    color = _style.StyleRunProperties.Color;
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.Color != null)
+                {
+                    color = _defaultRPr.RunPropertiesBaseStyle.Color;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Color>() != null)
+                {
+                    color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
+                }
+                if(color?.Val != null)
+                {
+                    return ColorConverter.FromHex(color.Val);
+                }
+                return Color.Empty;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.Color == null)
+                    {
+                        _run.RunProperties.Color = new W.Color();
+                    }
+                    _run.RunProperties.Color.Val = ColorConverter.ToHex(value);
+                }
+                else if (_style != null)
+                {
+                    if (_style.StyleRunProperties == null)
+                    {
+                        _style.StyleRunProperties = new W.StyleRunProperties();
+                    }
+                    if (_style.StyleRunProperties.Color == null)
+                    {
+                        _style.StyleRunProperties.Color = new W.Color();
+                    }
+                    _style.StyleRunProperties.Color.Val = ColorConverter.ToHex(value);
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Color());
+                    W.Color color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
+                    color.Val = ColorConverter.ToHex(value);
+                }
+                else
+                {
+                    _color = value;
                 }
             }
         }
@@ -465,7 +816,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _characterScale;
                 }
@@ -481,6 +832,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.CharacterScale != null)
                 {
                     scale = _defaultRPr.RunPropertiesBaseStyle.CharacterScale;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.CharacterScale>() != null)
+                {
+                    scale = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.CharacterScale>();
                 }
                 if (scale == null) return null;
                 return (int)scale.Val;
@@ -515,6 +870,17 @@ namespace Berry.Docx.Formatting
                     }
                     _style.StyleRunProperties.CharacterScale.Val = (int)value;
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.CharacterScale>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.CharacterScale());
+                    W.CharacterScale scale = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.CharacterScale>();
+                    scale.Val = (int)value;
+                }
                 else
                 {
                     _characterScale = value;
@@ -529,7 +895,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _characterSpacing;
                 }
@@ -545,6 +911,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.Spacing != null)
                 {
                     spacing = _defaultRPr.RunPropertiesBaseStyle.Spacing;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Spacing>() != null)
+                {
+                    spacing = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Spacing>();
                 }
                 if (spacing == null) return null;
                 return spacing.Val / 20.0F;
@@ -575,6 +945,17 @@ namespace Berry.Docx.Formatting
                     }
                     _style.StyleRunProperties.Spacing.Val = (int)(value * 20);
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Spacing>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Spacing());
+                    W.Spacing spacing = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Spacing>();
+                    spacing.Val = (int)(value * 20);
+                }
                 else
                 {
                     _characterSpacing = value;
@@ -589,7 +970,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_run == null && _style == null && _defaultRPr == null)
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
                 {
                     return _position;
                 }
@@ -605,6 +986,10 @@ namespace Berry.Docx.Formatting
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.Position != null)
                 {
                     position = _defaultRPr.RunPropertiesBaseStyle.Position;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Position>() != null)
+                {
+                    position = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Position>();
                 }
                 if (position == null) return null;
                 return position.Val.ToString().ToFloat() / 2;
@@ -635,6 +1020,17 @@ namespace Berry.Docx.Formatting
                     }
                     _style.StyleRunProperties.Position.Val = Math.Round(value * 2).ToString();
                 }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Position>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Position());
+                    W.Position pos = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Position>();
+                    pos.Val = Math.Round(value * 2).ToString();
+                }
                 else
                 {
                     _position = value;
@@ -653,10 +1049,14 @@ namespace Berry.Docx.Formatting
             if (_run != null)
             {
                 _run.RunProperties = null;
-            } 
+            }
             else if (_style?.StyleRunProperties != null)
             {
                 _style.StyleRunProperties.RemoveAllChildren();
+            }
+            else if(_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties != null)
+            {
+                _paragraph.ParagraphProperties.ParagraphMarkRunProperties.RemoveAllChildren();
             }
         }
 
@@ -677,6 +1077,9 @@ namespace Berry.Docx.Formatting
             format.FontSizeCs = directFmt.FontSizeCs ?? baseFmt.FontSizeCs;
             format.Bold = directFmt.Bold ?? baseFmt.Bold;
             format.Italic = directFmt.Italic ?? baseFmt.Italic;
+            format.SubSuperScript = directFmt.SubSuperScript ?? baseFmt.SubSuperScript;
+            format.UnderlineStyle = directFmt.UnderlineStyle ?? baseFmt.UnderlineStyle;
+            format.TextColor = !directFmt.TextColor.IsEmpty ? directFmt.TextColor : baseFmt.TextColor;
             format.CharacterScale = directFmt.CharacterScale ?? baseFmt.CharacterScale;
             format.CharacterSpacing = directFmt.CharacterSpacing ?? baseFmt.CharacterSpacing;
             format.Position = directFmt.Position ?? baseFmt.Position;

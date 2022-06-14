@@ -27,6 +27,12 @@ namespace Berry.Docx.Formatting
                     _cFormat.Bold = rHld.Bold;
                 if (rHld.Italic != null)
                     _cFormat.Italic = rHld.Italic;
+                if(rHld.SubSuperScript != null)
+                    _cFormat.SubSuperScript = rHld.SubSuperScript;
+                if (rHld.UnderlineStyle != null)
+                    _cFormat.UnderlineStyle = rHld.UnderlineStyle;
+                if(!rHld.TextColor.IsEmpty)
+                    _cFormat.TextColor = rHld.TextColor;
                 if (rHld.CharacterScale != null)
                     _cFormat.CharacterScale = rHld.CharacterScale;
                 if (rHld.CharacterSpacing != null)

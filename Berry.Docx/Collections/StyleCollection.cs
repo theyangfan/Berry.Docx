@@ -44,8 +44,16 @@ namespace Berry.Docx.Collections
 
         public void Add(Style style)
         {
-            _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Append(style.XElement);
+            if(_doc.Styles.FindByName(style.Name, style.Type) == null)
+            {
+                _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Append(style.XElement);
+            }
+            else
+            {
+                throw new Exception("A style with the same name already exists!");
+            }
         }
+
         /// <summary>
         /// Searchs for the style with the specified stylename and type within the entire collection.
         /// </summary>
