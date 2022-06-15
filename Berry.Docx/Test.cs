@@ -25,7 +25,8 @@ namespace Test
             {
                 Paragraph p = doc.LastSection.Paragraphs.Last();
                 TextRange tr = p.ChildItems[2] as TextRange;
-                Console.WriteLine(Berry.Docx.ColorConverter.FromHex("FF000F"));
+                Console.WriteLine(p.Format.Justification);
+
                 //doc.SaveAs(dst);
             }
         }

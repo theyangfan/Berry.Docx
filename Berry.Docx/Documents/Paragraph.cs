@@ -529,6 +529,7 @@ namespace Berry.Docx.Documents
         {
             get
             {
+                /*
                 if (_pFormat.NumberingFormat == null) return string.Empty;
                 string lvlText = _pFormat.NumberingFormat.Format;
                 //Console.WriteLine($"{lvlText},{_pFormat.NumberingFormat.Style}");
@@ -538,8 +539,9 @@ namespace Berry.Docx.Documents
                     || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand
                     || _pFormat.NumberingFormat.Style == W.NumberFormatValues.JapaneseCounting)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "一");
-
-                return lvlText;
+                
+                return lvlText;*/
+                return "";
             }
         }
 

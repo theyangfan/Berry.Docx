@@ -8,9 +8,12 @@ namespace Berry.Docx.Formatting
     public class DocDefaultFormat
     {
         private readonly CharacterFormat _cFormat;
+        private readonly ParagraphFormat _pFormat;
         internal DocDefaultFormat(Document doc)
         {
             _cFormat = new CharacterFormat();
+            _pFormat = new ParagraphFormat();
+
             W.DocDefaults defaults = doc.Package.MainDocumentPart?.StyleDefinitionsPart?.Styles?.DocDefaults;
             if(defaults?.RunPropertiesDefault != null)
             {
@@ -40,8 +43,14 @@ namespace Berry.Docx.Formatting
                 if (rHld.Position != null)
                     _cFormat.Position = rHld.Position;
             }
+            if(defaults?.ParagraphPropertiesDefault != null)
+            {
+
+            }
         }
 
         public CharacterFormat CharacterFormat => _cFormat;
+
+        public ParagraphFormat ParagraphFormat => _pFormat;
     }
 }

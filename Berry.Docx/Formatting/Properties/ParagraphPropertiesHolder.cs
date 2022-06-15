@@ -17,90 +17,44 @@ namespace Berry.Docx.Formatting
         private EnumValue<JustificationType> _justificaton;
         private EnumValue<OutlineLevelType> _outlineLevel;
         // Indentation
-        private W.Indentation _indentation = null;
-        private W.MirrorIndents _mirrorIndents = null;
-        private W.AdjustRightIndent _adjustRightInd = null;
+        private Indentation _leftInd;
+        private BooleanValue _mirrorIndents;
+        private BooleanValue _adjustRightInd;
         // Spacing
-        private W.SpacingBetweenLines _spacing = null;
-        private W.ContextualSpacing _contextualSpacing = null;
-        private W.SnapToGrid _snapToGrid = null;
+        private W.SpacingBetweenLines _spacing;
+        private BooleanValue _contextualSpacing;
+        private BooleanValue _snapToGrid;
         // Pagination
-        private W.WidowControl _widowControl;
-        private W.KeepNext _keepNext;
-        private W.KeepLines _keepLines;
-        private W.PageBreakBefore _pageBreakBefore;
+        private BooleanValue _widowControl;
+        private BooleanValue _keepNext;
+        private BooleanValue _keepLines;
+        private BooleanValue _pageBreakBefore;
         // Formatting Exceptions
-        private W.SuppressLineNumbers _suppressLineNumbers;
-        private W.SuppressAutoHyphens _suppressAutoHyphens;
+        private BooleanValue _suppressLineNumbers;
+        private BooleanValue _suppressAutoHyphens;
         // Line Break
-        private W.Kinsoku _kinsoku;
-        private W.WordWrap _wordWrap;
-        private W.OverflowPunctuation _overflowPunct = null;
+        private BooleanValue _kinsoku;
+        private BooleanValue _wordWrap;
+        private BooleanValue _overflowPunct;
         // Character Spacing
-        private W.TopLinePunctuation _topLinePunct = null;
-        private W.AutoSpaceDE _autoSpaceDE;
-        private W.AutoSpaceDN _autoSpaceDN;
+        private BooleanValue _topLinePunct;
+        private BooleanValue _autoSpaceDE;
+        private BooleanValue _autoSpaceDN;
         // Numbering
         private NumberingFormat _numFmt;
         private W.Level _lvl = null;
         #endregion
 
         #region Constructors
+        public ParagraphPropertiesHolder() { }
+
         public ParagraphPropertiesHolder(Document doc, W.Paragraph paragraph)
         {
             _doc = doc;
             _paragraph = paragraph;
-        }
 
-        public ParagraphPropertiesHolder(Document doc, W.Style style)
-        {
-            _doc = doc;
-            _style = style;
-        }
-        /// <summary>
-        /// Initializes a new instance of the ParagraphPropertiesHolder class using the supplied <see cref="W.ParagraphProperties"/> element.
-        /// </summary>
-        /// <param name="document"></param>
-        /// <param name="pPr"></param>
-        public ParagraphPropertiesHolder(Document document, W.ParagraphProperties pPr)
-        {
-            _doc = document;
-            if (pPr == null)
-                pPr = new W.ParagraphProperties();
-            _pPr = pPr;
-            // Normal
-            _justification = pPr.Justification;
-            _outlineLevel = pPr.OutlineLevel;
-            // Indentation
-            if (pPr.Indentation == null)
-                pPr.Indentation = new W.Indentation();
-            _indentation = pPr.Indentation;
-            _mirrorIndents = pPr.MirrorIndents;
-            _adjustRightInd = pPr.AdjustRightIndent;
-            // Spacing
-            if (pPr.SpacingBetweenLines == null)
-                pPr.SpacingBetweenLines = new W.SpacingBetweenLines();
-            _spacing = pPr.SpacingBetweenLines;
-            _contextualSpacing = pPr.ContextualSpacing;
-            _snapToGrid = pPr.SnapToGrid;
-            // Pagination
-            _widowControl = pPr.WidowControl;
-            _keepNext = pPr.KeepNext;
-            _keepLines = pPr.KeepLines;
-            _pageBreakBefore = pPr.PageBreakBefore;
-            // Format Exception
-            _suppressLineNumbers = pPr.SuppressLineNumbers;
-            _suppressAutoHyphens = pPr.SuppressAutoHyphens;
-            // Wrapping Lines
-            _kinsoku = pPr.Kinsoku;
-            _wordWrap = pPr.WordWrap;
-            _overflowPunct = pPr.OverflowPunctuation;
-            // Character Spacing
-            _topLinePunct = pPr.TopLinePunctuation;
-            _autoSpaceDE = pPr.AutoSpaceDE;
-            _autoSpaceDN = pPr.AutoSpaceDN;
             // Numbering
-            if (pPr.NumberingProperties?.NumberingId != null)
+            /*if (pPr.NumberingProperties?.NumberingId != null)
             {
                 int numId = pPr.NumberingProperties.NumberingId.Val;
                 if (pPr.NumberingProperties.NumberingLevelReference != null)
@@ -117,53 +71,16 @@ namespace Berry.Docx.Formatting
                         _numFmt = new NumberingFormat(document, abstractNum, ilvl);
                     }
                 }
-            }
+            }*/
         }
 
-        /// <summary>
-        /// Initializes a new instance of the ParagraphPropertiesHolder class using the supplied OpenXML StyleParagraphProperties element.
-        /// </summary>
-        /// <param name="document"></param>
-        /// <param name="spPr"></param>
-        public ParagraphPropertiesHolder(Document document, W.StyleParagraphProperties spPr)
+        public ParagraphPropertiesHolder(Document doc, W.Style style)
         {
-            _doc = document;
-            if (spPr == null)
-                spPr = new W.StyleParagraphProperties();
-            _spPr = spPr;
-            // Normal
-            _justification = spPr.Justification;
-            _outlineLevel = spPr.OutlineLevel;
-            // Indentation
-            if (spPr.Indentation == null)
-                spPr.Indentation = new W.Indentation();
-            _indentation = spPr.Indentation;
-            _mirrorIndents = spPr.MirrorIndents;
-            _adjustRightInd = spPr.AdjustRightIndent;
-            // Spacing
-            if (spPr.SpacingBetweenLines == null)
-                spPr.SpacingBetweenLines = new W.SpacingBetweenLines();
-            _spacing = spPr.SpacingBetweenLines;
-            _contextualSpacing = spPr.ContextualSpacing;
-            _snapToGrid = spPr.SnapToGrid;
-            // Pagination
-            _widowControl = spPr.WidowControl;
-            _keepNext = spPr.KeepNext;
-            _keepLines = spPr.KeepLines;
-            _pageBreakBefore = spPr.PageBreakBefore;
-            // Format Exception
-            _suppressLineNumbers = spPr.SuppressLineNumbers;
-            _suppressAutoHyphens = spPr.SuppressAutoHyphens;
-            // Wrapping Lines
-            _kinsoku = spPr.Kinsoku;
-            _wordWrap = spPr.WordWrap;
-            _overflowPunct = spPr.OverflowPunctuation;
-            // Character Spacing
-            _topLinePunct = spPr.TopLinePunctuation;
-            _autoSpaceDE = spPr.AutoSpaceDE;
-            _autoSpaceDN = spPr.AutoSpaceDN;
+            _doc = doc;
+            _style = style;
+
             // Numbering
-            if (spPr.NumberingProperties?.NumberingId != null)
+/*            if (spPr.NumberingProperties?.NumberingId != null)
             {
                 int numId = spPr.NumberingProperties.NumberingId.Val;
                 string styleId = (spPr.Parent as W.Style).StyleId;
@@ -177,7 +94,7 @@ namespace Berry.Docx.Formatting
                 {
                     _numFmt = new NumberingFormat(document, abstractNum, styleId);
                 }
-            }
+            }*/
         }
         #endregion
 
@@ -214,9 +131,9 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if(_paragraph != null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    InitParagraph();
                     if(_paragraph.ParagraphProperties.Justification == null)
                     {
                         _paragraph.ParagraphProperties.Justification = new W.Justification();
@@ -225,7 +142,6 @@ namespace Berry.Docx.Formatting
                 }
                 else if(_style != null)
                 {
-                    InitStyle();
                     if(_style.StyleParagraphProperties.Justification == null)
                     {
                         _style.StyleParagraphProperties.Justification= new W.Justification();
@@ -265,9 +181,9 @@ namespace Berry.Docx.Formatting
             }
             set
             {
+                InitParagraphProperties();
                 if (_paragraph != null)
                 {
-                    InitParagraph();
                     if (_paragraph.ParagraphProperties.OutlineLevel == null)
                     {
                         _paragraph.ParagraphProperties.OutlineLevel = new W.OutlineLevel();
@@ -276,7 +192,6 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_style != null)
                 {
-                    InitStyle();
                     if (_style.StyleParagraphProperties.OutlineLevel == null)
                     {
                         _style.StyleParagraphProperties.OutlineLevel = new W.OutlineLevel();
@@ -491,34 +406,7 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether automatically adjust right indent when document grid is defined.
-        /// </summary>
-        public BooleanValue AdjustRightIndent
-        {
-            get
-            {
-                if (_adjustRightInd == null) return null;
-                if (_adjustRightInd.Val == null) return true;
-                return _adjustRightInd.Val.Value;
-            }
-            set
-            {
-                if (_adjustRightInd == null)
-                {
-                    _adjustRightInd = new W.AdjustRightIndent();
-                    if (_pPr != null)
-                        _pPr.AdjustRightIndent = _adjustRightInd;
-                    else if (_spPr != null)
-                        _spPr.AdjustRightIndent = _adjustRightInd;
-                }
-
-                if (value)
-                    _adjustRightInd.Val = null;
-                else
-                    _adjustRightInd.Val = false;
-            }
-        }
+        
         /// <summary>
         /// Gets or sets a value indicating whether the paragraph indents should be interpreted as mirrored indents.
         /// </summary>
@@ -526,25 +414,104 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_mirrorIndents == null) return null;
-                if (_mirrorIndents.Val == null) return true;
-                return _mirrorIndents.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.MirrorIndents ele = _paragraph.ParagraphProperties?.MirrorIndents;
+                    if (ele == null) return null;
+                    if(ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.MirrorIndents ele = _style.StyleParagraphProperties?.MirrorIndents;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _mirrorIndents;
+                }
             }
             set
             {
-                if (_mirrorIndents == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _mirrorIndents = new W.MirrorIndents();
-                    if (_pPr != null)
-                        _pPr.MirrorIndents = _mirrorIndents;
-                    else if (_spPr != null)
-                        _spPr.MirrorIndents = _mirrorIndents;
+                    if (_paragraph.ParagraphProperties.MirrorIndents == null)
+                    {
+                        _paragraph.ParagraphProperties.MirrorIndents = new W.MirrorIndents();
+                    }
+                    if(value)  _paragraph.ParagraphProperties.MirrorIndents.Val = null;
+                    else _paragraph.ParagraphProperties.MirrorIndents.Val = false;
                 }
-
-                if (value)
-                    _mirrorIndents.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.MirrorIndents == null)
+                    {
+                        _style.StyleParagraphProperties.MirrorIndents = new W.MirrorIndents();
+                    }
+                    if (value) _style.StyleParagraphProperties.MirrorIndents.Val = null;
+                    else _style.StyleParagraphProperties.MirrorIndents.Val = false;
+                }
                 else
-                    _mirrorIndents.Val = false;
+                {
+                    _mirrorIndents = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether automatically adjust right indent when document grid is defined.
+        /// </summary>
+        public BooleanValue AdjustRightIndent
+        {
+            get
+            {
+                if (_paragraph != null)
+                {
+                    W.AdjustRightIndent ele = _paragraph.ParagraphProperties?.AdjustRightIndent;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.AdjustRightIndent ele = _style.StyleParagraphProperties?.AdjustRightIndent;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _adjustRightInd;
+                }
+            }
+            set
+            {
+                InitParagraphProperties();
+                if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties.AdjustRightIndent == null)
+                    {
+                        _paragraph.ParagraphProperties.AdjustRightIndent = new W.AdjustRightIndent();
+                    }
+                    if (value) _paragraph.ParagraphProperties.AdjustRightIndent.Val = null;
+                    else _paragraph.ParagraphProperties.AdjustRightIndent.Val = false;
+                }
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.AdjustRightIndent == null)
+                    {
+                        _style.StyleParagraphProperties.AdjustRightIndent = new W.AdjustRightIndent();
+                    }
+                    if (value) _style.StyleParagraphProperties.AdjustRightIndent.Val = null;
+                    else _style.StyleParagraphProperties.AdjustRightIndent.Val = false; 
+                }
+                else
+                {
+                    _adjustRightInd = value;
+                }
             }
         }
         #endregion
@@ -756,24 +723,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_contextualSpacing == null) return null;
-                if (_contextualSpacing.Val == null) return true;
-                return _contextualSpacing.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.ContextualSpacing ele = _paragraph.ParagraphProperties?.ContextualSpacing;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.ContextualSpacing ele = _style.StyleParagraphProperties?.ContextualSpacing;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _contextualSpacing;
+                }
             }
             set
             {
-                if (_contextualSpacing == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _contextualSpacing = new W.ContextualSpacing();
-                    if (_pPr != null)
-                        _pPr.ContextualSpacing = _contextualSpacing;
-                    else if (_spPr != null)
-                        _spPr.ContextualSpacing = _contextualSpacing;
+                    if (_paragraph.ParagraphProperties.ContextualSpacing == null)
+                    {
+                        _paragraph.ParagraphProperties.ContextualSpacing = new W.ContextualSpacing();
+                    }
+                    if (value) _paragraph.ParagraphProperties.ContextualSpacing.Val = null;
+                    else _paragraph.ParagraphProperties.ContextualSpacing.Val = false;
                 }
-                if (value)
-                    _contextualSpacing.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.ContextualSpacing == null)
+                    {
+                        _style.StyleParagraphProperties.ContextualSpacing = new W.ContextualSpacing();
+                    }
+                    if (value) _style.StyleParagraphProperties.ContextualSpacing.Val = null;
+                    else _style.StyleParagraphProperties.ContextualSpacing.Val = false;
+                }
                 else
-                    _contextualSpacing.Val = false;
+                {
+                    _contextualSpacing = value;
+                }
             }
         }
 
@@ -784,24 +777,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_snapToGrid == null) return null;
-                if (_snapToGrid.Val == null) return true;
-                return _snapToGrid.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.SnapToGrid ele = _paragraph.ParagraphProperties?.SnapToGrid;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.SnapToGrid ele = _style.StyleParagraphProperties?.SnapToGrid;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _snapToGrid;
+                }
             }
             set
             {
-                if (_snapToGrid == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _snapToGrid = new W.SnapToGrid();
-                    if (_pPr != null)
-                        _pPr.SnapToGrid = _snapToGrid;
-                    else if (_spPr != null)
-                        _spPr.SnapToGrid = _snapToGrid;
+                    if (_paragraph.ParagraphProperties.SnapToGrid == null)
+                    {
+                        _paragraph.ParagraphProperties.SnapToGrid = new W.SnapToGrid();
+                    }
+                    if (value) _paragraph.ParagraphProperties.SnapToGrid.Val = null;
+                    else _paragraph.ParagraphProperties.SnapToGrid.Val = false;
                 }
-                if (value)
-                    _snapToGrid.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.SnapToGrid == null)
+                    {
+                        _style.StyleParagraphProperties.SnapToGrid = new W.SnapToGrid();
+                    }
+                    if (value) _style.StyleParagraphProperties.SnapToGrid.Val = null;
+                    else _style.StyleParagraphProperties.SnapToGrid.Val = false;
+                }
                 else
-                    _snapToGrid.Val = false;
+                {
+                    _snapToGrid = value;
+                }
             }
         }
         #endregion
@@ -815,24 +834,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_widowControl == null) return null;
-                if (_widowControl.Val == null) return true;
-                return _widowControl.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.WidowControl ele = _paragraph.ParagraphProperties?.WidowControl;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.WidowControl ele = _style.StyleParagraphProperties?.WidowControl;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _widowControl;
+                }
             }
             set
             {
-                if (_widowControl == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _widowControl = new W.WidowControl();
-                    if (_pPr != null)
-                        _pPr.WidowControl = _widowControl;
-                    else if (_spPr != null)
-                        _spPr.WidowControl = _widowControl;
+                    if (_paragraph.ParagraphProperties.WidowControl == null)
+                    {
+                        _paragraph.ParagraphProperties.WidowControl = new W.WidowControl();
+                    }
+                    if (value) _paragraph.ParagraphProperties.WidowControl.Val = null;
+                    else _paragraph.ParagraphProperties.WidowControl.Val = false;
                 }
-                if (value)
-                    _widowControl.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.WidowControl == null)
+                    {
+                        _style.StyleParagraphProperties.WidowControl = new W.WidowControl();
+                    }
+                    if (value) _style.StyleParagraphProperties.WidowControl.Val = null;
+                    else _style.StyleParagraphProperties.WidowControl.Val = false;
+                }
                 else
-                    _widowControl.Val = false;
+                {
+                    _widowControl = value;
+                }
             }
         }
 
@@ -843,24 +888,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_keepNext == null) return null;
-                if (_keepNext.Val == null) return true;
-                return _keepNext.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.KeepNext ele = _paragraph.ParagraphProperties?.KeepNext;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.KeepNext ele = _style.StyleParagraphProperties?.KeepNext;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _keepNext;
+                }
             }
             set
             {
-                if (_keepNext == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _keepNext = new W.KeepNext();
-                    if (_pPr != null)
-                        _pPr.KeepNext = _keepNext;
-                    else if (_spPr != null)
-                        _spPr.KeepNext = _keepNext;
+                    if (_paragraph.ParagraphProperties.KeepNext == null)
+                    {
+                        _paragraph.ParagraphProperties.KeepNext = new W.KeepNext();
+                    }
+                    if (value) _paragraph.ParagraphProperties.KeepNext.Val = null;
+                    else _paragraph.ParagraphProperties.KeepNext.Val = false;
                 }
-                if (value)
-                    _keepNext.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.KeepNext == null)
+                    {
+                        _style.StyleParagraphProperties.KeepNext = new W.KeepNext();
+                    }
+                    if (value) _style.StyleParagraphProperties.KeepNext.Val = null;
+                    else _style.StyleParagraphProperties.KeepNext.Val = false;
+                }
                 else
-                    _keepNext.Val = false;
+                {
+                    _keepNext = value;
+                }
             }
         }
 
@@ -871,24 +942,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_keepLines == null) return null;
-                if (_keepLines.Val == null) return true;
-                return _keepLines.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.KeepLines ele = _paragraph.ParagraphProperties?.KeepLines;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.KeepLines ele = _style.StyleParagraphProperties?.KeepLines;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _keepLines;
+                }
             }
             set
             {
-                if (_keepLines == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _keepLines = new W.KeepLines();
-                    if (_pPr != null)
-                        _pPr.KeepLines = _keepLines;
-                    else if (_spPr != null)
-                        _spPr.KeepLines = _keepLines;
+                    if (_paragraph.ParagraphProperties.KeepLines == null)
+                    {
+                        _paragraph.ParagraphProperties.KeepLines = new W.KeepLines();
+                    }
+                    if (value) _paragraph.ParagraphProperties.KeepLines.Val = null;
+                    else _paragraph.ParagraphProperties.KeepLines.Val = false;
                 }
-                if (value)
-                    _keepLines.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.KeepLines == null)
+                    {
+                        _style.StyleParagraphProperties.KeepLines = new W.KeepLines();
+                    }
+                    if (value) _style.StyleParagraphProperties.KeepLines.Val = null;
+                    else _style.StyleParagraphProperties.KeepLines.Val = false;
+                }
                 else
-                    _keepLines.Val = false;
+                {
+                    _keepLines = value;
+                }
             }
         }
 
@@ -899,24 +996,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_pageBreakBefore == null) return null;
-                if (_pageBreakBefore.Val == null) return true;
-                return _pageBreakBefore.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.PageBreakBefore ele = _paragraph.ParagraphProperties?.PageBreakBefore;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.PageBreakBefore ele = _style.StyleParagraphProperties?.PageBreakBefore;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _pageBreakBefore;
+                }
             }
             set
             {
-                if (_pageBreakBefore == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _pageBreakBefore = new W.PageBreakBefore();
-                    if (_pPr != null)
-                        _pPr.PageBreakBefore = _pageBreakBefore;
-                    else if (_spPr != null)
-                        _spPr.PageBreakBefore = _pageBreakBefore;
+                    if (_paragraph.ParagraphProperties.PageBreakBefore == null)
+                    {
+                        _paragraph.ParagraphProperties.PageBreakBefore = new W.PageBreakBefore();
+                    }
+                    if (value) _paragraph.ParagraphProperties.PageBreakBefore.Val = null;
+                    else _paragraph.ParagraphProperties.PageBreakBefore.Val = false;
                 }
-                if (value)
-                    _pageBreakBefore.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.PageBreakBefore == null)
+                    {
+                        _style.StyleParagraphProperties.PageBreakBefore = new W.PageBreakBefore();
+                    }
+                    if (value) _style.StyleParagraphProperties.PageBreakBefore.Val = null;
+                    else _style.StyleParagraphProperties.PageBreakBefore.Val = false;
+                }
                 else
-                    _pageBreakBefore.Val = false;
+                {
+                    _pageBreakBefore = value;
+                }
             }
         }
         #endregion
@@ -929,24 +1052,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_suppressLineNumbers == null) return null;
-                if (_suppressLineNumbers.Val == null) return true;
-                return _suppressLineNumbers.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.SuppressLineNumbers ele = _paragraph.ParagraphProperties?.SuppressLineNumbers;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.SuppressLineNumbers ele = _style.StyleParagraphProperties?.SuppressLineNumbers;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _suppressLineNumbers;
+                }
             }
             set
             {
-                if (_suppressLineNumbers == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _suppressLineNumbers = new W.SuppressLineNumbers();
-                    if (_pPr != null)
-                        _pPr.SuppressLineNumbers = _suppressLineNumbers;
-                    else if (_spPr != null)
-                        _spPr.SuppressLineNumbers = _suppressLineNumbers;
+                    if (_paragraph.ParagraphProperties.SuppressLineNumbers == null)
+                    {
+                        _paragraph.ParagraphProperties.SuppressLineNumbers = new W.SuppressLineNumbers();
+                    }
+                    if (value) _paragraph.ParagraphProperties.SuppressLineNumbers.Val = null;
+                    else _paragraph.ParagraphProperties.SuppressLineNumbers.Val = false;
                 }
-                if (value)
-                    _suppressLineNumbers.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.SuppressLineNumbers == null)
+                    {
+                        _style.StyleParagraphProperties.SuppressLineNumbers = new W.SuppressLineNumbers();
+                    }
+                    if (value) _style.StyleParagraphProperties.SuppressLineNumbers.Val = null;
+                    else _style.StyleParagraphProperties.SuppressLineNumbers.Val = false;
+                }
                 else
-                    _suppressLineNumbers.Val = false;
+                {
+                    _suppressLineNumbers = value;
+                }
             }
         }
 
@@ -957,24 +1106,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_suppressAutoHyphens == null) return null;
-                if (_suppressAutoHyphens.Val == null) return true;
-                return _suppressAutoHyphens.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.SuppressAutoHyphens ele = _paragraph.ParagraphProperties?.SuppressAutoHyphens;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.SuppressAutoHyphens ele = _style.StyleParagraphProperties?.SuppressAutoHyphens;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _suppressAutoHyphens;
+                }
             }
             set
             {
-                if (_suppressAutoHyphens == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _suppressAutoHyphens = new W.SuppressAutoHyphens();
-                    if (_pPr != null)
-                        _pPr.SuppressAutoHyphens = _suppressAutoHyphens;
-                    else if (_spPr != null)
-                        _spPr.SuppressAutoHyphens = _suppressAutoHyphens;
+                    if (_paragraph.ParagraphProperties.SuppressAutoHyphens == null)
+                    {
+                        _paragraph.ParagraphProperties.SuppressAutoHyphens = new W.SuppressAutoHyphens();
+                    }
+                    if (value) _paragraph.ParagraphProperties.SuppressAutoHyphens.Val = null;
+                    else _paragraph.ParagraphProperties.SuppressAutoHyphens.Val = false;
                 }
-                if (value)
-                    _suppressAutoHyphens.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.SuppressAutoHyphens == null)
+                    {
+                        _style.StyleParagraphProperties.SuppressAutoHyphens = new W.SuppressAutoHyphens();
+                    }
+                    if (value) _style.StyleParagraphProperties.SuppressAutoHyphens.Val = null;
+                    else _style.StyleParagraphProperties.SuppressAutoHyphens.Val = false;
+                }
                 else
-                    _suppressAutoHyphens.Val = false;
+                {
+                    _suppressAutoHyphens = value;
+                }
             }
         }
         #endregion
@@ -987,24 +1162,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_kinsoku == null) return null;
-                if (_kinsoku.Val == null) return true;
-                return _kinsoku.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.Kinsoku ele = _paragraph.ParagraphProperties?.Kinsoku;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.Kinsoku ele = _style.StyleParagraphProperties?.Kinsoku;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _kinsoku;
+                }
             }
             set
             {
-                if (_kinsoku == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _kinsoku = new W.Kinsoku();
-                    if (_pPr != null)
-                        _pPr.Kinsoku = _kinsoku;
-                    else if (_spPr != null)
-                        _spPr.Kinsoku = _kinsoku;
+                    if (_paragraph.ParagraphProperties.Kinsoku == null)
+                    {
+                        _paragraph.ParagraphProperties.Kinsoku = new W.Kinsoku();
+                    }
+                    if (value) _paragraph.ParagraphProperties.Kinsoku.Val = null;
+                    else _paragraph.ParagraphProperties.Kinsoku.Val = false;
                 }
-                if (value)
-                    _kinsoku.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.Kinsoku == null)
+                    {
+                        _style.StyleParagraphProperties.Kinsoku = new W.Kinsoku();
+                    }
+                    if (value) _style.StyleParagraphProperties.Kinsoku.Val = null;
+                    else _style.StyleParagraphProperties.Kinsoku.Val = false;
+                }
                 else
-                    _kinsoku.Val = false;
+                {
+                    _kinsoku = value;
+                }
             }
         }
 
@@ -1015,24 +1216,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_wordWrap == null) return null;
-                if (_wordWrap.Val == null) return true;
-                return _wordWrap.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.WordWrap ele = _paragraph.ParagraphProperties?.WordWrap;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.WordWrap ele = _style.StyleParagraphProperties?.WordWrap;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _wordWrap;
+                }
             }
             set
             {
-                if (_wordWrap == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _wordWrap = new W.WordWrap();
-                    if (_pPr != null)
-                        _pPr.WordWrap = _wordWrap;
-                    else if (_spPr != null)
-                        _spPr.WordWrap = _wordWrap;
+                    if (_paragraph.ParagraphProperties.WordWrap == null)
+                    {
+                        _paragraph.ParagraphProperties.WordWrap = new W.WordWrap();
+                    }
+                    if (value) _paragraph.ParagraphProperties.WordWrap.Val = null;
+                    else _paragraph.ParagraphProperties.WordWrap.Val = false;
                 }
-                if (value)
-                    _wordWrap.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.WordWrap == null)
+                    {
+                        _style.StyleParagraphProperties.WordWrap = new W.WordWrap();
+                    }
+                    if (value) _style.StyleParagraphProperties.WordWrap.Val = null;
+                    else _style.StyleParagraphProperties.WordWrap.Val = false;
+                }
                 else
-                    _wordWrap.Val = false;
+                {
+                    _wordWrap = value;
+                }
             }
         }
 
@@ -1043,24 +1270,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_overflowPunct == null) return null;
-                if (_overflowPunct.Val == null) return true;
-                return _overflowPunct.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.OverflowPunctuation ele = _paragraph.ParagraphProperties?.OverflowPunctuation;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.OverflowPunctuation ele = _style.StyleParagraphProperties?.OverflowPunctuation;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _overflowPunct;
+                }
             }
             set
             {
-                if (_overflowPunct == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _overflowPunct = new W.OverflowPunctuation();
-                    if (_pPr != null)
-                        _pPr.OverflowPunctuation = _overflowPunct;
-                    else if (_spPr != null)
-                        _spPr.OverflowPunctuation = _overflowPunct;
+                    if (_paragraph.ParagraphProperties.OverflowPunctuation == null)
+                    {
+                        _paragraph.ParagraphProperties.OverflowPunctuation = new W.OverflowPunctuation();
+                    }
+                    if (value) _paragraph.ParagraphProperties.OverflowPunctuation.Val = null;
+                    else _paragraph.ParagraphProperties.OverflowPunctuation.Val = false;
                 }
-                if (value)
-                    _overflowPunct.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.OverflowPunctuation == null)
+                    {
+                        _style.StyleParagraphProperties.OverflowPunctuation = new W.OverflowPunctuation();
+                    }
+                    if (value) _style.StyleParagraphProperties.OverflowPunctuation.Val = null;
+                    else _style.StyleParagraphProperties.OverflowPunctuation.Val = false;
+                }
                 else
-                    _overflowPunct.Val = false;
+                {
+                    _overflowPunct = value;
+                }
             }
         }
         #endregion
@@ -1073,24 +1326,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_topLinePunct == null) return null;
-                if (_topLinePunct.Val == null) return true;
-                return _topLinePunct.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.TopLinePunctuation ele = _paragraph.ParagraphProperties?.TopLinePunctuation;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.TopLinePunctuation ele = _style.StyleParagraphProperties?.TopLinePunctuation;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _topLinePunct;
+                }
             }
             set
             {
-                if (_topLinePunct == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _topLinePunct = new W.TopLinePunctuation();
-                    if (_pPr != null)
-                        _pPr.TopLinePunctuation = _topLinePunct;
-                    else if (_spPr != null)
-                        _spPr.TopLinePunctuation = _topLinePunct;
+                    if (_paragraph.ParagraphProperties.TopLinePunctuation == null)
+                    {
+                        _paragraph.ParagraphProperties.TopLinePunctuation = new W.TopLinePunctuation();
+                    }
+                    if (value) _paragraph.ParagraphProperties.TopLinePunctuation.Val = null;
+                    else _paragraph.ParagraphProperties.TopLinePunctuation.Val = false;
                 }
-                if (value)
-                    _topLinePunct.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.TopLinePunctuation == null)
+                    {
+                        _style.StyleParagraphProperties.TopLinePunctuation = new W.TopLinePunctuation();
+                    }
+                    if (value) _style.StyleParagraphProperties.TopLinePunctuation.Val = null;
+                    else _style.StyleParagraphProperties.TopLinePunctuation.Val = false;
+                }
                 else
-                    _topLinePunct.Val = false;
+                {
+                    _topLinePunct = value;
+                }
             }
         }
 
@@ -1101,24 +1380,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_autoSpaceDE == null) return null;
-                if (_autoSpaceDE.Val == null) return true;
-                return _autoSpaceDE.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.AutoSpaceDE ele = _paragraph.ParagraphProperties?.AutoSpaceDE;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.AutoSpaceDE ele = _style.StyleParagraphProperties?.AutoSpaceDE;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _autoSpaceDE;
+                }
             }
             set
             {
-                if (_autoSpaceDE == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _autoSpaceDE = new W.AutoSpaceDE();
-                    if (_pPr != null)
-                        _pPr.AutoSpaceDE = _autoSpaceDE;
-                    else if (_spPr != null)
-                        _spPr.AutoSpaceDE = _autoSpaceDE;
+                    if (_paragraph.ParagraphProperties.AutoSpaceDE == null)
+                    {
+                        _paragraph.ParagraphProperties.AutoSpaceDE = new W.AutoSpaceDE();
+                    }
+                    if (value) _paragraph.ParagraphProperties.AutoSpaceDE.Val = null;
+                    else _paragraph.ParagraphProperties.AutoSpaceDE.Val = false;
                 }
-                if (value)
-                    _autoSpaceDE.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.AutoSpaceDE == null)
+                    {
+                        _style.StyleParagraphProperties.AutoSpaceDE = new W.AutoSpaceDE();
+                    }
+                    if (value) _style.StyleParagraphProperties.AutoSpaceDE.Val = null;
+                    else _style.StyleParagraphProperties.AutoSpaceDE.Val = false;
+                }
                 else
-                    _autoSpaceDE.Val = false;
+                {
+                    _autoSpaceDE = value;
+                }
             }
         }
 
@@ -1129,24 +1434,50 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_autoSpaceDN == null) return null;
-                if (_autoSpaceDN.Val == null) return true;
-                return _autoSpaceDN.Val.Value;
+                if (_paragraph != null)
+                {
+                    W.AutoSpaceDN ele = _paragraph.ParagraphProperties?.AutoSpaceDN;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else if (_style != null)
+                {
+                    W.AutoSpaceDN ele = _style.StyleParagraphProperties?.AutoSpaceDN;
+                    if (ele == null) return null;
+                    if (ele.Val == null) return true;
+                    return ele.Val.Value;
+                }
+                else
+                {
+                    return _autoSpaceDN;
+                }
             }
             set
             {
-                if (_autoSpaceDN == null)
+                InitParagraphProperties();
+                if (_paragraph != null)
                 {
-                    _autoSpaceDN = new W.AutoSpaceDN();
-                    if (_pPr != null)
-                        _pPr.AutoSpaceDN = _autoSpaceDN;
-                    else if (_spPr != null)
-                        _spPr.AutoSpaceDN = _autoSpaceDN;
+                    if (_paragraph.ParagraphProperties.AutoSpaceDN == null)
+                    {
+                        _paragraph.ParagraphProperties.AutoSpaceDN = new W.AutoSpaceDN();
+                    }
+                    if (value) _paragraph.ParagraphProperties.AutoSpaceDN.Val = null;
+                    else _paragraph.ParagraphProperties.AutoSpaceDN.Val = false;
                 }
-                if (value)
-                    _autoSpaceDN.Val = null;
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.AutoSpaceDN == null)
+                    {
+                        _style.StyleParagraphProperties.AutoSpaceDN = new W.AutoSpaceDN();
+                    }
+                    if (value) _style.StyleParagraphProperties.AutoSpaceDN.Val = null;
+                    else _style.StyleParagraphProperties.AutoSpaceDN.Val = false;
+                }
                 else
-                    _autoSpaceDN.Val = false;
+                {
+                    _autoSpaceDN = value;
+                }
             }
         }
         #endregion
@@ -1154,33 +1485,189 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Public Methods
+        public Indentation GetLeftIndent()
+        {
+            Indentation ind = new Indentation();
+            W.Indentation ele;
+            if (_paragraph != null)
+            {
+                ele = _paragraph.ParagraphProperties?.Indentation;
+            }
+            else if (_style != null)
+            {
+                ele = _style.StyleParagraphProperties?.Indentation;
+            }
+            else
+            {
+                return _leftInd;
+            }
+            if (ele == null) return null;
+            if (ele.LeftChars != null)
+            {
+                ind.Val = ele.LeftChars / 100.0F;
+                ind.Unit = IndentationUnit.Character;
+            }
+            else if (ele.Left != null)
+            {
+                float.TryParse(ele.Left, out float val);
+                ind.Val = val / 20;
+                ind.Unit = IndentationUnit.Point;
+            }
+            else
+            {
+                return null;
+            }
+            return ind;
+        }
+
+        public void SetLeftIndent(float val, IndentationUnit unit)
+        {
+            InitIndentation();
+            W.Indentation ind;
+            if(_paragraph != null)
+            {
+                ind = _paragraph.ParagraphProperties.Indentation;
+            }
+            else if(_style != null)
+            {
+                ind = _style.StyleParagraphProperties.Indentation;
+            }
+            else
+            {
+                _leftInd = new Indentation(val, unit);
+                return;
+            }
+            if (unit == IndentationUnit.Character)
+            {
+                ind.LeftChars = (int)(val * 100);
+            }
+            else
+            {
+                ind.LeftChars = null;
+                ind.Left = ((int)(val * 20)).ToString();
+            }
+        }
+
         /// <summary>
         /// Remove the text box options of paragraph.
         /// </summary>
         public void RemoveFrame()
         {
-            if (_pPr != null)
-                _pPr.FrameProperties = null;
-            else if (_spPr != null)
-                _spPr.FrameProperties = null;
+            if (_paragraph?.ParagraphProperties?.FrameProperties != null)
+            {
+                _paragraph.ParagraphProperties.FrameProperties = null;
+            }
+            else if(_style?.StyleParagraphProperties?.FrameProperties != null)
+            {
+                _style.StyleParagraphProperties.FrameProperties = null;
+            }
         }
         #endregion
 
         #region Private Methods
-        private void InitParagraph()
+        private void InitParagraphProperties()
         {
-            if(_paragraph.ParagraphProperties == null)
+            if(_paragraph != null)
             {
-                _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                if (_paragraph.ParagraphProperties == null)
+                {
+                    _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                }
+            }
+            else if(_style != null)
+            {
+                if (_style.StyleParagraphProperties == null)
+                {
+                    _style.StyleParagraphProperties = new W.StyleParagraphProperties();
+                }
             }
         }
 
-        private void InitStyle()
+        private void InitIndentation()
         {
-            if(_style.StyleParagraphProperties == null)
+            InitParagraphProperties();
+            if(_paragraph != null)
             {
-                _style.StyleParagraphProperties = new W.StyleParagraphProperties();
+                if (_paragraph.ParagraphProperties.Indentation == null)
+                    _paragraph.ParagraphProperties.Indentation = new W.Indentation();
             }
+            else if(_style != null)
+            {
+                if (_style.StyleParagraphProperties.Indentation == null)
+                    _style.StyleParagraphProperties.Indentation = new W.Indentation();
+            }
+            
+        }
+
+        /// <summary>
+        /// Returns the paragraph format that specified in the style hierarchy of a style.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="style"> The style</param>
+        /// <returns>The paragraph format that specified in the style hierarchy.</returns>
+        private ParagraphPropertiesHolder GetParagraphStyleFormatRecursively(Document doc, W.Style style)
+        {
+            ParagraphPropertiesHolder format = new ParagraphPropertiesHolder();
+            ParagraphPropertiesHolder baseFormat = new ParagraphPropertiesHolder();
+            // Gets base style format.
+            W.Style baseStyle = style.GetBaseStyle(doc);
+            if (baseStyle != null)
+                baseFormat = GetParagraphStyleFormatRecursively(doc, baseStyle);
+
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(doc, style);
+            // Normal
+            format.Justification = curSHld.Justification ?? baseFormat.Justification;
+            format.OutlineLevel = curSHld.OutlineLevel ?? baseFormat.OutlineLevel;
+            // Indentation
+            //format.LeftIndent = curSHld.LeftIndent ?? baseFormat.LeftIndent;
+            //format.LeftCharsIndent = curSHld.LeftCharsIndent ?? baseFormat.LeftCharsIndent;
+            //format.RightIndent = curSHld.RightIndent ?? baseFormat.RightIndent;
+            //format.RightCharsIndent = curSHld.RightCharsIndent ?? baseFormat.RightCharsIndent;
+            //format.FirstLineIndent = curSHld.FirstLineIndent ?? baseFormat.FirstLineIndent;
+            //format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent ?? baseFormat.FirstLineCharsIndent;
+            //format.HangingIndent = curSHld.HangingIndent ?? baseFormat.HangingIndent;
+            //format.HangingCharsIndent = curSHld.HangingCharsIndent ?? baseFormat.HangingCharsIndent;
+            format.MirrorIndents = curSHld.MirrorIndents ?? baseFormat.MirrorIndents;
+            format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
+            // Spacing
+            /*format.BeforeSpacing = curSHld.BeforeSpacing ?? baseFormat.BeforeSpacing;
+            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing ?? baseFormat.BeforeLinesSpacing;
+            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
+            format.AfterSpacing = curSHld.AfterSpacing ?? baseFormat.AfterSpacing;
+            format.AfterLinesSpacing = curSHld.AfterLinesSpacing ?? baseFormat.AfterLinesSpacing;
+            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
+            format.LineSpacing = curSHld.LineSpacing ?? baseFormat.LineSpacing;
+            format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
+                ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;*/
+            format.ContextualSpacing = curSHld.ContextualSpacing ?? baseFormat.ContextualSpacing;
+            format.SnapToGrid = curSHld.SnapToGrid ?? baseFormat.SnapToGrid;
+            // Pagination
+            format.WidowControl = curSHld.WidowControl ?? baseFormat.WidowControl;
+            format.KeepNext = curSHld.KeepNext ?? baseFormat.KeepNext;
+            format.KeepLines = curSHld.KeepLines ?? baseFormat.KeepLines;
+            format.PageBreakBefore = curSHld.PageBreakBefore ?? baseFormat.PageBreakBefore;
+            // Formatting Exceptions
+            format.SuppressLineNumbers = curSHld.SuppressLineNumbers ?? baseFormat.SuppressLineNumbers;
+            format.SuppressAutoHyphens = curSHld.SuppressAutoHyphens ?? baseFormat.SuppressAutoHyphens;
+            // Line Break
+            format.Kinsoku = curSHld.Kinsoku ?? baseFormat.Kinsoku;
+            format.WordWrap = curSHld.WordWrap ?? baseFormat.WordWrap;
+            format.OverflowPunctuation = curSHld.OverflowPunctuation ?? baseFormat.OverflowPunctuation;
+            // Character Spacing
+            format.TopLinePunctuation = curSHld.TopLinePunctuation ?? baseFormat.TopLinePunctuation;
+            format.AutoSpaceDE = curSHld.AutoSpaceDE ?? baseFormat.AutoSpaceDE;
+            format.AutoSpaceDN = curSHld.AutoSpaceDN ?? baseFormat.AutoSpaceDN;
+            // Numbering
+            /*if (curSHld.NumberingFormat != null)
+            {
+                format.NumberingFormat = curSHld.NumberingFormat;
+            }
+            else if (baseFormat.NumberingFormat != null)
+            {
+                format.NumberingFormat = new NumberingFormat(_document, baseFormat.NumberingFormat, style.StyleId);
+            }*/
+
+            return format;
         }
         #endregion
     }
