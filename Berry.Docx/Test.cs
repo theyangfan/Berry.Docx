@@ -24,10 +24,14 @@ namespace Test
             using (Document doc = new Document(src))
             {
                 Paragraph p = doc.LastSection.Paragraphs.Last();
-                TextRange tr = p.ChildItems[2] as TextRange;
-                Console.WriteLine(p.Format.Justification);
-
-                //doc.SaveAs(dst);
+                //TextRange tr = p.ChildItems[2] as TextRange;
+                //p.Format.SetLeftIndent(0, IndentationUnit.Point);
+                //p.Format.SetRightIndent(1.5f, IndentationUnit.Character);
+                //Console.WriteLine(p.Format.GetLeftIndent());
+                //Console.WriteLine(p.Format.GetRightIndent());
+                Console.WriteLine(p.Format.GetSpecialIndentation());
+                //Console.WriteLine(p.GetStyle().ParagraphFormat.GetLeftIndent());
+                doc.SaveAs(dst);
             }
         }
     }

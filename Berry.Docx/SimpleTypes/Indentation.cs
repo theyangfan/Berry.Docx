@@ -15,11 +15,10 @@ namespace Berry.Docx
         public float Val { get; set; }
 
         public IndentationUnit Unit { get; set; }
-    }
 
-    public enum IndentationUnit
-    {
-        Character = 0,
-        Point = 1
+        public override string ToString()
+        {
+            return $"Indentation[{Val} {Unit}]";
+        }
     }
 }

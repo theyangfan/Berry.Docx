@@ -20,8 +20,6 @@ namespace Berry.Docx.Formatting
         // Paragraph Members
         private W.Paragraph _ownerParagraph;
         private ParagraphPropertiesHolder _directPHld;
-        private ParagraphPropertiesHolder _pStyleHld;
-
         // Style Members
         private W.Style _ownerStyle;
         private ParagraphPropertiesHolder _directSHld;
@@ -31,14 +29,6 @@ namespace Berry.Docx.Formatting
         private JustificationType _justification = JustificationType.Both;
         private OutlineLevelType _outlineLevel = OutlineLevelType.BodyText;
         // Indentation
-        private float _leftIndent = -1;
-        private float _rightIndent = -1;
-        private float _leftCharsIndent = -1;
-        private float _rightCharsIndent = -1;
-        private float _firstLineIndent = -1;
-        private float _firstLineCharsIndent = -1;
-        private float _hangingIndent = -1;
-        private float _hangingCharsIndent = -1;
         private bool _mirrorIndents = false;
         private bool _adjustRightIndent = true;
         // Spacing
@@ -88,7 +78,6 @@ namespace Berry.Docx.Formatting
             _doc = document;
             _ownerParagraph = ownerParagraph;
             _directPHld = new ParagraphPropertiesHolder(document, ownerParagraph);
-            _pStyleHld = new ParagraphPropertiesHolder(document, ownerParagraph.GetStyle(document));
         }
 
         /// <summary>
@@ -145,15 +134,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.Justification != null) return _directPHld.Justification;
-                    // paragraph style
-                    if (_pStyleHld.Justification != null) return _pStyleHld.Justification;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.Justification != null) return inheritedStyle.Justification;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.Justification;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.Justification != null) return _directSHld.Justification;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.Justification != null) return inheritedStyle.Justification;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.Justification;
                 }
@@ -190,15 +181,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.OutlineLevel != null) return _directPHld.OutlineLevel;
-                    // paragraph style
-                    if (_pStyleHld.OutlineLevel != null) return _pStyleHld.OutlineLevel;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.OutlineLevel != null) return inheritedStyle.OutlineLevel;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.OutlineLevel;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.OutlineLevel != null) return _directSHld.OutlineLevel;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.OutlineLevel != null) return inheritedStyle.OutlineLevel;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.OutlineLevel;
                 }
@@ -528,15 +521,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.MirrorIndents != null) return _directPHld.MirrorIndents;
-                    // paragraph style
-                    if (_pStyleHld.MirrorIndents != null) return _pStyleHld.MirrorIndents;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.MirrorIndents != null) return inheritedStyle.MirrorIndents;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.MirrorIndents;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.MirrorIndents != null) return _directSHld.MirrorIndents;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.MirrorIndents != null) return inheritedStyle.MirrorIndents;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.MirrorIndents;
                 }
@@ -573,15 +568,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.AdjustRightIndent != null) return _directPHld.AdjustRightIndent;
-                    // paragraph style
-                    if (_pStyleHld.AdjustRightIndent != null) return _pStyleHld.AdjustRightIndent;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.AdjustRightIndent != null) return inheritedStyle.AdjustRightIndent;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.AdjustRightIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.AdjustRightIndent != null) return _directSHld.AdjustRightIndent;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.AdjustRightIndent != null) return inheritedStyle.AdjustRightIndent;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.AdjustRightIndent;
                 }
@@ -911,15 +908,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.ContextualSpacing != null) return _directPHld.ContextualSpacing;
-                    // paragraph style
-                    if (_pStyleHld.ContextualSpacing != null) return _pStyleHld.ContextualSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.ContextualSpacing != null) return inheritedStyle.ContextualSpacing;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.ContextualSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.ContextualSpacing != null) return _directSHld.ContextualSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.ContextualSpacing != null) return inheritedStyle.ContextualSpacing;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.ContextualSpacing;
                 }
@@ -956,15 +955,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.SnapToGrid != null) return _directPHld.SnapToGrid;
-                    // paragraph style
-                    if (_pStyleHld.SnapToGrid != null) return _pStyleHld.SnapToGrid;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.SnapToGrid != null) return inheritedStyle.SnapToGrid;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.SnapToGrid;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.SnapToGrid != null) return _directSHld.SnapToGrid;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.SnapToGrid != null) return inheritedStyle.SnapToGrid;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.SnapToGrid;
                 }
@@ -1004,15 +1005,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.WidowControl != null) return _directPHld.WidowControl;
-                    // paragraph style
-                    if (_pStyleHld.WidowControl != null) return _pStyleHld.WidowControl;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.WidowControl != null) return inheritedStyle.WidowControl;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.WidowControl;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.WidowControl != null) return _directSHld.WidowControl;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.WidowControl != null) return inheritedStyle.WidowControl;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.WidowControl;
                 }
@@ -1049,15 +1052,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.KeepNext != null) return _directPHld.KeepNext;
-                    // paragraph style
-                    if (_pStyleHld.KeepNext != null) return _pStyleHld.KeepNext;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.KeepNext != null) return inheritedStyle.KeepNext;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.KeepNext;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.KeepNext != null) return _directSHld.KeepNext;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.KeepNext != null) return inheritedStyle.KeepNext;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.KeepNext;
                 }
@@ -1094,15 +1099,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.KeepLines != null) return _directPHld.KeepLines;
-                    // paragraph style
-                    if (_pStyleHld.KeepLines != null) return _pStyleHld.KeepLines;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.KeepLines != null) return inheritedStyle.KeepLines;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.KeepLines;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.KeepLines != null) return _directSHld.KeepLines;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.KeepLines != null) return inheritedStyle.KeepLines;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.KeepLines;
                 }
@@ -1139,15 +1146,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.PageBreakBefore != null) return _directPHld.PageBreakBefore;
-                    // paragraph style
-                    if (_pStyleHld.PageBreakBefore != null) return _pStyleHld.PageBreakBefore;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.PageBreakBefore != null) return inheritedStyle.PageBreakBefore;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.PageBreakBefore;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.PageBreakBefore != null) return _directSHld.PageBreakBefore;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.PageBreakBefore != null) return inheritedStyle.PageBreakBefore;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.PageBreakBefore;
                 }
@@ -1186,15 +1195,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.SuppressLineNumbers != null) return _directPHld.SuppressLineNumbers;
-                    // paragraph style
-                    if (_pStyleHld.SuppressLineNumbers != null) return _pStyleHld.SuppressLineNumbers;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.SuppressLineNumbers != null) return inheritedStyle.SuppressLineNumbers;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.SuppressLineNumbers;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.SuppressLineNumbers != null) return _directSHld.SuppressLineNumbers;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.SuppressLineNumbers != null) return inheritedStyle.SuppressLineNumbers;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.SuppressLineNumbers;
                 }
@@ -1231,15 +1242,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.SuppressAutoHyphens != null) return _directPHld.SuppressAutoHyphens;
-                    // paragraph style
-                    if (_pStyleHld.SuppressAutoHyphens != null) return _pStyleHld.SuppressAutoHyphens;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.SuppressAutoHyphens != null) return inheritedStyle.SuppressAutoHyphens;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.SuppressAutoHyphens;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.SuppressAutoHyphens != null) return _directSHld.SuppressAutoHyphens;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.SuppressAutoHyphens != null) return inheritedStyle.SuppressAutoHyphens;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.SuppressAutoHyphens;
                 }
@@ -1278,15 +1291,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.Kinsoku != null) return _directPHld.Kinsoku;
-                    // paragraph style
-                    if (_pStyleHld.Kinsoku != null) return _pStyleHld.Kinsoku;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.Kinsoku != null) return inheritedStyle.Kinsoku;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.Kinsoku;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.Kinsoku != null) return _directSHld.Kinsoku;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.Kinsoku != null) return inheritedStyle.Kinsoku;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.Kinsoku;
                 }
@@ -1323,15 +1338,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.WordWrap != null) return _directPHld.WordWrap;
-                    // paragraph style
-                    if (_pStyleHld.WordWrap != null) return _pStyleHld.WordWrap;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.WordWrap != null) return inheritedStyle.WordWrap;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.WordWrap;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.WordWrap != null) return _directSHld.WordWrap;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.WordWrap != null) return inheritedStyle.WordWrap;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.WordWrap;
                 }
@@ -1368,15 +1385,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.OverflowPunctuation != null) return _directPHld.OverflowPunctuation;
-                    // paragraph style
-                    if (_pStyleHld.OverflowPunctuation != null) return _pStyleHld.OverflowPunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.OverflowPunctuation != null) return inheritedStyle.OverflowPunctuation;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.OverflowPunctuation;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.OverflowPunctuation != null) return _directSHld.OverflowPunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.OverflowPunctuation != null) return inheritedStyle.OverflowPunctuation;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.OverflowPunctuation;
                 }
@@ -1415,15 +1434,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.TopLinePunctuation != null) return _directPHld.TopLinePunctuation;
-                    // paragraph style
-                    if (_pStyleHld.TopLinePunctuation != null) return _pStyleHld.TopLinePunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.TopLinePunctuation != null) return inheritedStyle.TopLinePunctuation;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.TopLinePunctuation;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.TopLinePunctuation != null) return _directSHld.TopLinePunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.TopLinePunctuation != null) return inheritedStyle.TopLinePunctuation;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.TopLinePunctuation;
                 }
@@ -1460,15 +1481,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.AutoSpaceDE != null) return _directPHld.AutoSpaceDE;
-                    // paragraph style
-                    if (_pStyleHld.AutoSpaceDE != null) return _pStyleHld.AutoSpaceDE;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.AutoSpaceDE != null) return inheritedStyle.AutoSpaceDE;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDE;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.AutoSpaceDE != null) return _directSHld.AutoSpaceDE;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.AutoSpaceDE != null) return inheritedStyle.AutoSpaceDE;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDE;
                 }
@@ -1505,15 +1528,17 @@ namespace Berry.Docx.Formatting
                 {
                     // direct formatting
                     if (_directPHld.AutoSpaceDN != null) return _directPHld.AutoSpaceDN;
-                    // paragraph style
-                    if (_pStyleHld.AutoSpaceDN != null) return _pStyleHld.AutoSpaceDN;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.AutoSpaceDN != null) return inheritedStyle.AutoSpaceDN;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDN;
                 }
                 else if (_ownerStyle != null)
                 {
-                    // paragraph style
-                    if (_directSHld.AutoSpaceDN != null) return _directSHld.AutoSpaceDN;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.AutoSpaceDN != null) return inheritedStyle.AutoSpaceDN;
                     // document defaults
                     return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDN;
                 }
@@ -1543,6 +1568,264 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Public Methods
+        public Indentation GetLeftIndent()
+        {
+            FloatValue leftInd = null;
+            FloatValue leftIndChars = null;
+            FloatValue hangingInd = null;
+            FloatValue hangingIndChars = null;
+            if (_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                leftInd = _directPHld.LeftIndent ?? inheritedStyle.LeftIndent;
+                leftIndChars = _directPHld.LeftCharsIndent ?? inheritedStyle.LeftCharsIndent;
+                hangingInd = _directPHld.HangingIndent?? inheritedStyle.HangingIndent;
+                hangingIndChars = _directPHld.HangingCharsIndent ?? inheritedStyle.HangingCharsIndent;
+            }
+            else if (_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                leftInd = inheritedStyle.LeftIndent;
+                leftIndChars = inheritedStyle.LeftCharsIndent;
+                hangingInd = inheritedStyle.HangingIndent;
+                hangingIndChars = inheritedStyle.HangingCharsIndent;
+            }
+            // 字符
+            if (leftIndChars != null && leftIndChars != 0)
+            {
+                return new Indentation(leftIndChars, IndentationUnit.Character);
+            }
+            // 磅
+            if (hangingIndChars == null || hangingIndChars == 0)
+            {
+                if (hangingInd != null && hangingInd > 0)
+                {
+                    return new Indentation((leftInd ?? 0) - hangingInd, IndentationUnit.Point);
+                }
+                else
+                {
+                    if(leftInd != null && leftInd != 0) return new Indentation(leftInd, IndentationUnit.Point);
+                }
+            }
+            return new Indentation(0, IndentationUnit.Character);
+        }
+
+        public void SetLeftIndent(float val, IndentationUnit unit)
+        {
+            if(_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                FloatValue hangingInd = _directPHld.HangingIndent ?? inheritedStyle.HangingIndent;
+                FloatValue hangingIndChars = _directPHld.HangingCharsIndent ?? inheritedStyle.HangingCharsIndent;
+                if(unit == IndentationUnit.Character)
+                {
+                    if (val == 0)
+                    {
+                        _directPHld.LeftIndent = 0;
+                        if ((hangingIndChars == null || hangingIndChars == 0)
+                            && (hangingInd != null && hangingInd > 0))
+                            _directPHld.LeftIndent = hangingInd;
+                    }
+                    _directPHld.LeftCharsIndent = val;
+                }
+                else
+                {
+                    _directPHld.LeftCharsIndent = 0;
+                    if ((hangingIndChars == null || hangingIndChars == 0)
+                            && (hangingInd != null && hangingInd > 0))
+                    {
+                        _directPHld.LeftIndent = val + hangingInd;
+                    }
+                    else
+                    {
+                        _directPHld.LeftIndent = val;
+                    }
+                }
+            }
+            else if(_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                FloatValue hangingInd = inheritedStyle.HangingIndent;
+                FloatValue hangingIndChars = inheritedStyle.HangingCharsIndent;
+                if (unit == IndentationUnit.Character)
+                {
+                    if (val == 0)
+                    {
+                        _directSHld.LeftIndent = 0;
+                        if ((hangingIndChars == null || hangingIndChars == 0)
+                            && (hangingInd != null && hangingInd > 0))
+                            _directSHld.LeftIndent = hangingInd;
+                    }
+                    _directSHld.LeftCharsIndent = val;
+                }
+                else
+                {
+                    _directSHld.LeftCharsIndent = 0;
+                    if ((hangingIndChars == null || hangingIndChars == 0)
+                            && (hangingInd != null && hangingInd > 0))
+                    {
+                        _directSHld.LeftIndent = val + hangingInd;
+                    }
+                    else
+                    {
+                        _directSHld.LeftIndent = val;
+                    }
+                }
+            }
+        }
+
+        public Indentation GetRightIndent()
+        {
+            FloatValue rightInd = null;
+            FloatValue rightIndChars = null;
+            if (_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                rightInd = _directPHld.RightIndent ?? inheritedStyle.RightIndent;
+                rightIndChars = _directPHld.RightCharsIndent ?? inheritedStyle.RightCharsIndent;
+            }
+            else if (_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                rightInd = inheritedStyle.RightIndent;
+                rightIndChars = inheritedStyle.RightCharsIndent;
+            }
+            // 字符
+            if (rightIndChars != null && rightIndChars != 0)
+            {
+                return new Indentation(rightIndChars, IndentationUnit.Character);
+            }
+            // 磅
+            if (rightInd != null && rightInd != 0)
+            {
+                return new Indentation(rightInd, IndentationUnit.Point);
+            }
+            return new Indentation(0, IndentationUnit.Character);
+        }
+
+        public void SetRightIndent(float val, IndentationUnit unit)
+        {
+            if (_ownerParagraph != null)
+            {
+                if (unit == IndentationUnit.Character)
+                {
+                    if (val == 0)
+                    {
+                        _directPHld.RightIndent = 0;
+                    }
+                    _directPHld.RightCharsIndent = val;
+                }
+                else
+                {
+                    _directPHld.RightCharsIndent = 0;
+                    _directPHld.RightIndent = val;
+                }
+            }
+            else if (_ownerStyle != null)
+            {
+                if (unit == IndentationUnit.Character)
+                {
+                    if (val == 0)
+                    {
+                        _directSHld.RightIndent = 0;
+                    }
+                    _directSHld.RightCharsIndent = val;
+                }
+                else
+                {
+                    _directSHld.RightCharsIndent = 0;
+                    _directSHld.RightIndent = val;
+                }
+            }
+        }
+
+        public SpecialIndentation GetSpecialIndentation()
+        {
+            FloatValue firstLineInd = null;
+            FloatValue firstLineIndChars = null;
+            FloatValue hangingInd = null;
+            FloatValue hangingIndChars = null;
+            if(_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                firstLineInd = _directPHld.FirstLineIndent ?? inheritedStyle.FirstLineIndent;
+                firstLineIndChars = _directPHld.FirstLineCharsIndent ?? inheritedStyle.FirstLineCharsIndent;
+                hangingInd = _directPHld.HangingIndent ?? inheritedStyle.HangingIndent;
+                hangingIndChars = _directPHld.HangingCharsIndent ?? inheritedStyle.HangingCharsIndent;
+            }
+            else if(_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                firstLineInd = inheritedStyle.FirstLineIndent;
+                firstLineIndChars = inheritedStyle.FirstLineCharsIndent;
+                hangingInd = inheritedStyle.HangingIndent;
+                hangingIndChars = inheritedStyle.HangingCharsIndent;
+            }
+            if(hangingIndChars != null && hangingIndChars != 0)
+            {
+                if(hangingIndChars > 0)
+                    return new SpecialIndentation(SpecialIndentationType.Hanging, hangingIndChars, IndentationUnit.Character);
+                else
+                    return new SpecialIndentation(SpecialIndentationType.FirstLine, -hangingIndChars, IndentationUnit.Character);
+            } // hangingIndChars == null 或 0
+            if (hangingInd != null && hangingInd != 0)
+            {
+                if((hangingIndChars != null && hangingIndChars == 0)
+                    || firstLineIndChars == null || firstLineIndChars == 0)
+                {
+                    if (hangingInd > 0)
+                        return new SpecialIndentation(SpecialIndentationType.Hanging, hangingInd, IndentationUnit.Point);
+                    else
+                        return new SpecialIndentation(SpecialIndentationType.FirstLine, -hangingInd, IndentationUnit.Point);
+                }
+            } // hangingInd == null 或 0
+            if(hangingIndChars != null && hangingIndChars == 0 && hangingInd != null && hangingInd == 0)
+            {
+                return new SpecialIndentation(SpecialIndentationType.None, 0, IndentationUnit.Character);
+            }
+            if(firstLineIndChars != null && firstLineIndChars != 0 && hangingIndChars == null)
+            {
+                if (firstLineIndChars > 0)
+                    return new SpecialIndentation(SpecialIndentationType.FirstLine, firstLineIndChars, IndentationUnit.Character);
+                else
+                    return new SpecialIndentation(SpecialIndentationType.Hanging, -firstLineIndChars, IndentationUnit.Character);
+            }
+            if(firstLineInd != null && firstLineInd != 0
+                && hangingInd == null 
+                || (hangingIndChars == null && (firstLineIndChars == null || firstLineIndChars == 0))
+                || (hangingIndChars != null && hangingIndChars == 0))
+            {
+                if (firstLineInd > 0)
+                    return new SpecialIndentation(SpecialIndentationType.FirstLine, firstLineInd, IndentationUnit.Point);
+                else
+                    return new SpecialIndentation(SpecialIndentationType.Hanging, -firstLineInd, IndentationUnit.Point);
+            }
+            return new SpecialIndentation(SpecialIndentationType.None, 0, IndentationUnit.Character);
+        }
+
+        public void SetSpecialIndentation(SpecialIndentationType type, float val, IndentationUnit unit)
+        {
+            if(_ownerParagraph != null)
+            {
+                if (type == SpecialIndentationType.FirstLine)
+                {
+                    if(unit == IndentationUnit.Character)
+                    {
+                        _directPHld.HangingIndent = 0;
+                        _directPHld.HangingCharsIndent = 0;
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            else if(_ownerStyle != null)
+            {
+
+            }
+        }
+
         /// <summary>
         /// Remove the text box options of paragraph.
         /// </summary>

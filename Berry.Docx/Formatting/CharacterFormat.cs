@@ -143,7 +143,7 @@ namespace Berry.Docx.Formatting
                     {
                         return _directSHld.FontNameEastAsia;
                     }
-                    // character & paragraph style
+                    // character & paragraph styles
                     RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
                     if(style.FontNameEastAsia != null)
                         return style.FontNameEastAsia;

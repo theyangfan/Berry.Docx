@@ -588,4 +588,38 @@ namespace Berry.Docx
         /// </summary>
         None = 17
     }
+
+    /// <summary>
+    /// Defines the Indentation Unit enumeration. 
+    /// </summary>
+    public enum IndentationUnit
+    {
+        /// <summary>
+        /// Character Unit.
+        /// </summary>
+        Character = 0,
+        /// <summary>
+        /// Point Unit.
+        /// </summary>
+        Point = 1
+    }
+
+    /// <summary>
+    /// Defines the SpecialIndentation Type enumeration. 
+    /// </summary>
+    public enum SpecialIndentationType
+    {
+        /// <summary>
+        /// None Indentation.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// FirstLine Indentation.
+        /// </summary>
+        FirstLine = 1,
+        /// <summary>
+        /// Hanging Indentation.
+        /// </summary>
+        Hanging = 2
+    }
 }
