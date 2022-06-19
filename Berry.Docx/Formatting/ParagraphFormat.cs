@@ -1596,7 +1596,21 @@ namespace Berry.Docx.Formatting
                 return new Indentation(leftIndChars, IndentationUnit.Character);
             }
             // 磅
-            if (hangingIndChars == null || hangingIndChars == 0)
+            if (_ownerParagraph != null)
+            {
+                if (hangingIndChars == null || hangingIndChars == 0)
+                {
+                    if (hangingInd != null && hangingInd > 0)
+                    {
+                        return new Indentation((leftInd ?? 0) - hangingInd, IndentationUnit.Point);
+                    }
+                    else
+                    {
+                        if (leftInd != null && leftInd != 0) return new Indentation(leftInd, IndentationUnit.Point);
+                    }
+                }
+            }
+            else if(_ownerStyle != null)
             {
                 if (hangingInd != null && hangingInd > 0)
                 {
@@ -1604,9 +1618,10 @@ namespace Berry.Docx.Formatting
                 }
                 else
                 {
-                    if(leftInd != null && leftInd != 0) return new Indentation(leftInd, IndentationUnit.Point);
+                    if (leftInd != null && leftInd != 0) return new Indentation(leftInd, IndentationUnit.Point);
                 }
             }
+            
             return new Indentation(0, IndentationUnit.Character);
         }
 
@@ -1622,8 +1637,7 @@ namespace Berry.Docx.Formatting
                     if (val == 0)
                     {
                         _directPHld.LeftIndent = 0;
-                        if ((hangingIndChars == null || hangingIndChars == 0)
-                            && (hangingInd != null && hangingInd > 0))
+                        if (hangingInd != null && hangingInd > 0)
                             _directPHld.LeftIndent = hangingInd;
                     }
                     _directPHld.LeftCharsIndent = val;
@@ -1631,8 +1645,7 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _directPHld.LeftCharsIndent = 0;
-                    if ((hangingIndChars == null || hangingIndChars == 0)
-                            && (hangingInd != null && hangingInd > 0))
+                    if (hangingInd != null && hangingInd > 0)
                     {
                         _directPHld.LeftIndent = val + hangingInd;
                     }
@@ -1652,8 +1665,7 @@ namespace Berry.Docx.Formatting
                     if (val == 0)
                     {
                         _directSHld.LeftIndent = 0;
-                        if ((hangingIndChars == null || hangingIndChars == 0)
-                            && (hangingInd != null && hangingInd > 0))
+                        if (hangingInd != null && hangingInd > 0)
                             _directSHld.LeftIndent = hangingInd;
                     }
                     _directSHld.LeftCharsIndent = val;
@@ -1661,8 +1673,7 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _directSHld.LeftCharsIndent = 0;
-                    if ((hangingIndChars == null || hangingIndChars == 0)
-                            && (hangingInd != null && hangingInd > 0))
+                    if (hangingInd != null && hangingInd > 0)
                     {
                         _directSHld.LeftIndent = val + hangingInd;
                     }
@@ -1747,11 +1758,64 @@ namespace Berry.Docx.Formatting
             FloatValue hangingIndChars = null;
             if(_ownerParagraph != null)
             {
-                ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
-                firstLineInd = _directPHld.FirstLineIndent ?? inheritedStyle.FirstLineIndent;
-                firstLineIndChars = _directPHld.FirstLineCharsIndent ?? inheritedStyle.FirstLineCharsIndent;
-                hangingInd = _directPHld.HangingIndent ?? inheritedStyle.HangingIndent;
-                hangingIndChars = _directPHld.HangingCharsIndent ?? inheritedStyle.HangingCharsIndent;
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                // HangingChars
+                hangingIndChars = _directPHld.HangingCharsIndent;
+                if (hangingIndChars != null && hangingIndChars != 0)
+                {
+                    if (hangingIndChars > 0)
+                        return new SpecialIndentation(SpecialIndentationType.Hanging, hangingIndChars, IndentationUnit.Character);
+                    else
+                        return new SpecialIndentation(SpecialIndentationType.FirstLine, -hangingIndChars, IndentationUnit.Character);
+                }
+                hangingIndChars = style.HangingCharsIndent;
+                if (hangingIndChars != null && hangingIndChars != 0
+                    && _directPHld.HangingCharsIndent == null && _directPHld.FirstLineCharsIndent == null)
+                {
+                    if (hangingIndChars > 0)
+                        return new SpecialIndentation(SpecialIndentationType.Hanging, hangingIndChars, IndentationUnit.Character);
+                    else
+                        return new SpecialIndentation(SpecialIndentationType.FirstLine, -hangingIndChars, IndentationUnit.Character);
+                }
+                // firstLineChars
+                firstLineIndChars = _directPHld.FirstLineCharsIndent;
+                if(firstLineIndChars != null && firstLineIndChars != 0 && _directPHld.HangingCharsIndent == null)
+                {
+                    if (firstLineIndChars > 0)
+                        return new SpecialIndentation(SpecialIndentationType.FirstLine, firstLineIndChars, IndentationUnit.Character);
+                    else
+                        return new SpecialIndentation(SpecialIndentationType.Hanging, -firstLineIndChars, IndentationUnit.Character);
+                }
+                firstLineIndChars = style.FirstLineCharsIndent;
+                if (firstLineIndChars != null && firstLineIndChars != 0
+                    && _directPHld.HangingCharsIndent == null && _directPHld.FirstLineCharsIndent == null)
+                {
+                    if (firstLineIndChars > 0)
+                        return new SpecialIndentation(SpecialIndentationType.FirstLine, firstLineIndChars, IndentationUnit.Character);
+                    else
+                        return new SpecialIndentation(SpecialIndentationType.Hanging, -firstLineIndChars, IndentationUnit.Character);
+                }
+                // hanging
+                hangingInd = _directPHld.HangingIndent;
+                if (hangingInd != null && hangingInd != 0)
+                {
+                    if(_directPHld.HangingCharsIndent != null && _directPHld.HangingCharsIndent == 0)
+                    {
+                        if (hangingInd > 0)
+                            return new SpecialIndentation(SpecialIndentationType.Hanging, hangingInd, IndentationUnit.Point);
+                        else
+                            return new SpecialIndentation(SpecialIndentationType.FirstLine, -hangingInd, IndentationUnit.Point);
+                    }
+                    if(_directPHld.HangingCharsIndent == null 
+                        && _directPHld.FirstLineCharsIndent != null && _directPHld.FirstLineCharsIndent == 0)
+                    {
+                        if (hangingInd > 0)
+                            return new SpecialIndentation(SpecialIndentationType.Hanging, hangingInd, IndentationUnit.Point);
+                        else
+                            return new SpecialIndentation(SpecialIndentationType.FirstLine, -hangingInd, IndentationUnit.Point);
+                    }
+
+                }
             }
             else if(_ownerStyle != null)
             {
@@ -1791,9 +1855,9 @@ namespace Berry.Docx.Formatting
                     return new SpecialIndentation(SpecialIndentationType.Hanging, -firstLineIndChars, IndentationUnit.Character);
             }
             if(firstLineInd != null && firstLineInd != 0
-                && hangingInd == null 
-                || (hangingIndChars == null && (firstLineIndChars == null || firstLineIndChars == 0))
-                || (hangingIndChars != null && hangingIndChars == 0))
+                && hangingInd == null
+                && ((hangingIndChars == null && (firstLineIndChars == null || firstLineIndChars == 0))
+                || (hangingIndChars != null && hangingIndChars == 0)))
             {
                 if (firstLineInd > 0)
                     return new SpecialIndentation(SpecialIndentationType.FirstLine, firstLineInd, IndentationUnit.Point);
@@ -1813,6 +1877,7 @@ namespace Berry.Docx.Formatting
                     {
                         _directPHld.HangingIndent = 0;
                         _directPHld.HangingCharsIndent = 0;
+
                     }
                     else
                     {
