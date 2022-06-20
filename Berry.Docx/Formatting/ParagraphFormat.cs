@@ -1357,7 +1357,149 @@ namespace Berry.Docx.Formatting
         {
             if(_ownerParagraph != null)
             {
+                if(unit == SpacingUnit.Line)
+                {
+                    _directPHld.BeforeSpacing = val * 5;
+                    _directPHld.BeforeLinesSpacing = val;
+                }
+                else
+                {
+                    _directPHld.BeforeLinesSpacing = 0;
+                    _directPHld.BeforeSpacing = val;
+                }
+            }
+            else if(_ownerStyle != null)
+            {
+                if (unit == SpacingUnit.Line)
+                {
+                    _directSHld.BeforeSpacing = val * 5;
+                    _directSHld.BeforeLinesSpacing = val;
+                }
+                else
+                {
+                    _directSHld.BeforeLinesSpacing = 0;
+                    _directSHld.BeforeSpacing = val;
+                }
+            }
+        }
 
+        public Spacing GetAfterSpacing()
+        {
+            FloatValue afterSpacing = null;
+            FloatValue afterSpacingLines = null;
+            if (_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                afterSpacing = _directPHld.AfterSpacing ?? style.AfterSpacing;
+                afterSpacingLines = _directPHld.AfterLinesSpacing ?? style.AfterLinesSpacing;
+            }
+            else if (_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                afterSpacing = style.AfterSpacing;
+                afterSpacingLines = style.AfterLinesSpacing;
+            }
+            if (afterSpacingLines != null && afterSpacingLines != 0)
+            {
+                return new Spacing(afterSpacingLines, SpacingUnit.Line);
+            }
+            else if (afterSpacing != null && afterSpacing != 0)
+            {
+                return new Spacing(afterSpacing, SpacingUnit.Point);
+            }
+            return new Spacing(0, SpacingUnit.Line);
+        }
+
+        public void SetAfterSpacing(float val, SpacingUnit unit)
+        {
+            if (_ownerParagraph != null)
+            {
+                if (unit == SpacingUnit.Line)
+                {
+                    _directPHld.AfterSpacing = val * 5;
+                    _directPHld.AfterLinesSpacing = val;
+                }
+                else
+                {
+                    _directPHld.AfterLinesSpacing = 0;
+                    _directPHld.AfterSpacing = val;
+                }
+            }
+            else if (_ownerStyle != null)
+            {
+                if (unit == SpacingUnit.Line)
+                {
+                    _directSHld.AfterSpacing = val * 5;
+                    _directSHld.AfterLinesSpacing = val;
+                }
+                else
+                {
+                    _directSHld.AfterLinesSpacing = 0;
+                    _directSHld.AfterSpacing = val;
+                }
+            }
+        }
+
+        public LineSpacing GetLineSpacing()
+        {
+            FloatValue lineSpacing = null;
+            EnumValue<LineSpacingRule> rule = null; 
+            if(_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                lineSpacing = _directPHld.LineSpacing ?? style.LineSpacing;
+                rule = _directPHld.LineSpacingRule ?? style.LineSpacingRule;
+            }
+            else if(_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                lineSpacing = style.LineSpacing;
+                rule = style.LineSpacingRule;
+            }
+            if(rule != null && lineSpacing != null)
+            {
+                if (rule == LineSpacingRule.Multiple)
+                    return new LineSpacing(lineSpacing / 12, rule);
+                else
+                    return new LineSpacing(lineSpacing, rule);
+            }
+            else if(lineSpacing != null)
+            {
+                return new LineSpacing(lineSpacing / 12, LineSpacingRule.Multiple);
+            }
+            else
+            {
+                return new LineSpacing(1, LineSpacingRule.Multiple);
+            }
+        }
+
+        public void SetLineSpacing(float val, LineSpacingRule rule)
+        {
+            if(_ownerParagraph != null)
+            {
+                if(rule == LineSpacingRule.Multiple)
+                {
+                    _directPHld.LineSpacing = val * 12;
+                    _directPHld.LineSpacingRule = rule;
+                }
+                else
+                {
+                    _directPHld.LineSpacing = val;
+                    _directPHld.LineSpacingRule = rule;
+                }   
+            }
+            else if(_ownerStyle != null)
+            {
+                if (rule == LineSpacingRule.Multiple)
+                {
+                    _directSHld.LineSpacing = val * 12;
+                    _directSHld.LineSpacingRule = rule;
+                }
+                else
+                {
+                    _directSHld.LineSpacing = val;
+                    _directSHld.LineSpacingRule = rule;
+                }
             }
         }
 
