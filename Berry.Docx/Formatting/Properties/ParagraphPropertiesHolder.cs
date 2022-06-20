@@ -28,7 +28,14 @@ namespace Berry.Docx.Formatting
         private BooleanValue _mirrorIndents;
         private BooleanValue _adjustRightInd;
         // Spacing
-        private W.SpacingBetweenLines _spacing;
+        private FloatValue _beforeSpacing;
+        private FloatValue _beforeSpacingLines;
+        private BooleanValue _beforeAutoSpacing;
+        private FloatValue _afterSpacing;
+        private FloatValue _afterSpacingLines;
+        private BooleanValue _afterAutoSpacing;
+        private FloatValue _lineSpacing;
+        private EnumValue<LineSpacingRule> _lineSpacingRule;
         private BooleanValue _contextualSpacing;
         private BooleanValue _snapToGrid;
         // Pagination
@@ -432,7 +439,10 @@ namespace Berry.Docx.Formatting
                     _firstLineInd = value;
                     return;
                 }
-                ind.FirstLine = ((int)(value * 20)).ToString();
+                if(value != null)
+                    ind.FirstLine = ((int)(value * 20)).ToString();
+                else
+                    ind.FirstLine = null;
             }
         }
 
@@ -476,7 +486,10 @@ namespace Berry.Docx.Formatting
                     _firstLineIndChars = value;
                     return;
                 }
-                ind.FirstLineChars = (int)(value * 100);
+                if(value != null)
+                    ind.FirstLineChars = (int)(value * 100);
+                else 
+                    ind.FirstLineChars = null;
             }
         }
         /// <summary>
@@ -520,7 +533,10 @@ namespace Berry.Docx.Formatting
                     _hangingInd = value;
                     return;
                 }
-                ind.Hanging = ((int)(value * 20)).ToString();
+                if (value != null)
+                    ind.Hanging = ((int)(value * 20)).ToString();
+                else
+                    ind.Hanging = null;
             }
         }
         /// <summary>
@@ -563,7 +579,10 @@ namespace Berry.Docx.Formatting
                     _hangingIndChars = value;
                     return;
                 }
-                ind.HangingChars = (int)(value * 100);
+                if (value != null)
+                    ind.HangingChars = (int)(value * 100);
+                else
+                    ind.HangingChars = null;
             }
         }
 
@@ -685,21 +704,41 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                float val = 0;
-                if (_spacing.Before == null) return null;
-                float.TryParse(_spacing.Before, out val);
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
+                {
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
+                }
+                else
+                {
+                    return _beforeSpacing;
+                }
+                if (ele?.Before == null) return null;
+                float.TryParse(ele.Before, out float val);
                 return val / 20;
             }
             set
             {
-                if (value >= 0)
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
                 {
-                    _spacing.Before = (value * 20).ToString();
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
                 }
                 else
                 {
-                    _spacing.Before = null;
+                    _beforeSpacing = value;
+                    return;
                 }
+                spacing.Before = ((int)(value * 20)).ToString();
             }
         }
 
@@ -710,21 +749,40 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                float val = 0;
-                if (_spacing.BeforeLines == null) return null;
-                float.TryParse(_spacing.BeforeLines, out val);
-                return val / 100;
-            }
-            set
-            {
-                if (value >= 0)
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
                 {
-                    _spacing.BeforeLines = (int)(value * 100);
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
                 }
                 else
                 {
-                    _spacing.BeforeLines = null;
+                    return _beforeSpacingLines;
                 }
+                if (ele?.BeforeLines == null) return null;
+                return ele.BeforeLines.Value / 100.0F;
+            }
+            set
+            {
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
+                {
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
+                }
+                else
+                {
+                    _beforeSpacingLines = value;
+                    return;
+                }
+                spacing.BeforeLines = (int)(value * 100);
             }
         }
 
@@ -735,15 +793,40 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_spacing.BeforeAutoSpacing == null) return null;
-                return _spacing.BeforeAutoSpacing.Value;
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
+                {
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
+                }
+                else
+                {
+                    return _beforeAutoSpacing;
+                }
+                if (ele?.BeforeAutoSpacing == null) return null;
+                return ele.BeforeAutoSpacing.Value;
             }
             set
             {
-                if (value)
-                    _spacing.BeforeAutoSpacing = true;
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
+                {
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
+                }
                 else
-                    _spacing.BeforeAutoSpacing = false;
+                {
+                    _beforeAutoSpacing = value;
+                    return;
+                }
+                spacing.BeforeAutoSpacing = value.Val;
             }
         }
 
@@ -754,21 +837,41 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                float val = 0;
-                if (_spacing.After == null) return null;
-                float.TryParse(_spacing.After, out val);
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
+                {
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
+                }
+                else
+                {
+                    return _afterSpacing;
+                }
+                if (ele?.After == null) return null;
+                float.TryParse(ele.After, out float val);
                 return val / 20;
             }
             set
             {
-                if (value >= 0)
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
                 {
-                    _spacing.After = (value * 20).ToString();
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
                 }
                 else
                 {
-                    _spacing.After = null;
+                    _afterSpacing = value;
+                    return;
                 }
+                spacing.After = ((int)(value * 20)).ToString();
             }
         }
 
@@ -779,21 +882,40 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                float val = 0;
-                if (_spacing.AfterLines == null) return null;
-                float.TryParse(_spacing.AfterLines, out val);
-                return val / 100;
-            }
-            set
-            {
-                if (value >= 0)
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
                 {
-                    _spacing.AfterLines = (int)(value * 100);
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
                 }
                 else
                 {
-                    _spacing.AfterLines = null;
+                    return _afterSpacingLines;
                 }
+                if (ele?.AfterLines == null) return null;
+                return ele.AfterLines.Value / 100.0F;
+            }
+            set
+            {
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
+                {
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
+                }
+                else
+                {
+                    _afterSpacingLines = value;
+                    return;
+                }
+                spacing.AfterLines = (int)(value * 100);
             }
         }
 
@@ -804,15 +926,40 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if (_spacing.AfterAutoSpacing == null) return null;
-                return _spacing.AfterAutoSpacing.Value;
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
+                {
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
+                }
+                else
+                {
+                    return _afterAutoSpacing;
+                }
+                if (ele?.AfterAutoSpacing == null) return null;
+                return ele.AfterAutoSpacing.Value;
             }
             set
             {
-                if (value)
-                    _spacing.AfterAutoSpacing = true;
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
+                {
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
+                }
                 else
-                    _spacing.AfterAutoSpacing = false;
+                {
+                    _afterAutoSpacing = value;
+                    return;
+                }
+                spacing.AfterAutoSpacing = value.Val;
             }
         }
 
@@ -823,57 +970,94 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                float val = 0;
-                if (_spacing.Line == null) return null;
-                float.TryParse(_spacing.Line, out val);
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
+                {
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
+                }
+                else
+                {
+                    return _lineSpacing;
+                }
+                if (ele?.Line == null) return null;
+                float.TryParse(ele.Line, out float val);
                 return val / 20;
             }
             set
             {
-                if (value >= 0)
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
                 {
-                    _spacing.Line = (value * 20).ToString();
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
+                }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
                 }
                 else
                 {
-                    _spacing.Line = null;
+                    _lineSpacing = value;
+                    return;
                 }
+                spacing.Line = ((int)(value * 20)).ToString();
             }
         }
         /// <summary>
         /// Gets or sets the line spacing rule of paragraph.
         /// </summary>
-        public LineSpacingRule LineSpacingRule
+        public EnumValue<LineSpacingRule> LineSpacingRule
         {
             get
             {
-                if ( _spacing.LineRule == null) return LineSpacingRule.None;
-                switch (_spacing.LineRule.Value)
+                W.SpacingBetweenLines ele;
+                if (_paragraph != null)
                 {
-                    case W.LineSpacingRuleValues.Exact:
-                        return LineSpacingRule.Exactly;
-                    case W.LineSpacingRuleValues.AtLeast:
-                        return LineSpacingRule.AtLeast;
+                    ele = _paragraph.ParagraphProperties?.SpacingBetweenLines;
                 }
-                return LineSpacingRule.Multiple;
+                else if (_style != null)
+                {
+                    ele = _style.StyleParagraphProperties?.SpacingBetweenLines;
+                }
+                else
+                {
+                    return _lineSpacingRule;
+                }
+                if (ele?.LineRule == null) return null;
+                if (ele.LineRule.Value == W.LineSpacingRuleValues.AtLeast)
+                    return Docx.LineSpacingRule.AtLeast;
+                else if (ele.LineRule.Value == W.LineSpacingRuleValues.Exact)
+                    return Docx.LineSpacingRule.Exactly;
+                else
+                    return Docx.LineSpacingRule.Multiple;
             }
             set
             {
-                switch (value)
+                InitSpacing();
+                W.SpacingBetweenLines spacing;
+                if (_paragraph != null)
                 {
-                    case LineSpacingRule.AtLeast:
-                        _spacing.LineRule = W.LineSpacingRuleValues.AtLeast;
-                        break;
-                    case LineSpacingRule.Exactly:
-                        _spacing.LineRule = W.LineSpacingRuleValues.Exact;
-                        break;
-                    case LineSpacingRule.Multiple:
-                        _spacing.LineRule = W.LineSpacingRuleValues.Auto;
-                        break;
-                    case LineSpacingRule.None:
-                        _spacing.LineRule = null;
-                        break;
+                    spacing = _paragraph.ParagraphProperties.SpacingBetweenLines;
                 }
+                else if (_style != null)
+                {
+                    spacing = _style.StyleParagraphProperties.SpacingBetweenLines;
+                }
+                else
+                {
+                    _lineSpacingRule = value;
+                    return;
+                }
+                if (value == Docx.LineSpacingRule.AtLeast)
+                    spacing.LineRule = W.LineSpacingRuleValues.AtLeast;
+                else if (value == Docx.LineSpacingRule.Exactly)
+                    spacing.LineRule = W.LineSpacingRuleValues.Exact;
+                else if (value == Docx.LineSpacingRule.Multiple)
+                    spacing.LineRule = W.LineSpacingRuleValues.Auto;
             }
         }
 
@@ -1698,6 +1882,22 @@ namespace Berry.Docx.Formatting
             
         }
 
+        private void InitSpacing()
+        {
+            InitParagraphProperties();
+            if (_paragraph != null)
+            {
+                if (_paragraph.ParagraphProperties.SpacingBetweenLines == null)
+                    _paragraph.ParagraphProperties.SpacingBetweenLines = new W.SpacingBetweenLines();
+            }
+            else if (_style != null)
+            {
+                if (_style.StyleParagraphProperties.SpacingBetweenLines == null)
+                    _style.StyleParagraphProperties.SpacingBetweenLines = new W.SpacingBetweenLines();
+            }
+
+        }
+
         /// <summary>
         /// Returns the paragraph format that specified in the style hierarchy of a style.
         /// </summary>
@@ -1718,26 +1918,17 @@ namespace Berry.Docx.Formatting
             format.Justification = curSHld.Justification ?? baseFormat.Justification;
             format.OutlineLevel = curSHld.OutlineLevel ?? baseFormat.OutlineLevel;
             // Indentation
-            format.LeftIndent = curSHld.LeftIndent ?? baseFormat.LeftIndent;
-            format.LeftCharsIndent = curSHld.LeftCharsIndent ?? baseFormat.LeftCharsIndent;
-            format.RightIndent = curSHld.RightIndent ?? baseFormat.RightIndent;
-            format.RightCharsIndent = curSHld.RightCharsIndent ?? baseFormat.RightCharsIndent;
-            format.FirstLineIndent = curSHld.FirstLineIndent ?? baseFormat.FirstLineIndent;
-            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent ?? baseFormat.FirstLineCharsIndent;
-            format.HangingIndent = curSHld.HangingIndent ?? baseFormat.HangingIndent;
-            format.HangingCharsIndent = curSHld.HangingCharsIndent ?? baseFormat.HangingCharsIndent;
             format.MirrorIndents = curSHld.MirrorIndents ?? baseFormat.MirrorIndents;
             format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
             // Spacing
-            /*format.BeforeSpacing = curSHld.BeforeSpacing ?? baseFormat.BeforeSpacing;
-            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing ?? baseFormat.BeforeLinesSpacing;
-            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
+            format.BeforeSpacing = curSHld.BeforeSpacing ?? baseFormat.BeforeSpacing;
             format.AfterSpacing = curSHld.AfterSpacing ?? baseFormat.AfterSpacing;
+            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing ?? baseFormat.BeforeLinesSpacing;
             format.AfterLinesSpacing = curSHld.AfterLinesSpacing ?? baseFormat.AfterLinesSpacing;
-            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
             format.LineSpacing = curSHld.LineSpacing ?? baseFormat.LineSpacing;
-            format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
-                ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;*/
+            format.LineSpacingRule = curSHld.LineSpacingRule ?? baseFormat.LineSpacingRule;
+            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
+            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
             format.ContextualSpacing = curSHld.ContextualSpacing ?? baseFormat.ContextualSpacing;
             format.SnapToGrid = curSHld.SnapToGrid ?? baseFormat.SnapToGrid;
             // Pagination
@@ -1768,6 +1959,330 @@ namespace Berry.Docx.Formatting
 
             return format;
         }
+        #region Indentation
+        public static Indentation GetParagraphLeftIndentation(Document doc, W.Paragraph paragraph)
+        {
+            Indentation charsInd = GetParagraphLeftCharsIndentation(doc, paragraph);
+            Indentation pointsInd = GetParagraphLeftPointsIndentation(doc, paragraph);
+            SpecialIndentation hangingCharsInd = GetParagraphSpecialCharsIndentation(doc, paragraph);
+            SpecialIndentation hangingInd = GetParagraphSpecialPointsIndentation(doc, paragraph);
+            if (charsInd != null && charsInd.Val != 0)
+            {
+                return charsInd;
+            }
+            else if(hangingCharsInd == null || hangingCharsInd.Val == 0 || hangingCharsInd.Type != SpecialIndentationType.Hanging)
+            {
+                if (pointsInd != null && pointsInd.Val != 0)
+                {
+                    if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        return new Indentation(pointsInd.Val - hangingInd.Val, IndentationUnit.Point);
+                    else
+                        return pointsInd;
+                }
+                else if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                {
+                    return new Indentation(-hangingInd.Val, IndentationUnit.Point);
+                }
+            }
+            return new Indentation(0, IndentationUnit.Character);
+        }
+
+        public static Indentation GetParagraphRightIndentation(Document doc, W.Paragraph paragraph)
+        {
+            Indentation charsInd = GetParagraphRightCharsIndentation(doc, paragraph);
+            Indentation pointsInd = GetParagraphRightPointsIndentation(doc, paragraph);
+            if (charsInd != null && charsInd.Val != 0)
+                return charsInd;
+            else if (pointsInd != null && pointsInd.Val != 0)
+                return pointsInd;
+            else
+                return new Indentation(0, IndentationUnit.Character);
+        }
+
+        public static SpecialIndentation GetParagraphSpecialIndentation(Document doc, W.Paragraph paragraph)
+        {
+            SpecialIndentation charsInd = GetParagraphSpecialCharsIndentation(doc, paragraph);
+            SpecialIndentation pointsInd = GetParagraphSpecialPointsIndentation(doc, paragraph);
+            if (charsInd != null && charsInd.Val != 0)
+                return charsInd;
+            else if(pointsInd != null && pointsInd.Val != 0)
+                return pointsInd;
+            else
+                return new SpecialIndentation(SpecialIndentationType.None, 0, IndentationUnit.Character);
+        }
+
+        public static Indentation GetStyleLeftIndentation(Document doc, W.Style style)
+        {
+            Indentation charsInd = GetStyleLeftCharsIndentation(doc, style);
+            Indentation pointsInd = GetStyleLeftPointsIndentation(doc, style);
+            SpecialIndentation hangingInd = GetStyleSpecialPointsIndentation(doc, style);
+            if (charsInd != null && charsInd.Val != 0)
+            {
+                return charsInd;
+            }
+            else if (pointsInd != null && pointsInd.Val != 0)
+            {
+                if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                    return new Indentation(pointsInd.Val - hangingInd.Val, IndentationUnit.Point);
+                else
+                    return pointsInd;
+            }
+            else if(hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+            {
+                return new Indentation(-hangingInd.Val, IndentationUnit.Point);
+            }
+            else
+            {
+                return new Indentation(0, IndentationUnit.Character);
+            }
+        }
+
+        public static Indentation GetStyleRightIndentation(Document doc, W.Style style)
+        {
+            Indentation charsInd = GetStyleRightCharsIndentation(doc, style);
+            Indentation pointsInd = GetStyleRightPointsIndentation(doc, style);
+            if (charsInd != null && charsInd.Val != 0)
+                return charsInd;
+            else if (pointsInd != null && pointsInd.Val != 0)
+                return pointsInd;
+            else
+                return new Indentation(0, IndentationUnit.Character);
+        }
+
+        public static SpecialIndentation GetStyleSpecialIndentation(Document doc, W.Style style)
+        {
+            SpecialIndentation charsInd = GetStyleSpecialCharsIndentation(doc, style);
+            SpecialIndentation pointsInd = GetStyleSpecialPointsIndentation(doc, style);
+            if (charsInd != null && charsInd.Val != 0)
+                return charsInd;
+            else if (pointsInd != null && pointsInd.Val != 0)
+                return pointsInd;
+            else
+                return new SpecialIndentation(SpecialIndentationType.None, 0, IndentationUnit.Character);
+        }
+
+        #region Paragraph
+
+        private static Indentation GetParagraphLeftCharsIndentation(Document doc, W.Paragraph paragraph)
+        {
+            ParagraphPropertiesHolder curPHld = new ParagraphPropertiesHolder(doc, paragraph);
+            if (curPHld.LeftCharsIndent != null)
+            {
+                return new Indentation(curPHld.LeftCharsIndent, IndentationUnit.Character);
+            }
+            else
+            {
+                return GetStyleLeftCharsIndentation(doc, paragraph.GetStyle(doc));
+            }
+        }
+        private static Indentation GetParagraphLeftPointsIndentation(Document doc, W.Paragraph paragraph)
+        {
+            ParagraphPropertiesHolder curPHld = new ParagraphPropertiesHolder(doc, paragraph);
+            if (curPHld.LeftIndent != null)
+            {
+                return new Indentation(curPHld.LeftIndent, IndentationUnit.Point);
+            }
+            else
+            {
+                return GetStyleLeftPointsIndentation(doc, paragraph.GetStyle(doc));
+            }
+        }
+        private static Indentation GetParagraphRightCharsIndentation(Document doc, W.Paragraph paragraph)
+        {
+            ParagraphPropertiesHolder curPHld = new ParagraphPropertiesHolder(doc, paragraph);
+            if (curPHld.RightCharsIndent != null)
+            {
+                return new Indentation(curPHld.RightCharsIndent, IndentationUnit.Character);
+            }
+            else
+            {
+                return GetStyleRightCharsIndentation(doc, paragraph.GetStyle(doc));
+            }
+        }
+
+        private static Indentation GetParagraphRightPointsIndentation(Document doc, W.Paragraph paragraph)
+        {
+            ParagraphPropertiesHolder curPHld = new ParagraphPropertiesHolder(doc, paragraph);
+            if (curPHld.RightIndent != null)
+            {
+                return new Indentation(curPHld.RightIndent, IndentationUnit.Point);
+            }
+            else
+            {
+                return GetStyleRightPointsIndentation(doc, paragraph.GetStyle(doc));
+            }
+        }
+        private static SpecialIndentation GetParagraphSpecialCharsIndentation(Document doc, W.Paragraph paragraph)
+        {
+            ParagraphPropertiesHolder curPHld = new ParagraphPropertiesHolder(doc, paragraph);
+            if (curPHld.HangingCharsIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.Hanging, curPHld.HangingCharsIndent, IndentationUnit.Character);
+            }
+            else if (curPHld.FirstLineCharsIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.FirstLine, curPHld.FirstLineCharsIndent, IndentationUnit.Character);
+            }
+            else
+            {
+                return GetStyleSpecialCharsIndentation(doc, paragraph.GetStyle(doc));
+            }
+        }
+
+        public static SpecialIndentation GetParagraphSpecialPointsIndentation(Document doc, W.Paragraph paragraph)
+        {
+            ParagraphPropertiesHolder curPHld = new ParagraphPropertiesHolder(doc, paragraph);
+            if (curPHld.HangingIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.Hanging, curPHld.HangingIndent, IndentationUnit.Point);
+            }
+            else if (curPHld.HangingCharsIndent != null) // HangingIndent = HangingCharsIndent
+            {
+                return new SpecialIndentation(SpecialIndentationType.Hanging, curPHld.HangingCharsIndent * 5, IndentationUnit.Point);
+            }
+            else if (curPHld.FirstLineIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.FirstLine, curPHld.FirstLineIndent, IndentationUnit.Point);
+            }
+            else if (curPHld.FirstLineCharsIndent != null) // FirstLine = FirstLineCharsIndent
+            {
+                return new SpecialIndentation(SpecialIndentationType.FirstLine, curPHld.FirstLineCharsIndent * 5, IndentationUnit.Point);
+            }
+            else
+            {
+                return GetStyleSpecialPointsIndentation(doc, paragraph.GetStyle(doc));
+            }
+        }
+        #endregion
+
+        #region Style
+        private static Indentation GetStyleLeftCharsIndentation(Document doc, W.Style style)
+        {
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(doc, style);
+            if (curSHld.LeftCharsIndent != null)
+            {
+                return new Indentation(curSHld.LeftCharsIndent, IndentationUnit.Character);
+            }
+            else
+            {
+                W.Style baseStyle = style.GetBaseStyle(doc);
+                if (baseStyle != null)
+                {
+                    return GetStyleLeftCharsIndentation(doc, baseStyle);
+                }
+            }
+            return null;
+        }
+
+        private static Indentation GetStyleLeftPointsIndentation(Document doc, W.Style style)
+        {
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(doc, style);
+            if (curSHld.LeftIndent != null)
+            {
+                return new Indentation(curSHld.LeftIndent, IndentationUnit.Point);
+            }
+            else
+            {
+                W.Style baseStyle = style.GetBaseStyle(doc);
+                if (baseStyle != null)
+                {
+                    return GetStyleLeftPointsIndentation(doc, baseStyle);
+                }
+            }
+            return null;
+        }
+
+        private static Indentation GetStyleRightCharsIndentation(Document doc, W.Style style)
+        {
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(doc, style);
+            if (curSHld.RightCharsIndent != null)
+            {
+                return new Indentation(curSHld.RightCharsIndent, IndentationUnit.Character);
+            }
+            else
+            {
+                W.Style baseStyle = style.GetBaseStyle(doc);
+                if (baseStyle != null)
+                {
+                    return GetStyleRightCharsIndentation(doc, baseStyle);
+                }
+            }
+            return null;
+        }
+
+        private static Indentation GetStyleRightPointsIndentation(Document doc, W.Style style)
+        {
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(doc, style);
+            if (curSHld.RightIndent != null)
+            {
+                return new Indentation(curSHld.RightIndent, IndentationUnit.Point);
+            }
+            else
+            {
+                W.Style baseStyle = style.GetBaseStyle(doc);
+                if (baseStyle != null)
+                {
+                    return GetStyleRightPointsIndentation(doc, baseStyle);
+                }
+            }
+            return null;
+        }
+
+        private static SpecialIndentation GetStyleSpecialCharsIndentation(Document doc, W.Style style)
+        {
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(doc, style);
+            if (curSHld.HangingCharsIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.Hanging, curSHld.HangingCharsIndent, IndentationUnit.Character);
+            }
+            else if(curSHld.FirstLineCharsIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.FirstLine, curSHld.FirstLineCharsIndent, IndentationUnit.Character);
+            }
+            else
+            {
+                W.Style baseStyle = style.GetBaseStyle(doc);
+                if (baseStyle != null)
+                {
+                    return GetStyleSpecialCharsIndentation(doc, baseStyle);
+                }
+            }
+            return null;
+        }
+
+        public static SpecialIndentation GetStyleSpecialPointsIndentation(Document doc, W.Style style)
+        {
+            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(doc, style);
+            if (curSHld.HangingIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.Hanging, curSHld.HangingIndent, IndentationUnit.Point);
+            }
+            else if(curSHld.HangingCharsIndent != null) //HangingIndent 的值与 HangingCharsIndent 保持一致
+            {
+                return new SpecialIndentation(SpecialIndentationType.Hanging, curSHld.HangingCharsIndent * 5, IndentationUnit.Point);
+            }
+            else if (curSHld.FirstLineIndent != null)
+            {
+                return new SpecialIndentation(SpecialIndentationType.FirstLine, curSHld.FirstLineIndent, IndentationUnit.Point);
+            }
+            else if (curSHld.FirstLineCharsIndent != null) //FirstLine 的值与 FirstLineCharsIndent 保持一致
+            {
+                return new SpecialIndentation(SpecialIndentationType.FirstLine, curSHld.FirstLineCharsIndent * 5, IndentationUnit.Point);
+            }
+            else
+            {
+                W.Style baseStyle = style.GetBaseStyle(doc);
+                if (baseStyle != null)
+                {
+                    return GetStyleSpecialPointsIndentation(doc, baseStyle);
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #endregion
+
         #endregion
     }
 }

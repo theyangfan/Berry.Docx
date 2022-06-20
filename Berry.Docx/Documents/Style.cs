@@ -21,6 +21,7 @@ namespace Berry.Docx.Documents
 
         internal Style(Document doc, StyleType type)
         {
+            _doc = doc;
             _style = new W.Style();
             StyleId = IDGenerator.GenerateStyleID(doc);
             Type = type;
@@ -37,6 +38,7 @@ namespace Berry.Docx.Documents
 
         internal Style(Document doc, W.Style style)
         {
+            _doc = doc;
             _style = style;
             if(Type == StyleType.Paragraph)
             {

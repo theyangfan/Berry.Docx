@@ -94,10 +94,6 @@ namespace Berry.Docx
     public enum LineSpacingRule
     {
         /// <summary>
-        /// Undefined rule.
-        /// </summary>
-        None = -1,
-        /// <summary>
         /// Minimum Line Height.
         /// </summary>
         AtLeast = 0,
@@ -621,5 +617,20 @@ namespace Berry.Docx
         /// Hanging Indentation.
         /// </summary>
         Hanging = 2
+    }
+
+    /// <summary>
+    /// Defines the Spacing Unit enumeration. 
+    /// </summary>
+    public enum SpacingUnit
+    {
+        /// <summary>
+        /// Line Unit.
+        /// </summary>
+        Line = 0,
+        /// <summary>
+        /// Point Unit.
+        /// </summary>
+        Point = 1
     }
 }

@@ -42,8 +42,8 @@ namespace Berry.Docx.Examples
             }
             paragraph.Format.Justification = JustificationType.Center;
             paragraph.Format.OutlineLevel = OutlineLevelType.Level1;
-            paragraph.Format.LineSpacing = 24; // 2 lines
-            paragraph.Format.LineSpacingRule = LineSpacingRule.Multiple;
+            //paragraph.Format.LineSpacing = 24; // 2 lines
+            //paragraph.Format.LineSpacingRule = LineSpacingRule.Multiple;
         }
     }
 }
