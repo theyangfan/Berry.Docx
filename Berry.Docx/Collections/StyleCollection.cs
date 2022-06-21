@@ -44,7 +44,7 @@ namespace Berry.Docx.Collections
 
         public void Add(Style style)
         {
-            if(_doc.Styles.FindByName(style.Name, style.Type) == null)
+            if(FindByName(style.Name, style.Type) == null)
             {
                 _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Append(style.XElement);
             }

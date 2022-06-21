@@ -18,29 +18,22 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Tomato\Desktop\test.docx";
-            string dst = @"C:\Users\Tomato\Desktop\dst.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
             using (Document doc = new Document(src))
             {
                 Paragraph p = doc.LastSection.Paragraphs.Last();
                 ParagraphStyle s = p.GetStyle();
-                //TextRange tr = p.ChildItems[2] as TextRange;
-                p.Format.SetBeforeSpacing(13, SpacingUnit.Point);
-                p.Format.SetAfterSpacing(2.5f, SpacingUnit.Line);
-                p.Format.SetLineSpacing(2.8F, LineSpacingRule.Multiple);
+                TextRange tr = p.ChildItems[2] as TextRange;
 
-                Console.WriteLine(p.Format.GetBeforeSpacing());
-                Console.WriteLine(p.Format.GetAfterSpacing());
-                Console.WriteLine(p.Format.GetLineSpacing());
-                Console.WriteLine($"Style: {s.Name}");
-                Console.WriteLine(s.ParagraphFormat.GetBeforeSpacing());
-                Console.WriteLine(s.ParagraphFormat.GetAfterSpacing());
-                Console.WriteLine(s.ParagraphFormat.GetLineSpacing());
-                Console.WriteLine($"Base Style: {s.BaseStyle.Name}");
-                Console.WriteLine(s.BaseStyle.ParagraphFormat.GetBeforeSpacing());
-                Console.WriteLine(s.BaseStyle.ParagraphFormat.GetAfterSpacing());
-                Console.WriteLine(s.BaseStyle.ParagraphFormat.GetLineSpacing());
+                tr.CharacterFormat.TextColor = Color.Blue;
+                tr.CharacterFormat.SubSuperScript = SubSuperScript.None;
+                tr.CharacterFormat.UnderlineStyle = UnderlineStyle.None;
+
+                Console.WriteLine(tr.CharacterFormat.SubSuperScript);
+                Console.WriteLine(tr.CharacterFormat.UnderlineStyle);
+                Console.WriteLine(tr.CharacterFormat.TextColor);
 
                 doc.SaveAs(dst);
             }

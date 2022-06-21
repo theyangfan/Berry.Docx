@@ -1326,6 +1326,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets the spacing above the paragraph.
+        /// </summary>
+        /// <returns></returns>
         public Spacing GetBeforeSpacing()
         {
             FloatValue beforeSpacing = null;
@@ -1353,6 +1357,11 @@ namespace Berry.Docx.Formatting
             return new Spacing(0, SpacingUnit.Line);
         }
 
+        /// <summary>
+        /// Sets the spacing above the paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="unit"></param>
         public void SetBeforeSpacing(float val, SpacingUnit unit)
         {
             if(_ownerParagraph != null)
@@ -1383,6 +1392,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets the spacing below the paragraph.
+        /// </summary>
+        /// <returns></returns>
         public Spacing GetAfterSpacing()
         {
             FloatValue afterSpacing = null;
@@ -1410,6 +1423,11 @@ namespace Berry.Docx.Formatting
             return new Spacing(0, SpacingUnit.Line);
         }
 
+        /// <summary>
+        /// Sets the spacing below the paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="unit"></param>
         public void SetAfterSpacing(float val, SpacingUnit unit)
         {
             if (_ownerParagraph != null)
@@ -1440,6 +1458,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets the spacing between lines in paragraph.
+        /// </summary>
+        /// <returns></returns>
         public LineSpacing GetLineSpacing()
         {
             FloatValue lineSpacing = null;
@@ -1473,6 +1495,11 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Sets the spacing between lines in paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="rule"></param>
         public void SetLineSpacing(float val, LineSpacingRule rule)
         {
             if(_ownerParagraph != null)
