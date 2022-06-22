@@ -34,6 +34,7 @@ namespace Berry.Docx.Formatting
         private string _fontCN = "宋体";
         private string _fontEN = "Times New Roman";
         private float _fontSize = 10.5F;
+        private FontContentType _fontTypeHint = FontContentType.Default;
         private float _fontSizeCs = 10.5F;
         private bool _bold = false;
         private bool _italic = false;
@@ -259,6 +260,45 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _fontEN = value;
+                }
+            }
+        }
+
+        public FontContentType FontTypeHint
+        {
+            get
+            {
+                if(_ownerRun != null)
+                {
+                    return _directRHld.FontTypeHint ?? FontContentType.Default;
+                }
+                else if(_ownerParagraph != null)
+                {
+                    return _markRHld.FontTypeHint ?? FontContentType.Default;
+                }
+                else if(_ownerStyle != null)
+                {
+                    return _directSHld.FontTypeHint ?? FontContentType.Default;
+                }
+                return _fontTypeHint;
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.FontTypeHint = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _directSHld.FontTypeHint = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.FontTypeHint = value;
+                }
+                else
+                {
+                    _fontTypeHint = value;
                 }
             }
         }

@@ -20,6 +20,7 @@ namespace Berry.Docx.Formatting
 
         private string _fontNameEastAsia;
         private string _fontNameAscii;
+        private EnumValue<FontContentType> _fontTypeHint;
         private FloatValue _fontSize;
         private FloatValue _fontSizeCs;
         private BooleanValue _bold;
@@ -233,6 +234,78 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _fontNameAscii = value;
+                }
+            }
+        }
+
+        public EnumValue<FontContentType> FontTypeHint
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
+                {
+                    return _fontTypeHint;
+                }
+                W.RunFonts rFonts = null;
+                if (_run?.RunProperties?.RunFonts != null)
+                {
+                    rFonts = _run.RunProperties.RunFonts;
+                }
+                else if (_style?.StyleRunProperties?.RunFonts != null)
+                {
+                    rFonts = _style.StyleRunProperties.RunFonts;
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.RunFonts != null)
+                {
+                    rFonts = _defaultRPr.RunPropertiesBaseStyle.RunFonts;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
+                {
+                    rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                if (rFonts?.Hint == null) return null;
+                return rFonts.Hint.Value.Convert<FontContentType>();
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.RunFonts == null)
+                    {
+                        _run.RunProperties.RunFonts = new W.RunFonts();
+                    }
+                    _run.RunProperties.RunFonts.Hint = value.Val.Convert<W.FontTypeHintValues>();
+                }
+                else if (_style != null)
+                {
+                    if (_style.StyleRunProperties == null)
+                    {
+                        _style.StyleRunProperties = new W.StyleRunProperties();
+                    }
+                    if (_style.StyleRunProperties.RunFonts == null)
+                    {
+                        _style.StyleRunProperties.RunFonts = new W.RunFonts();
+                    }
+                    _style.StyleRunProperties.RunFonts.Hint = value.Val.Convert<W.FontTypeHintValues>();
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
+                    W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                    rFonts.Hint = value.Val.Convert<W.FontTypeHintValues>();
+                }
+                else
+                {
+                    _fontTypeHint = value;
                 }
             }
         }

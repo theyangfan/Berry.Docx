@@ -633,4 +633,23 @@ namespace Berry.Docx
         /// </summary>
         Point = 1
     }
+
+    /// <summary>
+    /// Defines the font content type enumeration. 
+    /// </summary>
+    public enum FontContentType
+    {
+        /// <summary>
+        /// High ANSI Font.
+        /// </summary>
+        Default = 0,
+        /// <summary>
+        /// East Asian Font.
+        /// </summary>
+        EastAsia = 1,
+        /// <summary>
+        /// Complex Script Font.
+        /// </summary>
+        ComplexScript = 2
+    }
 }
