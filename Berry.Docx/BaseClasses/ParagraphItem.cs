@@ -188,7 +188,7 @@ namespace Berry.Docx.Field
             }
         }
 
-        public  void InsertAfterSelf(ParagraphItem item)
+        public void InsertAfterSelf(ParagraphItem item)
         {
             if (IsInRun)
             {
@@ -204,6 +204,17 @@ namespace Berry.Docx.Field
                 else
                     _element.InsertAfterSelf(item.XElement);
             }
+        }
+
+        /// <summary>
+        /// Removes the current element from its owner paragraph.
+        /// </summary>
+        public override void Remove()
+        {
+            if(IsInRun)
+                _ownerRun.Remove();
+            else
+                _element.Remove();
         }
         #endregion
     }

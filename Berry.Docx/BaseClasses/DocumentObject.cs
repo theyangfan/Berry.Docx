@@ -157,7 +157,7 @@ namespace Berry.Docx
         #endregion
 
         #region Internal Methods
-        internal void Remove()
+        public virtual void Remove()
         {
             _object.Remove();
         }

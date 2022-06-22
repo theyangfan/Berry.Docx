@@ -54,6 +54,24 @@ namespace Berry.Docx
         }
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Removes the current element from its parent.
+        /// </summary>
+        public override void Remove()
+        {
+            if (_element.Descendants<W.SectionProperties>().Any())
+            {
+                _element.RemoveAllChildren<W.Run>();
+            }
+            else
+            {
+                _element.Remove();
+            }
+        }
+        #endregion
+
+
         #region Private Methods
         private IEnumerable<DocumentItem> Children()
         {

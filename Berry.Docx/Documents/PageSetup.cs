@@ -102,7 +102,7 @@ namespace Berry.Docx.Documents
             {
                 if(value == PageOrientation.Portrait)
                 {
-                    if(_pgSz.Orient == W.PageOrientationValues.Landscape)
+                    if(_pgSz.Orient != null && _pgSz.Orient == W.PageOrientationValues.Landscape)
                     {
                         PageSize = new SizeF(PageHeight, PageWidth);
                     }
