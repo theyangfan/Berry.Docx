@@ -138,7 +138,7 @@ namespace Berry.Docx
             {
                 yield return new Break(_doc, run, run.Elements<W.Break>().First());
             }
-            // picture
+            // drawing
             foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
             {
                 A.GraphicData graphicData = drawing.Descendants<A.GraphicData>().FirstOrDefault();
@@ -157,6 +157,11 @@ namespace Berry.Docx
                     else if (graphicData.FirstChild is C.ChartReference)
                         yield return new Chart(_doc, run, drawing);
                 }
+            }
+            // vml picture
+            if (run.Elements<W.Picture>().Any())
+            {
+                yield return new Picture(_doc, run, run.Elements<W.Picture>().First());
             }
             // embedded object
             foreach (W.EmbeddedObject obj in run.Elements<W.EmbeddedObject>())
