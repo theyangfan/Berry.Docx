@@ -52,6 +52,7 @@ namespace Berry.Docx.Formatting
         private bool _topLinePunctuation = false;
         private bool _autoSpaceDE = true;
         private bool _autoSpaceDN = true;
+        private VerticalTextAlignment _textAlignment = VerticalTextAlignment.Auto;
         // Numbering
         private NumberingFormat _numFormat = null;
 
@@ -1070,6 +1071,53 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of all text on each line displayed within a paragraph.
+        /// </summary>
+        public VerticalTextAlignment TextAlignment
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    // direct formatting
+                    if (_directPHld.TextAlignment != null) return _directPHld.TextAlignment;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.TextAlignment != null) return inheritedStyle.TextAlignment;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.TextAlignment;
+                }
+                else if (_ownerStyle != null)
+                {
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.TextAlignment != null) return inheritedStyle.TextAlignment;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.TextAlignment;
+                }
+                else
+                {
+                    return _textAlignment;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _directPHld.TextAlignment = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _directSHld.TextAlignment = value;
+                }
+                else
+                {
+                    _textAlignment = value;
+                }
+            }
+        }
         #endregion
 
         #endregion
@@ -1545,6 +1593,5 @@ namespace Berry.Docx.Formatting
             }
         }
         #endregion
-
     }
 }

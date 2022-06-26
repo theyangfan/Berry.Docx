@@ -28,9 +28,11 @@ namespace Berry.Docx.Formatting
         private EnumValue<SubSuperScript> _subSuperScript;
         private EnumValue<UnderlineStyle> _underlineStyle;
         private Color _color = Color.Empty;
+        private BooleanValue _autoTextColor;
         private IntegerValue _characterScale;
         private FloatValue _characterSpacing;
         private FloatValue _position;
+        private Border _border;
         #endregion
 
         #region Constructors
@@ -44,6 +46,7 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _run = run;
+            _border = new Border(run);
         }
 
         /// <summary>
@@ -55,6 +58,7 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _style = style;
+            _border = new Border(style);
         }
 
         /// <summary>
@@ -66,6 +70,7 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _defaultRPr = rPrDefault;
+            _border = new Border(_defaultRPr);
         }
 
         /// <summary>
@@ -77,6 +82,7 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _paragraph = paragraph;
+            _border = new Border(paragraph);
         }
         #endregion
 
@@ -879,6 +885,78 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public BooleanValue AutoTextColor
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
+                {
+                    return _autoTextColor;
+                }
+                W.Color color = null;
+                if (_run?.RunProperties?.Color != null)
+                {
+                    color = _run.RunProperties.Color;
+                }
+                else if (_style?.StyleRunProperties?.Color != null)
+                {
+                    color = _style.StyleRunProperties.Color;
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.Color != null)
+                {
+                    color = _defaultRPr.RunPropertiesBaseStyle.Color;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Color>() != null)
+                {
+                    color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
+                }
+                if (color?.Val == null) return null;
+                return color.Val == "auto";
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.Color == null)
+                    {
+                        _run.RunProperties.Color = new W.Color();
+                    }
+                    if (value) _run.RunProperties.Color.Val = "auto";
+                }
+                else if (_style != null)
+                {
+                    if (_style.StyleRunProperties == null)
+                    {
+                        _style.StyleRunProperties = new W.StyleRunProperties();
+                    }
+                    if (_style.StyleRunProperties.Color == null)
+                    {
+                        _style.StyleRunProperties.Color = new W.Color();
+                    }
+                    if (value) _style.StyleRunProperties.Color.Val = "auto";
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Color());
+                    W.Color color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
+                    if (value) color.Val = "auto";
+                }
+                else
+                {
+                    _autoTextColor = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets or sets the percent value of the normal character width that each character shall be scaled.
         /// <para>If the value is 100, then each character shall be displayed at 100% of its normal with.</para>
@@ -1111,6 +1189,12 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public Border Border
+        {
+            get => _border;
+            internal set => _border = value;
+        }
+
         #endregion
 
         #region Public Methods
@@ -1153,9 +1237,11 @@ namespace Berry.Docx.Formatting
             format.SubSuperScript = directFmt.SubSuperScript ?? baseFmt.SubSuperScript;
             format.UnderlineStyle = directFmt.UnderlineStyle ?? baseFmt.UnderlineStyle;
             format.TextColor = !directFmt.TextColor.IsEmpty ? directFmt.TextColor : baseFmt.TextColor;
+            format.AutoTextColor = directFmt.AutoTextColor ?? baseFmt.AutoTextColor;
             format.CharacterScale = directFmt.CharacterScale ?? baseFmt.CharacterScale;
             format.CharacterSpacing = directFmt.CharacterSpacing ?? baseFmt.CharacterSpacing;
             format.Position = directFmt.Position ?? baseFmt.Position;
+            format.Border = !directFmt.Border.IsNUll ? baseFmt.Border : baseFmt.Border;
 
             return format;
         }

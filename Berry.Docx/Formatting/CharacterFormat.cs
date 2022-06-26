@@ -41,6 +41,7 @@ namespace Berry.Docx.Formatting
         private SubSuperScript _subSuperScript = SubSuperScript.None;
         private UnderlineStyle _underlineStyle = UnderlineStyle.None;
         private Color _textColor = Color.Black;
+        private bool _autoTextColor = true;
         private int _characterScale = 100;
         private float _characterSpacing = 0;
         private float _position = 0;
@@ -933,6 +934,88 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public bool AutoTextColor
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.AutoTextColor != null)
+                    {
+                        return _directRHld.AutoTextColor;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.AutoTextColor != null)
+                            return rStyle.AutoTextColor;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.AutoTextColor != null)
+                            return paragraph.AutoTextColor;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.AutoTextColor;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.AutoTextColor != null)
+                    {
+                        return _markRHld.AutoTextColor;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.AutoTextColor != null)
+                        return paragraph.AutoTextColor;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.AutoTextColor;
+                }
+                else if (_ownerStyle != null)
+                {
+                    // direct formatting
+                    if (_directSHld.AutoTextColor != null)
+                    {
+                        return _directSHld.AutoTextColor;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.AutoTextColor != null)
+                        return style.AutoTextColor;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.AutoTextColor;
+                }
+                else
+                {
+                    return _autoTextColor;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.AutoTextColor = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    _directSHld.AutoTextColor = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.AutoTextColor = value;
+                }
+                else
+                {
+                    _autoTextColor = value;
+                }
+            }
+        }
         /// <summary>
         /// Gets or sets the percent value of the normal character width that each character shall be scaled.
         /// <para>If the value is 100, then each character shall be displayed at 100% of its normal with.</para>

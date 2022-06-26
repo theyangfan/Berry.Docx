@@ -36,6 +36,8 @@ namespace Berry.Docx.Formatting
                     _cFormat.UnderlineStyle = rHld.UnderlineStyle;
                 if(!rHld.TextColor.IsEmpty)
                     _cFormat.TextColor = rHld.TextColor;
+                if(rHld.AutoTextColor != null)
+                    _cFormat.AutoTextColor = rHld.AutoTextColor;
                 if (rHld.CharacterScale != null)
                     _cFormat.CharacterScale = rHld.CharacterScale;
                 if (rHld.CharacterSpacing != null)

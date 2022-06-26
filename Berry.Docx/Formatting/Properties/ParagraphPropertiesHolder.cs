@@ -54,6 +54,7 @@ namespace Berry.Docx.Formatting
         private BooleanValue _topLinePunct;
         private BooleanValue _autoSpaceDE;
         private BooleanValue _autoSpaceDN;
+        private EnumValue<VerticalTextAlignment> _textAlignment;
         // Numbering
         private NumberingFormat _numFmt;
         private W.Level _lvl = null;
@@ -1825,6 +1826,56 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of all text on each line displayed within a paragraph.
+        /// </summary>
+        public EnumValue<VerticalTextAlignment> TextAlignment
+        {
+            get
+            {
+                if (_paragraph != null)
+                {
+                    W.TextAlignment ele = _paragraph.ParagraphProperties?.TextAlignment;
+                    if (ele?.Val == null) return null;
+                    return ele.Val.Value.Convert<VerticalTextAlignment>();
+                }
+                else if (_style != null)
+                {
+                    W.TextAlignment ele = _style.StyleParagraphProperties?.TextAlignment;
+                    if (ele?.Val == null) return null;
+                    return ele.Val.Value.Convert<VerticalTextAlignment>();
+                }
+                else
+                {
+                    return _textAlignment;
+                }
+            }
+            set
+            {
+                InitParagraphProperties();
+                if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties.TextAlignment == null)
+                    {
+                        _paragraph.ParagraphProperties.TextAlignment = new W.TextAlignment();
+                    }
+                    _paragraph.ParagraphProperties.TextAlignment.Val = value.Val.Convert<W.VerticalTextAlignmentValues>();
+                }
+                else if (_style != null)
+                {
+                    if (_style.StyleParagraphProperties.TextAlignment == null)
+                    {
+                        _style.StyleParagraphProperties.TextAlignment = new W.TextAlignment();
+                    }
+                    _style.StyleParagraphProperties.TextAlignment.Val = value.Val.Convert<W.VerticalTextAlignmentValues>();
+                }
+                else
+                {
+                    _textAlignment = value;
+                }
+            }
+        }
         #endregion
 
         #endregion
@@ -1947,6 +1998,7 @@ namespace Berry.Docx.Formatting
             format.TopLinePunctuation = curSHld.TopLinePunctuation ?? baseFormat.TopLinePunctuation;
             format.AutoSpaceDE = curSHld.AutoSpaceDE ?? baseFormat.AutoSpaceDE;
             format.AutoSpaceDN = curSHld.AutoSpaceDN ?? baseFormat.AutoSpaceDN;
+            format.TextAlignment = curSHld.TextAlignment ?? baseFormat.TextAlignment;
             // Numbering
             /*if (curSHld.NumberingFormat != null)
             {
