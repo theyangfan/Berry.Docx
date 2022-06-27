@@ -44,6 +44,8 @@ namespace Berry.Docx.Formatting
                     _cFormat.CharacterSpacing = rHld.CharacterSpacing;
                 if (rHld.Position != null)
                     _cFormat.Position = rHld.Position;
+
+                _cFormat.Border = new Border(doc, defaults.RunPropertiesDefault);
             }
             if(defaults?.ParagraphPropertiesDefault != null)
             {

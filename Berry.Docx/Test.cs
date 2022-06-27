@@ -25,15 +25,21 @@ namespace Test
             {
                 Paragraph p = doc.LastSection.Paragraphs.Last();
                 ParagraphStyle s = p.GetStyle();
-                TextRange tr = p.ChildItems[2] as TextRange;
+                TextRange tr = p.ChildItems[0] as TextRange;
 
-                tr.CharacterFormat.TextColor = Color.Blue;
-                tr.CharacterFormat.SubSuperScript = SubSuperScript.None;
-                tr.CharacterFormat.UnderlineStyle = UnderlineStyle.None;
+                p.Format.Borders.Top.Style = BorderStyle.Nil;
+                p.Format.Borders.Bottom.Style = BorderStyle.Nil;
+                p.Format.Borders.Left.Style = BorderStyle.None;
+                p.Format.Borders.Right.Style = BorderStyle.None;
 
-                Console.WriteLine(tr.CharacterFormat.SubSuperScript);
-                Console.WriteLine(tr.CharacterFormat.UnderlineStyle);
-                Console.WriteLine(tr.CharacterFormat.TextColor);
+                //tr.CharacterFormat.Border.Color = Color.Blue;
+                //tr.CharacterFormat.Border.Style = BorderStyle.Inset;
+
+                //Console.WriteLine(tr.CharacterFormat.Border.Color);
+                Console.WriteLine(p.Format.Borders.Top.Style);
+                Console.WriteLine(p.Format.Borders.Top.Color);
+                Console.WriteLine(p.Format.Borders.Top.Width);
+                
 
                 doc.SaveAs(dst);
             }

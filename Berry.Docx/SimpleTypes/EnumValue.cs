@@ -8,9 +8,8 @@ namespace Berry.Docx
     /// <summary>
     /// Represent the <see cref="Enum"/> value.
     /// </summary>
-    public class EnumValue<T> where T : struct
+    internal class EnumValue<T> : SimpleValue<T> where T : struct
     {
-        private T _value = default(T);
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumValue{T}"/> class.
         /// </summary>
@@ -20,38 +19,15 @@ namespace Berry.Docx
         /// Initializes a new instance of the <see cref="EnumValue{T}"/> class using the supplied <see cref="Enum"/> value.
         /// </summary>
         /// <param name="value">The <see cref="Enum"/> value.</param>
-        public EnumValue(T value)
-        {
-            _value = value;
-        }
+        public EnumValue(T value) : base(value) { }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumValue{T}"/> class by deep copying
         /// the supplied <see cref="EnumValue{T}"/> class.
         /// </summary>
         /// <param name="source">The source <see cref="EnumValue{T}"/> class.</param>
-        public EnumValue(EnumValue<T> source)
-        {
-            _value = source.Val;
-        }
-
-        /// <summary>
-        /// Gets or sets the inner <see cref="Enum"/> value.
-        /// </summary>
-        public T Val
-        {
-            get => _value;
-            set => _value = value;
-        }
-
-        /// <summary>
-        /// Implicitly converting the <see cref="EnumValue{T}"/> value to <see cref="Enum"/> value.
-        /// </summary>
-        /// <param name="value">The <see cref="EnumValue{T}"/> value.</param>
-        public static implicit operator T(EnumValue<T> value)
-        {
-            return value.Val;
-        }
+        public EnumValue(EnumValue<T> source) : base(source) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumValue{T}"/> class by implicitly

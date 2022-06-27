@@ -53,6 +53,8 @@ namespace Berry.Docx.Formatting
         private bool _autoSpaceDE = true;
         private bool _autoSpaceDN = true;
         private VerticalTextAlignment _textAlignment = VerticalTextAlignment.Auto;
+        // borders
+        private Borders _borders;
         // Numbering
         private NumberingFormat _numFormat = null;
 
@@ -73,6 +75,7 @@ namespace Berry.Docx.Formatting
             _doc = document;
             _ownerParagraph = ownerParagraph;
             _directPHld = new ParagraphPropertiesHolder(document, ownerParagraph);
+            _borders = new Borders(document, ownerParagraph);
         }
 
         /// <summary>
@@ -85,6 +88,7 @@ namespace Berry.Docx.Formatting
             _doc = document;
             _ownerStyle = ownerStyle;
             _directSHld = new ParagraphPropertiesHolder(document, ownerStyle);
+            _borders = new Borders(document, ownerStyle);
         }
 
         #endregion
@@ -1119,6 +1123,8 @@ namespace Berry.Docx.Formatting
             }
         }
         #endregion
+
+        public Borders Borders => _borders;
 
         #endregion
 

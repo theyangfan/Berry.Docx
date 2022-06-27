@@ -32,7 +32,6 @@ namespace Berry.Docx.Formatting
         private IntegerValue _characterScale;
         private FloatValue _characterSpacing;
         private FloatValue _position;
-        private Border _border;
         #endregion
 
         #region Constructors
@@ -46,7 +45,6 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _run = run;
-            _border = new Border(run);
         }
 
         /// <summary>
@@ -58,7 +56,6 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _style = style;
-            _border = new Border(style);
         }
 
         /// <summary>
@@ -70,7 +67,6 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _defaultRPr = rPrDefault;
-            _border = new Border(_defaultRPr);
         }
 
         /// <summary>
@@ -82,7 +78,6 @@ namespace Berry.Docx.Formatting
         {
             _document = doc;
             _paragraph = paragraph;
-            _border = new Border(paragraph);
         }
         #endregion
 
@@ -1189,12 +1184,6 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        public Border Border
-        {
-            get => _border;
-            internal set => _border = value;
-        }
-
         #endregion
 
         #region Public Methods
@@ -1241,7 +1230,6 @@ namespace Berry.Docx.Formatting
             format.CharacterScale = directFmt.CharacterScale ?? baseFmt.CharacterScale;
             format.CharacterSpacing = directFmt.CharacterSpacing ?? baseFmt.CharacterSpacing;
             format.Position = directFmt.Position ?? baseFmt.Position;
-            format.Border = !directFmt.Border.IsNUll ? baseFmt.Border : baseFmt.Border;
 
             return format;
         }

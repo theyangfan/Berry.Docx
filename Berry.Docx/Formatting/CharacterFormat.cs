@@ -45,6 +45,7 @@ namespace Berry.Docx.Formatting
         private int _characterScale = 100;
         private float _characterSpacing = 0;
         private float _position = 0;
+        private Border _border;
         #endregion
 
         #endregion
@@ -62,6 +63,7 @@ namespace Berry.Docx.Formatting
             _doc = doc;
             _ownerRun = ownerRun;
             _directRHld = new RunPropertiesHolder(doc.Package, ownerRun);
+            _border = new Border(doc, ownerRun);
         }
 
         /// <summary>
@@ -75,6 +77,7 @@ namespace Berry.Docx.Formatting
             _doc = doc;
             _ownerParagraph = ownerParagraph;
             _markRHld = new RunPropertiesHolder(doc.Package, ownerParagraph);
+            _border = new Border(doc, ownerParagraph);
         }
 
         /// <summary>
@@ -87,6 +90,7 @@ namespace Berry.Docx.Formatting
             _doc = doc;
             _ownerStyle = ownerStyle;
             _directSHld = new RunPropertiesHolder(doc.Package, ownerStyle);
+            _border = new Border(doc, ownerStyle);
         }
 
         #endregion
@@ -1276,6 +1280,12 @@ namespace Berry.Docx.Formatting
                     _position = value;
                 }
             }
+        }
+
+        public Border Border
+        {
+            get => _border;
+            internal set => _border = value;
         }
         #endregion
 

@@ -681,25 +681,21 @@ namespace Berry.Docx
 
     public enum BorderStyle
     {
-        //
-        // 摘要:
-        //     No Border.
-        //     When the item is serialized out as xml, its value is "nil".
+        /// <summary>
+        /// No Border.
+        /// </summary>
         Nil = 0,
-        //
-        // 摘要:
-        //     No Border.
-        //     When the item is serialized out as xml, its value is "none".
+        /// <summary>
+        /// No Border.
+        /// </summary>
         None = 1,
-        //
-        // 摘要:
-        //     Single Line Border.
-        //     When the item is serialized out as xml, its value is "single".
+        /// <summary>
+        /// Single Line Border.
+        /// </summary>
         Single = 2,
-        //
-        // 摘要:
-        //     Single Line Border.
-        //     When the item is serialized out as xml, its value is "thick".
+        /// <summary>
+        /// Single Line Border.
+        /// </summary>
         Thick = 3,
         //
         // 摘要:
