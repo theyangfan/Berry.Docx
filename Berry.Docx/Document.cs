@@ -326,6 +326,20 @@ namespace Berry.Docx
             _stream?.Close();
             _doc?.Close();
         }
+
+        /// <summary>
+        /// 更新域代码
+        /// </summary>
+        public void UpdateFieldsWhenOpen()
+        {
+            if (_doc != null)
+            {
+                P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
+                W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen() { Val = true };
+                settings.Settings.PrependChild(updateFields);
+                settings.Settings.Save();
+            }
+        }
         #endregion
 
         #region Internal Properties
@@ -342,20 +356,6 @@ namespace Berry.Docx
 
         #region TODO
 
-        /// <summary>
-        /// 更新域代码
-        /// </summary>
-        private void UpdateFields()
-        {
-            if (_doc != null)
-            {
-                P.DocumentSettingsPart settings = _doc.MainDocumentPart.DocumentSettingsPart;
-                W.UpdateFieldsOnOpen updateFields = new W.UpdateFieldsOnOpen();
-                updateFields.Val = new O.OnOffValue(true);
-                settings.Settings.PrependChild(updateFields);
-                settings.Settings.Save();
-            }
-        }
         #endregion
 
     }

@@ -4,6 +4,7 @@ using System.Text;
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx
 {
@@ -33,6 +34,12 @@ namespace Berry.Docx
                     return GenerateHeading8(doc);
                 case BuiltInStyle.Heading9:
                     return GenerateHeading9(doc);
+                case BuiltInStyle.TOC1:
+                    return GenerateTOC1(doc);
+                case BuiltInStyle.TOC2:
+                    return GenerateTOC2(doc);
+                case BuiltInStyle.TOC3:
+                    return GenerateTOC3(doc);
                 default:
                     return null;
             }
@@ -434,6 +441,72 @@ namespace Berry.Docx
             style1.Append(primaryStyle1);
             style1.Append(styleParagraphProperties1);
             style1.Append(styleRunProperties1);
+            return style1;
+        }
+
+        private static Style GenerateTOC1(Document doc)
+        {
+            string id = IDGenerator.GenerateStyleID(doc);
+            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+
+            Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
+            StyleName styleName1 = new StyleName() { Val = "toc 1" };
+            BasedOn basedOn1 = new BasedOn() { Val = baseId };
+            NextParagraphStyle nextParagraphStyle1 = new NextParagraphStyle() { Val = baseId };
+            PrimaryStyle primaryStyle1 = new PrimaryStyle();
+
+            style1.Append(styleName1);
+            style1.Append(basedOn1);
+            style1.Append(nextParagraphStyle1);
+            style1.Append(primaryStyle1);
+            return style1;
+        }
+
+        private static Style GenerateTOC2(Document doc)
+        {
+            string id = IDGenerator.GenerateStyleID(doc);
+            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+
+            Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
+            StyleName styleName1 = new StyleName() { Val = "toc 2" };
+            BasedOn basedOn1 = new BasedOn() { Val = baseId };
+            NextParagraphStyle nextParagraphStyle1 = new NextParagraphStyle() { Val = baseId };
+            PrimaryStyle primaryStyle1 = new PrimaryStyle();
+
+            StyleParagraphProperties styleParagraphProperties1 = new StyleParagraphProperties();
+            W.Indentation indentation1 = new W.Indentation() { Left = "405", LeftChars = 200 };
+
+            styleParagraphProperties1.Append(indentation1);
+
+            style1.Append(styleName1);
+            style1.Append(basedOn1);
+            style1.Append(nextParagraphStyle1);
+            style1.Append(primaryStyle1);
+            style1.Append(styleParagraphProperties1);
+            return style1;
+        }
+
+        private static Style GenerateTOC3(Document doc)
+        {
+            string id = IDGenerator.GenerateStyleID(doc);
+            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+
+            Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
+            StyleName styleName1 = new StyleName() { Val = "toc 3" };
+            BasedOn basedOn1 = new BasedOn() { Val = baseId };
+            NextParagraphStyle nextParagraphStyle1 = new NextParagraphStyle() { Val = baseId };
+            PrimaryStyle primaryStyle1 = new PrimaryStyle();
+
+            StyleParagraphProperties styleParagraphProperties1 = new StyleParagraphProperties();
+            W.Indentation indentation1 = new W.Indentation() { Left = "840", LeftChars = 400 };
+
+            styleParagraphProperties1.Append(indentation1);
+
+            style1.Append(styleName1);
+            style1.Append(basedOn1);
+            style1.Append(nextParagraphStyle1);
+            style1.Append(primaryStyle1);
+            style1.Append(styleParagraphProperties1);
             return style1;
         }
     }

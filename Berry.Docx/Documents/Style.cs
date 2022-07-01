@@ -152,29 +152,40 @@ namespace Berry.Docx.Documents
 
         public static BuiltInStyle NameToBuiltIn(string styleName)
         {
-            styleName = styleName.ToLower();
-            if (styleName == "normal" || styleName == "正文")
-                return BuiltInStyle.Normal;
-            else if (styleName == "heading 1" || styleName == "标题 1")
-                return BuiltInStyle.Heading1;
-            else if (styleName == "heading 2" || styleName == "标题 2")
-                return BuiltInStyle.Heading2;
-            else if (styleName == "heading 3" || styleName == "标题 3")
-                return BuiltInStyle.Heading3;
-            else if (styleName == "heading 4" || styleName == "标题 4")
-                return BuiltInStyle.Heading4;
-            else if (styleName == "heading 5" || styleName == "标题 5")
-                return BuiltInStyle.Heading5;
-            else if (styleName == "heading 6" || styleName == "标题 6")
-                return BuiltInStyle.Heading6;
-            else if (styleName == "heading 7" || styleName == "标题 7")
-                return BuiltInStyle.Heading7;
-            else if (styleName == "heading 8" || styleName == "标题 8")
-                return BuiltInStyle.Heading8;
-            else if (styleName == "heading 9" || styleName == "标题 9")
-                return BuiltInStyle.Heading9;
-            else
-                return BuiltInStyle.None;
+            styleName = NameToBuiltInString(styleName);
+            if (styleName == "normal") return BuiltInStyle.Normal;
+            else if (styleName == "heading 1") return BuiltInStyle.Heading1;
+            else if (styleName == "heading 2") return BuiltInStyle.Heading2;
+            else if (styleName == "heading 3") return BuiltInStyle.Heading3;
+            else if (styleName == "heading 4") return BuiltInStyle.Heading4;
+            else if (styleName == "heading 5") return BuiltInStyle.Heading5;
+            else if (styleName == "heading 6") return BuiltInStyle.Heading6;
+            else if (styleName == "heading 7") return BuiltInStyle.Heading7;
+            else if (styleName == "heading 8") return BuiltInStyle.Heading8;
+            else if (styleName == "heading 9") return BuiltInStyle.Heading9;
+            else if (styleName == "toc 1") return BuiltInStyle.TOC1;
+            else if (styleName == "toc 2") return BuiltInStyle.TOC2;
+            else if (styleName == "toc 3") return BuiltInStyle.TOC3;
+            else return BuiltInStyle.None;
         }
+        internal static string NameToBuiltInString(string styleName)
+        {
+            styleName = styleName.ToLower();
+            if (styleName == "正文") return "normal";
+            else if (styleName == "标题 1") return "heading 1";
+            else if (styleName == "标题 2") return "heading 2";
+            else if (styleName == "标题 3") return "heading 3";
+            else if (styleName == "标题 4") return "heading 4";
+            else if (styleName == "标题 5") return "heading 5";
+            else if (styleName == "标题 6") return "heading 6";
+            else if (styleName == "标题 7") return "heading 7";
+            else if (styleName == "标题 8") return "heading 8";
+            else if (styleName == "标题 9") return "heading 9";
+            else if (styleName == "目录 1") return "toc 1";
+            else if (styleName == "目录 2") return "toc 2";
+            else if (styleName == "目录 3") return "toc 3";
+            else return styleName;
+        }
+
     }
 }

@@ -62,7 +62,8 @@ namespace Berry.Docx.Collections
         /// <returns>The style with the specified stylename and type</returns>
         public Style FindByName(string name, StyleType type)
         {
-            return _styles.Where(s => s.Name.ToLower() == name.ToLower() && s.Type == type).FirstOrDefault();
+            name = Style.NameToBuiltInString(name);
+            return _styles.Where(s => s.Name.ToLower() == name && s.Type == type).FirstOrDefault();
         }
 
         /// <summary>

@@ -433,7 +433,13 @@ namespace Berry.Docx
     public enum BuiltInStyle
     {
         None = -1,
+        /// <summary>
+        /// 正文(Normal)
+        /// </summary>
         Normal = 0,
+        /// <summary>
+        /// 标题 1(heading 1)
+        /// </summary>
         Heading1 = 1,
         Heading2 = 2,
         Heading3 = 3,
@@ -442,7 +448,36 @@ namespace Berry.Docx
         Heading6 = 6,
         Heading7 = 7,
         Heading8 = 8,
-        Heading9 = 9
+        Heading9 = 9,
+        /// <summary>
+        /// 标题(Title)
+        /// </summary>
+        Title = 10,
+        /// <summary>
+        /// 副标题(Subtitle)
+        /// </summary>
+        SubTitle = 11,
+        /// <summary>
+        /// 目录 1(toc 1)
+        /// </summary>
+        TOC1 = 12,
+        TOC2 = 13,
+        TOC3 = 14,
+        TOC4 = 15,
+        TOC5 = 16,
+        TOC6 = 17,
+        TOC7 = 18,
+        TOC8 = 19,
+        TOC9 = 20,
+        /// <summary>
+        /// 页眉(header)
+        /// </summary>
+        Header = 16,
+        /// <summary>
+        /// 页脚(footer)
+        /// </summary>
+        Footer = 17
+
     }
 
     /// <summary>
