@@ -18,6 +18,7 @@ namespace Berry.Docx.Documents
         private readonly W.Style _style;
         protected ParagraphFormat _pFormat;
         protected CharacterFormat _cFormat;
+        protected ListFormat _listFormat;
 
         internal Style(Document doc, StyleType type)
         {
@@ -25,10 +26,11 @@ namespace Berry.Docx.Documents
             _style = new W.Style();
             StyleId = IDGenerator.GenerateStyleID(doc);
             Type = type;
-            if (type == StyleType.Paragraph || type == StyleType.Table)
+            if (type == StyleType.Paragraph)
             {
                 _pFormat = new ParagraphFormat(doc, _style);
                 _cFormat = new CharacterFormat(doc, _style);
+                _listFormat = new ListFormat(doc, _style);
             }
             else if (type == StyleType.Character)
             {
@@ -44,6 +46,7 @@ namespace Berry.Docx.Documents
             {
                 _pFormat = new ParagraphFormat(doc, style);
                 _cFormat = new CharacterFormat(doc, style);
+                _listFormat = new ListFormat(doc, style);
             }
             else if (Type == StyleType.Character)
             {

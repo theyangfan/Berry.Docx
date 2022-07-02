@@ -12,7 +12,7 @@ namespace Berry.Docx.Documents
         {
 
         }
-        public CharacterStyle(Document doc, W.Style style) : base(doc, style)
+        internal CharacterStyle(Document doc, W.Style style) : base(doc, style)
         {
 
         }

@@ -19,7 +19,7 @@ namespace Berry.Docx.Field
             Type = type;
         }
 
-        internal Break(Document doc, W.Run ownerRun, W.Break br) 
+        internal Break(Document doc, W.Run ownerRun, W.Break br)
             : base(doc, ownerRun, br)
         {
             _break = br;

@@ -54,6 +54,7 @@ namespace Berry.Docx.Documents
         private readonly W.Paragraph _paragraph;
         private readonly ParagraphFormat _pFormat;
         private readonly CharacterFormat _cFormat;
+        private readonly ListFormat _listFormat;
         #endregion
 
         #region Constructors
@@ -73,8 +74,9 @@ namespace Berry.Docx.Documents
         {
             _doc = doc;
             _paragraph = paragraph;
-            _pFormat = new ParagraphFormat(_doc, paragraph);
-            _cFormat = new CharacterFormat(_doc, paragraph);
+            _pFormat = new ParagraphFormat(doc, paragraph);
+            _cFormat = new CharacterFormat(doc, paragraph);
+            _listFormat = new ListFormat(doc, paragraph);
         }
         #endregion
 
@@ -128,6 +130,8 @@ namespace Berry.Docx.Documents
         /// The character format of paragraph mark for this paragraph.
         /// </summary>
         public CharacterFormat MarkFormat => _cFormat;
+
+        public ListFormat ListFormat => _listFormat;
 
         /// <summary>
         /// Gets the owener section of the current paragraph.

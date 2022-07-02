@@ -53,10 +53,9 @@ namespace Berry.Docx.Formatting
         private bool _autoSpaceDE = true;
         private bool _autoSpaceDN = true;
         private VerticalTextAlignment _textAlignment = VerticalTextAlignment.Auto;
-        // borders
+        // borders & tabs
         private Borders _borders;
-        // Numbering
-        private NumberingFormat _numFormat = null;
+        private Tabs _tabs;
 
         #endregion
 
@@ -76,6 +75,7 @@ namespace Berry.Docx.Formatting
             _ownerParagraph = ownerParagraph;
             _directPHld = new ParagraphPropertiesHolder(document, ownerParagraph);
             _borders = new Borders(document, ownerParagraph);
+            _tabs = new Tabs(document, ownerParagraph);
         }
 
         /// <summary>
@@ -89,38 +89,13 @@ namespace Berry.Docx.Formatting
             _ownerStyle = ownerStyle;
             _directSHld = new ParagraphPropertiesHolder(document, ownerStyle);
             _borders = new Borders(document, ownerStyle);
+            _tabs= new Tabs(document, ownerStyle);
         }
 
         #endregion
 
         #region Public Properties
-        /// <summary>
-        /// Gets paragraph numbering format.
-        /// </summary>
-        /*public NumberingFormat NumberingFormat
-        {
-            get
-            {
-                if(_ownerParagraph != null)
-                {
-                    return _ownerParagraph.ParagraphProperties?.NumberingProperties != null ? _directPHld.NumberingFormat : _styleFormat.NumberingFormat;
-                }
-                else if(_ownerStyle != null)
-                {
-                    return _styleHierarchyFormat.NumberingFormat;
-                }
-                else
-                {
-                    return _numFormat;
-                }
-            }
-            set
-            {
-                if(_ownerParagraph == null && _ownerStyle == null)
-                    _numFormat = value;
-            }
-        }
-*/
+
         #region Normal
         /// <summary>
         /// Gets or sets the justification.
@@ -1125,6 +1100,8 @@ namespace Berry.Docx.Formatting
         #endregion
 
         public Borders Borders => _borders;
+
+        public Tabs Tabs => _tabs;
 
         #endregion
 

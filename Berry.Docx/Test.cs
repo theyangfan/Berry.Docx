@@ -9,6 +9,7 @@ using System.Drawing;
 using Berry.Docx;
 using Berry.Docx.Documents;
 using Berry.Docx.Field;
+using Berry.Docx.Formatting;
 
 using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
@@ -24,22 +25,14 @@ namespace Test
             using (Document doc = new Document(src))
             {
                 Paragraph p = doc.LastSection.Paragraphs.Last();
-                ParagraphStyle s = p.GetStyle();
-                TextRange tr = p.ChildItems[0] as TextRange;
-
-                p.Format.Borders.Top.Style = BorderStyle.Nil;
-                p.Format.Borders.Bottom.Style = BorderStyle.Nil;
-                p.Format.Borders.Left.Style = BorderStyle.None;
-                p.Format.Borders.Right.Style = BorderStyle.None;
-
-                //tr.CharacterFormat.Border.Color = Color.Blue;
-                //tr.CharacterFormat.Border.Style = BorderStyle.Inset;
-
-                //Console.WriteLine(tr.CharacterFormat.Border.Color);
-                Console.WriteLine(p.Format.Borders.Top.Style);
-                Console.WriteLine(p.Format.Borders.Top.Color);
-                Console.WriteLine(p.Format.Borders.Top.Width);
-                
+                p.Format.Tabs.Clear();
+                p.GetStyle().ParagraphFormat.Tabs.Clear();
+                foreach(Tab tab in p.Format.Tabs)
+                {
+                    Console.WriteLine(tab.Position);
+                    Console.WriteLine(tab.Style);
+                    Console.WriteLine(tab.Leader);
+                }
 
                 doc.SaveAs(dst);
             }

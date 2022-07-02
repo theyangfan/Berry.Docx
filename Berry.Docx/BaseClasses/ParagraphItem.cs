@@ -5,6 +5,7 @@ using O = DocumentFormat.OpenXml;
 using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Documents;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Field
 {
@@ -18,6 +19,7 @@ namespace Berry.Docx.Field
         // the owner openxml run element.
         private readonly W.Run _ownerRun;
         private readonly O.OpenXmlElement _element;
+        private readonly CharacterFormat _cFmt;
         #endregion
 
         #region Constructors
@@ -34,6 +36,7 @@ namespace Berry.Docx.Field
             _ownerRun = ownerRun;
             if(ele != ownerRun && !ownerRun.Contains(ele))
                 ownerRun.AddChild(ele);
+            _cFmt = new CharacterFormat(doc, ownerRun);
         }
         /// <summary>
         /// When the ele is not a part of run element.
@@ -45,6 +48,7 @@ namespace Berry.Docx.Field
         {
             _doc = doc;
             _element = ele;
+            _cFmt = new CharacterFormat();
         }
         #endregion
 
@@ -62,7 +66,9 @@ namespace Berry.Docx.Field
                     return new Paragraph(_doc, _element.Ancestors<W.Paragraph>().First());
             }
         }
-        
+
+        public virtual CharacterFormat CharacterFormat => _cFmt;
+
         internal bool IsInRun => _ownerRun != null;
 
         internal W.Run RunElement => _ownerRun;

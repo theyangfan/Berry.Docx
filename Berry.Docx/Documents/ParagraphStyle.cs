@@ -46,6 +46,7 @@ namespace Berry.Docx.Documents
         /// </summary>
         public CharacterFormat CharacterFormat => _cFormat;
 
+        public ListFormat ListFormat => _listFormat;
         public new ParagraphStyle BaseStyle
         {
             get => base.BaseStyle as ParagraphStyle;

@@ -714,6 +714,9 @@ namespace Berry.Docx
         Auto = 4
     }
 
+    /// <summary>
+    /// Defines the border style enumeration.
+    /// </summary>
     public enum BorderStyle
     {
         /// <summary>
@@ -1697,5 +1700,401 @@ namespace Berry.Docx
         //     Zigzag stitch.
         //     When the item is serialized out as xml, its value is "zigZagStitch".
         ZigZagStitch = 196
+    }
+
+    /// <summary>
+    /// Defiines the style of custom tab stop.
+    /// </summary>
+    public enum TabStopStyle
+    {
+        /// <summary>
+        /// No Tab Stop.
+        /// </summary>
+        Clear = 0,
+        /// <summary>
+        /// Left Tab.
+        /// </summary>
+        Left = 1,
+        /// <summary>
+        /// Start.
+        /// </summary>
+        Start = 2,
+        /// <summary>
+        /// Centered Tab.
+        /// </summary>
+        Center = 3,
+        /// <summary>
+        /// Right Tab.
+        /// </summary>
+        Right = 4,
+        /// <summary>
+        /// end.
+        /// </summary>
+        End = 5,
+        /// <summary>
+        /// Decimal Tab.
+        /// </summary>
+        Decimal = 6,
+        /// <summary>
+        /// Bar Tab.
+        /// </summary>
+        Bar = 7,
+        /// <summary>
+        /// List Tab.
+        /// </summary>
+        Number = 8
+    }
+
+    /// <summary>
+    /// Defines Tab Leader Character enumeration.
+    /// </summary>
+    public enum TabStopLeader
+    {
+        /// <summary>
+        /// No tab stop leader.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Dotted leader line.
+        /// </summary>
+        Dot = 1,
+        /// <summary>
+        /// Dashed tab stop leader line.
+        /// </summary>
+        Hyphen = 2,
+        /// <summary>
+        /// Solid leader line.
+        /// </summary>
+        Underscore = 3,
+        /// <summary>
+        /// Heavy solid leader line.
+        /// </summary>
+        Heavy = 4,
+        /// <summary>
+        /// Middle dot leader line.
+        /// </summary>
+        MiddleDot = 5
+    }
+
+    public enum ListNumberStyle
+    {
+        //
+        // 摘要:
+        //     Decimal Numbers.
+        //     When the item is serialized out as xml, its value is "decimal".
+        Decimal = 0,
+        //
+        // 摘要:
+        //     Uppercase Roman Numerals.
+        //     When the item is serialized out as xml, its value is "upperRoman".
+        UpperRoman = 1,
+        //
+        // 摘要:
+        //     Lowercase Roman Numerals.
+        //     When the item is serialized out as xml, its value is "lowerRoman".
+        LowerRoman = 2,
+        //
+        // 摘要:
+        //     Uppercase Latin Alphabet.
+        //     When the item is serialized out as xml, its value is "upperLetter".
+        UpperLetter = 3,
+        //
+        // 摘要:
+        //     Lowercase Latin Alphabet.
+        //     When the item is serialized out as xml, its value is "lowerLetter".
+        LowerLetter = 4,
+        //
+        // 摘要:
+        //     Ordinal.
+        //     When the item is serialized out as xml, its value is "ordinal".
+        Ordinal = 5,
+        //
+        // 摘要:
+        //     Cardinal Text.
+        //     When the item is serialized out as xml, its value is "cardinalText".
+        CardinalText = 6,
+        //
+        // 摘要:
+        //     Ordinal Text.
+        //     When the item is serialized out as xml, its value is "ordinalText".
+        OrdinalText = 7,
+        //
+        // 摘要:
+        //     Hexadecimal Numbering.
+        //     When the item is serialized out as xml, its value is "hex".
+        Hex = 8,
+        //
+        // 摘要:
+        //     Chicago Manual of Style.
+        //     When the item is serialized out as xml, its value is "chicago".
+        Chicago = 9,
+        //
+        // 摘要:
+        //     Ideographs.
+        //     When the item is serialized out as xml, its value is "ideographDigital".
+        IdeographDigital = 10,
+        //
+        // 摘要:
+        //     Japanese Counting System.
+        //     When the item is serialized out as xml, its value is "japaneseCounting".
+        JapaneseCounting = 11,
+        //
+        // 摘要:
+        //     AIUEO Order Hiragana.
+        //     When the item is serialized out as xml, its value is "aiueo".
+        Aiueo = 12,
+        //
+        // 摘要:
+        //     Iroha Ordered Katakana.
+        //     When the item is serialized out as xml, its value is "iroha".
+        Iroha = 13,
+        //
+        // 摘要:
+        //     Double Byte Arabic Numerals.
+        //     When the item is serialized out as xml, its value is "decimalFullWidth".
+        DecimalFullWidth = 14,
+        //
+        // 摘要:
+        //     Single Byte Arabic Numerals.
+        //     When the item is serialized out as xml, its value is "decimalHalfWidth".
+        DecimalHalfWidth = 15,
+        //
+        // 摘要:
+        //     Japanese Legal Numbering.
+        //     When the item is serialized out as xml, its value is "japaneseLegal".
+        JapaneseLegal = 16,
+        //
+        // 摘要:
+        //     Japanese Digital Ten Thousand Counting System.
+        //     When the item is serialized out as xml, its value is "japaneseDigitalTenThousand".
+        JapaneseDigitalTenThousand = 17,
+        //
+        // 摘要:
+        //     Decimal Numbers Enclosed in a Circle.
+        //     When the item is serialized out as xml, its value is "decimalEnclosedCircle".
+        DecimalEnclosedCircle = 18,
+        //
+        // 摘要:
+        //     Double Byte Arabic Numerals Alternate.
+        //     When the item is serialized out as xml, its value is "decimalFullWidth2".
+        DecimalFullWidth2 = 19,
+        //
+        // 摘要:
+        //     Full-Width AIUEO Order Hiragana.
+        //     When the item is serialized out as xml, its value is "aiueoFullWidth".
+        AiueoFullWidth = 20,
+        //
+        // 摘要:
+        //     Full-Width Iroha Ordered Katakana.
+        //     When the item is serialized out as xml, its value is "irohaFullWidth".
+        IrohaFullWidth = 21,
+        //
+        // 摘要:
+        //     Initial Zero Arabic Numerals.
+        //     When the item is serialized out as xml, its value is "decimalZero".
+        DecimalZero = 22,
+        //
+        // 摘要:
+        //     Bullet.
+        //     When the item is serialized out as xml, its value is "bullet".
+        Bullet = 23,
+        //
+        // 摘要:
+        //     Korean Ganada Numbering.
+        //     When the item is serialized out as xml, its value is "ganada".
+        Ganada = 24,
+        //
+        // 摘要:
+        //     Korean Chosung Numbering.
+        //     When the item is serialized out as xml, its value is "chosung".
+        Chosung = 25,
+        //
+        // 摘要:
+        //     Decimal Numbers Followed by a Period.
+        //     When the item is serialized out as xml, its value is "decimalEnclosedFullstop".
+        DecimalEnclosedFullstop = 26,
+        //
+        // 摘要:
+        //     Decimal Numbers Enclosed in Parenthesis.
+        //     When the item is serialized out as xml, its value is "decimalEnclosedParen".
+        DecimalEnclosedParen = 27,
+        //
+        // 摘要:
+        //     Decimal Numbers Enclosed in a Circle.
+        //     When the item is serialized out as xml, its value is "decimalEnclosedCircleChinese".
+        DecimalEnclosedCircleChinese = 28,
+        //
+        // 摘要:
+        //     Ideographs Enclosed in a Circle.
+        //     When the item is serialized out as xml, its value is "ideographEnclosedCircle".
+        IdeographEnclosedCircle = 29,
+        //
+        // 摘要:
+        //     Traditional Ideograph Format.
+        //     When the item is serialized out as xml, its value is "ideographTraditional".
+        IdeographTraditional = 30,
+        //
+        // 摘要:
+        //     Zodiac Ideograph Format.
+        //     When the item is serialized out as xml, its value is "ideographZodiac".
+        IdeographZodiac = 31,
+        //
+        // 摘要:
+        //     Traditional Zodiac Ideograph Format.
+        //     When the item is serialized out as xml, its value is "ideographZodiacTraditional".
+        IdeographZodiacTraditional = 32,
+        //
+        // 摘要:
+        //     Taiwanese Counting System.
+        //     When the item is serialized out as xml, its value is "taiwaneseCounting".
+        TaiwaneseCounting = 33,
+        //
+        // 摘要:
+        //     Traditional Legal Ideograph Format.
+        //     When the item is serialized out as xml, its value is "ideographLegalTraditional".
+        IdeographLegalTraditional = 34,
+        //
+        // 摘要:
+        //     Taiwanese Counting Thousand System.
+        //     When the item is serialized out as xml, its value is "taiwaneseCountingThousand".
+        TaiwaneseCountingThousand = 35,
+        //
+        // 摘要:
+        //     Taiwanese Digital Counting System.
+        //     When the item is serialized out as xml, its value is "taiwaneseDigital".
+        TaiwaneseDigital = 36,
+        //
+        // 摘要:
+        //     Chinese Counting System.
+        //     When the item is serialized out as xml, its value is "chineseCounting".
+        ChineseCounting = 37,
+        //
+        // 摘要:
+        //     Chinese Legal Simplified Format.
+        //     When the item is serialized out as xml, its value is "chineseLegalSimplified".
+        ChineseLegalSimplified = 38,
+        //
+        // 摘要:
+        //     Chinese Counting Thousand System.
+        //     When the item is serialized out as xml, its value is "chineseCountingThousand".
+        ChineseCountingThousand = 39,
+        //
+        // 摘要:
+        //     Korean Digital Counting System.
+        //     When the item is serialized out as xml, its value is "koreanDigital".
+        KoreanDigital = 40,
+        //
+        // 摘要:
+        //     Korean Counting System.
+        //     When the item is serialized out as xml, its value is "koreanCounting".
+        KoreanCounting = 41,
+        //
+        // 摘要:
+        //     Korean Legal Numbering.
+        //     When the item is serialized out as xml, its value is "koreanLegal".
+        KoreanLegal = 42,
+        //
+        // 摘要:
+        //     Korean Digital Counting System Alternate.
+        //     When the item is serialized out as xml, its value is "koreanDigital2".
+        KoreanDigital2 = 43,
+        //
+        // 摘要:
+        //     Vietnamese Numerals.
+        //     When the item is serialized out as xml, its value is "vietnameseCounting".
+        VietnameseCounting = 44,
+        //
+        // 摘要:
+        //     Lowercase Russian Alphabet.
+        //     When the item is serialized out as xml, its value is "russianLower".
+        RussianLower = 45,
+        //
+        // 摘要:
+        //     Uppercase Russian Alphabet.
+        //     When the item is serialized out as xml, its value is "russianUpper".
+        RussianUpper = 46,
+        //
+        // 摘要:
+        //     No Numbering.
+        //     When the item is serialized out as xml, its value is "none".
+        None = 47,
+        //
+        // 摘要:
+        //     Number With Dashes.
+        //     When the item is serialized out as xml, its value is "numberInDash".
+        NumberInDash = 48,
+        //
+        // 摘要:
+        //     Hebrew Numerals.
+        //     When the item is serialized out as xml, its value is "hebrew1".
+        Hebrew1 = 49,
+        //
+        // 摘要:
+        //     Hebrew Alphabet.
+        //     When the item is serialized out as xml, its value is "hebrew2".
+        Hebrew2 = 50,
+        //
+        // 摘要:
+        //     Arabic Alphabet.
+        //     When the item is serialized out as xml, its value is "arabicAlpha".
+        ArabicAlpha = 51,
+        //
+        // 摘要:
+        //     Arabic Abjad Numerals.
+        //     When the item is serialized out as xml, its value is "arabicAbjad".
+        ArabicAbjad = 52,
+        //
+        // 摘要:
+        //     Hindi Vowels.
+        //     When the item is serialized out as xml, its value is "hindiVowels".
+        HindiVowels = 53,
+        //
+        // 摘要:
+        //     Hindi Consonants.
+        //     When the item is serialized out as xml, its value is "hindiConsonants".
+        HindiConsonants = 54,
+        //
+        // 摘要:
+        //     Hindi Numbers.
+        //     When the item is serialized out as xml, its value is "hindiNumbers".
+        HindiNumbers = 55,
+        //
+        // 摘要:
+        //     Hindi Counting System.
+        //     When the item is serialized out as xml, its value is "hindiCounting".
+        HindiCounting = 56,
+        //
+        // 摘要:
+        //     Thai Letters.
+        //     When the item is serialized out as xml, its value is "thaiLetters".
+        ThaiLetters = 57,
+        //
+        // 摘要:
+        //     Thai Numerals.
+        //     When the item is serialized out as xml, its value is "thaiNumbers".
+        ThaiNumbers = 58,
+        //
+        // 摘要:
+        //     Thai Counting System.
+        //     When the item is serialized out as xml, its value is "thaiCounting".
+        ThaiCounting = 59,
+        //
+        // 摘要:
+        //     bahtText.
+        //     When the item is serialized out as xml, its value is "bahtText".
+        //     This item is only available in Office 2010 and later.
+        BahtText = 60,
+        //
+        // 摘要:
+        //     dollarText.
+        //     When the item is serialized out as xml, its value is "dollarText".
+        //     This item is only available in Office 2010 and later.
+        DollarText = 61,
+        //
+        // 摘要:
+        //     custom.
+        //     When the item is serialized out as xml, its value is "custom".
+        //     This item is only available in Office 2010 and later.
+        Custom = 62
     }
 }
