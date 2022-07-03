@@ -11,6 +11,8 @@ namespace Berry.Docx
     internal class IDGenerator
     {
         public static int CUSTOM_STYLE_ID = 1;
+        public static int CUSTOM_NUM_ID = 1;
+        public static int CUSTOM_ABSTRACT_NUM_ID = 0;
         public static string GenerateRelationshipID(Document doc)
         {
             List<int> ids = new List<int>();
@@ -34,6 +36,36 @@ namespace Berry.Docx
                 CUSTOM_STYLE_ID++;
             } while (ids.Contains(CUSTOM_STYLE_ID.ToString()));
             return CUSTOM_STYLE_ID.ToString();
+        }
+
+        public static int GenerateNumId(Document doc)
+        {
+            List<int> ids = new List<int>();
+            Numbering numbering = doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering;
+            if (numbering != null)
+            {
+                foreach(NumberingInstance num in numbering.Elements<NumberingInstance>())
+                {
+                    ids.Add(num.NumberID);
+                }
+            }
+            while(ids.Contains(CUSTOM_NUM_ID)) CUSTOM_NUM_ID++;
+            return CUSTOM_NUM_ID;
+        }
+
+        public static int GenerateAbstractNumId(Document doc)
+        {
+            List<int> ids = new List<int>();
+            Numbering numbering = doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering;
+            if (numbering != null)
+            {
+                foreach (AbstractNum num in numbering.Elements<AbstractNum>())
+                {
+                    ids.Add(num.AbstractNumberId);
+                }
+            }
+            while (ids.Contains(CUSTOM_ABSTRACT_NUM_ID)) CUSTOM_ABSTRACT_NUM_ID++;
+            return CUSTOM_ABSTRACT_NUM_ID;
         }
     }
 }

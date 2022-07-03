@@ -66,5 +66,6 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        internal int ListLevelNumber => _level.LevelIndex + 1;
     }
 }

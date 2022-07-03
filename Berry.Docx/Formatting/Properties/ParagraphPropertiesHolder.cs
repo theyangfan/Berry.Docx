@@ -77,45 +77,6 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Public Properties
-        /// <summary>
-        /// Gets paragraph numbering format.
-        /// </summary>
-        public ListFormat ListFormat
-        {
-            get
-            {
-                if(_paragraph != null)
-                {
-                    if (_paragraph.ParagraphProperties?.NumberingProperties?.NumberingId == null) return null;
-                    int numId = _paragraph.ParagraphProperties.NumberingProperties.NumberingId.Val;
-                    if (_paragraph.ParagraphProperties.NumberingProperties.NumberingLevelReference != null) return null;
-                    int ilvl = _paragraph.ParagraphProperties.NumberingProperties.NumberingLevelReference.Val;
-                    if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering == null) return null;
-                    W.Numbering numbering = _doc.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
-                    W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
-                    if (num == null) return null;
-                    int abstractNumId = num.AbstractNumId.Val;
-                    W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
-                    if (abstractNum == null) return null;
-                    return new ListFormat(_doc, abstractNum, ilvl);
-                }
-                else if(_style != null)
-                {
-                    if (_style.StyleParagraphProperties?.NumberingProperties?.NumberingId == null) return null;
-                    int numId = _style.StyleParagraphProperties.NumberingProperties.NumberingId.Val;
-                    string styleId = _style.StyleId;
-                    if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering == null) return null;
-                    W.Numbering numbering = _doc.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
-                    W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
-                    if (num == null) return null;
-                    int abstractNumId = num.AbstractNumId.Val;
-                    W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
-                    if (abstractNum == null) return null;
-                    return new ListFormat(_doc, abstractNum, styleId);
-                }
-                return null;
-            }
-        }
 
         #region Normal
         /// <summary>
@@ -1997,16 +1958,6 @@ namespace Berry.Docx.Formatting
             format.AutoSpaceDE = curSHld.AutoSpaceDE ?? baseFormat.AutoSpaceDE;
             format.AutoSpaceDN = curSHld.AutoSpaceDN ?? baseFormat.AutoSpaceDN;
             format.TextAlignment = curSHld.TextAlignment ?? baseFormat.TextAlignment;
-            // Numbering
-            if (curSHld.ListFormat != null)
-            {
-                format.NumberingFormat = curSHld.ListFormat;
-            }
-            else if (baseFormat.ListFormat != null)
-            {
-                format.NumberingFormat = new NumberingFormat(_document, baseFormat.ListFormat, style.StyleId);
-            }
-
             return format;
         }
         #region Indentation

@@ -13,68 +13,164 @@ namespace Berry.Docx.Formatting
     {
         #region Private Members
         private readonly Document _doc;
-        private readonly W.AbstractNum _abstractNum;
-        private readonly W.Level _curLevel;
+        private readonly W.Paragraph _ownerParagraph;
+        private readonly W.Style _ownerStyle;
         #endregion
 
         #region Constructors
-        /// <summary>
-        /// Initializes a new instance of the NumberingFormat class using the supplied OpenXML AbstractNum element.
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="num"></param>
-        /// 
         internal ListFormat(Document doc, W.Paragraph ownerParagraph)
         {
-
+            _doc = doc;
+            _ownerParagraph = ownerParagraph;
         }
 
         internal ListFormat(Document doc, W.Style ownerStyle)
         {
+            _doc = doc;
+            _ownerStyle = ownerStyle;
+        }
 
-        }
-
-        internal ListFormat(Document doc, W.AbstractNum num, int levelIndex)
-        {
-            _doc = doc;
-            _abstractNum = num;
-            _curLevel = num.Elements<W.Level>().Where(l => l.LevelIndex == levelIndex).FirstOrDefault();
-        }
-        internal ListFormat(Document doc, W.AbstractNum num, string styleId)
-        {
-            _doc = doc;
-            _abstractNum = num;
-            _curLevel = num.Elements<W.Level>().Where(l => l.ParagraphStyleIdInLevel?.Val == styleId).FirstOrDefault();
-        }
-        internal ListFormat(Document doc, ListFormat format, string styleId)
-        {
-            _doc = doc;
-            _abstractNum = format.AbstractNum;
-            _curLevel = _abstractNum.Elements<W.Level>().Where(l => l.ParagraphStyleIdInLevel?.Val == styleId).FirstOrDefault();
-        }
         #endregion
 
         #region Public Properties
 
+        public ListStyle CurrentStyle
+        {
+            get
+            {
+                if(_ownerParagraph != null) // Paragraph
+                {
+                    W.NumberingProperties numPr = _ownerParagraph.ParagraphProperties?.NumberingProperties;
+                    if (numPr?.NumberingId != null && numPr?.NumberingLevelReference != null)
+                    {
+                        W.AbstractNum abstractNum = GetAbstractNumByID(_doc, numPr.NumberingId.Val);
+                        if(abstractNum != null) return new ListStyle(_doc, abstractNum);
+                    }
+                    else
+                    {
+                        W.AbstractNum abstractNum = GetStyleAbstractNumRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                        if (abstractNum != null) return new ListStyle(_doc, abstractNum);
+                    }
+                }
+                else // Style
+                {
+                    W.AbstractNum abstractNum = GetStyleAbstractNumRecursively(_doc, _ownerStyle);
+                    if (abstractNum != null) return new ListStyle(_doc, abstractNum);
+                }
+                return null;
+            }
+        }
+
+        public ListLevel CurrentLevel
+        {
+            get
+            {
+                if (_ownerParagraph != null) // Paragraph
+                {
+                    W.NumberingProperties numPr = _ownerParagraph.ParagraphProperties?.NumberingProperties;
+                    if (numPr?.NumberingId != null && numPr?.NumberingLevelReference != null)
+                    {
+                        W.AbstractNum abstractNum = GetAbstractNumByID(_doc, numPr.NumberingId.Val);
+                        if (abstractNum != null)
+                        {
+                            W.Level level = GetAbstractNumLevel(abstractNum, numPr.NumberingLevelReference.Val.Value);
+                            if(level != null) return new ListLevel(_doc, abstractNum, level);
+                        }
+                    }
+                    else
+                    {
+                        W.Style style = _ownerParagraph.GetStyle(_doc);
+                        W.AbstractNum abstractNum = GetStyleAbstractNumRecursively(_doc, style);
+                        if (abstractNum != null)
+                        {
+                            W.Level level = GetAbstractNumLevel(abstractNum, style.StyleId);
+                            if (level != null) return new ListLevel(_doc, abstractNum, level);
+                        }
+                    }
+                }
+                else // Style
+                {
+                    W.AbstractNum abstractNum = GetStyleAbstractNumRecursively(_doc, _ownerStyle);
+                    if (abstractNum != null)
+                    {
+                        W.Level level = GetAbstractNumLevel(abstractNum, _ownerStyle.StyleId);
+                        if (level != null) return new ListLevel(_doc, abstractNum, level);
+                    }
+                }
+                return null;
+            }
+        }
+
         public int ListLevelNumber
         {
-            get => _curLevel.LevelIndex.Value + 1;
+            get
+            {
+                return CurrentLevel?.ListLevelNumber ?? 0;
+            }
+            set
+            {
+
+            }
         }
 
-        public ListStyle CurrentStyle => new ListStyle(_doc, _abstractNum);
-
-        public ListLevel CurrentLevel => new ListLevel(_doc, _abstractNum, _curLevel);
-
-        public void ApplyStyle(ListStyle style)
+        public void ApplyStyle(ListStyle style, int levelNumber)
         {
+            if(_ownerParagraph != null)
+            {
+                 if(_ownerParagraph.ParagraphProperties == null)
+                    _ownerParagraph.ParagraphProperties = new W.ParagraphProperties();
+                 if(_ownerParagraph.ParagraphProperties.NumberingProperties == null)
+                    _ownerParagraph.ParagraphProperties.NumberingProperties = new W.NumberingProperties();
+                W.NumberingProperties num = _ownerParagraph.ParagraphProperties.NumberingProperties;
+                num.NumberingId = new W.NumberingId() { Val = style.NumberingInstance.NumberID };
+                num.NumberingLevelReference = new W.NumberingLevelReference() { Val = levelNumber - 1 };
+            }
+            else
+            {
 
+            }
         }
 
         #endregion
 
-        #region Internal Properties
-        internal W.AbstractNum AbstractNum => _abstractNum;
-        #endregion
+
+        private static W.AbstractNum GetAbstractNumByID(Document doc, int numId)
+        {
+            W.Numbering numbering = doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering;
+            if (numbering == null) return null;
+            W.NumberingInstance num = numbering.Elements<W.NumberingInstance>().Where(n => n.NumberID == numId).FirstOrDefault();
+            if (num == null) return null;
+            int abstractNumId = num.AbstractNumId.Val;
+            W.AbstractNum abstractNum = numbering.Elements<W.AbstractNum>().Where(a => a.AbstractNumberId == abstractNumId).FirstOrDefault();
+            return abstractNum;
+        }
+
+        private static W.Level GetAbstractNumLevel(W.AbstractNum num, int levelIndex)
+        {
+            return num?.Elements<W.Level>().Where(l => l.LevelIndex == levelIndex).FirstOrDefault();
+        }
+
+        private static W.Level GetAbstractNumLevel(W.AbstractNum num, string styleId)
+        {
+            return num?.Elements<W.Level>().Where(l => l.ParagraphStyleIdInLevel?.Val == styleId).FirstOrDefault();
+        }
+
+        private static W.AbstractNum GetStyleAbstractNumRecursively(Document doc, W.Style style)
+        {
+            if (style.StyleParagraphProperties?.NumberingProperties?.NumberingId != null)
+            {
+                int numId = style.StyleParagraphProperties.NumberingProperties.NumberingId.Val;
+                W.AbstractNum abstractNum = GetAbstractNumByID(doc, numId);
+                if(abstractNum != null) return abstractNum;
+            }
+            W.Style baseStyle = style.GetBaseStyle(doc);
+            if (baseStyle != null)
+            {
+                return GetStyleAbstractNumRecursively(doc, baseStyle);
+            }
+            return null;
+        }
+
 
     }
 }

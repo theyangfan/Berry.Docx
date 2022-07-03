@@ -19,22 +19,23 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
-            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
+            string src = @"C:\Users\Tomato\Desktop\test.docx";
+            string dst = @"C:\Users\Tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.LastSection.Paragraphs.Last();
-                p.Format.Tabs.Clear();
-                p.GetStyle().ParagraphFormat.Tabs.Clear();
-                foreach(Tab tab in p.Format.Tabs)
+                Paragraph p = doc.LastSection.Paragraphs[0];
+                Console.WriteLine(p.ListFormat.ListLevelNumber);
+                Console.WriteLine(p.ListFormat.CurrentLevel.Pattern);
+                Console.WriteLine(p.ListFormat.CurrentLevel.NumberStyle);
+                Console.WriteLine(p.ListFormat.CurrentLevel.StartNumber);
+                foreach(ListLevel level in p.ListFormat.CurrentStyle.Levels)
                 {
-                    Console.WriteLine(tab.Position);
-                    Console.WriteLine(tab.Style);
-                    Console.WriteLine(tab.Leader);
+                    Console.WriteLine(level.Pattern);
+                    Console.WriteLine(level.NumberStyle);
                 }
 
-                doc.SaveAs(dst);
+                //doc.SaveAs(dst);
             }
         }
     }
