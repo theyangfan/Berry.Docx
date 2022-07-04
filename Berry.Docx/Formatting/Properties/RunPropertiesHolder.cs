@@ -17,6 +17,7 @@ namespace Berry.Docx.Formatting
         private readonly W.Style _style;
         private readonly W.RunPropertiesDefault _defaultRPr;
         private readonly W.Paragraph _paragraph;
+        private readonly W.Level _numberingLevel;
 
         private string _fontNameEastAsia;
         private string _fontNameAscii;
@@ -27,7 +28,7 @@ namespace Berry.Docx.Formatting
         private BooleanValue _italic;
         private EnumValue<SubSuperScript> _subSuperScript;
         private EnumValue<UnderlineStyle> _underlineStyle;
-        private Color _color = Color.Empty;
+        private ColorValue _color = ColorValue.Auto;
         private BooleanValue _autoTextColor;
         private IntegerValue _characterScale;
         private FloatValue _characterSpacing;
@@ -79,6 +80,12 @@ namespace Berry.Docx.Formatting
             _document = doc;
             _paragraph = paragraph;
         }
+
+        public RunPropertiesHolder(P.WordprocessingDocument doc, W.Level numberingLevel)
+        {
+            _document = doc;
+            _numberingLevel = numberingLevel;
+        }
         #endregion
 
         #region Public Properties
@@ -109,6 +116,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
                 {
                     rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                else if(_numberingLevel?.NumberingSymbolRunProperties?.RunFonts != null)
+                {
+                    rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
                 if(rFonts?.EastAsiaTheme != null)
                 {
@@ -153,6 +164,14 @@ namespace Berry.Docx.Formatting
                     W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
                     rFonts.EastAsia = value;
                 }
+                else if(_numberingLevel != null)
+                {
+                    if(_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if(_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
+                        _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
+                    _numberingLevel.NumberingSymbolRunProperties.RunFonts.EastAsia = value;
+                }
                 else
                 {
                     _fontNameEastAsia = value;
@@ -188,6 +207,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
                 {
                     rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.RunFonts != null)
+                {
+                    rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
                 if (rFonts?.AsciiTheme != null)
                 {
@@ -232,6 +255,14 @@ namespace Berry.Docx.Formatting
                     W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
                     rFonts.Ascii = value;
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
+                        _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
+                    _numberingLevel.NumberingSymbolRunProperties.RunFonts.Ascii = value;
+                }
                 else
                 {
                     _fontNameAscii = value;
@@ -263,6 +294,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
                 {
                     rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.RunFonts != null)
+                {
+                    rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
                 if (rFonts?.Hint == null) return null;
                 return rFonts.Hint.Value.Convert<FontContentType>();
@@ -304,6 +339,14 @@ namespace Berry.Docx.Formatting
                     W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
                     rFonts.Hint = value.Val.Convert<W.FontTypeHintValues>();
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
+                        _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
+                    _numberingLevel.NumberingSymbolRunProperties.RunFonts.Hint = value.Val.Convert<W.FontTypeHintValues>();
+                }
                 else
                 {
                     _fontTypeHint = value;
@@ -338,6 +381,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.FontSize>() != null)
                 {
                     sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSize>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.FontSize != null)
+                {
+                    sz = _numberingLevel.NumberingSymbolRunProperties.FontSize;
                 }
                 if (sz == null) return null;
                 return sz.Val.Value.ToFloat() / 2;
@@ -379,6 +426,14 @@ namespace Berry.Docx.Formatting
                     W.FontSize sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSize>();
                     sz.Val = (value * 2).ToString();
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.FontSize == null)
+                        _numberingLevel.NumberingSymbolRunProperties.FontSize = new W.FontSize();
+                    _numberingLevel.NumberingSymbolRunProperties.FontSize.Val = (value * 2).ToString();
+                }
                 else
                 {
                     _fontSize = value;
@@ -410,6 +465,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.FontSizeComplexScript>() != null)
                 {
                     sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSizeComplexScript>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.FontSizeComplexScript != null)
+                {
+                    sz = _numberingLevel.NumberingSymbolRunProperties.FontSizeComplexScript;
                 }
                 if (sz == null) return null;
                 return sz.Val.Value.ToFloat() / 2;
@@ -451,6 +510,14 @@ namespace Berry.Docx.Formatting
                     W.FontSizeComplexScript sz = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.FontSizeComplexScript>();
                     sz.Val = (value * 2).ToString();
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.FontSizeComplexScript == null)
+                        _numberingLevel.NumberingSymbolRunProperties.FontSizeComplexScript = new W.FontSizeComplexScript();
+                    _numberingLevel.NumberingSymbolRunProperties.FontSizeComplexScript.Val = (value * 2).ToString();
+                }
                 else
                 {
                     _fontSizeCs = value;
@@ -484,6 +551,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Bold>() != null)
                 {
                     bold = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Bold>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.Bold != null)
+                {
+                    bold = _numberingLevel.NumberingSymbolRunProperties.Bold;
                 }
                 if (bold == null) return null;
                 if (bold.Val == null) return true;
@@ -541,6 +612,15 @@ namespace Berry.Docx.Formatting
                     if (value) bold.Val = null;
                     else bold.Val = false;
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.Bold == null)
+                        _numberingLevel.NumberingSymbolRunProperties.Bold = new W.Bold();
+                    if (value) _numberingLevel.NumberingSymbolRunProperties.Bold.Val = null;
+                    else _numberingLevel.NumberingSymbolRunProperties.Bold.Val = false;
+                }
                 else
                 {
                     _bold = value;
@@ -574,6 +654,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Italic>() != null)
                 {
                     italic = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Italic>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.Italic != null)
+                {
+                    italic = _numberingLevel.NumberingSymbolRunProperties.Italic;
                 }
                 if (italic == null) return null;
                 if (italic.Val == null) return true;
@@ -631,6 +715,15 @@ namespace Berry.Docx.Formatting
                     if (value) italic.Val = null;
                     else italic.Val = false;
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.Italic == null)
+                        _numberingLevel.NumberingSymbolRunProperties.Italic = new W.Italic();
+                    if (value) _numberingLevel.NumberingSymbolRunProperties.Italic.Val = null;
+                    else _numberingLevel.NumberingSymbolRunProperties.Italic.Val = false;
+                }
                 else
                 {
                     _italic = value;
@@ -662,6 +755,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.VerticalTextAlignment>() != null)
                 {
                     vAlign = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.VerticalTextAlignment>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.VerticalTextAlignment != null)
+                {
+                    vAlign = _numberingLevel.NumberingSymbolRunProperties.VerticalTextAlignment;
                 }
                 if (vAlign == null) return null;
                 if (vAlign.Val == null || vAlign.Val.Value == W.VerticalPositionValues.Baseline) return Berry.Docx.SubSuperScript.None;
@@ -725,6 +822,17 @@ namespace Berry.Docx.Formatting
                         vAlign.Val = value.Val.Convert<W.VerticalPositionValues>();
                     }
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.VerticalTextAlignment == null)
+                        _numberingLevel.NumberingSymbolRunProperties.VerticalTextAlignment = new W.VerticalTextAlignment();
+                    if (value == Berry.Docx.SubSuperScript.None)
+                        _numberingLevel.NumberingSymbolRunProperties.VerticalTextAlignment.Val = W.VerticalPositionValues.Baseline;
+                    else
+                        _numberingLevel.NumberingSymbolRunProperties.VerticalTextAlignment.Val = value.Val.Convert<W.VerticalPositionValues>();
+                }
                 else
                 {
                     _subSuperScript = value;
@@ -756,6 +864,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Underline>() != null)
                 {
                     underline = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Underline>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.Underline != null)
+                {
+                    underline = _numberingLevel.NumberingSymbolRunProperties.Underline;
                 }
                 if (underline == null) return null;
                 if (underline.Val == null) return Berry.Docx.UnderlineStyle.None;
@@ -798,6 +910,14 @@ namespace Berry.Docx.Formatting
                     W.Underline underline = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Underline>();
                     underline.Val = value.Val.Convert<W.UnderlineValues>();
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.Underline == null)
+                        _numberingLevel.NumberingSymbolRunProperties.Underline = new W.Underline();
+                    _numberingLevel.NumberingSymbolRunProperties.Underline.Val = value.Val.Convert<W.UnderlineValues>();
+                }
                 else
                 {
                     _underlineStyle = value;
@@ -805,7 +925,7 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        public Color TextColor
+        public ColorValue TextColor
         {
             get
             {
@@ -830,11 +950,15 @@ namespace Berry.Docx.Formatting
                 {
                     color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
                 }
-                if(color?.Val != null)
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.Color != null)
                 {
-                    return ColorConverter.FromHex(color.Val);
+                    color = _numberingLevel.NumberingSymbolRunProperties.Color;
                 }
-                return Color.Empty;
+                if (color?.Val != null)
+                {
+                    return color.Val.Value;
+                }
+                return null;
             }
             set
             {
@@ -848,7 +972,7 @@ namespace Berry.Docx.Formatting
                     {
                         _run.RunProperties.Color = new W.Color();
                     }
-                    _run.RunProperties.Color.Val = ColorConverter.ToHex(value);
+                    _run.RunProperties.Color.Val = value.ToString();
                 }
                 else if (_style != null)
                 {
@@ -860,7 +984,7 @@ namespace Berry.Docx.Formatting
                     {
                         _style.StyleRunProperties.Color = new W.Color();
                     }
-                    _style.StyleRunProperties.Color.Val = ColorConverter.ToHex(value);
+                    _style.StyleRunProperties.Color.Val = value.ToString();
                 }
                 else if (_paragraph != null)
                 {
@@ -871,83 +995,19 @@ namespace Berry.Docx.Formatting
                     if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>() == null)
                         _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Color());
                     W.Color color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
-                    color.Val = ColorConverter.ToHex(value);
+                    color.Val = value.ToString();
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.Color == null)
+                        _numberingLevel.NumberingSymbolRunProperties.Color = new W.Color();
+                    _numberingLevel.NumberingSymbolRunProperties.Color.Val = value.ToString();
                 }
                 else
                 {
                     _color = value;
-                }
-            }
-        }
-
-        public BooleanValue AutoTextColor
-        {
-            get
-            {
-                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null)
-                {
-                    return _autoTextColor;
-                }
-                W.Color color = null;
-                if (_run?.RunProperties?.Color != null)
-                {
-                    color = _run.RunProperties.Color;
-                }
-                else if (_style?.StyleRunProperties?.Color != null)
-                {
-                    color = _style.StyleRunProperties.Color;
-                }
-                else if (_defaultRPr?.RunPropertiesBaseStyle?.Color != null)
-                {
-                    color = _defaultRPr.RunPropertiesBaseStyle.Color;
-                }
-                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Color>() != null)
-                {
-                    color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
-                }
-                if (color?.Val == null) return null;
-                return color.Val == "auto";
-            }
-            set
-            {
-                if (_run != null)
-                {
-                    if (_run.RunProperties == null)
-                    {
-                        _run.RunProperties = new W.RunProperties();
-                    }
-                    if (_run.RunProperties.Color == null)
-                    {
-                        _run.RunProperties.Color = new W.Color();
-                    }
-                    if (value) _run.RunProperties.Color.Val = "auto";
-                }
-                else if (_style != null)
-                {
-                    if (_style.StyleRunProperties == null)
-                    {
-                        _style.StyleRunProperties = new W.StyleRunProperties();
-                    }
-                    if (_style.StyleRunProperties.Color == null)
-                    {
-                        _style.StyleRunProperties.Color = new W.Color();
-                    }
-                    if (value) _style.StyleRunProperties.Color.Val = "auto";
-                }
-                else if (_paragraph != null)
-                {
-                    if (_paragraph.ParagraphProperties == null)
-                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
-                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
-                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
-                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>() == null)
-                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Color());
-                    W.Color color = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Color>();
-                    if (value) color.Val = "auto";
-                }
-                else
-                {
-                    _autoTextColor = value;
                 }
             }
         }
@@ -982,6 +1042,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.CharacterScale>() != null)
                 {
                     scale = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.CharacterScale>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.CharacterScale != null)
+                {
+                    scale = _numberingLevel.NumberingSymbolRunProperties.CharacterScale;
                 }
                 if (scale == null) return null;
                 return (int)scale.Val;
@@ -1027,6 +1091,14 @@ namespace Berry.Docx.Formatting
                     W.CharacterScale scale = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.CharacterScale>();
                     scale.Val = (int)value;
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.CharacterScale == null)
+                        _numberingLevel.NumberingSymbolRunProperties.CharacterScale = new W.CharacterScale();
+                    _numberingLevel.NumberingSymbolRunProperties.CharacterScale.Val = (int)value;
+                }
                 else
                 {
                     _characterScale = value;
@@ -1061,6 +1133,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Spacing>() != null)
                 {
                     spacing = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Spacing>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.Spacing != null)
+                {
+                    spacing = _numberingLevel.NumberingSymbolRunProperties.Spacing;
                 }
                 if (spacing == null) return null;
                 return spacing.Val / 20.0F;
@@ -1102,6 +1178,14 @@ namespace Berry.Docx.Formatting
                     W.Spacing spacing = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Spacing>();
                     spacing.Val = (int)(value * 20);
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.Spacing == null)
+                        _numberingLevel.NumberingSymbolRunProperties.Spacing = new W.Spacing();
+                    _numberingLevel.NumberingSymbolRunProperties.Spacing.Val = (int)(value * 20);
+                }
                 else
                 {
                     _characterSpacing = value;
@@ -1136,6 +1220,10 @@ namespace Berry.Docx.Formatting
                 else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Position>() != null)
                 {
                     position = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Position>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.Position != null)
+                {
+                    position = _numberingLevel.NumberingSymbolRunProperties.Position;
                 }
                 if (position == null) return null;
                 return position.Val.ToString().ToFloat() / 2;
@@ -1177,6 +1265,14 @@ namespace Berry.Docx.Formatting
                     W.Position pos = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Position>();
                     pos.Val = Math.Round(value * 2).ToString();
                 }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.Position == null)
+                        _numberingLevel.NumberingSymbolRunProperties.Position = new W.Position();
+                    _numberingLevel.NumberingSymbolRunProperties.Position.Val = Math.Round(value * 2).ToString();
+                }
                 else
                 {
                     _position = value;
@@ -1190,9 +1286,9 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Clears all character formats.
         /// </summary>
-        public void clearFormatting()
+        public void ClearFormatting()
         {
-            if (_run != null)
+            if (_run?.RunProperties != null)
             {
                 _run.RunProperties = null;
             }
@@ -1203,6 +1299,10 @@ namespace Berry.Docx.Formatting
             else if(_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties != null)
             {
                 _paragraph.ParagraphProperties.ParagraphMarkRunProperties.RemoveAllChildren();
+            }
+            else if(_numberingLevel?.NumberingSymbolRunProperties != null)
+            {
+                _numberingLevel.NumberingSymbolRunProperties.RemoveAllChildren();
             }
         }
 
@@ -1225,8 +1325,7 @@ namespace Berry.Docx.Formatting
             format.Italic = directFmt.Italic ?? baseFmt.Italic;
             format.SubSuperScript = directFmt.SubSuperScript ?? baseFmt.SubSuperScript;
             format.UnderlineStyle = directFmt.UnderlineStyle ?? baseFmt.UnderlineStyle;
-            format.TextColor = !directFmt.TextColor.IsEmpty ? directFmt.TextColor : baseFmt.TextColor;
-            format.AutoTextColor = directFmt.AutoTextColor ?? baseFmt.AutoTextColor;
+            format.TextColor = directFmt.TextColor ?? baseFmt.TextColor;
             format.CharacterScale = directFmt.CharacterScale ?? baseFmt.CharacterScale;
             format.CharacterSpacing = directFmt.CharacterSpacing ?? baseFmt.CharacterSpacing;
             format.Position = directFmt.Position ?? baseFmt.Position;

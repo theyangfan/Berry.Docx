@@ -13,6 +13,7 @@ namespace Berry.Docx.Collections
         #region Private Members
         private readonly Document _doc;
         private IEnumerable<ListStyle> _styles;
+        private static Dictionary<string, int> _listStyleNames = new Dictionary<string, int>();
         #endregion
 
         #region Constructors
@@ -39,9 +40,30 @@ namespace Berry.Docx.Collections
 
         public void Add(ListStyle style)
         {
+            if (GetStyles().Where(s => s.NumberID == style.NumberID || s.AbstractNumberID == style.AbstractNumberID).Any()) return;
 
+            if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart == null)
+            {
+                PartGenerator.AddNumberingPart(_doc, IDGenerator.GenerateRelationshipID(_doc));
+            }
+            W.Numbering numbering = _doc.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering;
+            if (numbering.Elements<W.AbstractNum>().Any())
+            {
+                numbering.Elements<W.AbstractNum>().Last().InsertAfterSelf(style.AbstractNum);
+            }
+            else
+            {
+                numbering.Append(style.AbstractNum);
+            }
+            numbering.Append(style.NumberingInstance);
+            if (!string.IsNullOrWhiteSpace(style.Name))
+                _listStyleNames[style.Name] = style.AbstractNumberID;
         }
 
+        public ListStyle FindByName(string styleName)
+        {
+            return _styles.Where(s => s.Name == styleName).FirstOrDefault();
+        }
 
         public IEnumerator<ListStyle> GetEnumerator()
         {
@@ -58,7 +80,12 @@ namespace Berry.Docx.Collections
             if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering == null) yield break;
             foreach (W.AbstractNum num in _doc.Package.MainDocumentPart.NumberingDefinitionsPart.Numbering.Elements<W.AbstractNum>())
             {
-                yield return new ListStyle(_doc, num);
+                ListStyle style = new ListStyle(_doc, num);
+                if (_listStyleNames.ContainsValue(style.AbstractNumberID))
+                {
+                    style.Name = _listStyleNames.Where(p => p.Value == style.AbstractNumberID).First().Key;
+                }
+                yield return style;
             }
         }
     }

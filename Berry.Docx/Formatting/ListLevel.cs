@@ -7,11 +7,15 @@ namespace Berry.Docx.Formatting
 {
     public class ListLevel
     {
+        private readonly Document _doc;
         private readonly W.Level _level;
         internal ListLevel(Document doc, W.AbstractNum ownerNum, W.Level level)
         {
+            _doc = doc;
             _level = level;
         }
+
+        #region Public Properties
         /// <summary>
         /// (eg：1, 1.2, 1.2.3.4.5.6.7.8.9)
         /// </summary>
@@ -19,7 +23,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_level.LevelText?.Val == null) return string.Empty;
+                if (_level.LevelText?.Val == null) return string.Empty;
                 return _level.LevelText.Val.Value.Replace("%", "");
             }
             set
@@ -46,7 +50,7 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                if(_level.NumberingFormat == null) _level.NumberingFormat = new W.NumberingFormat();
+                if (_level.NumberingFormat == null) _level.NumberingFormat = new W.NumberingFormat();
                 _level.NumberingFormat.Val = value.Convert<W.NumberFormatValues>();
             }
         }
@@ -56,7 +60,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_level.StartNumberingValue?.Val == null) return 0;
+                if (_level.StartNumberingValue?.Val == null) return 0;
                 return _level.StartNumberingValue.Val.Value;
             }
             set
@@ -66,6 +70,148 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public bool IsLegalNumberingStyle
+        {
+            get
+            {
+                if (_level.IsLegalNumberingStyle == null) return false;
+                if (_level.IsLegalNumberingStyle.Val == null) return true;
+                return _level.IsLegalNumberingStyle.Val;
+            }
+            set
+            {
+                if (value) _level.IsLegalNumberingStyle = new W.IsLegalNumberingStyle();
+                else _level.IsLegalNumberingStyle = null;
+            }
+        }
+
+        public ListNumberAlignment NumberAlignment
+        {
+            get
+            {
+                if(_level.LevelJustification?.Val == null) return ListNumberAlignment.Left;
+                return _level.LevelJustification.Val.Value.Convert<ListNumberAlignment>();
+            }
+            set
+            {
+                _level.LevelJustification = new W.LevelJustification()
+                { 
+                    Val = value.Convert<W.LevelJustificationValues>()
+                };
+            }
+        }
+
+        public LevelSuffixCharacter SuffixCharacter
+        {
+            get
+            {
+                if (_level.LevelSuffix?.Val == null) return LevelSuffixCharacter.Tab;
+                return _level.LevelSuffix.Val.Value.Convert<LevelSuffixCharacter>();
+            }
+            set
+            {
+                _level.LevelSuffix = new W.LevelSuffix()
+                {
+                    Val = value.Convert<W.LevelSuffixValues>()
+                };
+            }
+        }
+
+        public float NumberPosition
+        {
+            get
+            {
+                return FirstLineIndent + LeftIndent;
+            }
+            set
+            {
+                FirstLineIndent = value - LeftIndent;
+            }
+        }
+
+        public float TextIndentation
+        {
+            get => LeftIndent;
+            set 
+            {
+                float temp = NumberPosition;
+                LeftIndent = value;
+                NumberPosition = temp;
+            }
+        }
+
+        public CharacterFormat CharacterFormat => new CharacterFormat(_doc, _level);
+
+        internal float FirstLineIndent
+        {
+            get
+            {
+                if(_level.PreviousParagraphProperties?.Indentation == null) return 0;
+                W.Indentation ind = _level.PreviousParagraphProperties.Indentation;
+                if(ind.Hanging != null) return -(ind.Hanging.Value.ToFloat() / 20);
+                if(ind.FirstLine != null) return ind.FirstLine.Value.ToFloat() / 20;
+                return 0;
+            }
+            set
+            {
+                if (_level.PreviousParagraphProperties == null)
+                    _level.PreviousParagraphProperties = new W.PreviousParagraphProperties();
+                if (_level.PreviousParagraphProperties.Indentation == null)
+                    _level.PreviousParagraphProperties.Indentation = new W.Indentation();
+                W.Indentation ind = _level.PreviousParagraphProperties.Indentation;
+                if (value >= 0)
+                {
+                    ind.Hanging = null;
+                    ind.FirstLine = ((int)(value * 20)).ToString();
+                }
+                else
+                {
+                    ind.FirstLine = null;
+                    ind.Hanging = ((int)(-value * 20)).ToString();
+                }
+            }
+        }
+
+        internal float LeftIndent
+        {
+            get
+            {
+                if (_level.PreviousParagraphProperties?.Indentation == null) return 0;
+                W.Indentation ind = _level.PreviousParagraphProperties.Indentation;
+                if (ind.Left != null) return ind.Left.Value.ToFloat() / 20;
+                return 0;
+            }
+            set
+            {
+                if (_level.PreviousParagraphProperties == null)
+                    _level.PreviousParagraphProperties = new W.PreviousParagraphProperties();
+                if (_level.PreviousParagraphProperties.Indentation == null)
+                    _level.PreviousParagraphProperties.Indentation = new W.Indentation();
+                W.Indentation ind = _level.PreviousParagraphProperties.Indentation;
+                ind.Left = ((int)(value * 20)).ToString();
+            }
+        }
+        #endregion
+
+
+
+
         internal int ListLevelNumber => _level.LevelIndex + 1;
+
+        internal string ParagraphStyleId
+        {
+            get
+            {
+                if(_level.ParagraphStyleIdInLevel == null) return null;
+                return _level.ParagraphStyleIdInLevel.Val;
+            }
+            set
+            {
+                if (value == null)
+                    _level.ParagraphStyleIdInLevel = null;
+                else
+                    _level.ParagraphStyleIdInLevel = new W.ParagraphStyleIdInLevel() { Val = value };
+            }
+        }
     }
 }

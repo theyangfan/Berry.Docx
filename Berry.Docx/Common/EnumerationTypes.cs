@@ -2097,4 +2097,52 @@ namespace Berry.Docx
         //     This item is only available in Office 2010 and later.
         Custom = 62
     }
+
+    /// <summary>
+    /// Defines the built-in list style enumeration.
+    /// </summary>
+    public enum BuiltInListStyle
+    {
+        Style1 = 1,
+        Style2 = 2,
+        Style3 = 3
+    }
+
+    /// <summary>
+    /// Defines the list number alignment enumeration.
+    /// </summary>
+    public enum ListNumberAlignment
+    {
+        /// <summary>
+        /// Align Left.
+        /// </summary>
+        Left = 0,
+        /// <summary>
+        /// Align Center.
+        /// </summary>
+        Center = 1,
+        /// <summary>
+        /// Align Right.
+        /// </summary>
+        Right = 2
+    }
+
+    /// <summary>
+    /// Defines the LevelSuffixCharacter enumeration.
+    /// </summary>
+    public enum LevelSuffixCharacter
+    {
+        /// <summary>
+        /// Tab Between Numbering and Text.
+        /// </summary>
+        Tab = 0,
+        /// <summary>
+        /// Space Between Numbering and Text.
+        /// </summary>
+        Space = 1,
+        /// <summary>
+        /// Nothing Between Numbering and Text.
+        /// </summary>
+        Nothing = 2
+    }
 }

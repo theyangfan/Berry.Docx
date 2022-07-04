@@ -109,31 +109,73 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-
+                InitNumberingProperties();
+                if (_ownerParagraph != null)
+                {
+                    W.NumberingProperties num = _ownerParagraph.ParagraphProperties.NumberingProperties;
+                    num.NumberingLevelReference = new W.NumberingLevelReference() { Val = value - 1 };
+                }
+                else
+                {
+                    if (CurrentStyle == null) return;
+                    foreach (ListLevel level in CurrentStyle.Levels)
+                    {
+                        if (level.ParagraphStyleId == _ownerStyle.StyleId)
+                            level.ParagraphStyleId = null;
+                    }
+                    CurrentStyle.Levels[value - 1].ParagraphStyleId = _ownerStyle.StyleId;
+                }
             }
         }
+        #endregion
 
         public void ApplyStyle(ListStyle style, int levelNumber)
         {
-            if(_ownerParagraph != null)
+            InitNumberingProperties();
+            if (_ownerParagraph != null)
             {
-                 if(_ownerParagraph.ParagraphProperties == null)
-                    _ownerParagraph.ParagraphProperties = new W.ParagraphProperties();
-                 if(_ownerParagraph.ParagraphProperties.NumberingProperties == null)
-                    _ownerParagraph.ParagraphProperties.NumberingProperties = new W.NumberingProperties();
                 W.NumberingProperties num = _ownerParagraph.ParagraphProperties.NumberingProperties;
-                num.NumberingId = new W.NumberingId() { Val = style.NumberingInstance.NumberID };
+                num.NumberingId = new W.NumberingId() { Val = style.NumberID };
                 num.NumberingLevelReference = new W.NumberingLevelReference() { Val = levelNumber - 1 };
             }
             else
             {
-
+                W.NumberingProperties num = _ownerStyle.StyleParagraphProperties.NumberingProperties;
+                num.NumberingId = new W.NumberingId() { Val = style.NumberID };
+                foreach(ListLevel level in style.Levels)
+                {
+                    if (level.ParagraphStyleId == _ownerStyle.StyleId)
+                        level.ParagraphStyleId = null;
+                }
+                style.Levels[levelNumber - 1].ParagraphStyleId = _ownerStyle.StyleId;
             }
         }
 
-        #endregion
+        public void ApplyStyle(string styleName, int levelNumber)
+        {
+            ListStyle style = _doc.ListStyles.FindByName(styleName);
+            if (style == null) return;
+            ApplyStyle(style, levelNumber);
+        }
 
 
+        private void InitNumberingProperties()
+        {
+            if (_ownerParagraph != null)
+            {
+                if (_ownerParagraph.ParagraphProperties == null)
+                    _ownerParagraph.ParagraphProperties = new W.ParagraphProperties();
+                if (_ownerParagraph.ParagraphProperties.NumberingProperties == null)
+                    _ownerParagraph.ParagraphProperties.NumberingProperties = new W.NumberingProperties();
+            }
+            else
+            {
+                if (_ownerStyle.StyleParagraphProperties == null)
+                    _ownerStyle.StyleParagraphProperties = new W.StyleParagraphProperties();
+                if (_ownerStyle.StyleParagraphProperties.NumberingProperties == null)
+                    _ownerStyle.StyleParagraphProperties.NumberingProperties = new W.NumberingProperties();
+            }
+        }
         private static W.AbstractNum GetAbstractNumByID(Document doc, int numId)
         {
             W.Numbering numbering = doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering;

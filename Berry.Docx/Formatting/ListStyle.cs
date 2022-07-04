@@ -12,7 +12,7 @@ namespace Berry.Docx.Formatting
     {
         private readonly Document _doc;
         private readonly W.AbstractNum _abstractNum;
-        public ListStyle(Document doc, W.AbstractNum abstractNum)
+        internal ListStyle(Document doc, W.AbstractNum abstractNum)
         {
             _doc = doc;
             _abstractNum = abstractNum;
@@ -22,6 +22,16 @@ namespace Berry.Docx.Formatting
 
         public ListLevelCollection Levels => new ListLevelCollection(GetLevels());
 
+        public static ListStyle Create(Document doc, BuiltInListStyle style)
+        {
+            return new ListStyle(doc, BuiltInListStyleGenerator.Generate(doc, style));
+        }
+
+        internal int NumberID => NumberingInstance.NumberID;
+
+        internal int AbstractNumberID => _abstractNum.AbstractNumberId;
+
+        internal W.AbstractNum AbstractNum => _abstractNum;
         internal W.NumberingInstance NumberingInstance
         {
             get
@@ -41,6 +51,7 @@ namespace Berry.Docx.Formatting
                 return numberingInstance;
             }
         }
+
         private IEnumerable<ListLevel> GetLevels()
         {
             foreach (W.Level level in _abstractNum.Elements<W.Level>())

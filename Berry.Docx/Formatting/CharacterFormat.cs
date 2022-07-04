@@ -16,18 +16,23 @@ namespace Berry.Docx.Formatting
         private Document _doc;
 
         #region TextRange
-        private W.Run _ownerRun = null;
-        private RunPropertiesHolder _directRHld = null;
+        private W.Run _ownerRun;
+        private RunPropertiesHolder _directRHld;
         #endregion
 
         #region Paragraph
-        private W.Paragraph _ownerParagraph = null;
-        private readonly RunPropertiesHolder _markRHld = null;
+        private W.Paragraph _ownerParagraph;
+        private readonly RunPropertiesHolder _markRHld;
         #endregion
 
         #region Style
-        private W.Style _ownerStyle = null;
-        private RunPropertiesHolder _directSHld = null;
+        private W.Style _ownerStyle;
+        private RunPropertiesHolder _directSHld;
+        #endregion
+
+        #region Numbering
+        private W.Level _numberingLevel;
+        private RunPropertiesHolder _numRHld;
         #endregion
 
         #region Formats
@@ -40,8 +45,7 @@ namespace Berry.Docx.Formatting
         private bool _italic = false;
         private SubSuperScript _subSuperScript = SubSuperScript.None;
         private UnderlineStyle _underlineStyle = UnderlineStyle.None;
-        private Color _textColor = Color.Black;
-        private bool _autoTextColor = true;
+        private ColorValue _textColor = ColorValue.Auto;
         private int _characterScale = 100;
         private float _characterSpacing = 0;
         private float _position = 0;
@@ -93,6 +97,12 @@ namespace Berry.Docx.Formatting
             _border = new Border(doc, ownerStyle);
         }
 
+        internal CharacterFormat(Document doc, W.Level numberingLevel)
+        {
+            _doc = doc;
+            _numberingLevel = numberingLevel;
+            _numRHld = new RunPropertiesHolder(doc.Package, numberingLevel);
+        }
         #endregion
 
         #region Public Properties
@@ -156,6 +166,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.FontNameEastAsia;
                 }
+                else if(_numberingLevel != null)
+                {
+                    return _numRHld.FontNameEastAsia ?? _doc.DefaultFormat.CharacterFormat.FontNameEastAsia;
+                }
                 else
                 {
                     return _fontCN;
@@ -174,6 +188,10 @@ namespace Berry.Docx.Formatting
                 else if(_ownerParagraph != null)
                 {
                     _markRHld.FontNameEastAsia = value;
+                }
+                else if(_numberingLevel != null)
+                {
+                    _numRHld.FontNameEastAsia = value;
                 }
                 else
                 {
@@ -243,6 +261,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.FontNameAscii;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.FontNameAscii ?? _doc.DefaultFormat.CharacterFormat.FontNameAscii;
+                }
                 else
                 {
                     return _fontEN;
@@ -261,6 +283,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.FontNameAscii = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.FontNameAscii = value;
                 }
                 else
                 {
@@ -285,6 +311,10 @@ namespace Berry.Docx.Formatting
                 {
                     return _directSHld.FontTypeHint ?? FontContentType.Default;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.FontTypeHint ?? _doc.DefaultFormat.CharacterFormat.FontTypeHint;
+                }
                 return _fontTypeHint;
             }
             set
@@ -300,6 +330,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.FontTypeHint = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.FontTypeHint = value;
                 }
                 else
                 {
@@ -367,6 +401,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.FontSize;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.FontSize ?? _doc.DefaultFormat.CharacterFormat.FontSize;
+                }
                 else
                 {
                     return _fontSize;
@@ -385,6 +423,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.FontSize = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.FontSize = value;
                 }
                 else
                 {
@@ -478,6 +520,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.FontSizeCs;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.FontSizeCs ?? _doc.DefaultFormat.CharacterFormat.FontSizeCs;
+                }
                 else
                 {
                     return _fontSizeCs;
@@ -496,6 +542,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.FontSizeCs = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.FontSizeCs = value;
                 }
                 else
                 {
@@ -571,6 +621,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.Bold;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.Bold ?? _doc.DefaultFormat.CharacterFormat.Bold;
+                }
                 else
                 {
                     return _bold;
@@ -589,6 +643,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.Bold = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.Bold = value;
                 }
                 else
                 {
@@ -663,6 +721,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.Italic;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.Italic ?? _doc.DefaultFormat.CharacterFormat.Italic;
+                }
                 else
                 {
                     return _italic;
@@ -681,6 +743,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.Italic = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.Italic = value;
                 }
                 else
                 {
@@ -746,6 +812,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.SubSuperScript;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.SubSuperScript ?? _doc.DefaultFormat.CharacterFormat.SubSuperScript;
+                }
                 else
                 {
                     return _subSuperScript;
@@ -764,6 +834,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.SubSuperScript = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.SubSuperScript = value;
                 }
                 else
                 {
@@ -829,6 +903,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.UnderlineStyle;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.UnderlineStyle ?? _doc.DefaultFormat.CharacterFormat.UnderlineStyle;
+                }
                 else
                 {
                     return _underlineStyle;
@@ -848,6 +926,10 @@ namespace Berry.Docx.Formatting
                 {
                     _markRHld.UnderlineStyle = value;
                 }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.UnderlineStyle = value;
+                }
                 else
                 {
                     _underlineStyle = value;
@@ -855,14 +937,14 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        public Color TextColor
+        public ColorValue TextColor
         {
             get
             {
                 if (_ownerRun != null)
                 {
                     // direct formatting
-                    if (!_directRHld.TextColor.IsEmpty)
+                    if (_directRHld.TextColor != null)
                     {
                         return _directRHld.TextColor;
                     }
@@ -870,7 +952,7 @@ namespace Berry.Docx.Formatting
                     if (_ownerRun?.RunProperties?.RunStyle != null)
                     {
                         RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
-                        if (!rStyle.TextColor.IsEmpty)
+                        if (rStyle.TextColor != null)
                             return rStyle.TextColor;
                     }
                     // paragraph style
@@ -878,7 +960,7 @@ namespace Berry.Docx.Formatting
                     {
                         RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
                             (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
-                        if (!paragraph.TextColor.IsEmpty)
+                        if (paragraph.TextColor != null)
                             return paragraph.TextColor;
                     }
                     // document defaults
@@ -887,13 +969,13 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     // paragraph mark
-                    if (!_markRHld.TextColor.IsEmpty)
+                    if (_markRHld.TextColor != null)
                     {
                         return _markRHld.TextColor;
                     }
                     // paragraph style
                     RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
-                    if (!paragraph.TextColor.IsEmpty)
+                    if (paragraph.TextColor != null)
                         return paragraph.TextColor;
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.TextColor;
@@ -901,16 +983,20 @@ namespace Berry.Docx.Formatting
                 else if (_ownerStyle != null)
                 {
                     // direct formatting
-                    if (!_directSHld.TextColor.IsEmpty)
+                    if (_directSHld.TextColor != null)
                     {
                         return _directSHld.TextColor;
                     }
                     // character & paragraph style
                     RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
-                    if (!style.TextColor.IsEmpty)
+                    if (style.TextColor != null)
                         return style.TextColor;
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.TextColor;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.TextColor ?? _doc.DefaultFormat.CharacterFormat.TextColor;
                 }
                 else
                 {
@@ -931,6 +1017,10 @@ namespace Berry.Docx.Formatting
                 {
                     _markRHld.TextColor = value;
                 }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.TextColor = value;
+                }
                 else
                 {
                     _textColor = value;
@@ -938,88 +1028,6 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        public bool AutoTextColor
-        {
-            get
-            {
-                if (_ownerRun != null)
-                {
-                    // direct formatting
-                    if (_directRHld.AutoTextColor != null)
-                    {
-                        return _directRHld.AutoTextColor;
-                    }
-                    // character style
-                    if (_ownerRun?.RunProperties?.RunStyle != null)
-                    {
-                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
-                        if (rStyle.AutoTextColor != null)
-                            return rStyle.AutoTextColor;
-                    }
-                    // paragraph style
-                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
-                    {
-                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
-                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
-                        if (paragraph.AutoTextColor != null)
-                            return paragraph.AutoTextColor;
-                    }
-                    // document defaults
-                    return _doc.DefaultFormat.CharacterFormat.AutoTextColor;
-                }
-                else if (_ownerParagraph != null)
-                {
-                    // paragraph mark
-                    if (_markRHld.AutoTextColor != null)
-                    {
-                        return _markRHld.AutoTextColor;
-                    }
-                    // paragraph style
-                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
-                    if (paragraph.AutoTextColor != null)
-                        return paragraph.AutoTextColor;
-                    // document defaults
-                    return _doc.DefaultFormat.CharacterFormat.AutoTextColor;
-                }
-                else if (_ownerStyle != null)
-                {
-                    // direct formatting
-                    if (_directSHld.AutoTextColor != null)
-                    {
-                        return _directSHld.AutoTextColor;
-                    }
-                    // character & paragraph style
-                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
-                    if (style.AutoTextColor != null)
-                        return style.AutoTextColor;
-                    // document defaults
-                    return _doc.DefaultFormat.CharacterFormat.AutoTextColor;
-                }
-                else
-                {
-                    return _autoTextColor;
-                }
-            }
-            set
-            {
-                if (_ownerRun != null)
-                {
-                    _directRHld.AutoTextColor = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _directSHld.AutoTextColor = value;
-                }
-                else if (_ownerParagraph != null)
-                {
-                    _markRHld.AutoTextColor = value;
-                }
-                else
-                {
-                    _autoTextColor = value;
-                }
-            }
-        }
         /// <summary>
         /// Gets or sets the percent value of the normal character width that each character shall be scaled.
         /// <para>If the value is 100, then each character shall be displayed at 100% of its normal with.</para>
@@ -1083,6 +1091,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.CharacterScale;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.CharacterScale ?? _doc.DefaultFormat.CharacterFormat.CharacterScale;
+                }
                 else
                 {
                     return _characterScale;
@@ -1101,6 +1113,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.CharacterScale = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.CharacterScale = value;
                 }
                 else
                 {
@@ -1169,6 +1185,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.CharacterSpacing;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.CharacterSpacing ?? _doc.DefaultFormat.CharacterFormat.CharacterSpacing;
+                }
                 else
                 {
                     return _characterSpacing;
@@ -1187,6 +1207,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.CharacterSpacing = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.CharacterSpacing = value;
                 }
                 else
                 {
@@ -1256,6 +1280,10 @@ namespace Berry.Docx.Formatting
                     // document defaults
                     return _doc.DefaultFormat.CharacterFormat.Position;
                 }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.Position ?? _doc.DefaultFormat.CharacterFormat.Position;
+                }
                 else
                 {
                     return _position;
@@ -1274,6 +1302,10 @@ namespace Berry.Docx.Formatting
                 else if (_ownerParagraph != null)
                 {
                     _markRHld.Position = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.Position = value;
                 }
                 else
                 {
@@ -1297,15 +1329,19 @@ namespace Berry.Docx.Formatting
         {
             if (_ownerRun != null)
             {
-                _directRHld.clearFormatting();
+                _directRHld.ClearFormatting();
             }
             else if (_ownerStyle != null)
             {
-                _directSHld.clearFormatting();
+                _directSHld.ClearFormatting();
             }
             else if(_ownerParagraph != null)
             {
-                _markRHld.clearFormatting();
+                _markRHld.ClearFormatting();
+            }
+            else if(_numberingLevel != null)
+            {
+                _numRHld.ClearFormatting();
             }
         }
         #endregion

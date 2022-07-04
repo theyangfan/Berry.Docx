@@ -131,6 +131,8 @@ namespace Berry.Docx
         /// </summary>
         public StyleCollection Styles => new StyleCollection(this);
 
+        public ListStyleCollection ListStyles => new ListStyleCollection(this);
+
         /// <summary>
         /// Return a collection of <see cref="Footnote"/> in the document.
         /// <para>返回当前文档中的所有脚注。</para>
