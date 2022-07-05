@@ -131,6 +131,10 @@ namespace Berry.Docx
         /// </summary>
         public StyleCollection Styles => new StyleCollection(this);
 
+        /// <summary>
+        /// Return a collection of <see cref="ListStyle"/> that supports traversal in the document. 
+        /// <para>返回当前文档中所有列表样式的可遍历集合。</para>
+        /// </summary>
         public ListStyleCollection ListStyles => new ListStyleCollection(this);
 
         /// <summary>
@@ -189,14 +193,6 @@ namespace Berry.Docx
         /// <para>返回文档默认段落和字符格式。</para>
         /// </summary>
         public DocDefaultFormat DefaultFormat => new DocDefaultFormat(this);
-        #endregion
-
-        #region Internal Settings
-        /// <summary>
-        /// Returns document settings.
-        /// <para>返回文档 settings。</para>
-        /// </summary>
-        internal Settings Settings { get => _settings; }
         #endregion
 
         #region Public Methods
@@ -346,7 +342,13 @@ namespace Berry.Docx
 
         #region Internal Properties
         internal P.WordprocessingDocument Package => _doc;
-#endregion
+
+        /// <summary>
+        /// Returns document settings.
+        /// <para>返回文档 settings。</para>
+        /// </summary>
+        internal Settings Settings { get => _settings; }
+        #endregion
 
         #region Private Methods
         private IEnumerable<Section> SectionsPrivate()
@@ -355,10 +357,6 @@ namespace Berry.Docx
                 yield return new Section(this, sectPr);
         }
 #endregion
-
-        #region TODO
-
-        #endregion
 
     }
 }

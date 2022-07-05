@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+/* Style.cs 文件定义了 Style 类。该类是一个抽象类，是表格、段落、
+ * 编号、字符样式的基类。每种样式都具有 Type, Name, Id 等属性。 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,19 +14,35 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 using Berry.Docx.Formatting;
 
-namespace Berry.Docx.Documents
+namespace Berry.Docx.Formatting
 {
     /// <summary>
-    /// TODO
+    /// Represent the base class of <see cref="ParagraphStyle"/>、<see cref="CharacterStyle"/>.
+    /// <para><see cref="ParagraphStyle"/>、<see cref="CharacterStyle"/> 的基类.</para>
     /// </summary>
     public abstract class Style
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly W.Style _style;
-        protected ParagraphFormat _pFormat;
-        protected CharacterFormat _cFormat;
-        protected ListFormat _listFormat;
+        #endregion
 
+        #region Protected Members
+        /// <summary>
+        /// The ParagraphFormat of the style.
+        /// </summary>
+        protected ParagraphFormat _pFormat;
+        /// <summary>
+        /// The CharacterFormat of the style.
+        /// </summary>
+        protected CharacterFormat _cFormat;
+        /// <summary>
+        /// The ListFormat of the style.
+        /// </summary>
+        protected ListFormat _listFormat;
+        #endregion
+
+        #region Constructors
         internal Style(Document doc, StyleType type)
         {
             _doc = doc;
@@ -53,20 +76,25 @@ namespace Berry.Docx.Documents
                 _cFormat = new CharacterFormat(doc, style);
             }
         }
+        #endregion
 
-        internal W.Style XElement => _style;
+        #region Public Properties
+        /// <summary>
+        /// Gets the CharacterFormat of the style.
+        /// </summary>
         public CharacterFormat CharacterFormat => _cFormat;
 
         /// <summary>
-        /// 
+        /// Gets the type of the style.
         /// </summary>
         public StyleType Type
         {
             get => (StyleType)(int)_style.Type.Value;
             private set => _style.Type = (W.StyleValues)(int)value;
         }
+
         /// <summary>
-        /// 
+        /// Gets the unique id of the style.
         /// </summary>
         public string StyleId
         {
@@ -74,10 +102,13 @@ namespace Berry.Docx.Documents
             private set => _style.StyleId = value;
         }
 
+        /// <summary>
+        /// If current style is the default style, return true; otherwise, return false.
+        /// </summary>
         public bool IsDefault => _style.Default ?? false;
 
         /// <summary>
-        /// 
+        /// Gets the name of the current style.
         /// </summary>
         public string Name
         {
@@ -89,7 +120,7 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                if(_style.BasedOn != null)
+                if (_style.BasedOn != null)
                 {
                     return _doc.Styles.Where(s => s.StyleId == _style.BasedOn.Val).FirstOrDefault();
                 }
@@ -97,8 +128,8 @@ namespace Berry.Docx.Documents
             }
             set
             {
-                if(value != null)
-                    _style.BasedOn = new W.BasedOn() { Val = value.StyleId};
+                if (value != null)
+                    _style.BasedOn = new W.BasedOn() { Val = value.StyleId };
             }
         }
 
@@ -107,6 +138,9 @@ namespace Berry.Docx.Documents
             get => _style.CustomStyle ?? false;
             internal set => _style.CustomStyle = value;
         }
+        #endregion
+        internal W.Style XElement => _style;
+        
 
         /// <summary>
         /// 是否添加到样式库
@@ -187,6 +221,12 @@ namespace Berry.Docx.Documents
             else if (styleName == "目录 1") return "toc 1";
             else if (styleName == "目录 2") return "toc 2";
             else if (styleName == "目录 3") return "toc 3";
+            else if (styleName == "目录 4") return "toc 4";
+            else if (styleName == "目录 5") return "toc 5";
+            else if (styleName == "目录 6") return "toc 6";
+            else if (styleName == "目录 7") return "toc 7";
+            else if (styleName == "目录 8") return "toc 8";
+            else if (styleName == "目录 9") return "toc 9";
             else return styleName;
         }
 

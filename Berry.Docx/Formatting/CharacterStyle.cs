@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using W = DocumentFormat.OpenXml.Wordprocessing;
-using Berry.Docx.Formatting;
+using Berry.Docx.Documents;
 
-namespace Berry.Docx.Documents
+namespace Berry.Docx.Formatting
 {
     public class CharacterStyle : Style
     {

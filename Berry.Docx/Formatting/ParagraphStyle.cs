@@ -5,9 +5,9 @@ using System.Text;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
-using Berry.Docx.Formatting;
+using Berry.Docx.Documents;
 
-namespace Berry.Docx.Documents
+namespace Berry.Docx.Formatting
 {
     /// <summary>
     /// 
