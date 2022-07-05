@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
-using Berry.Docx.Collections;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {

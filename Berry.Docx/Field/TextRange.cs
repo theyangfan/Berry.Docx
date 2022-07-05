@@ -32,7 +32,7 @@ namespace Berry.Docx.Field
         public TextRange(Document doc) : this(doc, RunGenerator.Generate(""))
         {
         }
-        internal TextRange(Document doc, W.Run run) : base(doc, run, run)
+        internal TextRange(Document doc, W.Run run) : base(doc, run)
         {
             _doc = doc;
             _run = run;

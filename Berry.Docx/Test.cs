@@ -22,23 +22,20 @@ namespace Test
             string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
+            string str = " ㊻【页眉页脚结束2】";
+            Regex rx = new Regex(@"^\s*\u0002?\s*([①-⑳]|[㉑-㉟]|[㊱-㊿])s*");
+            Console.WriteLine(rx.IsMatch(str));
+            Console.WriteLine(rx.Match(str).Value);
+            return;
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.LastSection.Paragraphs[0];
-                ListStyle style = ListStyle.Create(doc, BuiltInListStyle.Style1);
-                style.Name = "样式1";
-                style.Levels[0].Pattern = "第1章";
-                style.Levels[0].NumberStyle = ListNumberStyle.Decimal;
-                style.Levels[0].SuffixCharacter = LevelSuffixCharacter.Space;
-                style.Levels[0].NumberPosition = 0.75f / 2.54f * 72;
-                style.Levels[0].TextIndentation = 1.75f / 2.54f * 72;
-                style.Levels[0].CharacterFormat.FontSize = 20;
-                style.Levels[0].CharacterFormat.FontNameEastAsia = "微软雅黑";
-                doc.ListStyles.Add(style);
-
-                p.ListFormat.ApplyStyle("样式1", 1);
-
-                doc.SaveAs(dst);
+                Paragraph p = doc.LastSection.Paragraphs[1];
+                foreach(DocumentItem item in p.ChildItems)
+                {
+                    Console.WriteLine(item.DocumentObjectType);
+                }
+                
+                //doc.SaveAs(dst);
             }
         }
     }

@@ -43,6 +43,7 @@ namespace Berry.Docx
         /// Gets the type value of the current object.
         /// </summary>
         public abstract DocumentObjectType DocumentObjectType { get; }
+
         /// <summary>
         /// Gets the object that immediately precedes the current object. 
         /// </summary>
@@ -107,6 +108,12 @@ namespace Berry.Docx
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract DocumentObject Clone();
+
         /// <summary>
         /// Inserts the specified object immediately before the current object.
         /// </summary>

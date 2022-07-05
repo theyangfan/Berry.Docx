@@ -69,6 +69,16 @@ namespace Berry.Docx
                 _element.Remove();
             }
         }
+
+        public override DocumentObject Clone()
+        {
+            O.OpenXmlElement ele = XElement.CloneNode(true);
+            if (ele is W.Paragraph) return new Paragraph(_doc, (W.Paragraph)ele);
+            else if (ele is W.Table) return new Table(_doc, (W.Table)ele);
+            else if (ele is W.SdtBlock) return new SdtBlock(_doc, (W.SdtBlock)ele);
+
+            return null;
+        }
         #endregion
 
 

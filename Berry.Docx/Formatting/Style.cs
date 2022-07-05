@@ -116,6 +116,9 @@ namespace Berry.Docx.Formatting
             internal set => _style.StyleName = new W.StyleName() { Val = value };
         }
 
+        /// <summary>
+        /// Gets or sets the base style of the current style.
+        /// </summary>
         public Style BaseStyle
         {
             get
@@ -133,18 +136,20 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// If current style is a custom style, return true; otherwise, return false.
+        /// </summary>
         public bool IsCustom
         {
             get => _style.CustomStyle ?? false;
             internal set => _style.CustomStyle = value;
         }
         #endregion
-        internal W.Style XElement => _style;
-        
 
+        #region Internal Properties
         /// <summary>
-        /// 是否添加到样式库
-        /// (This element specifies whether this style shall be treated as a primary style when this document is loaded by an application).
+        /// This element specifies whether this style shall be treated as a primary style when this document is loaded by an application
+        /// <para>是否添加到样式库</para>
         /// </summary>
         internal bool AddToGallery
         {
@@ -170,11 +175,14 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the linked character or paragraph style of the current style.
+        /// </summary>
         internal Style LinkedStyle
         {
             get
             {
-                if(_style.LinkedStyle != null)
+                if (_style.LinkedStyle != null)
                 {
                     string id = _style.LinkedStyle.Val;
                     return _doc.Styles.Where(s => s.StyleId == id).FirstOrDefault();
@@ -187,6 +195,15 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        internal W.Style XElement => _style;
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Converts the string style name to the <see cref="BuiltInStyle"/> type.
+        /// </summary>
+        /// <param name="styleName">The string style name.</param>
+        /// <returns>The <see cref="BuiltInStyle"/> type.</returns>
         public static BuiltInStyle NameToBuiltIn(string styleName)
         {
             styleName = NameToBuiltInString(styleName);
@@ -205,30 +222,20 @@ namespace Berry.Docx.Formatting
             else if (styleName == "toc 3") return BuiltInStyle.TOC3;
             else return BuiltInStyle.None;
         }
+        #endregion
+
+        #region Internal Methods
+        /// <summary>
+        /// Converts the literal string style name to the built-in string style name.
+        /// </summary>
+        /// <param name="styleName"></param>
+        /// <returns></returns>
         internal static string NameToBuiltInString(string styleName)
         {
-            styleName = styleName.ToLower();
-            if (styleName == "正文") return "normal";
-            else if (styleName == "标题 1") return "heading 1";
-            else if (styleName == "标题 2") return "heading 2";
-            else if (styleName == "标题 3") return "heading 3";
-            else if (styleName == "标题 4") return "heading 4";
-            else if (styleName == "标题 5") return "heading 5";
-            else if (styleName == "标题 6") return "heading 6";
-            else if (styleName == "标题 7") return "heading 7";
-            else if (styleName == "标题 8") return "heading 8";
-            else if (styleName == "标题 9") return "heading 9";
-            else if (styleName == "目录 1") return "toc 1";
-            else if (styleName == "目录 2") return "toc 2";
-            else if (styleName == "目录 3") return "toc 3";
-            else if (styleName == "目录 4") return "toc 4";
-            else if (styleName == "目录 5") return "toc 5";
-            else if (styleName == "目录 6") return "toc 6";
-            else if (styleName == "目录 7") return "toc 7";
-            else if (styleName == "目录 8") return "toc 8";
-            else if (styleName == "目录 9") return "toc 9";
-            else return styleName;
+            return BuiltInStyleNameFormatter.NameToBuiltInString(styleName);
         }
+        #endregion
+
 
     }
 }

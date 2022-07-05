@@ -144,6 +144,11 @@ namespace Berry.Docx.Documents
                 {
                     if (section.Paragraphs.Contains(this))
                         return section;
+                    foreach(SdtBlock sdt in section.ChildObjects.OfType<SdtBlock>())
+                    {
+                        if (sdt.SdtContent.ChildObjects.OfType<Paragraph>().Contains(this))
+                            return section;
+                    }
                 }
                 return null;
             }

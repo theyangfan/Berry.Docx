@@ -14,10 +14,12 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructors
-        public Break(Document doc, BreakType type) : this(doc, new W.Run(), new W.Break())
+        public Break(Document doc, BreakType type) : this(doc, ParagraphItemGenerator.GenerateBreak())
         {
             Type = type;
         }
+
+        internal Break(Document doc, W.Break br) : this(doc, br.Parent as W.Run, br) { }
 
         internal Break(Document doc, W.Run ownerRun, W.Break br)
             : base(doc, ownerRun, br)

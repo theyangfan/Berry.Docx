@@ -69,7 +69,7 @@ namespace Berry.Docx
         private static Style GenerateHeading1(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 1" };
@@ -113,7 +113,7 @@ namespace Berry.Docx
         private static Style GenerateHeading2(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 2" };
@@ -157,7 +157,7 @@ namespace Berry.Docx
         private static Style GenerateHeading3(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
             
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 3" };
@@ -199,7 +199,7 @@ namespace Berry.Docx
         private static Style GenerateHeading4(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 4" };
@@ -243,7 +243,7 @@ namespace Berry.Docx
         private static Style GenerateHeading5(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 5" };
@@ -285,7 +285,7 @@ namespace Berry.Docx
         private static Style GenerateHeading6(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 6" };
@@ -329,7 +329,7 @@ namespace Berry.Docx
         private static Style GenerateHeading7(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 7" };
@@ -371,7 +371,7 @@ namespace Berry.Docx
         private static Style GenerateHeading8(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 8" };
@@ -411,7 +411,7 @@ namespace Berry.Docx
         private static Style GenerateHeading9(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "heading 9" };
@@ -447,7 +447,7 @@ namespace Berry.Docx
         private static Style GenerateTOC1(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "toc 1" };
@@ -465,7 +465,7 @@ namespace Berry.Docx
         private static Style GenerateTOC2(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "toc 2" };
@@ -489,7 +489,7 @@ namespace Berry.Docx
         private static Style GenerateTOC3(Document doc)
         {
             string id = IDGenerator.GenerateStyleID(doc);
-            string baseId = Berry.Docx.Documents.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
 
             Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
             StyleName styleName1 = new StyleName() { Val = "toc 3" };

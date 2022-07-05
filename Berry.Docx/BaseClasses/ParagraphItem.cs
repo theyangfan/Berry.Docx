@@ -23,21 +23,13 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructors
-        /// <summary>
-        /// When the ele is a part of run element.
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="ownerRun"></param>
-        /// <param name="ele"></param>
-        internal ParagraphItem(Document doc,  W.Run ownerRun, O.OpenXmlElement ele)
-            : base(doc, ele)
+        internal ParagraphItem(Document doc, W.Run run) : base(doc, run)
         {
             _doc = doc;
-            _ownerRun = ownerRun;
-            if(ele != ownerRun && !ownerRun.Contains(ele))
-                ownerRun.AddChild(ele);
-            _cFmt = new CharacterFormat(doc, ownerRun);
+            _ownerRun = run;
+            _cFmt = new CharacterFormat(doc, run);
         }
+        
         /// <summary>
         /// When the ele is not a part of run element.
         /// </summary>
@@ -49,6 +41,20 @@ namespace Berry.Docx.Field
             _doc = doc;
             _element = ele;
             _cFmt = new CharacterFormat();
+        }
+
+        /// <summary>
+        /// When the ele is a part of run element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="ownerRun"></param>
+        /// <param name="ele"></param>
+        internal ParagraphItem(Document doc, W.Run ownerRun, O.OpenXmlElement ele)
+            : base(doc, ele)
+        {
+            _doc = doc;
+            _ownerRun = ownerRun;
+            _cFmt = new CharacterFormat(doc, ownerRun);
         }
         #endregion
 
