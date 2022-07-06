@@ -70,7 +70,11 @@ namespace Berry.Docx
             }
         }
 
-        public override DocumentObject Clone()
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <returns></returns>
+        protected override  DocumentObject Clone()
         {
             O.OpenXmlElement ele = XElement.CloneNode(true);
             if (ele is W.Paragraph) return new Paragraph(_doc, (W.Paragraph)ele);

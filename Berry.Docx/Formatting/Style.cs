@@ -1,10 +1,6 @@
 ﻿// Copyright (c) theyangfan. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-/* Style.cs 文件定义了 Style 类。该类是一个抽象类，是表格、段落、
- * 编号、字符样式的基类。每种样式都具有 Type, Name, Id 等属性。 
- */
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +14,7 @@ namespace Berry.Docx.Formatting
 {
     /// <summary>
     /// Represent the base class of <see cref="ParagraphStyle"/>、<see cref="CharacterStyle"/>.
-    /// <para><see cref="ParagraphStyle"/>、<see cref="CharacterStyle"/> 的基类.</para>
+    /// <para>该类是一个抽象类，是表格、编号、段落和字符样式的基类。每种样式都具有 Type, Name, Id 等属性。</para>
     /// </summary>
     public abstract class Style
     {

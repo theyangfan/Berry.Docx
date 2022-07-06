@@ -1,23 +1,6 @@
 ﻿// Copyright (c) theyangfan. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-/*
- * Paragraph.cs 文件定义了 Paragraph 类，该类表示 Word 文档的一种基本元素：段落。
- * Paragraph 类支持创建空白段落实例。通过该类可以读写段落的文本内容，段落格式，同时
- * 支持访问段落中的各类子元素：字符，图片，图形，图表，嵌入式对象等。
- * 通过该类的 InsertSectionBreak 函数可以向段落中插入分节符，以达到文档分节的目的，
- * 如下所示：
- * // 示例开始
- * using (Document doc = new Document("example.docx"))
- * {
- *      // 在文档末尾插入一个“下一页”分节符
- *      Paragraph p = doc.LastSection.Paragraphs.Last();
- *      p.InsertSectionBreak(SectionBreakType.NextPage);
- *      doc.Save();
- * }
- * // 示例结束
- */
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +29,21 @@ namespace Berry.Docx.Documents
 {
     /// <summary>
     /// Represent the paragraph.
+    /// <para>该类表示 Word 文档的一种基本元素：段落。</para>
+    /// <para>Paragraph 类支持创建空白段落实例。通过该类可以读写段落的文本内容，段落格式，
+    /// 同时支持访问段落中的各类子元素：字符，图片，图形，图表，嵌入式对象等。</para>
+    /// <para>通过该类的 InsertSectionBreak 函数可以向段落中插入分节符，以达到文档分节的目的，如下所示：</para>
+    /// <example>
+    /// <code>
+    /// using (Document doc = new Document("example.docx"))
+    /// {
+    ///      // 在文档末尾插入一个“下一页”分节符
+    ///      Paragraph p = doc.LastSection.Paragraphs.Last();
+    ///      p.InsertSectionBreak(SectionBreakType.NextPage);
+    ///      doc.Save();
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     public class Paragraph : DocumentItem
     {

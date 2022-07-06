@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +14,31 @@ using Berry.Docx.Documents;
 namespace Berry.Docx.Formatting
 {
     /// <summary>
-    /// 
+    /// Represent the paragraph style.
+    /// <para>表示一个段落样式，支持读写其字符和段落格式。可以通过 <c>CreateBuiltInStyle</c> 静态方法创建指定的内置样式。</para>
     /// </summary>
     public class ParagraphStyle : Style
     {
+        #region Private Members
         private readonly Document _doc;
+        #endregion
 
-        public ParagraphStyle(Document doc, string styleName) : this(doc, styleName, BuiltInStyle.Normal)
-        {
-        }
+        #region Constructors
+        /// <summary>
+        /// Creates a paragraph style with the specified name which is based on normal style.
+        /// <para>创建一个指定名称的段落样式，其基于正文样式。</para>
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="styleName">样式名</param>
+        public ParagraphStyle(Document doc, string styleName) : this(doc, styleName, BuiltInStyle.Normal){}
 
+        /// <summary>
+        /// Creates a paragraph style with the specified name which is based on the specified style.
+        /// <para>创建一个基于指定样式的指定名称的段落样式。</para>
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="styleName">样式名</param>
+        /// <param name="basedStyle">基类样式</param>
         public ParagraphStyle(Document doc, string styleName, BuiltInStyle basedStyle) : base(doc, StyleType.Paragraph)
         {
             _doc = doc;
@@ -36,22 +55,31 @@ namespace Berry.Docx.Formatting
         {
             _doc = doc;
         }
+        #endregion
 
+        #region Public Properties
         /// <summary>
-        /// 段落格式
+        /// Gets the paragraph format.
+        /// <para>访问当前样式的段落格式.</para>
         /// </summary>
         public ParagraphFormat ParagraphFormat => _pFormat;
-        /// <summary>
-        /// 字符格式
-        /// </summary>
-        public CharacterFormat CharacterFormat => _cFormat;
 
+        /// <summary>
+        /// Gets the list format.
+        /// <para>访问当前样式的列表格式.</para>
+        /// </summary>
         public ListFormat ListFormat => _listFormat;
+
+        /// <summary>
+        /// Gets or sets the base style.
+        /// <para>获取或设置基样式.</para>
+        /// </summary>
         public new ParagraphStyle BaseStyle
         {
             get => base.BaseStyle as ParagraphStyle;
             set => base.BaseStyle = value;
         }
+        #endregion
 
         public static ParagraphStyle Default(Document doc)
         {

@@ -1,22 +1,6 @@
 ﻿// Copyright (c) theyangfan. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-/*
- * Document.cs 文件定义了 Document 类，该类是读写 Word 文档的入口。
- * Document 类支持创建空白 Word 文档对象实例，或者通过打开指定文件或流(仅支持docx文件或流)创建对象实例。
- * 对文档做出修改后，如果想保存修改的内容，你应该显式调用 Save 或 SaveAs 方法。
- * 该类实现了 IDisposable 接口，所以你可以在 using 语句中声明对象，而非显式调用 Close 方法，如下所示：
- * // 示例开始
- * using (Document doc = new Document("example.docx"))
- * {
- *      // 一些操作
- *      ...
- *      doc.Save();
- * }
- * // 示例结束
- * 通过 Document 对象可以访问文档中的节，样式，脚注尾注等内容。 
- */
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +23,20 @@ namespace Berry.Docx
     /// <para>
     /// 表示一个 Word 文档，读写 Word 文档的入口。
     /// </para>
+    /// <para>Document 类支持创建空白 Word 文档对象实例，或者通过打开指定文件或流(仅支持docx文件或流)创建对象实例。</para>
+    /// <para>对文档做出修改后，如果想保存修改的内容，你应该显式调用 Save 或 SaveAs 方法。</para>
+    /// <para>该类实现了 IDisposable 接口，所以你可以在 using 语句中声明对象，而非显式调用 Close 方法，如下所示：</para>
+    /// <example>
+    /// <code>
+    /// using (Document doc = new Document("example.docx"))
+    /// {
+    ///     // 一些操作
+    ///     ...
+    ///     doc.Save();
+    /// }
+    /// </code>
+    /// </example>
+    /// <para>通过 Document 对象可以访问文档中的节，样式，脚注尾注等内容。</para>
     /// </summary>
     public class Document : IDisposable
     {
