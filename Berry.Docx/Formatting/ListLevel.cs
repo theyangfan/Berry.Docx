@@ -1,23 +1,38 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
+    /// <summary>
+    /// Represent the list style level.
+    /// <para>表示多级列表样式级别.</para>
+    /// </summary>
     public class ListLevel
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly W.Level _level;
+        #endregion
+
+        #region Constructors
         internal ListLevel(Document doc, W.AbstractNum ownerNum, W.Level level)
         {
             _doc = doc;
             _level = level;
         }
+        #endregion
+
 
         #region Public Properties
         /// <summary>
-        /// (eg：1, 1.2, 1.2.3.4.5.6.7.8.9)
+        /// Gets or sets the numbering pattern. The number that higher than the level number will be ignored.
+        /// (e.g.: 1, 1.2, 1.2.3.4.5.6.7.8.9)
+        /// <para>获取或设置编号的格式。高于当前级别的数字会被忽略.</para>
         /// </summary>
         public string Pattern
         {
@@ -41,6 +56,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the numbering style.
+        /// <para>获取或设置编号样式.</para>
+        /// </summary>
         public ListNumberStyle NumberStyle
         {
             get
@@ -55,7 +74,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the start number.
+        /// <para>获取或设置起始编号.</para>
+        /// </summary>
         public int StartNumber
         {
             get
@@ -70,6 +92,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether display te current level using arabic numerals.
+        /// <para>是否按正规形式(阿拉伯数字)编号.</para>
+        /// </summary>
         public bool IsLegalNumberingStyle
         {
             get
@@ -85,6 +111,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the number alignment.
+        /// <para>获取或设置编号对齐方式.</para>
+        /// </summary>
         public ListNumberAlignment NumberAlignment
         {
             get
@@ -101,6 +131,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the character following number.
+        /// <para>获取或设置编号之后的符号.</para>
+        /// </summary>
         public LevelSuffixCharacter SuffixCharacter
         {
             get
@@ -117,6 +151,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the number align position (in points).
+        /// <para>获取或设置编号对齐位置(磅).</para>
+        /// </summary>
         public float NumberPosition
         {
             get
@@ -129,10 +167,14 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text indent position (in points).
+        /// <para>获取或设置文本缩进位置(磅).</para>
+        /// </summary>
         public float TextIndentation
         {
             get => LeftIndent;
-            set 
+            set
             {
                 float temp = NumberPosition;
                 LeftIndent = value;
@@ -140,16 +182,21 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets the character format.
+        /// </summary>
         public CharacterFormat CharacterFormat => new CharacterFormat(_doc, _level);
+        #endregion
 
+        #region Internal Properties
         internal float FirstLineIndent
         {
             get
             {
-                if(_level.PreviousParagraphProperties?.Indentation == null) return 0;
+                if (_level.PreviousParagraphProperties?.Indentation == null) return 0;
                 W.Indentation ind = _level.PreviousParagraphProperties.Indentation;
-                if(ind.Hanging != null) return -(ind.Hanging.Value.ToFloat() / 20);
-                if(ind.FirstLine != null) return ind.FirstLine.Value.ToFloat() / 20;
+                if (ind.Hanging != null) return -(ind.Hanging.Value.ToFloat() / 20);
+                if (ind.FirstLine != null) return ind.FirstLine.Value.ToFloat() / 20;
                 return 0;
             }
             set
@@ -191,10 +238,6 @@ namespace Berry.Docx.Formatting
                 ind.Left = ((int)(value * 20)).ToString();
             }
         }
-        #endregion
-
-
-
 
         internal int ListLevelNumber => _level.LevelIndex + 1;
 
@@ -202,7 +245,7 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_level.ParagraphStyleIdInLevel == null) return null;
+                if (_level.ParagraphStyleIdInLevel == null) return null;
                 return _level.ParagraphStyleIdInLevel.Val;
             }
             set
@@ -213,5 +256,6 @@ namespace Berry.Docx.Formatting
                     _level.ParagraphStyleIdInLevel = new W.ParagraphStyleIdInLevel() { Val = value };
             }
         }
+        #endregion
     }
 }

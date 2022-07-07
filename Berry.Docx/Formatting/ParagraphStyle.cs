@@ -81,16 +81,22 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
-        public static ParagraphStyle Default(Document doc)
-        {
-            return doc.Styles.Where(s => s.Type == StyleType.Paragraph && s.IsDefault).FirstOrDefault() as ParagraphStyle;
-        }
-
+        #region Public Methods
+        /// <summary>
+        /// Gets the linked character style.
+        /// <para>获取链接的字符样式.</para>
+        /// </summary>
+        /// <returns>The linked character style.</returns>
         public CharacterStyle GetLinkedStyle()
         {
             return base.LinkedStyle as CharacterStyle;
         }
 
+        /// <summary>
+        /// Creates the linked character style.
+        /// <para>创建链接的字符样式.</para>
+        /// </summary>
+        /// <returns>The linked character style.</returns>
         public CharacterStyle CreateLinkedStyle()
         {
             if(base.LinkedStyle != null)
@@ -106,10 +112,14 @@ namespace Berry.Docx.Formatting
             // copy character format
             linked.CharacterFormat.FontNameEastAsia = this.CharacterFormat.FontNameEastAsia;
             linked.CharacterFormat.FontNameAscii = this.CharacterFormat.FontNameAscii;
+            linked.CharacterFormat.FontTypeHint = this.CharacterFormat.FontTypeHint;
             linked.CharacterFormat.FontSize = this.CharacterFormat.FontSize;
             linked.CharacterFormat.FontSizeCs = this.CharacterFormat.FontSizeCs;
             linked.CharacterFormat.Bold = this.CharacterFormat.Bold;
             linked.CharacterFormat.Italic = this.CharacterFormat.Italic;
+            linked.CharacterFormat.SubSuperScript = this.CharacterFormat.SubSuperScript;
+            linked.CharacterFormat.UnderlineStyle = this.CharacterFormat.UnderlineStyle;
+            linked.CharacterFormat.TextColor = this.CharacterFormat.TextColor;
             linked.CharacterFormat.CharacterScale = this.CharacterFormat.CharacterScale;
             linked.CharacterFormat.CharacterSpacing = this.CharacterFormat.CharacterSpacing;
             linked.CharacterFormat.Position = this.CharacterFormat.Position;
@@ -118,6 +128,13 @@ namespace Berry.Docx.Formatting
             return linked;
         }
 
+        /// <summary>
+        /// Creates a specified built-in paragraph style.
+        /// <para>创建一个指定的内置段落样式.</para>
+        /// </summary>
+        /// <param name="bstyle">The BuiltInStyle type.</param>
+        /// <param name="doc"></param>
+        /// <returns>The built-in paragraph style.</returns>
         public static ParagraphStyle CreateBuiltInStyle(BuiltInStyle bstyle, Document doc)
         {
             string styleName = string.Empty;
@@ -157,7 +174,7 @@ namespace Berry.Docx.Formatting
                     break;
             }
             if (string.IsNullOrEmpty(styleName)) return null;
-
+            // if the style already exist
             if (doc.Styles.FindByName(styleName, StyleType.Paragraph) != null)
             {
                 return doc.Styles.FindByName(styleName, StyleType.Paragraph) as ParagraphStyle;
@@ -172,8 +189,17 @@ namespace Berry.Docx.Formatting
             }
         }
 
-        
-
+        /// <summary>
+        /// Gets the default paragraph style (normal style usually).
+        /// <para>获取默认段落样式 (通常是正文样式).</para>
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns>The default paragraph style.</returns>
+        public static ParagraphStyle Default(Document doc)
+        {
+            return doc.Styles.Where(s => s.Type == StyleType.Paragraph && s.IsDefault).FirstOrDefault() as ParagraphStyle;
+        }
+        #endregion
 
     }
 }

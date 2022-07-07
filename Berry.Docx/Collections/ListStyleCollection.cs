@@ -38,6 +38,12 @@ namespace Berry.Docx.Collections
         public int Count => _styles.Count();
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Adds the specified style to the document.
+        /// <para>将指定的列表样式添加到文档中.</para>
+        /// </summary>
+        /// <param name="style"></param>
         public void Add(ListStyle style)
         {
             if (GetStyles().Where(s => s.NumberID == style.NumberID || s.AbstractNumberID == style.AbstractNumberID).Any()) return;
@@ -60,6 +66,12 @@ namespace Berry.Docx.Collections
                 _listStyleNames[style.Name] = style.AbstractNumberID;
         }
 
+        /// <summary>
+        /// Finds the list style with the specified name. The list style name does not exist physically, the name will be invalid when out of document scope.
+        /// <para>查找指定名称的列表样式. 列表样式的名称在物理上不存在，当离开文档作用域后，名称将无效.</para>
+        /// </summary>
+        /// <param name="styleName">The list style name.</param>
+        /// <returns></returns>
         public ListStyle FindByName(string styleName)
         {
             return _styles.Where(s => s.Name == styleName).FirstOrDefault();
@@ -74,7 +86,9 @@ namespace Berry.Docx.Collections
         {
             return GetEnumerator();
         }
+        #endregion
 
+        #region Private Methods
         private IEnumerable<ListStyle> GetStyles()
         {
             if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart?.Numbering == null) yield break;
@@ -88,5 +102,6 @@ namespace Berry.Docx.Collections
                 yield return style;
             }
         }
+        #endregion
     }
 }

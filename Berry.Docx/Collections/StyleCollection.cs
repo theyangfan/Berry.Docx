@@ -41,16 +41,16 @@ namespace Berry.Docx.Collections
         #endregion
 
         #region Public Methods
-
+        /// <summary>
+        /// Adds the specified style to the document.
+        /// <para>将指定的样式添加到文档中.</para>
+        /// </summary>
+        /// <param name="style">The specified style.</param>
         public void Add(Style style)
         {
             if(FindByName(style.Name, style.Type) == null)
             {
                 _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Append(style.XElement);
-            }
-            else
-            {
-                throw new Exception("A style with the same name already exists!");
             }
         }
 
@@ -80,6 +80,7 @@ namespace Berry.Docx.Collections
         }
         #endregion
 
+        #region Private Methods
         private IEnumerable<Style> GetStyles()
         {
             foreach (W.Style style in _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Elements<W.Style>())
@@ -88,7 +89,9 @@ namespace Berry.Docx.Collections
                     yield return new ParagraphStyle(_doc, style);
                 else if (style.Type == W.StyleValues.Character)
                     yield return new CharacterStyle(_doc, style);
-;            }
+                ;
+            }
         }
+        #endregion
     }
 }

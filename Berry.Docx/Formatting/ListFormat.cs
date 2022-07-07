@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +10,8 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 namespace Berry.Docx.Formatting
 {
     /// <summary>
-    /// Represent the numbering format.
+    /// Represent the numbering format. You can access or specify the <see cref="ListStyle"/> of the current paragraph/style.
+    /// <para>表示段落或段落样式的编号格式. 可以访问或指定当前段落/样式的多级列表样式.</para>
     /// </summary>
     public class ListFormat
     {
@@ -34,19 +38,24 @@ namespace Berry.Docx.Formatting
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets the current list style(may not exist).
+        /// <para>获取当前列表样式(可能不存在).</para>
+        /// </summary>
         public ListStyle CurrentStyle
         {
             get
             {
                 if(_ownerParagraph != null) // Paragraph
                 {
+                    // direct formatting
                     W.NumberingProperties numPr = _ownerParagraph.ParagraphProperties?.NumberingProperties;
                     if (numPr?.NumberingId != null && numPr?.NumberingLevelReference != null)
                     {
                         W.AbstractNum abstractNum = GetAbstractNumByID(_doc, numPr.NumberingId.Val);
                         if(abstractNum != null) return new ListStyle(_doc, abstractNum);
                     }
-                    else
+                    else // inherit from paragraph style
                     {
                         W.AbstractNum abstractNum = GetStyleAbstractNumRecursively(_doc, _ownerParagraph.GetStyle(_doc));
                         if (abstractNum != null) return new ListStyle(_doc, abstractNum);
@@ -61,12 +70,17 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets the current list level format(may not exist).
+        /// <para>获取当前列表级别格式(可能不存在).</para>
+        /// </summary>
         public ListLevel CurrentLevel
         {
             get
             {
                 if (_ownerParagraph != null) // Paragraph
                 {
+                    // direct formatting
                     W.NumberingProperties numPr = _ownerParagraph.ParagraphProperties?.NumberingProperties;
                     if (numPr?.NumberingId != null && numPr?.NumberingLevelReference != null)
                     {
@@ -77,7 +91,7 @@ namespace Berry.Docx.Formatting
                             if(level != null) return new ListLevel(_doc, abstractNum, level);
                         }
                     }
-                    else
+                    else // inherit from paragraph style
                     {
                         W.Style style = _ownerParagraph.GetStyle(_doc);
                         W.AbstractNum abstractNum = GetStyleAbstractNumRecursively(_doc, style);
@@ -101,6 +115,10 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current list level number (from 1 to 9). Return zero if not exist.
+        /// <para>获取或设置当前列表级别编号(从1-9)。如果不存在，则返回0.</para>
+        /// </summary>
         public int ListLevelNumber
         {
             get
@@ -112,6 +130,7 @@ namespace Berry.Docx.Formatting
                 InitNumberingProperties();
                 if (_ownerParagraph != null)
                 {
+                    // set the numbering level index to the direct formatting
                     W.NumberingProperties num = _ownerParagraph.ParagraphProperties.NumberingProperties;
                     num.NumberingLevelReference = new W.NumberingLevelReference() { Val = value - 1 };
                 }
@@ -123,12 +142,20 @@ namespace Berry.Docx.Formatting
                         if (level.ParagraphStyleId == _ownerStyle.StyleId)
                             level.ParagraphStyleId = null;
                     }
+                    // set the style id to the numbering level
                     CurrentStyle.Levels[value - 1].ParagraphStyleId = _ownerStyle.StyleId;
                 }
             }
         }
         #endregion
 
+        #region Public Methods
+        /// <summary>
+        /// Apply the specified list style and level.
+        /// <para>应用指定的列表样式和级别.</para>
+        /// </summary>
+        /// <param name="style">The list style</param>
+        /// <param name="levelNumber">The list level number.</param>
         public void ApplyStyle(ListStyle style, int levelNumber)
         {
             InitNumberingProperties();
@@ -151,6 +178,12 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Apply the list style with the specified name. The list style name does not exist physically, the name will be invalid when out of document scope.
+        /// <para>应用指定名称的列表样式。列表样式的名称在物理上不存在，当离开文档作用域后，名称将无效。</para>
+        /// </summary>
+        /// <param name="styleName">The list style name.</param>
+        /// <param name="levelNumber">The list level number.</param>
         public void ApplyStyle(string styleName, int levelNumber)
         {
             ListStyle style = _doc.ListStyles.FindByName(styleName);
@@ -158,6 +191,9 @@ namespace Berry.Docx.Formatting
             ApplyStyle(style, levelNumber);
         }
 
+        #endregion
+
+        #region Private Methods
 
         private void InitNumberingProperties()
         {
@@ -212,7 +248,7 @@ namespace Berry.Docx.Formatting
             }
             return null;
         }
-
+        #endregion
 
     }
 }

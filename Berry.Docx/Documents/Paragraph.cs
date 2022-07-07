@@ -32,14 +32,14 @@ namespace Berry.Docx.Documents
     /// <para>该类表示 Word 文档的一种基本元素：段落。</para>
     /// <para>Paragraph 类支持创建空白段落实例。通过该类可以读写段落的文本内容，段落格式，
     /// 同时支持访问段落中的各类子元素：字符，图片，图形，图表，嵌入式对象等。</para>
-    /// <para>通过该类的 InsertSectionBreak 函数可以向段落中插入分节符，以达到文档分节的目的，如下所示：</para>
+    /// <para>通过该类的 AppendSectionBreak 函数可以向段落中插入分节符，以达到文档分节的目的，如下所示：</para>
     /// <example>
     /// <code>
     /// using (Document doc = new Document("example.docx"))
     /// {
     ///      // 在文档末尾插入一个“下一页”分节符
     ///      Paragraph p = doc.LastSection.Paragraphs.Last();
-    ///      p.InsertSectionBreak(SectionBreakType.NextPage);
+    ///      p.AppendSectionBreak(SectionBreakType.NextPage);
     ///      doc.Save();
     /// }
     /// </code>
@@ -120,21 +120,25 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
-        /// The paragraph format.
+        /// Gets the paragraph format.
         /// </summary>
         public ParagraphFormat Format => _pFormat;
 
         /// <summary>
-        /// The character format of paragraph mark for this paragraph.
+        /// Gets the list format.
+        /// </summary>
+        public ListFormat ListFormat => _listFormat;
+
+        /// <summary>
+        /// Gets the character format of paragraph mark for this paragraph.
+        /// <para>获取段落标记的字符格式.</para>
         /// </summary>
         public CharacterFormat MarkFormat => _cFormat;
-
-        public ListFormat ListFormat => _listFormat;
 
         /// <summary>
         /// Gets the owener section of the current paragraph.
         /// </summary>
-        public Section Section
+        internal Section Section
         {
             get
             {
@@ -163,6 +167,11 @@ namespace Berry.Docx.Documents
             return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
         }
 
+        /// <summary>
+        /// Apply the paragraph style with the specified name to the current paragraph.
+        /// <para>为当前段落应用指定名称的段落样式.</para>
+        /// </summary>
+        /// <param name="styleName">The style name.</param>
         public void ApplyStyle(string styleName)
         {
             if (_paragraph == null || string.IsNullOrEmpty(styleName)) return;
@@ -183,6 +192,11 @@ namespace Berry.Docx.Documents
             _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
         }
 
+        /// <summary>
+        /// Apply the specified built-in style to the current paragraph.
+        /// <para>为当前段落应用指定的内置样式.</para>
+        /// </summary>
+        /// <param name="bstyle">The built-in style type.</param>
         public void ApplyStyle(BuiltInStyle bstyle)
         {
             if (_paragraph == null) return;
@@ -203,13 +217,14 @@ namespace Berry.Docx.Documents
             }
         }
         /// <summary>
-        /// Insert a section break with the specified type to the current paragraph. 
+        /// Append a section break with the specified type to the current paragraph. 
         /// <para>The current paragraph must have an owner section, otherwise an exception will be thrown.</para>
+        /// <para>在当前段落结尾添加一个分节符。当前段落必须在节中，否则会抛出一个异常.</para>
         /// </summary>
         /// <param name="type">Type of section break.</param>
         /// <exception cref="NullReferenceException"/>
         /// <returns>The section.</returns>
-        public Section InsertSectionBreak(SectionBreakType type)
+        public Section AppendSectionBreak(SectionBreakType type)
         {
             if (Section != null)
             {
@@ -537,7 +552,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 段落编号(默认为1)
         /// </summary>
-        public string ListText
+        private string ListText
         {
             get
             {

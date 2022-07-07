@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -6,12 +9,19 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
+    /// <summary>
+    /// Repersent the paragraph border.
+    /// </summary>
     public class Borders
     {
+
+        #region Private Members
         private readonly Document _doc;
         private readonly W.Paragraph _ownerParagraph;
         private readonly W.Style _ownerStyle;
+        #endregion
 
+        #region Constructors
         internal Borders(Document doc, W.Paragraph paragraph)
         {
             _doc = doc;
@@ -23,12 +33,17 @@ namespace Berry.Docx.Formatting
             _doc = doc;
             _ownerStyle = style;
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// The top border.
+        /// </summary>
         public Border Top
         {
             get
             {
-                if(_ownerParagraph != null)
+                if (_ownerParagraph != null)
                 {
                     return new Border(_doc, _ownerParagraph, BorderType.Top);
                 }
@@ -39,6 +54,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// The bottom border.
+        /// </summary>
         public Border Bottom
         {
             get
@@ -54,6 +72,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// The left border.
+        /// </summary>
         public Border Left
         {
             get
@@ -69,6 +90,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// The right border.
+        /// </summary>
         public Border Right
         {
             get
@@ -113,7 +137,9 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+        #endregion
 
+        #region Public Methods
         public void SetBorders(BorderStyle style, ColorValue color, float width)
         {
             Top.Style = style;
@@ -132,7 +158,7 @@ namespace Berry.Docx.Formatting
 
         public void Clear()
         {
-            if(Top.Style != BorderStyle.Nil || Top.Style != BorderStyle.None)
+            if (Top.Style != BorderStyle.Nil || Top.Style != BorderStyle.None)
             {
                 Top.Style = BorderStyle.None;
                 Top.Color = ColorValue.Auto;
@@ -169,6 +195,7 @@ namespace Berry.Docx.Formatting
                 Bar.Width = 0;
             }
         }
+        #endregion
     }
 
 
