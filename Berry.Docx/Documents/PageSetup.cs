@@ -403,7 +403,7 @@ namespace Berry.Docx.Documents
                 }
                 ParagraphStyle normal = _doc.Styles.FindByName("normal", StyleType.Paragraph) as ParagraphStyle;
                 float normalSz = normal?.CharacterFormat?.FontSize ?? 11.0F;
-                _docGrid.CharacterSpace = (int)((value - normalSz) * 4096.0F).Round(0);
+                _docGrid.CharacterSpace = Convert.ToInt32((value - normalSz) * 4096.0F);
             }
         }
 
@@ -421,7 +421,7 @@ namespace Berry.Docx.Documents
                     _docGrid = new W.DocGrid();
                     _sect.XElement.AddChild(_docGrid);
                 }
-                _docGrid.LinePitch = (int)(value * 20.0F).Round(0);
+                _docGrid.LinePitch = Convert.ToInt32(value * 20.0F);
             }
         }
         #endregion

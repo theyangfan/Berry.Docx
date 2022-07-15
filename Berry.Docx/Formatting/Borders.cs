@@ -10,7 +10,7 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 namespace Berry.Docx.Formatting
 {
     /// <summary>
-    /// Repersent the paragraph border.
+    /// Repersent the paragraph borders.
     /// </summary>
     public class Borders
     {
@@ -108,6 +108,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Paragraph Border Between Identical Paragraphs.
+        /// </summary>
         public Border Between
         {
             get
@@ -123,6 +126,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Paragraph Border Between Facing Pages.
+        /// </summary>
         public Border Bar
         {
             get
@@ -140,6 +146,12 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Sets borders.
+        /// </summary>
+        /// <param name="style"></param>
+        /// <param name="color"></param>
+        /// <param name="width"></param>
         public void SetBorders(BorderStyle style, ColorValue color, float width)
         {
             Top.Style = style;
@@ -156,60 +168,45 @@ namespace Berry.Docx.Formatting
             Right.Width = width;
         }
 
+        /// <summary>
+        /// Clears borders.
+        /// </summary>
         public void Clear()
         {
-            if (Top.Style != BorderStyle.Nil || Top.Style != BorderStyle.None)
+            if(_ownerParagraph?.ParagraphProperties?.ParagraphBorders != null)
             {
-                Top.Style = BorderStyle.None;
-                Top.Color = ColorValue.Auto;
-                Top.Width = 0;
+                _ownerParagraph.ParagraphProperties.ParagraphBorders = null;
             }
-            if (Bottom.Style != BorderStyle.Nil || Bottom.Style != BorderStyle.None)
+            else if(_ownerStyle != null)
             {
-                Bottom.Style = BorderStyle.None;
-                Bottom.Color = ColorValue.Auto;
-                Bottom.Width = 0;
-            }
-            if (Left.Style != BorderStyle.Nil || Left.Style != BorderStyle.None)
-            {
-                Left.Style = BorderStyle.None;
-                Left.Color = ColorValue.Auto;
-                Left.Width = 0;
-            }
-            if (Right.Style != BorderStyle.Nil || Right.Style != BorderStyle.None)
-            {
-                Right.Style = BorderStyle.None;
-                Right.Color = ColorValue.Auto;
-                Right.Width = 0;
-            }
-            if (Between.Style != BorderStyle.Nil || Between.Style != BorderStyle.None)
-            {
-                Between.Style = BorderStyle.None;
-                Between.Color = ColorValue.Auto;
-                Between.Width = 0;
-            }
-            if (Bar.Style != BorderStyle.Nil || Bar.Style != BorderStyle.None)
-            {
-                Bar.Style = BorderStyle.None;
-                Bar.Color = ColorValue.Auto;
-                Bar.Width = 0;
+                if (_ownerStyle.StyleParagraphProperties?.ParagraphBorders != null)
+                    _ownerStyle.StyleParagraphProperties.ParagraphBorders = null;
+                // clear borders in base style.
+                W.Style baseStyle = _ownerStyle.GetBaseStyle(_doc);
+                if (baseStyle != null)
+                {
+                    new Borders(_doc, baseStyle).Clear();
+                }
             }
         }
         #endregion
     }
 
-
+    /// <summary>
+    /// Repersent the paragraph border.
+    /// </summary>
     public class Border
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly W.Run _ownerRun;
         private readonly W.Paragraph _ownerParagraph;
         private readonly W.Style _ownerStyle;
         private readonly W.RunPropertiesDefault _defaultRPr;
         private readonly EnumValue<BorderType> _borderType;
+        #endregion
 
-        internal Border() { }
-
+        #region Constructors
         internal Border(Document doc, W.Run run)
         {
             _doc = doc;
@@ -235,7 +232,12 @@ namespace Berry.Docx.Formatting
             _doc = doc;
             _defaultRPr = defaultRPr;
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Gets or sets the border style.
+        /// </summary>
         public BorderStyle Style
         {
             get
@@ -293,6 +295,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the border color.
+        /// </summary>
         public ColorValue Color
         {
             get
@@ -350,6 +355,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the border width.
+        /// </summary>
         public float Width
         {
             get
@@ -469,7 +477,9 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+        #endregion
 
+        #region Internal Properties
         internal W.BorderType BorderProperty
         {
             get
@@ -519,7 +529,9 @@ namespace Berry.Docx.Formatting
                 return null;
             }
         }
+        #endregion
 
+        #region Private Methods
         private void InitProperty()
         {
             if (_ownerRun != null)
@@ -620,6 +632,7 @@ namespace Berry.Docx.Formatting
                 return style.StyleRunProperties?.Border ?? baseBdr;
             }
         }
+        #endregion
     }
 
     internal enum BorderType

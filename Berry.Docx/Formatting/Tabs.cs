@@ -7,33 +7,69 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
-    public class Tabs : IEnumerable<Tab>
+    /// <summary>
+    /// Represent the custom tab stops collection that supports enumeration.
+    /// <para>表示一个支持枚举的制表位集合。</para>
+    /// </summary>
+    public class TabStops : IEnumerable<TabStop>
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly W.Paragraph _ownerParagraph;
         private readonly W.Style _ownerStyle;
+        private readonly IEnumerable<TabStop> _tabStops;
+        #endregion
 
-        internal Tabs(Document doc, W.Paragraph paragraph)
+        #region Constructors
+        internal TabStops(Document doc, W.Paragraph paragraph)
         {
             _doc = doc;
             _ownerParagraph = paragraph;
+            _tabStops = GetTabs();
         }
 
-        internal Tabs(Document doc, W.Style style)
+        internal TabStops(Document doc, W.Style style)
         {
             _doc = doc;
             _ownerStyle = style;
+            _tabStops = GetTabs();
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Gets the tab stop at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index.</param>
+        /// <returns>The tab stop.</returns>
+        public TabStop this[int index] => _tabStops.ElementAt(index);
+
+        /// <summary>
+        /// Gets the tab stops count.
+        /// </summary>
+        public int Count => _tabStops.Count();
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Adds a tab stop.
+        /// </summary>
+        /// <param name="pos">The position.</param>
+        /// <param name="style">The tab stop style.</param>
+        /// <param name="leader">The tab stop leader.</param>
         public void Add(float pos, TabStopStyle style, TabStopLeader leader)
         {
-            Tab tab = new Tab(pos, style, leader);
+            TabStop tab = new TabStop(pos, style, leader);
             Add(tab);
         }
 
-        public void Add(Tab tab)
+        /// <summary>
+        /// Adds a tab stop.
+        /// </summary>
+        /// <param name="tab">The tab stop.</param>
+        public void Add(TabStop tab)
         {
-            if (GetTabs().Contains(tab)) return;
+            if (_tabStops.Contains(tab)) return;
             if (_ownerParagraph != null)
             {
                 if (_ownerParagraph.ParagraphProperties == null)
@@ -52,48 +88,58 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Clears all tab stops.
+        /// </summary>
         public void Clear()
         {
             if (_ownerParagraph?.ParagraphProperties?.Tabs != null)
                 _ownerParagraph.ParagraphProperties.Tabs = null;
             if (_ownerStyle != null)
             {
-                if(_ownerStyle?.StyleParagraphProperties?.Tabs != null)
+                if(_ownerStyle.StyleParagraphProperties?.Tabs != null)
                     _ownerStyle.StyleParagraphProperties.Tabs = null;
+                // clear tabs in base style.
                 W.Style baseStyle = _ownerStyle.GetBaseStyle(_doc);
                 if (baseStyle != null)
                 {
-                    new Tabs(_doc, baseStyle).Clear();
+                    new TabStops(_doc, baseStyle).Clear();
                 }
             }
         }
 
-        public IEnumerator<Tab> GetEnumerator()
+        /// <summary>
+        /// Returns an enumerator that iterates through the tab stops collection.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<TabStop> GetEnumerator()
         {
-            return GetTabs().GetEnumerator();
+            return _tabStops.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
+        #endregion
 
-        private IEnumerable<Tab> GetTabs()
+        #region Private Methods
+        private IEnumerable<TabStop> GetTabs()
         {
             if (_ownerParagraph != null)
             {
                 if (_ownerParagraph.ParagraphProperties?.Tabs != null)
                 {
                     foreach (W.TabStop tab in _ownerParagraph.ParagraphProperties.Tabs.Elements<W.TabStop>())
-                        yield return new Tab(tab);
+                        yield return new TabStop(tab);
                 }
                 foreach (W.TabStop tab in GetStyleTabsRecursively(_doc, _ownerParagraph.GetStyle(_doc)))
-                    yield return new Tab(tab);
+                    yield return new TabStop(tab);
             }
             else if (_ownerStyle != null)
             {
                 foreach (W.TabStop tab in GetStyleTabsRecursively(_doc, _ownerStyle))
-                    yield return new Tab(tab);
+                    yield return new TabStop(tab);
             }
         }
 
@@ -115,29 +161,50 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
-
+        #endregion
     }
 
-    public class Tab : IEquatable<Tab>
+    /// <summary>
+    /// Represent a single custom tab stop.
+    /// <para>表示单个制表位.</para>
+    /// </summary>
+    public class TabStop : IEquatable<TabStop>
     {
+        #region Private Members
         private readonly W.TabStop _tab;
+        #endregion
 
-        public Tab() : this(new W.TabStop() { Position = 0, Val = W.TabStopValues.Clear, Leader = W.TabStopLeaderCharValues.None })
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of TabStop Class.
+        /// </summary>
+        public TabStop() : this(new W.TabStop() { Position = 0, Val = W.TabStopValues.Clear, Leader = W.TabStopLeaderCharValues.None })
         {
         }
 
-        public Tab(float pos, TabStopStyle style, TabStopLeader leader) : this()
+        /// <summary>
+        /// Initializes a new instance of TabStop Class with specified properties.
+        /// </summary>
+        /// <param name="pos">The position.</param>
+        /// <param name="style">The tab stop style.</param>
+        /// <param name="leader">The tab stop leader.</param>
+        public TabStop(float pos, TabStopStyle style, TabStopLeader leader) : this()
         {
             Position = pos;
             Style = style;
             Leader = leader;
         }
 
-        internal Tab(W.TabStop tab)
+        internal TabStop(W.TabStop tab)
         {
             _tab = tab;
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Gets or sets the tab stop position (in points).
+        /// </summary>
         public float Position
         {
             get
@@ -151,6 +218,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the tab stop style.
+        /// </summary>
         public TabStopStyle Style
         {
             get
@@ -164,6 +234,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the tab stop leader.
+        /// </summary>
         public TabStopLeader Leader
         {
             get
@@ -176,13 +249,23 @@ namespace Berry.Docx.Formatting
                 _tab.Leader = value.Convert<W.TabStopLeaderCharValues>();
             }
         }
+        #endregion
 
-
-        public bool Equals(Tab other)
+        #region Public Methods
+        /// <summary>
+        /// Determines whether the specified TabStop is equal to the current TabStop.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(TabStop other)
         {
             return _tab.Equals(other.XETabStop);
         }
+        #endregion
 
+        #region Internal Properties
         internal W.TabStop XETabStop => _tab;
+        #endregion
+
     }
 }

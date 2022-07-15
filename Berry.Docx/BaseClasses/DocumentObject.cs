@@ -112,7 +112,7 @@ namespace Berry.Docx
         /// 
         /// </summary>
         /// <returns></returns>
-        protected abstract DocumentObject Clone();
+        public abstract DocumentObject Clone();
 
         /// <summary>
         /// Inserts the specified object immediately before the current object.

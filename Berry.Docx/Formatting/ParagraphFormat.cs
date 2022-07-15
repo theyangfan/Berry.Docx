@@ -55,7 +55,7 @@ namespace Berry.Docx.Formatting
         private VerticalTextAlignment _textAlignment = VerticalTextAlignment.Auto;
         // borders & tabs
         private Borders _borders;
-        private Tabs _tabs;
+        private TabStops _tabs;
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace Berry.Docx.Formatting
             _ownerParagraph = ownerParagraph;
             _directPHld = new ParagraphPropertiesHolder(document, ownerParagraph);
             _borders = new Borders(document, ownerParagraph);
-            _tabs = new Tabs(document, ownerParagraph);
+            _tabs = new TabStops(document, ownerParagraph);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Berry.Docx.Formatting
             _ownerStyle = ownerStyle;
             _directSHld = new ParagraphPropertiesHolder(document, ownerStyle);
             _borders = new Borders(document, ownerStyle);
-            _tabs= new Tabs(document, ownerStyle);
+            _tabs= new TabStops(document, ownerStyle);
         }
 
         #endregion
@@ -1099,9 +1099,17 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
+        #region Borders & Tabs
+        /// <summary>
+        /// Gets paragraph borders.
+        /// </summary>
         public Borders Borders => _borders;
 
-        public Tabs Tabs => _tabs;
+        /// <summary>
+        /// Gets paragraph tab stops.
+        /// </summary>
+        public TabStops Tabs => _tabs;
+        #endregion
 
         #endregion
 

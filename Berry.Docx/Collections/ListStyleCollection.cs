@@ -46,7 +46,7 @@ namespace Berry.Docx.Collections
         /// <param name="style"></param>
         public void Add(ListStyle style)
         {
-            if (GetStyles().Where(s => s.NumberID == style.NumberID || s.AbstractNumberID == style.AbstractNumberID).Any()) return;
+            if (_styles.Where(s => s.NumberID == style.NumberID || s.AbstractNumberID == style.AbstractNumberID).Any()) return;
 
             if (_doc.Package.MainDocumentPart.NumberingDefinitionsPart == null)
             {
