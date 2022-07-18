@@ -28,6 +28,7 @@ namespace Berry.Docx.Formatting
         #region Style
         private W.Style _ownerStyle;
         private RunPropertiesHolder _directSHld;
+        private readonly RunPropertiesHolder _tblStyleHld;
         #endregion
 
         #region Numbering
@@ -97,6 +98,15 @@ namespace Berry.Docx.Formatting
             _border = new Border(doc, ownerStyle);
         }
 
+        internal CharacterFormat(Document doc, W.Style ownerStyle, TableRegionType tableStyleRegion)
+        {
+            _doc = doc;
+            _ownerStyle = ownerStyle;
+            _directSHld = new RunPropertiesHolder(doc.Package, ownerStyle);
+            _border = new Border(doc, ownerStyle);
+            _tblStyleHld = new RunPropertiesHolder(doc.Package, ownerStyle, tableStyleRegion);
+        }
+
         internal CharacterFormat(Document doc, W.Level numberingLevel)
         {
             _doc = doc;
@@ -154,6 +164,11 @@ namespace Berry.Docx.Formatting
                 }
                 else if(_ownerStyle != null)
                 {
+                    // table style
+                    if(_tblStyleHld?.FontNameEastAsia != null)
+                    {
+                        return _tblStyleHld.FontNameEastAsia;
+                    }
                     // direct formatting
                     if (_directSHld.FontNameEastAsia != null)
                     {
@@ -183,7 +198,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.FontNameEastAsia = value;
+                    if (_tblStyleHld != null) _tblStyleHld.FontNameEastAsia = value;
+                    else _directSHld.FontNameEastAsia = value;
                 }
                 else if(_ownerParagraph != null)
                 {

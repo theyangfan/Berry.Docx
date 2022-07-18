@@ -21,6 +21,9 @@ namespace Berry.Docx.Formatting
     {
         #region Private Members
         private readonly Document _doc;
+        private CharacterFormat _cFormat;
+        private ParagraphFormat _pFormat;
+        private readonly ListFormat _listFormat;
         #endregion
 
         #region Constructors
@@ -39,25 +42,32 @@ namespace Berry.Docx.Formatting
         /// <param name="doc"></param>
         /// <param name="styleName">样式名</param>
         /// <param name="basedStyle">基类样式</param>
-        public ParagraphStyle(Document doc, string styleName, BuiltInStyle basedStyle) : base(doc, StyleType.Paragraph)
+        public ParagraphStyle(Document doc, string styleName, BuiltInStyle basedStyle) : this(doc, StyleGenerator.GenerateParagraphStyle(doc))
         {
-            _doc = doc;
-            this.Name = styleName;
-            this.IsCustom = true;
-            this.AddToGallery = true;
-            if(basedStyle != BuiltInStyle.None)
+            base.Name = styleName;
+            base.IsCustom = true;
+            base.AddToGallery = true;
+            if (basedStyle != BuiltInStyle.None)
             {
                 this.BaseStyle = CreateBuiltInStyle(basedStyle, doc);
             }
         }
 
-        internal ParagraphStyle(Document doc, W.Style style):base(doc, style)
+        internal ParagraphStyle(Document doc, W.Style style) : base(doc, style)
         {
             _doc = doc;
+            _cFormat = new CharacterFormat(doc, style);
+            _pFormat = new ParagraphFormat(doc, style);
+            _listFormat = new ListFormat(doc, style);
         }
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the CharacterFormat of the style.
+        /// </summary>
+        public CharacterFormat CharacterFormat => _cFormat;
+
         /// <summary>
         /// Gets the paragraph format.
         /// <para>访问当前样式的段落格式.</para>

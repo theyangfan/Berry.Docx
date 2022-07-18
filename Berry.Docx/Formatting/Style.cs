@@ -23,70 +23,22 @@ namespace Berry.Docx.Formatting
         private readonly W.Style _style;
         #endregion
 
-        #region Protected Members
-        /// <summary>
-        /// The ParagraphFormat of the style.
-        /// </summary>
-        protected ParagraphFormat _pFormat;
-        /// <summary>
-        /// The CharacterFormat of the style.
-        /// </summary>
-        protected CharacterFormat _cFormat;
-        /// <summary>
-        /// The ListFormat of the style.
-        /// </summary>
-        protected ListFormat _listFormat;
-        #endregion
-
         #region Constructors
-        internal Style(Document doc, StyleType type)
-        {
-            _doc = doc;
-            _style = new W.Style();
-            StyleId = IDGenerator.GenerateStyleID(doc);
-            Type = type;
-            if (type == StyleType.Paragraph)
-            {
-                _pFormat = new ParagraphFormat(doc, _style);
-                _cFormat = new CharacterFormat(doc, _style);
-                _listFormat = new ListFormat(doc, _style);
-            }
-            else if (type == StyleType.Character)
-            {
-                _cFormat = new CharacterFormat(doc, _style);
-            }
-        }
-
         internal Style(Document doc, W.Style style)
         {
             _doc = doc;
             _style = style;
-            if(Type == StyleType.Paragraph)
-            {
-                _pFormat = new ParagraphFormat(doc, style);
-                _cFormat = new CharacterFormat(doc, style);
-                _listFormat = new ListFormat(doc, style);
-            }
-            else if (Type == StyleType.Character)
-            {
-                _cFormat = new CharacterFormat(doc, style);
-            }
         }
         #endregion
 
         #region Public Properties
         /// <summary>
-        /// Gets the CharacterFormat of the style.
-        /// </summary>
-        public CharacterFormat CharacterFormat => _cFormat;
-
-        /// <summary>
         /// Gets the type of the style.
         /// </summary>
         public StyleType Type
         {
-            get => (StyleType)(int)_style.Type.Value;
-            private set => _style.Type = (W.StyleValues)(int)value;
+            get => _style.Type.Value.Convert<StyleType>();
+            internal set => _style.Type = value.Convert<W.StyleValues>();
         }
 
         /// <summary>

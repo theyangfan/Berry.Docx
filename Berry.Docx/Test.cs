@@ -22,20 +22,22 @@ namespace Test
             string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
-            string str = " ㊻【页眉页脚结束2】";
-            Regex rx = new Regex(@"^\s*\u0002?\s*([①-⑳]|[㉑-㉟]|[㊱-㊿])s*");
-            Console.WriteLine(rx.IsMatch(str));
-            Console.WriteLine(rx.Match(str).Value);
-            return;
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.LastSection.Paragraphs[1];
-                foreach(DocumentItem item in p.ChildItems)
+                Paragraph p = doc.LastSection.Paragraphs[0];
+                TableStyle style = doc.Styles.FindByName("样式1", StyleType.Table) as TableStyle;
+                if(style != null)
                 {
-                    Console.WriteLine(item.DocumentObjectType);
+                    style.WholeTable.CharacterFormat.FontNameEastAsia = "微软雅黑";
+                    style.LastColumn.CharacterFormat.FontNameEastAsia = "仿宋";
+                    Console.WriteLine(style.WholeTable.CharacterFormat.FontNameEastAsia);
+                    Console.WriteLine(style.FirstRow.CharacterFormat.FontNameEastAsia);
+                    Console.WriteLine(style.LastRow.CharacterFormat.FontNameEastAsia);
+                    Console.WriteLine(style.FirstColumn.CharacterFormat.FontNameEastAsia);
+                    Console.WriteLine(style.LastColumn.CharacterFormat.FontNameEastAsia);
                 }
                 
-                //doc.SaveAs(dst);
+                doc.SaveAs(dst);
             }
         }
     }

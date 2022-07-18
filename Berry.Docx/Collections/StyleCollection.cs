@@ -89,7 +89,8 @@ namespace Berry.Docx.Collections
                     yield return new ParagraphStyle(_doc, style);
                 else if (style.Type == W.StyleValues.Character)
                     yield return new CharacterStyle(_doc, style);
-                ;
+                else if (style.Type == W.StyleValues.Table)
+                    yield return new TableStyle(_doc, style);
             }
         }
         #endregion

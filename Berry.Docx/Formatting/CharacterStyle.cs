@@ -15,16 +15,27 @@ namespace Berry.Docx.Formatting
     /// </summary>
     public class CharacterStyle : Style
     {
+        #region Private Members
+        private readonly Document _doc;
+        private CharacterFormat _cFormat;
+        #endregion
         #region Constructors
-        internal CharacterStyle(Document doc) : base(doc, StyleType.Character)
-        {
-        }
+        internal CharacterStyle(Document doc) : this(doc, StyleGenerator.GenerateCharacterStyle(doc))
+        {}
         internal CharacterStyle(Document doc, W.Style style) : base(doc, style)
         {
+            _doc = doc;
+            _cFormat = new CharacterFormat(doc, style);
         }
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets the CharacterFormat of the style.
+        /// </summary>
+        public CharacterFormat CharacterFormat => _cFormat;
+
         /// <summary>
         /// Gets or sets the base style.
         /// <para>获取或设置基样式.</para>
