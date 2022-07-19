@@ -149,7 +149,6 @@ namespace Berry.Docx.Formatting
                 if (_paragraph != null)
                 {
                     outline = _paragraph.ParagraphProperties?.OutlineLevel;
-                    
                 }
                 else if (_style != null)
                 {
@@ -584,27 +583,31 @@ namespace Berry.Docx.Formatting
         {
             get
             {
+                if (NoInstance()) return _mirrorIndents;
+                W.MirrorIndents ele = null;
                 if (_paragraph != null)
                 {
-                    W.MirrorIndents ele = _paragraph.ParagraphProperties?.MirrorIndents;
-                    if (ele == null) return null;
-                    if(ele.Val == null) return true;
-                    return ele.Val.Value;
+                    ele = _paragraph.ParagraphProperties?.MirrorIndents;
                 }
                 else if (_style != null)
                 {
-                    W.MirrorIndents ele = _style.StyleParagraphProperties?.MirrorIndents;
-                    if (ele == null) return null;
-                    if (ele.Val == null) return true;
-                    return ele.Val.Value;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        ele = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.StyleParagraphProperties?.MirrorIndents;
+                    }
+                    else
+                    {
+                        ele = _style.StyleParagraphProperties?.MirrorIndents;
+                    }
                 }
-                else
-                {
-                    return _mirrorIndents;
-                }
+                if (ele == null) return null;
+                if (ele.Val == null) return true;
+                return ele.Val.Value;
             }
             set
             {
+                _mirrorIndents = value;
                 InitParagraphProperties();
                 if (_paragraph != null)
                 {
@@ -617,16 +620,18 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_style != null)
                 {
-                    if (_style.StyleParagraphProperties.MirrorIndents == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleParagraphProperties.MirrorIndents = new W.MirrorIndents();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if(value) tblStylePr.StyleParagraphProperties.MirrorIndents = new W.MirrorIndents() { Val = null };
+                        else tblStylePr.StyleParagraphProperties.MirrorIndents = new W.MirrorIndents() { Val = false };
                     }
-                    if (value) _style.StyleParagraphProperties.MirrorIndents.Val = null;
-                    else _style.StyleParagraphProperties.MirrorIndents.Val = false;
-                }
-                else
-                {
-                    _mirrorIndents = value;
+                    else
+                    {
+                        if (value) _style.StyleParagraphProperties.MirrorIndents = new W.MirrorIndents() { Val = null };
+                        else _style.StyleParagraphProperties.MirrorIndents = new W.MirrorIndents() { Val = false };
+                    }
                 }
             }
         }
@@ -638,27 +643,31 @@ namespace Berry.Docx.Formatting
         {
             get
             {
+                if (NoInstance()) return _adjustRightInd;
+                W.AdjustRightIndent ele = null;
                 if (_paragraph != null)
                 {
-                    W.AdjustRightIndent ele = _paragraph.ParagraphProperties?.AdjustRightIndent;
-                    if (ele == null) return null;
-                    if (ele.Val == null) return true;
-                    return ele.Val.Value;
+                    ele = _paragraph.ParagraphProperties?.AdjustRightIndent;
                 }
                 else if (_style != null)
                 {
-                    W.AdjustRightIndent ele = _style.StyleParagraphProperties?.AdjustRightIndent;
-                    if (ele == null) return null;
-                    if (ele.Val == null) return true;
-                    return ele.Val.Value;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        ele = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.StyleParagraphProperties?.AdjustRightIndent;
+                    }
+                    else
+                    {
+                        ele = _style.StyleParagraphProperties?.AdjustRightIndent;
+                    }
                 }
-                else
-                {
-                    return _adjustRightInd;
-                }
+                if (ele == null) return null;
+                if (ele.Val == null) return true;
+                return ele.Val.Value;
             }
             set
             {
+                _adjustRightInd = value;
                 InitParagraphProperties();
                 if (_paragraph != null)
                 {
@@ -671,16 +680,18 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_style != null)
                 {
-                    if (_style.StyleParagraphProperties.AdjustRightIndent == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleParagraphProperties.AdjustRightIndent = new W.AdjustRightIndent();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (value) tblStylePr.StyleParagraphProperties.AdjustRightIndent = new W.AdjustRightIndent() { Val = null };
+                        else tblStylePr.StyleParagraphProperties.AdjustRightIndent = new W.AdjustRightIndent() { Val = false };
                     }
-                    if (value) _style.StyleParagraphProperties.AdjustRightIndent.Val = null;
-                    else _style.StyleParagraphProperties.AdjustRightIndent.Val = false; 
-                }
-                else
-                {
-                    _adjustRightInd = value;
+                    else
+                    {
+                        if (value) _style.StyleParagraphProperties.AdjustRightIndent = new W.AdjustRightIndent() { Val = null };
+                        else _style.StyleParagraphProperties.AdjustRightIndent = new W.AdjustRightIndent() { Val = false };
+                    }
                 }
             }
         }
