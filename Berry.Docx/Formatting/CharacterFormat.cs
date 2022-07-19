@@ -37,10 +37,13 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Formats
-        private string _fontCN = "宋体";
-        private string _fontEN = "Times New Roman";
-        private float _fontSize = 10.5F;
+        private string _fontEastAsia = "宋体";
+        private string _fontAscii = "Times New Roman";
+        private string _fontHAnsi = "Times New Roman";
+        private string _fontCs = "Times New Roman";
         private FontContentType _fontTypeHint = FontContentType.Default;
+
+        private float _fontSize = 10.5F;
         private float _fontSizeCs = 10.5F;
         private bool _bold = false;
         private bool _italic = false;
@@ -56,7 +59,7 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Constructors
-        internal CharacterFormat() { }
+        public CharacterFormat() { }
 
         /// <summary>
         /// Represent the character format of a TextRange.
@@ -187,7 +190,7 @@ namespace Berry.Docx.Formatting
                 }
                 else
                 {
-                    return _fontCN;
+                    return _fontEastAsia;
                 }
             }
             set
@@ -211,7 +214,7 @@ namespace Berry.Docx.Formatting
                 }
                 else
                 {
-                    _fontCN = value;
+                    _fontEastAsia = value;
                 }
             }
         }
@@ -265,6 +268,11 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.FontNameAscii != null)
+                    {
+                        return _tblStyleHld.FontNameAscii;
+                    }
                     // direct formatting
                     if (_directSHld.FontNameAscii != null)
                     {
@@ -283,7 +291,7 @@ namespace Berry.Docx.Formatting
                 }
                 else
                 {
-                    return _fontEN;
+                    return _fontAscii;
                 }
             }
             set
@@ -294,7 +302,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.FontNameAscii = value;
+                    if (_tblStyleHld != null) _tblStyleHld.FontNameAscii = value;
+                    else _directSHld.FontNameAscii = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -306,7 +315,201 @@ namespace Berry.Docx.Formatting
                 }
                 else
                 {
-                    _fontEN = value;
+                    _fontAscii = value;
+                }
+            }
+        }
+
+        public string FontNameHighAnsi
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.FontNameHighAnsi != null)
+                    {
+                        return _directRHld.FontNameHighAnsi;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.FontNameHighAnsi != null)
+                            return rStyle.FontNameHighAnsi;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.FontNameHighAnsi != null)
+                            return paragraph.FontNameHighAnsi;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameHighAnsi;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.FontNameHighAnsi != null)
+                    {
+                        return _markRHld.FontNameHighAnsi;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.FontNameHighAnsi != null)
+                        return paragraph.FontNameHighAnsi;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameHighAnsi;
+                }
+                else if (_ownerStyle != null)
+                {
+                    // table style
+                    if (_tblStyleHld?.FontNameHighAnsi != null)
+                    {
+                        return _tblStyleHld.FontNameHighAnsi;
+                    }
+                    // direct formatting
+                    if (_directSHld.FontNameHighAnsi != null)
+                    {
+                        return _directSHld.FontNameHighAnsi;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.FontNameHighAnsi != null)
+                        return style.FontNameHighAnsi;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameHighAnsi;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.FontNameHighAnsi ?? _doc.DefaultFormat.CharacterFormat.FontNameHighAnsi;
+                }
+                else
+                {
+                    return _fontHAnsi;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.FontNameHighAnsi = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.FontNameHighAnsi = value;
+                    else _directSHld.FontNameHighAnsi = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.FontNameHighAnsi = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.FontNameHighAnsi = value;
+                }
+                else
+                {
+                    _fontHAnsi = value;
+                }
+            }
+        }
+
+        public string FontNameComplexScript
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.FontNameComplexScript != null)
+                    {
+                        return _directRHld.FontNameComplexScript;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.FontNameComplexScript != null)
+                            return rStyle.FontNameComplexScript;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.FontNameComplexScript != null)
+                            return paragraph.FontNameComplexScript;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameComplexScript;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.FontNameComplexScript != null)
+                    {
+                        return _markRHld.FontNameComplexScript;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.FontNameComplexScript != null)
+                        return paragraph.FontNameComplexScript;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameComplexScript;
+                }
+                else if (_ownerStyle != null)
+                {
+                    // table style
+                    if (_tblStyleHld?.FontNameComplexScript != null)
+                    {
+                        return _tblStyleHld.FontNameComplexScript;
+                    }
+                    // direct formatting
+                    if (_directSHld.FontNameComplexScript != null)
+                    {
+                        return _directSHld.FontNameComplexScript;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.FontNameComplexScript != null)
+                        return style.FontNameComplexScript;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.FontNameComplexScript;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.FontNameComplexScript ?? _doc.DefaultFormat.CharacterFormat.FontNameComplexScript;
+                }
+                else
+                {
+                    return _fontCs;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.FontNameComplexScript = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.FontNameComplexScript = value;
+                    else _directSHld.FontNameComplexScript = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.FontNameComplexScript = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.FontNameComplexScript = value;
+                }
+                else
+                {
+                    _fontCs = value;
                 }
             }
         }
@@ -325,6 +528,11 @@ namespace Berry.Docx.Formatting
                 }
                 else if(_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.FontTypeHint != null)
+                    {
+                        return _tblStyleHld.FontTypeHint;
+                    }
                     return _directSHld.FontTypeHint ?? FontContentType.Default;
                 }
                 else if (_numberingLevel != null)
@@ -341,7 +549,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.FontTypeHint = value;
+                    if (_tblStyleHld != null) _tblStyleHld.FontTypeHint = value;
+                    else _directSHld.FontTypeHint = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -357,6 +566,7 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
         /// <summary>
         /// Gets or sets font size specified in points.
         /// </summary>
@@ -405,6 +615,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.FontSize != null)
+                    {
+                        return _tblStyleHld.FontSize;
+                    }
                     // direct formatting
                     if (_directSHld.FontSize != null)
                     {
@@ -434,7 +648,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.FontSize = value;
+                    if (_tblStyleHld != null) _tblStyleHld.FontSize = value;
+                    else _directSHld.FontSize = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -524,6 +739,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.FontSizeCs != null)
+                    {
+                        return _tblStyleHld.FontSizeCs;
+                    }
                     // direct formatting
                     if (_directSHld.FontSizeCs != null)
                     {
@@ -553,7 +772,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.FontSizeCs = value;
+                    if (_tblStyleHld != null) _tblStyleHld.FontSizeCs = value;
+                    else _directSHld.FontSizeCs = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -625,6 +845,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.Bold != null)
+                    {
+                        return _tblStyleHld.Bold;
+                    }
                     // direct formatting
                     if (_directSHld.Bold != null)
                     {
@@ -654,7 +878,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.Bold = value;
+                    if (_tblStyleHld != null) _tblStyleHld.Bold = value;
+                    else _directSHld.Bold = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -725,6 +950,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.Italic != null)
+                    {
+                        return _tblStyleHld.Italic;
+                    }
                     // direct formatting
                     if (_directSHld.Italic != null)
                     {
@@ -754,7 +983,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.Italic = value;
+                    if (_tblStyleHld != null) _tblStyleHld.Italic = value;
+                    else _directSHld.Italic = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -816,6 +1046,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.SubSuperScript != null)
+                    {
+                        return _tblStyleHld.SubSuperScript;
+                    }
                     // direct formatting
                     if (_directSHld.SubSuperScript != null)
                     {
@@ -845,7 +1079,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.SubSuperScript = value;
+                    if (_tblStyleHld != null) _tblStyleHld.SubSuperScript = value;
+                    else _directSHld.SubSuperScript = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -907,6 +1142,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.UnderlineStyle != null)
+                    {
+                        return _tblStyleHld.UnderlineStyle;
+                    }
                     // direct formatting
                     if (_directSHld.UnderlineStyle != null)
                     {
@@ -936,7 +1175,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.UnderlineStyle = value;
+                    if (_tblStyleHld != null) _tblStyleHld.UnderlineStyle = value;
+                    else _directSHld.UnderlineStyle = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -998,6 +1238,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.TextColor != null)
+                    {
+                        return _tblStyleHld.TextColor;
+                    }
                     // direct formatting
                     if (_directSHld.TextColor != null)
                     {
@@ -1027,7 +1271,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.TextColor = value;
+                    if (_tblStyleHld != null) _tblStyleHld.TextColor = value;
+                    else _directSHld.TextColor = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -1095,6 +1340,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.CharacterScale != null)
+                    {
+                        return _tblStyleHld.CharacterScale;
+                    }
                     // direct formatting
                     if (_directSHld.CharacterScale != null)
                     {
@@ -1124,7 +1373,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.CharacterScale = value;
+                    if (_tblStyleHld != null) _tblStyleHld.CharacterScale = value;
+                    else _directSHld.CharacterScale = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -1189,6 +1439,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.CharacterSpacing != null)
+                    {
+                        return _tblStyleHld.CharacterSpacing;
+                    }
                     // direct formatting
                     if (_directSHld.CharacterSpacing != null)
                     {
@@ -1218,7 +1472,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.CharacterSpacing = value;
+                    if (_tblStyleHld != null) _tblStyleHld.CharacterSpacing = value;
+                    else _directSHld.CharacterSpacing = value;
                 }
                 else if (_ownerParagraph != null)
                 {
@@ -1284,6 +1539,10 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    if (_tblStyleHld?.Position != null)
+                    {
+                        return _tblStyleHld.Position;
+                    }
                     // direct formatting
                     if (_directSHld.Position != null)
                     {
@@ -1313,7 +1572,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.Position = value;
+                    if (_tblStyleHld != null) _tblStyleHld.Position = value;
+                    else _directSHld.Position = value;
                 }
                 else if (_ownerParagraph != null)
                 {

@@ -28,13 +28,9 @@ namespace Test
                 TableStyle style = doc.Styles.FindByName("样式1", StyleType.Table) as TableStyle;
                 if(style != null)
                 {
-                    style.WholeTable.CharacterFormat.FontNameEastAsia = "微软雅黑";
-                    style.LastColumn.CharacterFormat.FontNameEastAsia = "仿宋";
-                    Console.WriteLine(style.WholeTable.CharacterFormat.FontNameEastAsia);
-                    Console.WriteLine(style.FirstRow.CharacterFormat.FontNameEastAsia);
-                    Console.WriteLine(style.LastRow.CharacterFormat.FontNameEastAsia);
-                    Console.WriteLine(style.FirstColumn.CharacterFormat.FontNameEastAsia);
-                    Console.WriteLine(style.LastColumn.CharacterFormat.FontNameEastAsia);
+                    style.FirstRow.ParagraphFormat.Justification = JustificationType.Both;
+                    Console.WriteLine(style.FirstRow.ParagraphFormat.Justification);
+                    Console.WriteLine(style.FirstRow.ParagraphFormat.OutlineLevel);
                 }
                 
                 doc.SaveAs(dst);

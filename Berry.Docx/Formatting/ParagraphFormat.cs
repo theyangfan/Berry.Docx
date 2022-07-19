@@ -23,6 +23,7 @@ namespace Berry.Docx.Formatting
         // Style Members
         private W.Style _ownerStyle;
         private ParagraphPropertiesHolder _directSHld;
+        private readonly ParagraphPropertiesHolder _tblStyleHld;
 
         // Formats Members
         // Normal
@@ -92,6 +93,16 @@ namespace Berry.Docx.Formatting
             _tabs= new TabStops(document, ownerStyle);
         }
 
+        internal ParagraphFormat(Document document, W.Style ownerStyle, TableRegionType region)
+        {
+            _doc = document;
+            _ownerStyle = ownerStyle;
+            _directSHld = new ParagraphPropertiesHolder(document, ownerStyle);
+            _borders = new Borders(document, ownerStyle);
+            _tabs = new TabStops(document, ownerStyle);
+            _tblStyleHld = new ParagraphPropertiesHolder(document, ownerStyle, region);
+        }
+
         #endregion
 
         #region Public Properties
@@ -116,6 +127,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if(_tblStyleHld?.Justification != null) return _tblStyleHld.Justification;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.Justification != null) return inheritedStyle.Justification;
@@ -135,7 +148,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.Justification = value;
+                    if (_tblStyleHld != null) _tblStyleHld.Justification = value;
+                    else _directSHld.Justification = value;
                 }
                 else
                 {
@@ -163,6 +177,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.OutlineLevel != null) return _tblStyleHld.OutlineLevel;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.OutlineLevel != null) return inheritedStyle.OutlineLevel;
@@ -182,7 +198,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.OutlineLevel = value;
+                    if (_tblStyleHld != null) _tblStyleHld.OutlineLevel = value;
+                    else _directSHld.OutlineLevel = value;
                 }
                 else
                 {

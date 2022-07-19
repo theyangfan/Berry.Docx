@@ -22,6 +22,7 @@ namespace Berry.Docx.Formatting
             _style = style;
             _region = region;
             _cFormat = new CharacterFormat(doc, style, region);
+            _pFormat = new ParagraphFormat(doc, style, region);
         }
         #endregion
 

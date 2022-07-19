@@ -1476,15 +1476,36 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_style != null)
                 {
-                    if (_style.StyleRunProperties == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleRunProperties = new W.StyleRunProperties();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.Color == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.Color = new W.Color();
+                        }
+                        tblStylePr.RunPropertiesBaseStyle.Color.Val = value.ToString();
                     }
-                    if (_style.StyleRunProperties.Color == null)
+                    else
                     {
-                        _style.StyleRunProperties.Color = new W.Color();
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.Color == null)
+                        {
+                            _style.StyleRunProperties.Color = new W.Color();
+                        }
+                        _style.StyleRunProperties.Color.Val = value.ToString();
                     }
-                    _style.StyleRunProperties.Color.Val = value.ToString();
                 }
                 else if (_paragraph != null)
                 {
@@ -1531,9 +1552,18 @@ namespace Berry.Docx.Formatting
                 {
                     scale = _run.RunProperties.CharacterScale;
                 }
-                else if (_style?.StyleRunProperties?.CharacterScale != null)
+                else if (_style != null)
                 {
-                    scale = _style.StyleRunProperties.CharacterScale;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        scale = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.CharacterScale;
+                    }
+                    else
+                    {
+                        scale = _style.StyleRunProperties?.CharacterScale;
+                    }
                 }
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.CharacterScale != null)
                 {
@@ -1566,19 +1596,40 @@ namespace Berry.Docx.Formatting
                     {
                         _run.RunProperties.CharacterScale = new W.CharacterScale();
                     }
-                    _run.RunProperties.CharacterScale.Val = (int)value;
+                    _run.RunProperties.CharacterScale.Val = value.Val;
                 }
                 else if (_style != null)
                 {
-                    if (_style.StyleRunProperties == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleRunProperties = new W.StyleRunProperties();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.CharacterScale == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.CharacterScale = new W.CharacterScale();
+                        }
+                        tblStylePr.RunPropertiesBaseStyle.CharacterScale.Val = value.Val;
                     }
-                    if (_style.StyleRunProperties.CharacterScale == null)
+                    else
                     {
-                        _style.StyleRunProperties.CharacterScale = new W.CharacterScale();
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.CharacterScale == null)
+                        {
+                            _style.StyleRunProperties.CharacterScale = new W.CharacterScale();
+                        }
+                        _style.StyleRunProperties.CharacterScale.Val = value.Val;
                     }
-                    _style.StyleRunProperties.CharacterScale.Val = (int)value;
                 }
                 else if (_paragraph != null)
                 {
@@ -1589,7 +1640,7 @@ namespace Berry.Docx.Formatting
                     if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.CharacterScale>() == null)
                         _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.CharacterScale());
                     W.CharacterScale scale = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.CharacterScale>();
-                    scale.Val = (int)value;
+                    scale.Val = value.Val;
                 }
                 else if (_numberingLevel != null)
                 {
@@ -1597,7 +1648,7 @@ namespace Berry.Docx.Formatting
                         _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
                     if (_numberingLevel.NumberingSymbolRunProperties.CharacterScale == null)
                         _numberingLevel.NumberingSymbolRunProperties.CharacterScale = new W.CharacterScale();
-                    _numberingLevel.NumberingSymbolRunProperties.CharacterScale.Val = (int)value;
+                    _numberingLevel.NumberingSymbolRunProperties.CharacterScale.Val = value.Val;
                 }
                 else
                 {
@@ -1622,9 +1673,18 @@ namespace Berry.Docx.Formatting
                 {
                     spacing = _run.RunProperties.Spacing;
                 }
-                else if (_style?.StyleRunProperties?.Spacing != null)
+                else if (_style != null)
                 {
-                    spacing = _style.StyleRunProperties.Spacing;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        spacing = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.Spacing;
+                    }
+                    else
+                    {
+                        spacing = _style.StyleRunProperties?.Spacing;
+                    }
                 }
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.Spacing != null)
                 {
@@ -1657,15 +1717,36 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_style != null)
                 {
-                    if (_style.StyleRunProperties == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleRunProperties = new W.StyleRunProperties();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.Spacing == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.Spacing = new W.Spacing();
+                        }
+                        tblStylePr.RunPropertiesBaseStyle.Spacing.Val = Convert.ToInt32(value * 20);
                     }
-                    if (_style.StyleRunProperties.Spacing == null)
+                    else
                     {
-                        _style.StyleRunProperties.Spacing = new W.Spacing();
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.Spacing == null)
+                        {
+                            _style.StyleRunProperties.Spacing = new W.Spacing();
+                        }
+                        _style.StyleRunProperties.Spacing.Val = Convert.ToInt32(value * 20);
                     }
-                    _style.StyleRunProperties.Spacing.Val = (int)(value * 20);
                 }
                 else if (_paragraph != null)
                 {
@@ -1709,9 +1790,18 @@ namespace Berry.Docx.Formatting
                 {
                     position = _run.RunProperties.Position;
                 }
-                else if (_style?.StyleRunProperties?.Position != null)
+                else if (_style != null)
                 {
-                    position = _style.StyleRunProperties.Position;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        position = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.Position;
+                    }
+                    else
+                    {
+                        position = _style.StyleRunProperties?.Position;
+                    }
                 }
                 else if (_defaultRPr?.RunPropertiesBaseStyle?.Position != null)
                 {
@@ -1744,15 +1834,36 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_style != null)
                 {
-                    if (_style.StyleRunProperties == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleRunProperties = new W.StyleRunProperties();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.Position == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.Position = new W.Position();
+                        }
+                        tblStylePr.RunPropertiesBaseStyle.Position.Val = Math.Round(value * 2).ToString();
                     }
-                    if (_style.StyleRunProperties.Position == null)
+                    else
                     {
-                        _style.StyleRunProperties.Position = new W.Position();
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.Position == null)
+                        {
+                            _style.StyleRunProperties.Position = new W.Position();
+                        }
+                        _style.StyleRunProperties.Position.Val = Math.Round(value * 2).ToString();
                     }
-                    _style.StyleRunProperties.Position.Val = Math.Round(value * 2).ToString();
                 }
                 else if (_paragraph != null)
                 {
@@ -1817,11 +1928,12 @@ namespace Berry.Docx.Formatting
             }
             RunPropertiesHolder directFmt = new RunPropertiesHolder(doc.Package, style);
 
-            format.FontNameEastAsia = directFmt.FontNameEastAsia ?? baseFmt.FontNameEastAsia;
             format.FontNameAscii = directFmt.FontNameAscii ?? baseFmt.FontNameAscii;
+            format.FontNameEastAsia = directFmt.FontNameEastAsia ?? baseFmt.FontNameEastAsia;
             format.FontNameHighAnsi = directFmt.FontNameHighAnsi ?? baseFmt.FontNameHighAnsi;
             format.FontNameComplexScript = directFmt.FontNameComplexScript ?? baseFmt.FontNameComplexScript;
             format.FontTypeHint = directFmt.FontTypeHint ?? baseFmt.FontTypeHint;
+
             format.FontSize = directFmt.FontSize ?? baseFmt.FontSize;
             format.FontSizeCs = directFmt.FontSizeCs ?? baseFmt.FontSizeCs;
             format.Bold = directFmt.Bold ?? baseFmt.Bold;

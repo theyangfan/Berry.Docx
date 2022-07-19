@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
@@ -12,6 +13,7 @@ namespace Berry.Docx.Formatting
         private readonly Document _doc;
         private readonly W.Paragraph _paragraph;
         private readonly W.Style _style;
+        private readonly EnumValue<TableRegionType> _tableStyleRegion;
 
         // Normal
         private EnumValue<JustificationType> _justificaton;
@@ -70,9 +72,13 @@ namespace Berry.Docx.Formatting
         {
             _doc = doc;
             _style = style;
+        }
 
-            // Numbering
-            
+        public ParagraphPropertiesHolder(Document doc, W.Style style, TableRegionType type)
+        {
+            _doc = doc;
+            _style = style;
+            _tableStyleRegion = type;
         }
         #endregion
 
@@ -86,45 +92,47 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                if(_paragraph != null)
+                if (NoInstance()) return _justificaton;
+                W.Justification jc = null;
+                if (_paragraph != null)
                 {
-                    W.Justification jc = _paragraph.ParagraphProperties?.Justification;
-                    if(jc?.Val == null) return null;
-                    return jc.Val.Value.Convert<JustificationType>();
+                    jc = _paragraph.ParagraphProperties?.Justification;
                 }
                 else if(_style != null)
                 {
-                    W.Justification jc = _style.StyleParagraphProperties?.Justification;
-                    if (jc?.Val == null) return null;
-                    return jc.Val.Value.Convert<JustificationType>();
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        jc = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.StyleParagraphProperties?.Justification;
+                    }
+                    else
+                    {
+                        jc = _style.StyleParagraphProperties?.Justification;
+                    }
                 }
-                else
-                {
-                    return _justificaton;
-                }
+                if (jc?.Val == null) return null;
+                return jc.Val.Value.Convert<JustificationType>();
             }
             set
             {
+                _justificaton = value;
                 InitParagraphProperties();
                 if (_paragraph != null)
                 {
-                    if(_paragraph.ParagraphProperties.Justification == null)
-                    {
-                        _paragraph.ParagraphProperties.Justification = new W.Justification();
-                    }
-                    _paragraph.ParagraphProperties.Justification.Val = value.Val.Convert<W.JustificationValues>();
+                    _paragraph.ParagraphProperties.Justification = new W.Justification() { Val = value.Val.Convert<W.JustificationValues>() };
                 }
                 else if(_style != null)
                 {
-                    if(_style.StyleParagraphProperties.Justification == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleParagraphProperties.Justification= new W.Justification();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        tblStylePr.StyleParagraphProperties.Justification = new W.Justification() { Val = value.Val.Convert<W.JustificationValues>() };
                     }
-                    _style.StyleParagraphProperties.Justification.Val = value.Val.Convert<W.JustificationValues>();
-                }
-                else
-                {
-                    _justificaton = value;
+                    else
+                    {
+                        _style.StyleParagraphProperties.Justification = new W.Justification() { Val = value.Val.Convert<W.JustificationValues>() };
+                    }
                 }
             }
         }
@@ -136,45 +144,48 @@ namespace Berry.Docx.Formatting
         {
             get
             {
+                if (NoInstance()) return _outlineLevel;
+                W.OutlineLevel outline = null;
                 if (_paragraph != null)
                 {
-                    W.OutlineLevel outline = _paragraph.ParagraphProperties?.OutlineLevel;
-                    if (outline?.Val == null) return null;
-                    return (OutlineLevelType)outline.Val.Value;
+                    outline = _paragraph.ParagraphProperties?.OutlineLevel;
+                    
                 }
                 else if (_style != null)
                 {
-                    W.OutlineLevel outline = _style.StyleParagraphProperties?.OutlineLevel;
-                    if (outline?.Val == null) return null;
-                    return (OutlineLevelType)outline.Val.Value;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        outline = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.StyleParagraphProperties?.OutlineLevel;
+                    }
+                    else
+                    {
+                        outline = _style.StyleParagraphProperties?.OutlineLevel;
+                    }
                 }
-                else
-                {
-                    return _outlineLevel;
-                }
+                if (outline?.Val == null) return null;
+                return (OutlineLevelType)outline.Val.Value;
             }
             set
             {
+                _outlineLevel = value;
                 InitParagraphProperties();
                 if (_paragraph != null)
                 {
-                    if (_paragraph.ParagraphProperties.OutlineLevel == null)
-                    {
-                        _paragraph.ParagraphProperties.OutlineLevel = new W.OutlineLevel();
-                    }
-                    _paragraph.ParagraphProperties.OutlineLevel.Val = (int)value.Val;
+                    _paragraph.ParagraphProperties.OutlineLevel = new W.OutlineLevel() { Val = (int)value.Val };
                 }
                 else if (_style != null)
                 {
-                    if (_style.StyleParagraphProperties.OutlineLevel == null)
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
                     {
-                        _style.StyleParagraphProperties.OutlineLevel = new W.OutlineLevel();
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        tblStylePr.StyleParagraphProperties.OutlineLevel = new W.OutlineLevel() { Val = (int)value.Val };
                     }
-                    _style.StyleParagraphProperties.OutlineLevel.Val = (int)value.Val;
-                }
-                else
-                {
-                    _outlineLevel = value;
+                    else
+                    {
+                        _style.StyleParagraphProperties.OutlineLevel = new W.OutlineLevel() { Val = (int)value.Val };
+                    }
                 }
             }
         }
@@ -188,41 +199,35 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                W.Indentation ele;
-                if (_paragraph != null)
-                {
-                    ele = _paragraph.ParagraphProperties?.Indentation;
-                }
-                else if (_style != null)
-                {
-                    ele = _style.StyleParagraphProperties?.Indentation;
-                }
-                else
-                {
-                    return _leftInd;
-                }
+                if (NoInstance()) return _leftInd;
+                TryGetIndentation(out W.Indentation ele);
                 if (ele?.Left == null) return null;
                 float.TryParse(ele.Left, out float val);
                 return val / 20;
             }
             set
             {
-                InitIndentation();
-                W.Indentation ind;
-                if (_paragraph != null)
+                _leftInd = value;
+                CreateIndentation();
+                TryGetIndentation(out W.Indentation ele);
+                ele.Left = (Convert.ToInt32(value * 20)).ToString();
+/*                if (_paragraph != null)
                 {
-                    ind = _paragraph.ParagraphProperties.Indentation;
+                    _paragraph.ParagraphProperties.Indentation.Left = (Convert.ToInt32(value * 20)).ToString();
                 }
                 else if (_style != null)
                 {
-                    ind = _style.StyleParagraphProperties.Indentation;
-                }
-                else
-                {
-                    _leftInd = value;
-                    return;
-                }
-                ind.Left = ((int)(value * 20)).ToString();
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        tblStylePr.StyleParagraphProperties.Indentation.Left = (Convert.ToInt32(value * 20)).ToString();
+                    }
+                    else
+                    {
+                        _style.StyleParagraphProperties.Indentation.Left = (Convert.ToInt32(value * 20)).ToString();
+                    }
+                }*/
             }
         }
 
@@ -234,18 +239,23 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                W.Indentation ele;
+                if (NoInstance()) return _rightInd;
+                W.Indentation ele = null;
                 if (_paragraph != null)
                 {
                     ele = _paragraph.ParagraphProperties?.Indentation;
                 }
                 else if (_style != null)
                 {
-                    ele = _style.StyleParagraphProperties?.Indentation;
-                }
-                else
-                {
-                    return _rightInd;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        ele = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.StyleParagraphProperties?.Indentation;
+                    }
+                    else
+                    {
+                        ele = _style.StyleParagraphProperties?.Indentation;
+                    }
                 }
                 if (ele?.Right == null) return null;
                 float.TryParse(ele.Right, out float val);
@@ -253,22 +263,25 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                InitIndentation();
-                W.Indentation ind;
+                _rightInd = value;
+                CreateIndentation();
                 if (_paragraph != null)
                 {
-                    ind = _paragraph.ParagraphProperties.Indentation;
+                    _paragraph.ParagraphProperties.Indentation.Right = (Convert.ToInt32(value * 20)).ToString();
                 }
                 else if (_style != null)
                 {
-                    ind = _style.StyleParagraphProperties.Indentation;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        tblStylePr.StyleParagraphProperties.Indentation.Right = (Convert.ToInt32(value * 20)).ToString();
+                    }
+                    else
+                    {
+                        _style.StyleParagraphProperties.Indentation.Right = (Convert.ToInt32(value * 20)).ToString();
+                    }
                 }
-                else
-                {
-                    _rightInd = value;
-                    return;
-                }
-                ind.Right = ((int)(value * 20)).ToString();
             }
         }
 
@@ -279,40 +292,48 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                W.Indentation ele;
+                if (NoInstance()) return _leftIndChars;
+                W.Indentation ele = null;
                 if (_paragraph != null)
                 {
                     ele = _paragraph.ParagraphProperties?.Indentation;
                 }
                 else if (_style != null)
                 {
-                    ele = _style.StyleParagraphProperties?.Indentation;
-                }
-                else
-                {
-                    return _leftIndChars;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        ele = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.StyleParagraphProperties?.Indentation;
+                    }
+                    else
+                    {
+                        ele = _style.StyleParagraphProperties?.Indentation;
+                    }
                 }
                 if (ele?.LeftChars == null) return null;
                 return ele.LeftChars.Value / 100.0F;
             }
             set
             {
-                InitIndentation();
-                W.Indentation ind;
+                _leftIndChars = value;
+                CreateIndentation();
                 if (_paragraph != null)
                 {
-                    ind = _paragraph.ParagraphProperties.Indentation;
+                    _paragraph.ParagraphProperties.Indentation.LeftChars = Convert.ToInt32(value * 100);
                 }
                 else if (_style != null)
                 {
-                    ind = _style.StyleParagraphProperties.Indentation;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        tblStylePr.StyleParagraphProperties.Indentation.LeftChars = Convert.ToInt32(value * 100);
+                    }
+                    else
+                    {
+                        _style.StyleParagraphProperties.Indentation.LeftChars = Convert.ToInt32(value * 100);
+                    }
                 }
-                else
-                {
-                    _leftIndChars = value;
-                    return;
-                }
-                ind.LeftChars = (int)(value * 100);
             }
         }
         /// <summary>
@@ -322,40 +343,48 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                W.Indentation ele;
+                if (NoInstance()) return _rightIndChars;
+                W.Indentation ele = null;
                 if (_paragraph != null)
                 {
                     ele = _paragraph.ParagraphProperties?.Indentation;
                 }
                 else if (_style != null)
                 {
-                    ele = _style.StyleParagraphProperties?.Indentation;
-                }
-                else
-                {
-                    return _rightIndChars;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        ele = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.StyleParagraphProperties?.Indentation;
+                    }
+                    else
+                    {
+                        ele = _style.StyleParagraphProperties?.Indentation;
+                    }
                 }
                 if (ele?.RightChars == null) return null;
                 return ele.RightChars.Value / 100.0F;
             }
             set
             {
-                InitIndentation();
-                W.Indentation ind;
+                _rightIndChars = value;
+                CreateIndentation();
                 if (_paragraph != null)
                 {
-                    ind = _paragraph.ParagraphProperties.Indentation;
+                    _paragraph.ParagraphProperties.Indentation.RightChars = Convert.ToInt32(value * 100);
                 }
                 else if (_style != null)
                 {
-                    ind = _style.StyleParagraphProperties.Indentation;
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        tblStylePr.StyleParagraphProperties.Indentation.RightChars = Convert.ToInt32(value * 100);
+                    }
+                    else
+                    {
+                        _style.StyleParagraphProperties.Indentation.RightChars = Convert.ToInt32(value * 100);
+                    }
                 }
-                else
-                {
-                    _rightIndChars = value;
-                    return;
-                }
-                ind.RightChars = (int)(value * 100);
             }
         }
         /// <summary>
@@ -365,7 +394,8 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                W.Indentation ele;
+                if (NoInstance()) return _firstLineInd;
+                W.Indentation ele = null;
                 if (_paragraph != null)
                 {
                     ele = _paragraph.ParagraphProperties?.Indentation;
@@ -384,7 +414,7 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                InitIndentation();
+                CreateIndentation();
                 W.Indentation ind;
                 if (_paragraph != null)
                 {
@@ -431,7 +461,7 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                InitIndentation();
+                CreateIndentation();
                 W.Indentation ind;
                 if (_paragraph != null)
                 {
@@ -478,7 +508,7 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                InitIndentation();
+                CreateIndentation();
                 W.Indentation ind;
                 if (_paragraph != null)
                 {
@@ -524,7 +554,7 @@ namespace Berry.Docx.Formatting
             }
             set
             {
-                InitIndentation();
+                CreateIndentation();
                 W.Indentation ind;
                 if (_paragraph != null)
                 {
@@ -1858,6 +1888,11 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Private Methods
+
+        private bool NoInstance()
+        {
+            return _paragraph == null && _style == null;
+        }
         private void InitParagraphProperties()
         {
             if(_paragraph != null)
@@ -1869,14 +1904,47 @@ namespace Berry.Docx.Formatting
             }
             else if(_style != null)
             {
-                if (_style.StyleParagraphProperties == null)
+                if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                {
+                    W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                    if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                    {
+                        _style.Append(new W.TableStyleProperties() { Type = type });
+                    }
+                    W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                    if (tblStylePr.StyleParagraphProperties == null)
+                    {
+                        tblStylePr.StyleParagraphProperties = new W.StyleParagraphProperties();
+                    }
+                }
+                else if (_style.StyleParagraphProperties == null)
                 {
                     _style.StyleParagraphProperties = new W.StyleParagraphProperties();
                 }
             }
         }
 
-        private void InitIndentation()
+        private void TryGetIndentation(out W.Indentation ind)
+        {
+            ind = null;
+            if (_paragraph != null)
+            {
+                ind = _paragraph.ParagraphProperties?.Indentation;
+            }
+            else if (_style != null)
+            {
+                if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                {
+                    ind = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                            ?.StyleParagraphProperties?.Indentation;
+                }
+                else
+                {
+                    ind = _style.StyleParagraphProperties?.Indentation;
+                }
+            }
+        }
+        private void CreateIndentation()
         {
             InitParagraphProperties();
             if(_paragraph != null)
@@ -1886,10 +1954,20 @@ namespace Berry.Docx.Formatting
             }
             else if(_style != null)
             {
-                if (_style.StyleParagraphProperties.Indentation == null)
+                if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                {
+                    W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                    W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                    if (tblStylePr.StyleParagraphProperties.Indentation == null)
+                    {
+                        tblStylePr.StyleParagraphProperties.Indentation = new W.Indentation();
+                    }
+                }
+                else if (_style.StyleParagraphProperties.Indentation == null)
+                {
                     _style.StyleParagraphProperties.Indentation = new W.Indentation();
+                }
             }
-            
         }
 
         private void InitSpacing()
