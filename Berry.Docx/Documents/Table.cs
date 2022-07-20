@@ -7,7 +7,7 @@ using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 using Berry.Docx.Collections;
-using Berry.Docx.Field;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {
@@ -68,6 +68,23 @@ namespace Berry.Docx.Documents
             row.ClearContent();
             Rows.Add(row);
             return row;
+        }
+
+        public void ApplyStyle(string styleName)
+        {
+            if (_table == null || string.IsNullOrEmpty(styleName)) return;
+            var style = _doc.Styles.FindByName(styleName, StyleType.Table);
+            if (style == null)
+            {
+                style = new TableStyle(_doc, styleName);
+                _doc.Styles.Add(style);
+            }
+            if (!_table.Elements<W.TableProperties>().Any())
+            {
+                _table.AddChild(new W.TableProperties());
+            }
+            W.TableProperties tblPr = _table.GetFirstChild<W.TableProperties>();
+            tblPr.TableStyle = new W.TableStyle() { Val = style.StyleId };
         }
         #endregion
 

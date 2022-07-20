@@ -216,6 +216,7 @@ namespace Berry.Docx.Documents
                 }
             }
         }
+
         /// <summary>
         /// Append a section break with the specified type to the current paragraph. 
         /// <para>The current paragraph must have an owner section, otherwise an exception will be thrown.</para>
