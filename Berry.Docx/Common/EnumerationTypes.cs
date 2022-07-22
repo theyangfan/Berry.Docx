@@ -2145,4 +2145,23 @@ namespace Berry.Docx
         /// </summary>
         Nothing = 2
     }
+
+    /// <summary>
+    /// Defines the table cell vertical alignment enumerations.
+    /// </summary>
+    public enum TableCellVerticalAlignment
+    {
+        /// <summary>
+        /// top.
+        /// </summary>
+        Top = 0,
+        /// <summary>
+        /// center.
+        /// </summary>
+        Center = 1,
+        /// <summary>
+        /// bottom.
+        /// </summary>
+        Bottom = 2
+    }
 }

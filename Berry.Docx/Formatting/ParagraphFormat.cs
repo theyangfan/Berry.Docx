@@ -229,6 +229,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.MirrorIndents != null) return _tblStyleHld.MirrorIndents;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.MirrorIndents != null) return inheritedStyle.MirrorIndents;
@@ -248,7 +250,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.MirrorIndents = value;
+                    if (_tblStyleHld != null) _tblStyleHld.MirrorIndents = value;
+                    else _directSHld.MirrorIndents = value;
                 }
                 else
                 {
@@ -276,6 +279,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.AdjustRightIndent != null) return _tblStyleHld.AdjustRightIndent;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.AdjustRightIndent != null) return inheritedStyle.AdjustRightIndent;
@@ -295,7 +300,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.AdjustRightIndent = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AdjustRightIndent = value;
+                    else _directSHld.AdjustRightIndent = value;
                 }
                 else
                 {
@@ -325,6 +331,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.BeforeAutoSpacing != null) return _tblStyleHld.BeforeAutoSpacing;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.BeforeAutoSpacing != null) return inheritedStyle.BeforeAutoSpacing;
@@ -344,7 +352,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.BeforeAutoSpacing = value;
+                    if (_tblStyleHld != null) _tblStyleHld.BeforeAutoSpacing = value;
+                    else _directSHld.BeforeAutoSpacing = value;
                 }
                 else
                 {
@@ -373,6 +382,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.AfterAutoSpacing != null) return _tblStyleHld.AfterAutoSpacing;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.AfterAutoSpacing != null) return inheritedStyle.AfterAutoSpacing;
@@ -392,7 +403,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.AfterAutoSpacing = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AfterAutoSpacing = value;
+                    else _directSHld.AfterAutoSpacing = value;
                 }
                 else
                 {
@@ -420,6 +432,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.ContextualSpacing != null) return _tblStyleHld.ContextualSpacing;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.ContextualSpacing != null) return inheritedStyle.ContextualSpacing;
@@ -439,7 +453,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.ContextualSpacing = value;
+                    if (_tblStyleHld != null) _tblStyleHld.ContextualSpacing = value;
+                    else _directSHld.ContextualSpacing = value;
                 }
                 else
                 {
@@ -467,6 +482,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.SnapToGrid != null) return _tblStyleHld.SnapToGrid;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.SnapToGrid != null) return inheritedStyle.SnapToGrid;
@@ -486,7 +503,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.SnapToGrid = value;
+                    if (_tblStyleHld != null) _tblStyleHld.SnapToGrid = value;
+                    else _directSHld.SnapToGrid = value;
                 }
                 else
                 {
@@ -517,6 +535,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.WidowControl != null) return _tblStyleHld.WidowControl;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.WidowControl != null) return inheritedStyle.WidowControl;
@@ -536,7 +556,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.WidowControl = value;
+                    if (_tblStyleHld != null) _tblStyleHld.WidowControl = value;
+                    else _directSHld.WidowControl = value;
                 }
                 else
                 {
@@ -564,6 +585,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.KeepNext != null) return _tblStyleHld.KeepNext;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.KeepNext != null) return inheritedStyle.KeepNext;
@@ -583,7 +606,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.KeepNext = value;
+                    if (_tblStyleHld != null) _tblStyleHld.KeepNext = value;
+                    else _directSHld.KeepNext = value;
                 }
                 else
                 {
@@ -611,6 +635,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.KeepLines != null) return _tblStyleHld.KeepLines;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.KeepLines != null) return inheritedStyle.KeepLines;
@@ -630,7 +656,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.KeepLines = value;
+                    if (_tblStyleHld != null) _tblStyleHld.KeepLines = value;
+                    else _directSHld.KeepLines = value;
                 }
                 else
                 {
@@ -658,6 +685,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.PageBreakBefore != null) return _tblStyleHld.PageBreakBefore;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.PageBreakBefore != null) return inheritedStyle.PageBreakBefore;
@@ -677,7 +706,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.PageBreakBefore = value;
+                    if (_tblStyleHld != null) _tblStyleHld.PageBreakBefore = value;
+                    else _directSHld.PageBreakBefore = value;
                 }
                 else
                 {
@@ -707,6 +737,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.SuppressLineNumbers != null) return _tblStyleHld.SuppressLineNumbers;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.SuppressLineNumbers != null) return inheritedStyle.SuppressLineNumbers;
@@ -726,7 +758,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.SuppressLineNumbers = value;
+                    if (_tblStyleHld != null) _tblStyleHld.SuppressLineNumbers = value;
+                    else _directSHld.SuppressLineNumbers = value;
                 }
                 else
                 {
@@ -754,6 +787,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.SuppressAutoHyphens != null) return _tblStyleHld.SuppressAutoHyphens;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.SuppressAutoHyphens != null) return inheritedStyle.SuppressAutoHyphens;
@@ -773,7 +808,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.SuppressAutoHyphens = value;
+                    if (_tblStyleHld != null) _tblStyleHld.SuppressAutoHyphens = value;
+                    else _directSHld.SuppressAutoHyphens = value;
                 }
                 else
                 {
@@ -803,6 +839,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.Kinsoku != null) return _tblStyleHld.Kinsoku;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.Kinsoku != null) return inheritedStyle.Kinsoku;
@@ -822,7 +860,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.Kinsoku = value;
+                    if (_tblStyleHld != null) _tblStyleHld.Kinsoku = value;
+                    else _directSHld.Kinsoku = value;
                 }
                 else
                 {
@@ -850,6 +889,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.WordWrap != null) return _tblStyleHld.WordWrap;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.WordWrap != null) return inheritedStyle.WordWrap;
@@ -869,7 +910,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.WordWrap = value;
+                    if (_tblStyleHld != null) _tblStyleHld.WordWrap = value;
+                    else _directSHld.WordWrap = value;
                 }
                 else
                 {
@@ -897,6 +939,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.OverflowPunctuation != null) return _tblStyleHld.OverflowPunctuation;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.OverflowPunctuation != null) return inheritedStyle.OverflowPunctuation;
@@ -916,7 +960,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.OverflowPunctuation = value;
+                    if (_tblStyleHld != null) _tblStyleHld.OverflowPunctuation = value;
+                    else _directSHld.OverflowPunctuation = value;
                 }
                 else
                 {
@@ -946,6 +991,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.TopLinePunctuation != null) return _tblStyleHld.TopLinePunctuation;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.TopLinePunctuation != null) return inheritedStyle.TopLinePunctuation;
@@ -965,7 +1012,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.TopLinePunctuation = value;
+                    if (_tblStyleHld != null) _tblStyleHld.TopLinePunctuation = value;
+                    else _directSHld.TopLinePunctuation = value;
                 }
                 else
                 {
@@ -993,6 +1041,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.AutoSpaceDE != null) return _tblStyleHld.AutoSpaceDE;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.AutoSpaceDE != null) return inheritedStyle.AutoSpaceDE;
@@ -1012,7 +1062,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.AutoSpaceDE = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AutoSpaceDE = value;
+                    else _directSHld.AutoSpaceDE = value;
                 }
                 else
                 {
@@ -1040,6 +1091,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.AutoSpaceDN != null) return _tblStyleHld.AutoSpaceDN;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.AutoSpaceDN != null) return inheritedStyle.AutoSpaceDN;
@@ -1059,7 +1112,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.AutoSpaceDN = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AutoSpaceDN = value;
+                    else _directSHld.AutoSpaceDN = value;
                 }
                 else
                 {
@@ -1087,6 +1141,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
+                    // table style
+                    if (_tblStyleHld?.TextAlignment != null) return _tblStyleHld.TextAlignment;
                     // paragraph style inheritance
                     ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
                     if (inheritedStyle.TextAlignment != null) return inheritedStyle.TextAlignment;
@@ -1106,7 +1162,8 @@ namespace Berry.Docx.Formatting
                 }
                 else if (_ownerStyle != null)
                 {
-                    _directSHld.TextAlignment = value;
+                    if (_tblStyleHld != null) _tblStyleHld.TextAlignment = value;
+                    else _directSHld.TextAlignment = value;
                 }
                 else
                 {
@@ -1184,25 +1241,52 @@ namespace Berry.Docx.Formatting
             else if(_ownerStyle != null)
             {
                 SpecialIndentation hangingInd = ParagraphPropertiesHolder.GetStyleSpecialPointsIndentation(_doc, _ownerStyle);
-                if (unit == IndentationUnit.Character)
+                if (_tblStyleHld != null)
                 {
-                    _directSHld.LeftIndent = val * 5;
-                    if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                    if (unit == IndentationUnit.Character)
                     {
-                        _directSHld.LeftIndent = val * 5 + hangingInd.Val;
-                    }
-                    _directSHld.LeftCharsIndent = val;
-                }
-                else
-                {
-                    _directSHld.LeftCharsIndent = 0;
-                    if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
-                    {
-                        _directSHld.LeftIndent = val + hangingInd.Val;
+                        _tblStyleHld.LeftIndent = val * 5;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _tblStyleHld.LeftIndent = val * 5 + hangingInd.Val;
+                        }
+                        _tblStyleHld.LeftCharsIndent = val;
                     }
                     else
                     {
-                        _directSHld.LeftIndent = val;
+                        _tblStyleHld.LeftCharsIndent = 0;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _tblStyleHld.LeftIndent = val + hangingInd.Val;
+                        }
+                        else
+                        {
+                            _tblStyleHld.LeftIndent = val;
+                        }
+                    }
+                }
+                else
+                {
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _directSHld.LeftIndent = val * 5;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _directSHld.LeftIndent = val * 5 + hangingInd.Val;
+                        }
+                        _directSHld.LeftCharsIndent = val;
+                    }
+                    else
+                    {
+                        _directSHld.LeftCharsIndent = 0;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _directSHld.LeftIndent = val + hangingInd.Val;
+                        }
+                        else
+                        {
+                            _directSHld.LeftIndent = val;
+                        }
                     }
                 }
             }
@@ -1248,15 +1332,31 @@ namespace Berry.Docx.Formatting
             }
             else if (_ownerStyle != null)
             {
-                if (unit == IndentationUnit.Character)
+                if (_tblStyleHld != null)
                 {
-                    _directSHld.RightIndent = val * 5;
-                    _directSHld.RightCharsIndent = val;
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _tblStyleHld.RightIndent = val * 5;
+                        _tblStyleHld.RightCharsIndent = val;
+                    }
+                    else
+                    {
+                        _tblStyleHld.RightCharsIndent = 0;
+                        _tblStyleHld.RightIndent = val;
+                    }
                 }
                 else
                 {
-                    _directSHld.RightCharsIndent = 0;
-                    _directSHld.RightIndent = val;
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _directSHld.RightIndent = val * 5;
+                        _directSHld.RightCharsIndent = val;
+                    }
+                    else
+                    {
+                        _directSHld.RightCharsIndent = 0;
+                        _directSHld.RightIndent = val;
+                    }
                 }
             }
         }
@@ -1338,46 +1438,93 @@ namespace Berry.Docx.Formatting
             }
             else if(_ownerStyle != null)
             {
-                if (type == SpecialIndentationType.FirstLine)
+                if (_tblStyleHld != null)
                 {
-                    if (unit == IndentationUnit.Character)
+                    if (type == SpecialIndentationType.FirstLine)
                     {
-                        _directSHld.HangingIndent = null;
-                        _directSHld.HangingCharsIndent = null;
-                        _directSHld.FirstLineIndent = val * 5;
-                        _directSHld.FirstLineCharsIndent = val;
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _tblStyleHld.HangingIndent = null;
+                            _tblStyleHld.HangingCharsIndent = null;
+                            _tblStyleHld.FirstLineIndent = val * 5;
+                            _tblStyleHld.FirstLineCharsIndent = val;
+                        }
+                        else
+                        {
+                            _tblStyleHld.HangingIndent = null;
+                            _tblStyleHld.HangingCharsIndent = null;
+                            _tblStyleHld.FirstLineCharsIndent = 0;
+                            _tblStyleHld.FirstLineIndent = val;
+                        }
+                    }
+                    else if (type == SpecialIndentationType.Hanging)
+                    {
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _tblStyleHld.FirstLineIndent = null;
+                            _tblStyleHld.FirstLineCharsIndent = null;
+                            _tblStyleHld.HangingIndent = val * 5;
+                            _tblStyleHld.HangingCharsIndent = val;
+                        }
+                        else
+                        {
+                            _tblStyleHld.FirstLineIndent = null;
+                            _tblStyleHld.FirstLineCharsIndent = null;
+                            _tblStyleHld.HangingCharsIndent = 0;
+                            _tblStyleHld.HangingIndent = val;
+                        }
+                    }
+                    else
+                    {
+                        _tblStyleHld.HangingIndent = null;
+                        _tblStyleHld.HangingCharsIndent = null;
+                        _tblStyleHld.FirstLineCharsIndent = 0;
+                        _tblStyleHld.FirstLineIndent = 0;
+                    }
+                }
+                else
+                {
+                    if (type == SpecialIndentationType.FirstLine)
+                    {
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _directSHld.HangingIndent = null;
+                            _directSHld.HangingCharsIndent = null;
+                            _directSHld.FirstLineIndent = val * 5;
+                            _directSHld.FirstLineCharsIndent = val;
+                        }
+                        else
+                        {
+                            _directSHld.HangingIndent = null;
+                            _directSHld.HangingCharsIndent = null;
+                            _directSHld.FirstLineCharsIndent = 0;
+                            _directSHld.FirstLineIndent = val;
+                        }
+                    }
+                    else if (type == SpecialIndentationType.Hanging)
+                    {
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _directSHld.FirstLineIndent = null;
+                            _directSHld.FirstLineCharsIndent = null;
+                            _directSHld.HangingIndent = val * 5;
+                            _directSHld.HangingCharsIndent = val;
+                        }
+                        else
+                        {
+                            _directSHld.FirstLineIndent = null;
+                            _directSHld.FirstLineCharsIndent = null;
+                            _directSHld.HangingCharsIndent = 0;
+                            _directSHld.HangingIndent = val;
+                        }
                     }
                     else
                     {
                         _directSHld.HangingIndent = null;
                         _directSHld.HangingCharsIndent = null;
                         _directSHld.FirstLineCharsIndent = 0;
-                        _directSHld.FirstLineIndent = val;
+                        _directSHld.FirstLineIndent = 0;
                     }
-                }
-                else if (type == SpecialIndentationType.Hanging)
-                {
-                    if (unit == IndentationUnit.Character)
-                    {
-                        _directSHld.FirstLineIndent = null;
-                        _directSHld.FirstLineCharsIndent = null;
-                        _directSHld.HangingIndent = val * 5;
-                        _directSHld.HangingCharsIndent = val;
-                    }
-                    else
-                    {
-                        _directSHld.FirstLineIndent = null;
-                        _directSHld.FirstLineCharsIndent = null;
-                        _directSHld.HangingCharsIndent = 0;
-                        _directSHld.HangingIndent = val;
-                    }
-                }
-                else
-                {
-                    _directSHld.HangingIndent = null;
-                    _directSHld.HangingCharsIndent = null;
-                    _directSHld.FirstLineCharsIndent = 0;
-                    _directSHld.FirstLineIndent = 0;
                 }
             }
         }
@@ -1435,15 +1582,31 @@ namespace Berry.Docx.Formatting
             }
             else if(_ownerStyle != null)
             {
-                if (unit == SpacingUnit.Line)
+                if (_tblStyleHld != null)
                 {
-                    _directSHld.BeforeSpacing = val * 5;
-                    _directSHld.BeforeLinesSpacing = val;
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _tblStyleHld.BeforeSpacing = val * 5;
+                        _tblStyleHld.BeforeLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _tblStyleHld.BeforeLinesSpacing = 0;
+                        _tblStyleHld.BeforeSpacing = val;
+                    }
                 }
                 else
                 {
-                    _directSHld.BeforeLinesSpacing = 0;
-                    _directSHld.BeforeSpacing = val;
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _directSHld.BeforeSpacing = val * 5;
+                        _directSHld.BeforeLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _directSHld.BeforeLinesSpacing = 0;
+                        _directSHld.BeforeSpacing = val;
+                    }
                 }
             }
         }
@@ -1501,15 +1664,31 @@ namespace Berry.Docx.Formatting
             }
             else if (_ownerStyle != null)
             {
-                if (unit == SpacingUnit.Line)
+                if (_tblStyleHld != null)
                 {
-                    _directSHld.AfterSpacing = val * 5;
-                    _directSHld.AfterLinesSpacing = val;
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _tblStyleHld.AfterSpacing = val * 5;
+                        _tblStyleHld.AfterLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _tblStyleHld.AfterLinesSpacing = 0;
+                        _tblStyleHld.AfterSpacing = val;
+                    }
                 }
                 else
                 {
-                    _directSHld.AfterLinesSpacing = 0;
-                    _directSHld.AfterSpacing = val;
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _directSHld.AfterSpacing = val * 5;
+                        _directSHld.AfterLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _directSHld.AfterLinesSpacing = 0;
+                        _directSHld.AfterSpacing = val;
+                    }
                 }
             }
         }
@@ -1573,17 +1752,43 @@ namespace Berry.Docx.Formatting
             }
             else if(_ownerStyle != null)
             {
-                if (rule == LineSpacingRule.Multiple)
+                if (_tblStyleHld != null)
                 {
-                    _directSHld.LineSpacing = val * 12;
-                    _directSHld.LineSpacingRule = rule;
+                    if (rule == LineSpacingRule.Multiple)
+                    {
+                        _tblStyleHld.LineSpacing = val * 12;
+                        _tblStyleHld.LineSpacingRule = rule;
+                    }
+                    else
+                    {
+                        _tblStyleHld.LineSpacing = val;
+                        _tblStyleHld.LineSpacingRule = rule;
+                    }
                 }
                 else
                 {
-                    _directSHld.LineSpacing = val;
-                    _directSHld.LineSpacingRule = rule;
+                    if (rule == LineSpacingRule.Multiple)
+                    {
+                        _directSHld.LineSpacing = val * 12;
+                        _directSHld.LineSpacingRule = rule;
+                    }
+                    else
+                    {
+                        _directSHld.LineSpacing = val;
+                        _directSHld.LineSpacingRule = rule;
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Clears all paragraph formats.
+        /// </summary>
+        public void ClearFormatting()
+        {
+            _directPHld?.ClearFormatting();
+            if(_tblStyleHld != null) _tblStyleHld.ClearFormatting();
+            else _directSHld?.ClearFormatting();
         }
 
         /// <summary>
