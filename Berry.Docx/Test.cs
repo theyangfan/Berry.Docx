@@ -46,9 +46,12 @@ namespace Test
                 style.LastRow.Borders.Bottom.Color = Color.Black;
                 style.LastRow.Borders.Bottom.Width = 1.5f;
 
-                doc.Styles.Add(style);
-                table.ApplyStyle("我的样式");
-                doc.SaveAs(dst);
+                //doc.Styles.Add(style);
+                //table.ApplyStyle("我的样式");
+
+                var p = doc.LastSection.AddParagraph();
+                p.Text = "121";
+                doc.Save();
             }
         }
     }

@@ -74,10 +74,19 @@ namespace Berry.Docx
             if (File.Exists(filename))
             {
                 // open existing file
-                using (P.WordprocessingDocument tempDoc = P.WordprocessingDocument.Open(filename, false))
+                MemoryStream tempStream = new MemoryStream();
+                using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    Console.WriteLine(stream.Position);
+                    stream.CopyTo(tempStream);
+                }
+                tempStream.Seek(0, SeekOrigin.Begin);
+                Console.WriteLine(tempStream.Length);
+                _doc = P.WordprocessingDocument.Open(tempStream, true);
+                /*using (P.WordprocessingDocument tempDoc = P.WordprocessingDocument.Open(filename, false))
                 {
                     _doc = (P.WordprocessingDocument)tempDoc.Clone();
-                }
+                }*/
             }
             else
             {
@@ -288,7 +297,20 @@ namespace Berry.Docx
         public void SaveAs(string filename)
         {
             if (_doc != null && !string.IsNullOrEmpty(filename))
-                _doc.SaveAs(filename).Close();
+            {
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    _doc.Save();
+                    _doc.Clone(stream);
+                    Console.WriteLine(stream.Position);
+                    Console.WriteLine(stream.Length);
+                    using (FileStream fs = File.Open(filename, FileMode.OpenOrCreate))
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                        stream.CopyTo(fs);
+                    }
+                }
+            }
         }
         /// <summary>
         /// Save the contents and changes to specified stream.
