@@ -111,7 +111,6 @@ namespace Berry.Docx.Formatting
 
         public TableCellBorders Borders => _borders;
         #endregion
-
     }
 
     internal enum TableRegionType
