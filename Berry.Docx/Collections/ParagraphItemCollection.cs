@@ -43,8 +43,8 @@ namespace Berry.Docx.Collections
 
         public void Add(ParagraphItem item)
         {
-            if (item.IsInRun)
-                _owner.Append(item.RunElement);
+            if (item.InsideRun)
+                _owner.Append(item.OwnerRun);
             else
                 _owner.Append(item.XElement);
         }

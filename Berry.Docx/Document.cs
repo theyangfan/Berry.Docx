@@ -75,7 +75,7 @@ namespace Berry.Docx
             {
                 // open existing file
                 MemoryStream tempStream = new MemoryStream();
-                using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read))
+                using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     stream.CopyTo(tempStream);
                 }
@@ -125,6 +125,18 @@ namespace Berry.Docx
                 return new Section(this, _doc.MainDocumentPart.Document.Body.Elements<W.SectionProperties>().Last());
             }
         }
+
+        /// <summary>
+        /// Gets a collection of all <see cref="Paragraph"/> in the current document.
+        /// <para>返回当前文档中所有段落的集合。</para>
+        /// </summary>
+        public ParagraphCollection Paragraphs => new ParagraphCollection(Package.GetBody(), GetAllParagraphs());
+
+        /// <summary>
+        /// Gets a collection of all <see cref="Table"/> in the current document.
+        /// <para>返回当前文档中所有表格的集合。</para>
+        /// </summary>
+        public TableCollection Tables => new TableCollection(Package.GetBody(), GetAllTables());
 
         /// <summary>
         /// Return a collection of <see cref="Style"/> that supports traversal in the document. 
@@ -179,6 +191,7 @@ namespace Berry.Docx
                 return endnotes;
             }
         }
+
         /// <summary>
         /// Returns the footnote format in the document.
         /// <para>返回当前文档的脚注格式。</para>
@@ -359,7 +372,29 @@ namespace Berry.Docx
             foreach (W.SectionProperties sectPr in _doc.MainDocumentPart.Document.Body.Descendants<W.SectionProperties>())
                 yield return new Section(this, sectPr);
         }
-#endregion
+
+        private IEnumerable<Paragraph> GetAllParagraphs()
+        {
+            foreach(Section section in Sections)
+            {
+                foreach(Paragraph paragraph in section.Paragraphs)
+                {
+                    yield return paragraph;
+                }
+            }
+        }
+
+        private IEnumerable<Table> GetAllTables()
+        {
+            foreach (Section section in Sections)
+            {
+                foreach (Table table in section.Tables)
+                {
+                    yield return table;
+                }
+            }
+        }
+        #endregion
 
     }
 }

@@ -8,10 +8,12 @@ namespace Berry.Docx.Field
 {
     public class OfficeMath : ParagraphItem
     {
+        private readonly Document _doc;
         private readonly M.OfficeMath _oMath;
         private readonly M.Paragraph _oMathPara;
         internal OfficeMath(Document doc, M.OfficeMath oMath) : base(doc, oMath)
         {
+            _doc = doc;
             _oMath = oMath;
             _oMathPara = oMath.Ancestors<M.Paragraph>().FirstOrDefault();
         }
@@ -46,6 +48,18 @@ namespace Berry.Docx.Field
                 return OfficeMathJustificationType.Invalid;
             }
         }
+
+        #region Public Methods
+        /// <summary>
+        /// Creates a duplicate of the object.
+        /// </summary>
+        /// <returns>The cloned object.</returns>
+        public override DocumentObject Clone()
+        {
+            M.OfficeMath oMath = (M.OfficeMath)_oMath.CloneNode(true);
+            return new OfficeMath(_doc, oMath);
+        }
+        #endregion
 
     }
 }

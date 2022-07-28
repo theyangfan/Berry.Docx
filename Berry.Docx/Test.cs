@@ -19,16 +19,14 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Tomato\Desktop\test.docx";
-            string dst = @"C:\Users\Tomato\Desktop\dst.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
             using (Document doc = new Document(src))
             {
-                //Paragraph p = doc.LastSection.Paragraphs[0];
-
-                var p = doc.LastSection.AddParagraph();
-                p.Text = "121";
-                //doc.SaveAs(dst);
+                Paragraph p = doc.Paragraphs[0];
+                p.AppendText("1212121");
+                doc.SaveAs(dst);
             }
         }
     }

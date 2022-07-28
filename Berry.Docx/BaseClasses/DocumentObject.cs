@@ -23,7 +23,7 @@ namespace Berry.Docx
         /// </summary>
         /// <param name="ownerDoc">Owner document</param>
         /// <param name="ele">Underlying OpenXmlElement</param>
-        public DocumentObject(Document ownerDoc, O.OpenXmlElement ele)
+        internal DocumentObject(Document ownerDoc, O.OpenXmlElement ele)
         {
             _doc = ownerDoc;
             _object = ele;
@@ -35,10 +35,12 @@ namespace Berry.Docx
         /// Gets the owner document.
         /// </summary>
         public Document Document => _doc;
+
         /// <summary>
         /// Gets all the child objects of the current object.
         /// </summary>
         public abstract DocumentObjectCollection ChildObjects { get; }
+
         /// <summary>
         /// Gets the type value of the current object.
         /// </summary>
@@ -47,39 +49,12 @@ namespace Berry.Docx
         /// <summary>
         /// Gets the object that immediately precedes the current object. 
         /// </summary>
-        public virtual DocumentObject PreviousSibling
-        {
-            get
-            {
-                O.OpenXmlElement prev = _object.PreviousSibling();
-                if (prev == null) return null;
-                if (prev is W.Paragraph)
-                    return new Paragraph(_doc, (W.Paragraph)prev);
-                if (prev is W.Table)
-                    return new Table(_doc, (W.Table)prev);
-                if (prev is W.Run)
-                    return new TextRange(_doc, (W.Run)prev);
-                return null;
-            }
-        }
+        public abstract DocumentObject PreviousSibling { get; }
+
         /// <summary>
         /// Gets the object that immediately follows the current object.
         /// </summary>
-        public virtual DocumentObject NextSibling
-        {
-            get
-            {
-                O.OpenXmlElement next = _object.NextSibling();
-                if (next == null) return null;
-                if (next is W.Paragraph)
-                    return new Paragraph(_doc, (W.Paragraph)next);
-                if (next is W.Table)
-                    return new Table(_doc, (W.Table)next);
-                if (next is W.Run)
-                    return new TextRange(_doc, (W.Run)next);
-                return null;
-            }
-        }
+        public abstract DocumentObject NextSibling { get; }
         #endregion
 
         #region Public Operators
@@ -109,28 +84,29 @@ namespace Berry.Docx
 
         #region Public Methods
         /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public abstract DocumentObject Clone();
-
-        /// <summary>
         /// Inserts the specified object immediately before the current object.
         /// </summary>
         /// <param name="obj">The new object to insert.</param>
-        public virtual void InserBeforeSelf(DocumentObject obj)
-        {
-            _object.InsertBeforeSelf(obj.XElement);
-        }
+        public abstract void InserBeforeSelf(DocumentObject obj);
 
         /// <summary>
         /// Inserts the specified object immediately after the current object.
         /// </summary>
         /// <param name="obj">The new object to insert.</param>
-        public virtual void InsertAfterSelf(DocumentObject obj)
-        {
-            _object.InsertAfterSelf(obj.XElement);
-        }
+        public abstract void InsertAfterSelf(DocumentObject obj);
+
+        /// <summary>
+        /// Creates a duplicate of the object.
+        /// </summary>
+        /// <returns></returns>
+        public abstract DocumentObject Clone();
+
+        /// <summary>
+        /// Removes the current object.
+        /// </summary>
+        public abstract void Remove();
+
+
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -161,13 +137,6 @@ namespace Berry.Docx
 
         #region Internal Properties
         internal O.OpenXmlElement XElement => _object;
-        #endregion
-
-        #region Internal Methods
-        public virtual void Remove()
-        {
-            _object.Remove();
-        }
         #endregion
     }
 }

@@ -73,7 +73,7 @@ namespace Berry.Docx.Documents
         public void InsertColumnLeft()
         {
             int index = _ownerTableRow.Cells.IndexOf(this);
-            TableCell cell = Clone();
+            TableCell cell = (TableCell)Clone();
             cell.ClearContent();
 
             foreach(TableRow row in _ownerTable.Rows)
@@ -95,7 +95,7 @@ namespace Berry.Docx.Documents
         public void InsertColumnRight()
         {
             int index = _ownerTableRow.Cells.IndexOf(this);
-            TableCell cell = Clone();
+            TableCell cell = (TableCell)Clone();
             cell.ClearContent();
 
             foreach (TableRow row in _ownerTable.Rows)
@@ -122,10 +122,8 @@ namespace Berry.Docx.Documents
             }
             Paragraphs.First().Text = "";
         }
-        #endregion
 
-        #region Internal
-        internal TableCell Clone()
+        public override DocumentObject Clone()
         {
             W.TableCell newCell = (W.TableCell)_cell.CloneNode(true);
             return new TableCell(_ownerDoc, _ownerTable, _ownerTableRow, newCell);

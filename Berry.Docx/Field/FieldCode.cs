@@ -10,7 +10,7 @@ using Berry.Docx.Collections;
 
 namespace Berry.Docx.Field
 {
-    public class FieldCode
+    internal class FieldCode
     {
         private List<O.OpenXmlElement> _childElements = new List<O.OpenXmlElement>();
         private string _code = "";

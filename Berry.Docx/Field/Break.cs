@@ -10,6 +10,8 @@ namespace Berry.Docx.Field
     public class Break : ParagraphItem
     {
         #region Private Members
+        private readonly Document _doc;
+        private readonly W.Run _ownerRun;
         private readonly W.Break _break;
         #endregion
 
@@ -24,6 +26,8 @@ namespace Berry.Docx.Field
         internal Break(Document doc, W.Run ownerRun, W.Break br)
             : base(doc, ownerRun, br)
         {
+            _doc = doc;
+            _ownerRun = ownerRun;
             _break = br;
         }
         #endregion
@@ -62,6 +66,21 @@ namespace Berry.Docx.Field
                 else
                     _break.Clear = value.Convert<W.BreakTextRestartLocationValues>();
             }
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Creates a duplicate of the object.
+        /// </summary>
+        /// <returns>The cloned object.</returns>
+        public override DocumentObject Clone()
+        {
+            W.Run run = new W.Run();
+            W.Break br = (W.Break)_break.CloneNode(true);
+            run.RunProperties = _ownerRun.RunProperties?.CloneNode(true) as W.RunProperties; // copy format
+            run.AppendChild(br);
+            return new Break(_doc, run, br);
         }
         #endregion
     }

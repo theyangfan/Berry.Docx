@@ -8,7 +8,7 @@ using Berry.Docx.Field;
 
 namespace Berry.Docx.Collections
 {
-    public class FieldCodeCollection : IEnumerable
+    internal class FieldCodeCollection : IEnumerable
     {
         private List<FieldCode> _fieldcodes;
         public FieldCodeCollection(List<FieldCode> fieldcodes)
@@ -27,7 +27,7 @@ namespace Berry.Docx.Collections
 
     }
 
-    public class FieldCodeEnumerator : IEnumerator
+    internal class FieldCodeEnumerator : IEnumerator
     {
         private List<FieldCode> _fieldcodes;
         int _position = -1;

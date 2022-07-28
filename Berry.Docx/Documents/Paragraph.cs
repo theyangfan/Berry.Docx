@@ -87,12 +87,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         ///Gets all child <see cref="ParagraphItem"/> of this paragraph.
         /// </summary>
-        public ParagraphItemCollection ChildItems => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
-
-        /// <summary>
-        /// Gets all child <see cref="DocumentObject"/> of this paragraph. 
-        /// </summary>
-        public override DocumentObjectCollection ChildObjects => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
+        public ParagraphItemCollection ChildItems => new ParagraphItemCollection(_paragraph, ParagraphItems());
 
         /// <summary>
         /// The paragraph text.
@@ -215,6 +210,19 @@ namespace Berry.Docx.Documents
                     _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
                 }
             }
+        }
+
+        /// <summary>
+        /// Appends the specified text to the end of the current paragraph.
+        /// </summary>
+        /// <param name="text">The specified text.</param>
+        /// <returns>The added text range.</returns>
+        public TextRange AppendText(string text)
+        {
+            TextRange tr = new TextRange(_doc);
+            tr.Text = text;
+            this.ChildItems.Add(tr);
+            return tr;
         }
 
         /// <summary>
@@ -462,88 +470,11 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Private Methods
-        private IEnumerable<ParagraphItem> ChildObjectsPrivate()
+        private IEnumerable<ParagraphItem> ParagraphItems()
         {
-            foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
+            foreach(DocumentItem item in ChildObjects)
             {
-                if (ele is W.Run)
-                {
-                    foreach (ParagraphItem item in RunItems((W.Run)ele))
-                        yield return item;
-                }
-                else if(ele is W.Hyperlink)
-                {
-                    foreach (O.OpenXmlElement e in ele.ChildElements)
-                    {
-                        if (e is W.Run)
-                        {
-                            foreach (ParagraphItem item in RunItems((W.Run)e))
-                                yield return item;
-                        }
-                    }
-                }
-                else if(ele is M.OfficeMath) // Office Math
-                {
-                    yield return new OfficeMath(_doc, ele as M.OfficeMath);
-                }
-                else if(ele is M.Paragraph)
-                {
-                    foreach (M.OfficeMath oMath in ele.Elements<M.OfficeMath>())
-                        yield return new OfficeMath(_doc, oMath);
-                }
-            }
-        }
-
-        private IEnumerable<ParagraphItem> RunItems(W.Run run)
-        {
-            // text range
-            if (run.Elements<W.Text>().Any())
-                yield return new TextRange(_doc, run);
-
-            // footnote reference
-            if (run.Elements<W.FootnoteReference>().Any())
-            {
-                yield return new FootnoteReference(_doc, run, run.Elements<W.FootnoteReference>().First());
-            }
-            // endnote reference
-            if (run.Elements<W.EndnoteReference>().Any())
-            {
-                yield return new EndnoteReference(_doc, run, run.Elements<W.EndnoteReference>().First());
-            }
-            // break
-            if (run.Elements<W.Break>().Any())
-            {
-                yield return new Break(_doc, run, run.Elements<W.Break>().First());
-            }
-            // drawing
-            foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
-            {
-                A.GraphicData graphicData = drawing.Descendants<A.GraphicData>().FirstOrDefault();
-                if (graphicData != null)
-                {
-                    if (graphicData.FirstChild is Pic.Picture)
-                        yield return new Picture(_doc, run, drawing);
-                    else if (graphicData.FirstChild is Wps.WordprocessingShape)
-                        yield return new Shape(_doc, run, drawing);
-                    else if (graphicData.FirstChild is Wpg.WordprocessingGroup)
-                        yield return new GroupShape(_doc, run, drawing);
-                    else if (graphicData.FirstChild is Wpc.WordprocessingCanvas)
-                        yield return new Canvas(_doc, run, drawing);
-                    else if (graphicData.FirstChild is Dgm.RelationshipIds)
-                        yield return new Diagram(_doc, run, drawing);
-                    else if (graphicData.FirstChild is C.ChartReference)
-                        yield return new Chart(_doc, run, drawing);
-                }
-            }
-            // vml picture
-            if (run.Elements<W.Picture>().Any())
-            {
-                yield return new Picture(_doc, run, run.Elements<W.Picture>().First());
-            }
-            // embedded object
-            foreach (W.EmbeddedObject obj in run.Elements<W.EmbeddedObject>())
-            {
-                yield return new EmbeddedObject(_doc, run, obj);
+                yield return item as ParagraphItem;
             }
         }
         #endregion

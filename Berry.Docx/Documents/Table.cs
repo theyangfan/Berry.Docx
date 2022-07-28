@@ -64,7 +64,7 @@ namespace Berry.Docx.Documents
         /// <returns>The table row.</returns>
         public TableRow AddRow()
         {
-            TableRow row = Rows.Last().Clone();
+            TableRow row = (TableRow)Rows.Last().Clone();
             row.ClearContent();
             Rows.Add(row);
             return row;

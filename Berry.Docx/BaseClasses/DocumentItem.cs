@@ -45,16 +45,66 @@ namespace Berry.Docx
         /// <summary>
         /// Gets all the child objects of the current item.
         /// </summary>
-        public override DocumentObjectCollection ChildObjects
+        public override DocumentObjectCollection ChildObjects => new DocumentItemCollection(_element, ChildItems());
+
+        /// <summary>
+        /// Gets the object that immediately precedes the current object. 
+        /// Returns null if there is no preceding object.
+        /// </summary>
+        public override DocumentObject PreviousSibling
         {
             get
             {
-                return new DocumentItemCollection(_element, Children());
+                O.OpenXmlElement ele = XElement.PreviousSibling();
+                if (ele == null) return null;
+                return Construct(ele);
+            }
+        }
+
+        /// <summary>
+        /// Gets the object that immediately follows the current object. 
+        /// Returns null if there is no next object.
+        /// </summary>
+        public override DocumentObject NextSibling
+        {
+            get
+            {
+                O.OpenXmlElement ele = XElement.NextSibling();
+                if (ele == null) return null;
+                return Construct(ele);
             }
         }
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Inserts the specified object immediately before the current object.
+        /// </summary>
+        /// <param name="obj">The new object to insert.</param>
+        public override void InserBeforeSelf(DocumentObject obj)
+        {
+            XElement.InsertBeforeSelf(obj.XElement);
+        }
+
+        /// <summary>
+        /// Inserts the specified object immediately after the current object.
+        /// </summary>
+        /// <param name="obj">The new object to insert.</param>
+        public override void InsertAfterSelf(DocumentObject obj)
+        {
+            XElement.InsertAfterSelf(obj.XElement);
+        }
+
+        /// <summary>
+        /// Creates a duplicate of the object.
+        /// </summary>
+        /// <returns>The cloned object.</returns>
+        public override DocumentObject Clone()
+        {
+            O.OpenXmlElement ele = XElement.CloneNode(true);
+            return Construct(ele);
+        }
+
         /// <summary>
         /// Removes the current element from its parent.
         /// </summary>
@@ -69,25 +119,11 @@ namespace Berry.Docx
                 _element.Remove();
             }
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <returns></returns>
-        public override  DocumentObject Clone()
-        {
-            O.OpenXmlElement ele = XElement.CloneNode(true);
-            if (ele is W.Paragraph) return new Paragraph(_doc, (W.Paragraph)ele);
-            else if (ele is W.Table) return new Table(_doc, (W.Table)ele);
-            else if (ele is W.SdtBlock) return new SdtBlock(_doc, (W.SdtBlock)ele);
-
-            return null;
-        }
         #endregion
 
 
         #region Private Methods
-        private IEnumerable<DocumentItem> Children()
+        private IEnumerable<DocumentItem> ChildItems()
         {
             foreach(O.OpenXmlElement ele in _element.ChildElements)
             {
@@ -182,6 +218,16 @@ namespace Berry.Docx
             {
                 yield return new EmbeddedObject(_doc, run, obj);
             }
+        }
+
+        private DocumentObject Construct(O.OpenXmlElement element)
+        {
+            if (element is W.Paragraph) return new Paragraph(_doc, (W.Paragraph)element);
+            else if (element is W.Table) return new Table(_doc, (W.Table)element);
+            else if (element is W.SdtBlock) return new SdtBlock(_doc, (W.SdtBlock)element);
+            else if (element is W.SdtProperties) return new SdtProperties(_doc, (W.SdtProperties)element);
+            else if (element is W.SdtContentBlock) return new SdtContent(_doc, (W.SdtContentBlock)element);
+            else return null;
         }
         #endregion
     }

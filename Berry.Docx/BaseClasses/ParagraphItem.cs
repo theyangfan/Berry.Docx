@@ -23,13 +23,21 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructors
-        internal ParagraphItem(Document doc, W.Run run) : base(doc, run)
+        /// <summary>
+        /// When the ele is a part of run element.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="ownerRun"></param>
+        /// <param name="ele"></param>
+        internal ParagraphItem(Document doc, W.Run ownerRun, O.OpenXmlElement ele)
+            : base(doc, ele)
         {
             _doc = doc;
-            _ownerRun = run;
-            _cFmt = new CharacterFormat(doc, run);
+            _ownerRun = ownerRun;
+            _element = ele;
+            _cFmt = new CharacterFormat(doc, ownerRun);
         }
-        
+
         /// <summary>
         /// When the ele is not a part of run element.
         /// </summary>
@@ -42,20 +50,6 @@ namespace Berry.Docx.Field
             _element = ele;
             _cFmt = new CharacterFormat();
         }
-
-        /// <summary>
-        /// When the ele is a part of run element.
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="ownerRun"></param>
-        /// <param name="ele"></param>
-        internal ParagraphItem(Document doc, W.Run ownerRun, O.OpenXmlElement ele)
-            : base(doc, ele)
-        {
-            _doc = doc;
-            _ownerRun = ownerRun;
-            _cFmt = new CharacterFormat(doc, ownerRun);
-        }
         #endregion
 
         #region Public Properties
@@ -67,17 +61,67 @@ namespace Berry.Docx.Field
             get
             {
                 if(_ownerRun != null)
-                    return new Paragraph(_doc, _ownerRun.Ancestors<W.Paragraph>().First());
+                {
+                    W.Paragraph p = _ownerRun.Ancestors<W.Paragraph>().FirstOrDefault();
+                    if (p == null) return null;
+                    return new Paragraph(_doc, p);
+                }
                 else
-                    return new Paragraph(_doc, _element.Ancestors<W.Paragraph>().First());
+                {
+                    W.Paragraph p = _element.Ancestors<W.Paragraph>().FirstOrDefault();
+                    if (p == null) return null;
+                    return new Paragraph(_doc, p);
+                }
             }
         }
 
+        /// <summary>
+        /// Gets the character format.
+        /// </summary>
         public virtual CharacterFormat CharacterFormat => _cFmt;
 
-        internal bool IsInRun => _ownerRun != null;
+        /// <summary>
+        /// Gets the object that immediately precedes the current object. 
+        /// Returns null if there is no preceding object.
+        /// </summary>
+        public override DocumentObject PreviousSibling
+        {
+            get
+            {
+                if(OwnerParagraph == null) return null;
+                int index = OwnerParagraph.ChildItems.IndexOf(this);
+                try
+                {
+                    return OwnerParagraph.ChildItems[index - 1];
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
 
-        internal W.Run RunElement => _ownerRun;
+        /// <summary>
+        /// Gets the object that immediately follows the current object. 
+        /// Returns null if there is no next object.
+        /// </summary>
+        public override DocumentObject NextSibling
+        {
+            get
+            {
+                if (OwnerParagraph == null) return null;
+                int index = OwnerParagraph.ChildItems.IndexOf(this);
+                try
+                {
+                    return OwnerParagraph.ChildItems[index + 1];
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -182,39 +226,71 @@ namespace Berry.Docx.Field
             endMark.InsertAfterSelf(referenceRun);
         }
 
+        /// <summary>
+        /// Inserts the specified item before the current item.
+        /// </summary>
+        /// <param name="item">The specified paragraph item.</param>
         public void InserBeforeSelf(ParagraphItem item)
         {
-            if (IsInRun)
+            if (InsideRun)
             {
-                if (item.IsInRun)
-                    _ownerRun.InsertBeforeSelf(item.RunElement);
+                if (item.InsideRun)
+                    _ownerRun.InsertBeforeSelf(item.OwnerRun);
                 else
                     _ownerRun.InsertBeforeSelf(item.XElement);
             }
             else
             {
-                if (item.IsInRun)
-                    _element.InsertBeforeSelf(item.RunElement);
+                if (item.InsideRun)
+                    _element.InsertBeforeSelf(item.OwnerRun);
                 else
                     _element.InsertBeforeSelf(item.XElement);
             }
         }
 
+        /// <summary>
+        /// Inserts the specified item before the current item.
+        /// </summary>
+        /// <param name="obj">The specified paragraph item.</param>
+        public override void InserBeforeSelf(DocumentObject obj)
+        {
+            if(obj is ParagraphItem)
+            {
+                InserBeforeSelf(obj as ParagraphItem);
+            }
+        }
+
+        /// <summary>
+        /// Inserts the specified item after the current item.
+        /// </summary>
+        /// <param name="item">The specified paragraph item.</param>
         public void InsertAfterSelf(ParagraphItem item)
         {
-            if (IsInRun)
+            if (InsideRun)
             {
-                if (item.IsInRun)
-                    _ownerRun.InsertAfterSelf(item.RunElement);
+                if (item.InsideRun)
+                    _ownerRun.InsertAfterSelf(item.OwnerRun);
                 else
                     _ownerRun.InsertAfterSelf(item.XElement);
             }
             else
             {
-                if (item.IsInRun)
-                    _element.InsertAfterSelf(item.RunElement);
+                if (item.InsideRun)
+                    _element.InsertAfterSelf(item.OwnerRun);
                 else
                     _element.InsertAfterSelf(item.XElement);
+            }
+        }
+
+        /// <summary>
+        /// Inserts the specified item after the current item.
+        /// </summary>
+        /// <param name="obj">The specified paragraph item.</param>
+        public override void InsertAfterSelf(DocumentObject obj)
+        {
+            if (obj is ParagraphItem)
+            {
+                InsertAfterSelf(obj as ParagraphItem);
             }
         }
 
@@ -223,11 +299,17 @@ namespace Berry.Docx.Field
         /// </summary>
         public override void Remove()
         {
-            if(IsInRun)
+            if(InsideRun)
                 _ownerRun.Remove();
             else
                 _element.Remove();
         }
+        #endregion
+
+        #region Internal Properties
+        internal bool InsideRun => _ownerRun != null;
+
+        internal W.Run OwnerRun => _ownerRun;
         #endregion
     }
 }
