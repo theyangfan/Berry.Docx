@@ -6,6 +6,10 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
+    /// <summary>
+    /// Represent the style of one region in the table. Look <see cref="TableStyle"/> for supporting regions.
+    /// <para>表示表格中某一区域的样式. <see cref="TableStyle"/> 中定义了支持的表格区域.</para>
+    /// </summary>
     public class TableRegionStyle
     {
         #region Private Members
@@ -30,10 +34,19 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the table cell character format.
+        /// </summary>
         public CharacterFormat CharacterFormat => _cFormat;
 
+        /// <summary>
+        /// Gets the table cell paragraph format.
+        /// </summary>
         public ParagraphFormat ParagraphFormat => _pFormat;
 
+        /// <summary>
+        /// Gets or sets the table cell vertical alignment.
+        /// </summary>
         public TableCellVerticalAlignment VerticalCellAlignment
         {
             get
@@ -109,6 +122,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets the table cell borders.
+        /// </summary>
         public TableCellBorders Borders => _borders;
         #endregion
     }

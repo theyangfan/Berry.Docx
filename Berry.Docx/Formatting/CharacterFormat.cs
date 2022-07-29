@@ -59,6 +59,9 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// 
+        /// </summary>
         public CharacterFormat() { }
 
         /// <summary>
@@ -320,6 +323,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the High ANSI font.
+        /// </summary>
         public string FontNameHighAnsi
         {
             get
@@ -417,6 +423,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Complex Script font.
+        /// </summary>
         public string FontNameComplexScript
         {
             get
@@ -514,6 +523,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the font content type.
+        /// </summary>
         public FontContentType FontTypeHint
         {
             get
@@ -1001,6 +1013,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the vertical positioning of the character.
+        /// </summary>
         public SubSuperScript SubSuperScript
         {
             get
@@ -1097,6 +1112,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the underline style.
+        /// </summary>
         public UnderlineStyle UnderlineStyle
         {
             get
@@ -1193,6 +1211,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text color.
+        /// </summary>
         public ColorValue TextColor
         {
             get
@@ -1590,6 +1611,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets the character border.
+        /// </summary>
         public Border Border
         {
             get => _border;

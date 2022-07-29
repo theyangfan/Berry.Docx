@@ -19,14 +19,21 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\bugs\14.大唐渭河热电厂热控专业检修工艺规程 389(校正).docx";
+            //string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
-
+            bool begin = false;
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.Paragraphs[0];
-                p.AppendText("1212121");
-                doc.SaveAs(dst);
+                foreach(Paragraph p in doc.Paragraphs)
+                {
+                    if (p.Text.Contains("电气线路的绝缘测试条件"))
+                    {
+                        begin = true;
+                    }
+                    if(begin) Console.WriteLine(p.Text);
+                }
+                //doc.SaveAs(dst);
             }
         }
     }

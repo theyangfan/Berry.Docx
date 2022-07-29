@@ -5,6 +5,10 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
 {
+    /// <summary>
+    /// Represent the table style. Supports get/set the wholeTable, first/last row/column region format.
+    /// <para>表示一个段落样式，支持读写其整个表格、首行、末行、首列、末列区域的格式。</para>
+    /// </summary>
     public class TableStyle : Style
     {
         #region Private Members
@@ -18,6 +22,11 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Creates a new table style with the specified name.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="styleName">The specified style name.</param>
         public TableStyle(Document doc, string styleName) : this(doc, StyleGenerator.GenerateTableStyle(doc))
         {
             base.Name = styleName;
@@ -38,15 +47,30 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the whole table format.
+        /// </summary>
         public TableRegionStyle WholeTable => _wholeTable;
 
+        /// <summary>
+        /// Gets the first row format of the current table.
+        /// </summary>
         public TableRegionStyle FirstRow => _firstRow;
+
+        /// <summary>
+        /// Gets the last row format of the current table.
+        /// </summary>
         public TableRegionStyle LastRow => _lastRow;
+
+        /// <summary>
+        /// Gets the first column format of the current table.
+        /// </summary>
         public TableRegionStyle FirstColumn => _firstColumn;
 
+        /// <summary>
+        /// Gets the last column format of the current table.
+        /// </summary>
         public TableRegionStyle LastColumn => _lastColumn;
-
         #endregion
-
     }
 }
