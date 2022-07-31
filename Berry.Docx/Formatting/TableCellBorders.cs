@@ -273,6 +273,25 @@ namespace Berry.Docx.Formatting
                 else if (_type == TableCellBorderType.InsideV)
                     border = _style.StyleTableProperties?.TableBorders?.InsideVerticalBorder;
             }
+            else
+            {
+                W.TableStyleOverrideValues type = _region.Convert<W.TableStyleOverrideValues>();
+                W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                if (_type == TableCellBorderType.Left)
+                    border = tblStylePr?.TableStyleConditionalFormattingTableCellProperties?.TableCellBorders?.LeftBorder;
+                else if (_type == TableCellBorderType.Top)
+                    border = tblStylePr?.TableStyleConditionalFormattingTableCellProperties?.TableCellBorders?.TopBorder;
+                else if (_type == TableCellBorderType.Bottom)
+                    border = tblStylePr?.TableStyleConditionalFormattingTableCellProperties?.TableCellBorders?.BottomBorder;
+                else if (_type == TableCellBorderType.Left)
+                    border = tblStylePr?.TableStyleConditionalFormattingTableCellProperties?.TableCellBorders?.LeftBorder;
+                else if (_type == TableCellBorderType.Right)
+                    border = tblStylePr?.TableStyleConditionalFormattingTableCellProperties?.TableCellBorders?.RightBorder;
+                else if (_type == TableCellBorderType.InsideH)
+                    border = tblStylePr?.TableStyleConditionalFormattingTableCellProperties?.TableCellBorders?.InsideHorizontalBorder;
+                else if (_type == TableCellBorderType.InsideV)
+                    border = tblStylePr?.TableStyleConditionalFormattingTableCellProperties?.TableCellBorders?.InsideVerticalBorder;
+            }
         }
 
         private void CreateBorder()
