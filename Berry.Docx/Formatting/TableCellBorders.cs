@@ -96,8 +96,25 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-
-                return BorderStyle.None;
+                TryGetBorder(out W.BorderType border);
+                if (border == null)
+                {
+                    if (_region == TableRegionType.WholeTable)
+                    {
+                        W.Style baseStyle = _style.GetBaseStyle(_doc);
+                        if (baseStyle != null)
+                        {
+                            return new TableCellBorder(_doc, baseStyle, _region, _type).Style;
+                        }
+                        return BorderStyle.Nil;
+                    }
+                    else
+                    {
+                        return new TableCellBorder(_doc, _style, TableRegionType.WholeTable, _type).Style;
+                    }
+                }
+                if (border.Val == null) return BorderStyle.Nil;
+                return border.Val.Value.Convert<BorderStyle>();
             }
             set
             {
@@ -137,11 +154,31 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the border color.
+        /// </summary>
         public ColorValue Color
         {
             get
             {
-                return ColorValue.Auto;
+                TryGetBorder(out W.BorderType border);
+                if (border == null)
+                {
+                    if (_region == TableRegionType.WholeTable)
+                    {
+                        W.Style baseStyle = _style.GetBaseStyle(_doc);
+                        if (baseStyle != null)
+                        {
+                            return new TableCellBorder(_doc, baseStyle, _region, _type).Color;
+                        }
+                        return ColorValue.Auto;
+                    }
+                    else
+                    {
+                        return new TableCellBorder(_doc, _style, TableRegionType.WholeTable, _type).Color;
+                    }
+                }
+                return border.Color?.Value ?? ColorValue.Auto;
             }
             set
             {
@@ -181,11 +218,34 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the border width in points.
+        /// </summary>
         public float Width
         {
             get
             {
-                return 0;
+                TryGetBorder(out W.BorderType border);
+                if (border == null)
+                {
+                    if (_region == TableRegionType.WholeTable)
+                    {
+                        W.Style baseStyle = _style.GetBaseStyle(_doc);
+                        if (baseStyle != null)
+                        {
+                            return new TableCellBorder(_doc, baseStyle, _region, _type).Width;
+                        }
+                        return 0;
+                    }
+                    else
+                    {
+                        return new TableCellBorder(_doc, _style, TableRegionType.WholeTable, _type).Width;
+                    }
+                }
+                if ((int)Style < 27)
+                    return border.Size.Value / 8.0F;
+                else
+                    return border.Size.Value;
             }
             set
             {

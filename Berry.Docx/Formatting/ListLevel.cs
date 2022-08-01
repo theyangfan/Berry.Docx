@@ -27,7 +27,6 @@ namespace Berry.Docx.Formatting
         }
         #endregion
 
-
         #region Public Properties
         /// <summary>
         /// Gets or sets the numbering pattern. The number that higher than the level number will be ignored.

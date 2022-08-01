@@ -7,19 +7,29 @@ using Berry.Docx.Documents;
 
 namespace Berry.Docx.Documents
 {
+    /// <summary>
+    /// Represents the page setup columns.
+    /// </summary>
     public class Columns : IEnumerable
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly Section _sect;
         private readonly W.Columns _columns;
-        
+        #endregion
+
+        #region Constructors
         internal Columns(Document doc, Section section, W.Columns columns)
         {
             _doc = doc;
             _sect = section;
             _columns = columns;
         }
+        #endregion
 
+        #region Public Properties
+
+        
         public Column this[int index] => GetColumns().ElementAt(index);
 
         public bool EqualColumnWidth
@@ -70,7 +80,11 @@ namespace Berry.Docx.Documents
                 _columns.Separator = value;
             }
         }
+        #endregion
 
+        #region Public Methods
+
+        
         public int Count()
         {
             return GetColumns().Count();
@@ -90,6 +104,9 @@ namespace Berry.Docx.Documents
         {
             return GetColumns().GetEnumerator();
         }
+        #endregion
+
+        #region Private Methods
         private IEnumerable<Column> GetColumns()
         {
             if (EqualColumnWidth)
@@ -103,5 +120,6 @@ namespace Berry.Docx.Documents
                     yield return new Column(_doc, column);
             }
         }
+        #endregion
     }
 }

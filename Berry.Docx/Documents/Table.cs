@@ -70,6 +70,10 @@ namespace Berry.Docx.Documents
             return row;
         }
 
+        /// <summary>
+        /// Applies the table style.
+        /// </summary>
+        /// <param name="styleName">The table style name.</param>
         public void ApplyStyle(string styleName)
         {
             if (_table == null || string.IsNullOrEmpty(styleName)) return;

@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;NET4.6.1</TargetFrameworks>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon />
     <StartupObject />
-    <Description>Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying OpenXML API.
-
-Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 Word 应用程序。 旨在提供简便，完整，友好的接口来封装底层的 OpenXML API。</Description>
+    <Description>Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 Word 应用程序。 旨在提供简便，完整，友好的接口来封装底层的 OpenXML API。
+Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying OpenXML API.</Description>
     <Authors>番茄就是西红柿</Authors>
     <Company></Company>
     <Copyright>© theyangfan 2022. All rights reserved.</Copyright>
@@ -17,8 +16,13 @@ Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 W
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.6</Version>
-    <PackageReleaseNotes>- Supports manipulating headers and footers.</PackageReleaseNotes>
+    <Version>1.3.0</Version>
+    <PackageReleaseNotes>1. 支持更多字符和段落格式 (Support more character and paragraph format)；
+2. 支持读写页面设置 (Support read-write page setup)；
+3. 支持读写段落、字符和表格样式(Support read-write paragraph, table and character style)；
+4. 支持读写列表样式 (Support read-write list style)；
+5. 支持查找文本 (*Support find text*)。
+</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/theyangfan/Berry.Docx</RepositoryUrl>
   </PropertyGroup>
 

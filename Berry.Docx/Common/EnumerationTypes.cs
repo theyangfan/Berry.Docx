@@ -2103,9 +2103,30 @@ namespace Berry.Docx
     /// </summary>
     public enum BuiltInListStyle
     {
+        /// <summary>
+        /// <para>1 -------</para>
+        /// <para>1.1 -----</para>
+        /// <para>1.1.1 ---</para>
+        /// </summary>
         Style1 = 1,
+        /// <summary>
+        /// <para>1. -------</para>
+        /// <para>1.1. -----</para>
+        /// <para>1.1.1. ---</para>
+        /// </summary>
         Style2 = 2,
-        Style3 = 3
+        /// <summary>
+        /// <para>第1章 -------</para>
+        /// <para>1.1 -----</para>
+        /// <para>1.1.1 ---</para>
+        /// </summary>
+        Style3 = 3,
+        /// <summary>
+        /// <para>一 -------</para>
+        /// <para>1.1 -----</para>
+        /// <para>1.1.1 ---</para>
+        /// </summary>
+        Style4 = 4
     }
 
     /// <summary>

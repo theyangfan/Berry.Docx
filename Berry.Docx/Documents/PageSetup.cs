@@ -274,7 +274,7 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets the multiple pages.
         /// </summary>
         public MultiPage MultiPage
         {
@@ -307,6 +307,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the vertical alignment.
+        /// </summary>
         public VerticalJustificationType VerticalJustification
         {
             get
@@ -325,6 +328,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text flow direction.
+        /// </summary>
         public TextFlowDirection TextDirection
         {
             get
@@ -353,6 +359,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets the columns.
+        /// </summary>
         public Columns Columns
         {
             get
@@ -366,6 +375,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the document grid type.
+        /// </summary>
         public DocGridType DocGrid
         {
             get
@@ -385,6 +397,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the characters pitch in points.
+        /// </summary>
         public float CharPitch
         {
             get
@@ -407,6 +422,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the lines pitch in points.
+        /// </summary>
         public float LinePitch
         {
             get

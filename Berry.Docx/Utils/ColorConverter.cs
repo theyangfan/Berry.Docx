@@ -7,6 +7,11 @@ namespace Berry.Docx
 {
     internal class ColorConverter
     {
+        /// <summary>
+        /// Converts a <see cref="Color"/> value the the RRGGBB hex string.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public static string ToHex(Color color)
         {
             string r = Convert.ToString(color.R, 16).PadLeft(2, '0').ToUpper();
@@ -15,6 +20,11 @@ namespace Berry.Docx
             return $"{r}{g}{b}";
         }
 
+        /// <summary>
+        /// Convert a RRGGBB hex string to the <see cref="Color"/>.
+        /// </summary>
+        /// <param name="hex">The hex string like RRGGBB.</param>
+        /// <returns></returns>
         public static Color FromHex(string hex)
         {
             int r = 0, g = 0, b = 0;
