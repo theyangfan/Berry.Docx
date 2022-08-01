@@ -5,7 +5,6 @@ using System.Text;
 using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx;
-using Berry.Docx.Utils;
 namespace Berry.Docx.Documents
 {
     /// <summary>
@@ -239,7 +238,7 @@ namespace Berry.Docx.Documents
             {
                 return FirstPageHeader;
             }
-            string id = RelationshipIdGenerator.Generate(_doc);
+            string id = IDGenerator.GenerateRelationshipID(_doc);
             P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
             W.HeaderReference hdrRef = new W.HeaderReference() { Type = W.HeaderFooterValues.First, Id = id };
             _section.XElement.InsertAt(hdrRef, 0);
@@ -257,7 +256,7 @@ namespace Berry.Docx.Documents
             {
                 return OddHeader;
             }
-            string id = RelationshipIdGenerator.Generate(_doc);
+            string id = IDGenerator.GenerateRelationshipID(_doc);
             P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
             W.HeaderReference hdrRef = new W.HeaderReference() { Type = W.HeaderFooterValues.Default, Id = id };
             _section.XElement.InsertAt(hdrRef, 0);
@@ -275,7 +274,7 @@ namespace Berry.Docx.Documents
             {
                 return EvenHeader;
             }
-            string id = RelationshipIdGenerator.Generate(_doc);
+            string id = IDGenerator.GenerateRelationshipID(_doc);
             P.HeaderPart hdrPart = PartGenerator.AddNewHeaderPart(_doc, id);
             W.HeaderReference hdrRef = new W.HeaderReference() { Type = W.HeaderFooterValues.Even, Id = id };
             _section.XElement.InsertAt(hdrRef, 0);
@@ -302,7 +301,7 @@ namespace Berry.Docx.Documents
             {
                 return FirstPageFooter;
             }
-            string id = RelationshipIdGenerator.Generate(_doc);
+            string id = IDGenerator.GenerateRelationshipID(_doc);
             P.FooterPart ftrPart = PartGenerator.AddNewFooterPart(_doc, id);
             W.FooterReference ftrRef = new W.FooterReference() { Type = W.HeaderFooterValues.First, Id = id };
             _section.XElement.InsertAt(ftrRef, 0);
@@ -320,7 +319,7 @@ namespace Berry.Docx.Documents
             {
                 return OddFooter;
             }
-            string id = RelationshipIdGenerator.Generate(_doc);
+            string id = IDGenerator.GenerateRelationshipID(_doc);
             P.FooterPart ftrPart = PartGenerator.AddNewFooterPart(_doc, id);
             W.FooterReference ftrRef = new W.FooterReference() { Type = W.HeaderFooterValues.Default, Id = id };
             _section.XElement.InsertAt(ftrRef, 0);
@@ -338,7 +337,7 @@ namespace Berry.Docx.Documents
             {
                 return EvenFooter;
             }
-            string id = RelationshipIdGenerator.Generate(_doc);
+            string id = IDGenerator.GenerateRelationshipID(_doc);
             P.FooterPart ftrPart = PartGenerator.AddNewFooterPart(_doc, id);
             W.FooterReference ftrRef = new W.FooterReference() { Type = W.HeaderFooterValues.Even, Id = id };
             _section.XElement.InsertAt(ftrRef, 0);

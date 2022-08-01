@@ -8,9 +8,8 @@ namespace Berry.Docx
     /// <summary>
     /// Represent the <see cref="float"/> value.
     /// </summary>
-    public class FloatValue
+    internal class FloatValue : SimpleValue<float>
     {
-        private float _value = 0;
         /// <summary>
         /// Initializes a new instance of the <see cref="FloatValue"/> class.
         /// </summary>
@@ -20,38 +19,14 @@ namespace Berry.Docx
         /// Initializes a new instance of the <see cref="FloatValue"/> class using the supplied <see cref="float"/> value.
         /// </summary>
         /// <param name="value">The <see cref="float"/> value.</param>
-        public FloatValue(float value)
-        {
-            _value = value;
-        }
+        public FloatValue(float value) : base(value) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FloatValue"/> class by deep copying
         /// the supplied <see cref="FloatValue"/> class.
         /// </summary>
         /// <param name="source">The source <see cref="FloatValue"/> class.</param>
-        public FloatValue(FloatValue source)
-        {
-            _value = source.Val;
-        }
-
-        /// <summary>
-        /// Gets or sets the inner <see cref="float"/> value.
-        /// </summary>
-        public float Val
-        {
-            get => _value;
-            set => _value = value;
-        }
-
-        /// <summary>
-        /// Implicitly converting the <see cref="FloatValue"/> value to <see cref="float"/> value.
-        /// </summary>
-        /// <param name="value">The <see cref="FloatValue"/> value.</param>
-        public static implicit operator float(FloatValue value)
-        {
-            return value.Val;
-        }
+        public FloatValue(FloatValue source) : base(source) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FloatValue"/> class by implicitly

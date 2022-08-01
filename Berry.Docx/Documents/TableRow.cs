@@ -51,7 +51,7 @@ namespace Berry.Docx.Documents
         /// <returns></returns>
         public TableCell AddCell()
         {
-            TableCell cell = Cells.Last().Clone();
+            TableCell cell = (TableCell)Cells.Last().Clone();
             cell.ClearContent();
             Cells.Add(cell);
             return cell;
@@ -63,7 +63,7 @@ namespace Berry.Docx.Documents
         /// <returns></returns>
         public TableRow InsertRowAbove()
         {
-            TableRow row = this.Clone();
+            TableRow row = (TableRow)Clone();
             row.ClearContent();
             _row.InsertBeforeSelf(row.XElement);
             return row;
@@ -75,7 +75,7 @@ namespace Berry.Docx.Documents
         /// <returns></returns>
         public TableRow InsertRowBelow()
         {
-            TableRow row = this.Clone();
+            TableRow row = (TableRow)Clone();
             row.ClearContent();
             _row.InsertAfterSelf(row.XElement);
             return row;
@@ -89,10 +89,8 @@ namespace Berry.Docx.Documents
             foreach (TableCell cell in Cells)
                 cell.ClearContent();
         }
-        #endregion
 
-        #region Internal Methods
-        internal TableRow Clone()
+        public override DocumentObject Clone()
         {
             W.TableRow newRow = (W.TableRow)_row.CloneNode(true);
             return new TableRow(_ownerDoc, _ownerTable, newRow);

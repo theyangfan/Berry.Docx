@@ -1,12 +1,22 @@
-﻿using System;
+﻿// Copyright (c) theyangfan. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using P = DocumentFormat.OpenXml.Packaging;
+using A = DocumentFormat.OpenXml.Drawing;
 using Pic = DocumentFormat.OpenXml.Drawing.Pictures;
+using Wps = DocumentFormat.OpenXml.Office2010.Word.DrawingShape;
+using Wpg = DocumentFormat.OpenXml.Office2010.Word.DrawingGroup;
+using Wpc = DocumentFormat.OpenXml.Office2010.Word.DrawingCanvas;
+using Dgm = DocumentFormat.OpenXml.Drawing.Diagrams;
+using C = DocumentFormat.OpenXml.Drawing.Charts;
 using M = DocumentFormat.OpenXml.Math;
 using V = DocumentFormat.OpenXml.Vml;
 using Office = DocumentFormat.OpenXml.Vml.Office;
@@ -14,12 +24,26 @@ using Office = DocumentFormat.OpenXml.Vml.Office;
 using Berry.Docx.Formatting;
 using Berry.Docx.Field;
 using Berry.Docx.Collections;
-using Berry.Docx.Utils;
 
 namespace Berry.Docx.Documents
 {
     /// <summary>
     /// Represent the paragraph.
+    /// <para>该类表示 Word 文档的一种基本元素：段落。</para>
+    /// <para>Paragraph 类支持创建空白段落实例。通过该类可以读写段落的文本内容，段落格式，
+    /// 同时支持访问段落中的各类子元素：字符，图片，图形，图表，嵌入式对象等。</para>
+    /// <para>通过该类的 AppendSectionBreak 函数可以向段落中插入分节符，以达到文档分节的目的，如下所示：</para>
+    /// <example>
+    /// <code>
+    /// using (Document doc = new Document("example.docx"))
+    /// {
+    ///      // 在文档末尾插入一个“下一页”分节符
+    ///      Paragraph p = doc.LastSection.Paragraphs.Last();
+    ///      p.AppendSectionBreak(SectionBreakType.NextPage);
+    ///      doc.Save();
+    /// }
+    /// </code>
+    /// </example>
     /// </summary>
     public class Paragraph : DocumentItem
     {
@@ -28,6 +52,7 @@ namespace Berry.Docx.Documents
         private readonly W.Paragraph _paragraph;
         private readonly ParagraphFormat _pFormat;
         private readonly CharacterFormat _cFormat;
+        private readonly ListFormat _listFormat;
         #endregion
 
         #region Constructors
@@ -38,13 +63,18 @@ namespace Berry.Docx.Documents
         public Paragraph(Document doc) : this(doc, new W.Paragraph())
         {
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="paragraph"></param>
         internal Paragraph(Document doc, W.Paragraph paragraph) : base(doc, paragraph)
         {
             _doc = doc;
             _paragraph = paragraph;
-            _pFormat = new ParagraphFormat(_doc, paragraph);
-            _cFormat = new CharacterFormat(_doc, paragraph);
+            _pFormat = new ParagraphFormat(doc, paragraph);
+            _cFormat = new CharacterFormat(doc, paragraph);
+            _listFormat = new ListFormat(doc, paragraph);
         }
         #endregion
 
@@ -55,12 +85,9 @@ namespace Berry.Docx.Documents
         public override DocumentObjectType DocumentObjectType { get => DocumentObjectType.Paragraph; }
 
         /// <summary>
-        /// The child DocumentObjects of this paragraph.
+        ///Gets all child <see cref="ParagraphItem"/> of this paragraph.
         /// </summary>
-        public override DocumentObjectCollection ChildObjects
-        {
-            get => new ParagraphItemCollection(_paragraph, ChildObjectsPrivate());
-        }
+        public ParagraphItemCollection ChildItems => new ParagraphItemCollection(_paragraph, ParagraphItems());
 
         /// <summary>
         /// The paragraph text.
@@ -69,53 +96,15 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                string text = "";
-                bool begin = false;
-                bool separate = false;
-                foreach (O.OpenXmlElement ele in _paragraph.Descendants())
+                StringBuilder text = new StringBuilder();
+                foreach(DocumentObject item in ChildObjects)
                 {
-                    if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.Run"))
+                    if(item is TextRange)
                     {
-                        W.Run run = (W.Run)ele;
-                        if (run.Ancestors<W.SimpleField>().Any())
-                            continue;
-                        if (run.Elements<W.FieldChar>().Any() && run.Elements<W.FieldChar>().First().FieldCharType != null)
-                        {
-                            string field_type = run.Elements<W.FieldChar>().First().FieldCharType.ToString();
-                            if (field_type == "begin")
-                            {
-                                begin = true;
-                                continue;
-                            }
-                            if (field_type == "separate")
-                            {
-                                separate = true;
-                                continue;
-                            }
-                            if (field_type == "end")
-                            {
-                                begin = false;
-                                separate = false;
-                                continue;
-                            }
-                        }
-                        if (begin && !separate) continue;
-                        foreach (O.OpenXmlElement e in run.Elements())
-                        {
-                            if (e.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.Text"))
-                                text += (e as W.Text).Text;
-                            if (e.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.FieldCode"))
-                                text += (e as W.FieldCode).Text;
-                            if (e.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.NoBreakHyphen"))
-                                text += "-";
-                        }
-                    }
-                    else if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.SimpleField"))
-                    {
-                        text += ele.InnerText;
+                        text.Append(((TextRange)item).Text);
                     }
                 }
-                return text;
+                return text.ToString();
             }
             set
             {
@@ -126,31 +115,25 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
-        /// The paragraph format.
+        /// Gets the paragraph format.
         /// </summary>
         public ParagraphFormat Format => _pFormat;
 
         /// <summary>
-        /// The common character format of paragraph.
+        /// Gets the list format.
         /// </summary>
-        public CharacterFormat CharacterFormat => _cFormat;
+        public ListFormat ListFormat => _listFormat;
 
         /// <summary>
-        /// The paragraph style. 
+        /// Gets the character format of paragraph mark for this paragraph.
+        /// <para>获取段落标记的字符格式.</para>
         /// </summary>
-        public ParagraphStyle Style
-        {
-            get
-            {
-                if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return null;
-                return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
-            }
-        }
+        public CharacterFormat MarkFormat => _cFormat;
 
         /// <summary>
         /// Gets the owener section of the current paragraph.
         /// </summary>
-        public Section Section
+        internal Section Section
         {
             get
             {
@@ -158,6 +141,11 @@ namespace Berry.Docx.Documents
                 {
                     if (section.Paragraphs.Contains(this))
                         return section;
+                    foreach(SdtBlock sdt in section.ChildObjects.OfType<SdtBlock>())
+                    {
+                        if (sdt.SdtContent.ChildObjects.OfType<Paragraph>().Contains(this))
+                            return section;
+                    }
                 }
                 return null;
             }
@@ -166,13 +154,86 @@ namespace Berry.Docx.Documents
 
         #region Public Methods
         /// <summary>
-        /// Insert a section break with the specified type to the current paragraph. 
+        /// The paragraph style. 
+        /// </summary>
+        public ParagraphStyle GetStyle()
+        {
+            if (_paragraph == null || _paragraph.GetStyle(_doc) == null) return null;
+            return new ParagraphStyle(_doc, _paragraph.GetStyle(_doc));
+        }
+
+        /// <summary>
+        /// Apply the paragraph style with the specified name to the current paragraph.
+        /// <para>为当前段落应用指定名称的段落样式.</para>
+        /// </summary>
+        /// <param name="styleName">The style name.</param>
+        public void ApplyStyle(string styleName)
+        {
+            if (_paragraph == null || string.IsNullOrEmpty(styleName)) return;
+            // 如果为内置样式，则应用内置样式
+            if (Style.NameToBuiltIn(styleName) != BuiltInStyle.None)
+            {
+                ApplyStyle(Style.NameToBuiltIn(styleName));
+                return;
+            }
+            var style = _doc.Styles.FindByName(styleName, StyleType.Paragraph);
+            if (style == null)
+            {
+                style = new ParagraphStyle(_doc, styleName);
+                _doc.Styles.Add(style);
+            }
+            if (_paragraph.ParagraphProperties == null)
+                _paragraph.ParagraphProperties = new W.ParagraphProperties();
+            _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
+        }
+
+        /// <summary>
+        /// Apply the specified built-in style to the current paragraph.
+        /// <para>为当前段落应用指定的内置样式.</para>
+        /// </summary>
+        /// <param name="bstyle">The built-in style type.</param>
+        public void ApplyStyle(BuiltInStyle bstyle)
+        {
+            if (_paragraph == null) return;
+            var style = ParagraphStyle.CreateBuiltInStyle(bstyle, _doc);
+            if (style != null)
+            {
+                if (bstyle == BuiltInStyle.Normal)
+                {
+                    if (_paragraph.ParagraphProperties?.ParagraphStyleId != null)
+                        _paragraph.ParagraphProperties.ParagraphStyleId = null;
+                }
+                else
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
+                }
+            }
+        }
+
+        /// <summary>
+        /// Appends the specified text to the end of the current paragraph.
+        /// </summary>
+        /// <param name="text">The specified text.</param>
+        /// <returns>The added text range.</returns>
+        public TextRange AppendText(string text)
+        {
+            TextRange tr = new TextRange(_doc);
+            tr.Text = text;
+            this.ChildItems.Add(tr);
+            return tr;
+        }
+
+        /// <summary>
+        /// Append a section break with the specified type to the current paragraph. 
         /// <para>The current paragraph must have an owner section, otherwise an exception will be thrown.</para>
+        /// <para>在当前段落结尾添加一个分节符。当前段落必须在节中，否则会抛出一个异常.</para>
         /// </summary>
         /// <param name="type">Type of section break.</param>
         /// <exception cref="NullReferenceException"/>
         /// <returns>The section.</returns>
-        public Section InsertSectionBreak(SectionBreakType type)
+        public Section AppendSectionBreak(SectionBreakType type)
         {
             if (Section != null)
             {
@@ -223,6 +284,55 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
+        /// Append a Break to the end of the current paragraph.
+        /// </summary>
+        /// <param name="breakType">The BreakType.</param>
+        /// <returns>The Break.</returns>
+        public Break AppendBreak(BreakType breakType)
+        {
+            Break br = new Break(_doc, breakType);
+            if (breakType == BreakType.TextWrapping)
+                br.Clear = BreakTextRestartLocation.All;
+            this.ChildItems.Add(br);
+            return br;
+        }
+
+        /// <summary>
+        ///  Searches the paragraph for the first occurrence of the specified regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>An object that contains information about the match.</returns>
+        public TextMatch Find(Regex pattern)
+        {
+            Match match = pattern.Match(Text);
+            if (match.Success)
+            {
+                return new TextMatch(this, match.Index, match.Index + match.Length - 1);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Searches the paragraph for all occurrences of a regular expression.
+        /// </summary>
+        /// <param name="pattern">The regular expression to search for a match</param>
+        /// <returns>
+        /// A list of the <see cref="TextMatch"/> objects found by the search.
+        /// </returns>
+        public List<TextMatch> FindAll(Regex pattern)
+        {
+            List<TextMatch> matches = new List<TextMatch>();
+            foreach (Match match in pattern.Matches(Text))
+            {
+                if (match.Success)
+                {
+                    matches.Add(new TextMatch(this, match.Index, match.Index + match.Length - 1));
+                }
+            }
+            return matches;
+        }
+
+        /// <summary>
         /// Appends a comment to the current paragraph.
         /// </summary>
         /// <param name="author">The author of the comment.</param>
@@ -267,11 +377,24 @@ namespace Berry.Docx.Documents
                 {
                     ele = ele.NextSibling();
                 }
+                // Exclude page break
+                if(ele.NextSibling() is W.Run 
+                    && ele.NextSibling().Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    ele = ele.NextSibling();
+                }
                 ele.InsertAfterSelf(startMark);
             }
             else
             {
-                _paragraph.InsertAt(startMark, 0);
+                int index = 0;
+                // Exclude page break
+                if (ele is W.Run
+                    && ele.Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    index = 1;
+                }
+                _paragraph.InsertAt(startMark, index);
             }
             _paragraph.Append(endMark);
             _paragraph.Append(referenceRun);
@@ -321,11 +444,24 @@ namespace Berry.Docx.Documents
                 {
                     ele = ele.NextSibling();
                 }
+                // Exclude page break
+                if (ele.NextSibling() is W.Run
+                    && ele.NextSibling().Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    ele = ele.NextSibling();
+                }
                 ele.InsertAfterSelf(startMark);
             }
             else
             {
-                _paragraph.InsertAt(startMark, 0);
+                int index = 0;
+                // Exclude page break
+                if (ele is W.Run
+                    && ele.Elements<W.Break>().Where(b => b.Type == W.BreakValues.Page).Any())
+                {
+                    index = 1;
+                }
+                _paragraph.InsertAt(startMark, index);
             }
             _paragraph.Append(endMark);
             _paragraph.Append(referenceRun);
@@ -334,12 +470,11 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Private Methods
-        private IEnumerable<DocumentItem> ChildObjectsPrivate()
+        private IEnumerable<ParagraphItem> ParagraphItems()
         {
-            foreach (O.OpenXmlElement ele in _paragraph.ChildElements)
+            foreach(DocumentItem item in ChildObjects)
             {
-                if (ele.GetType() == typeof(W.Run))
-                    yield return new TextRange(_doc, ele as W.Run);
+                yield return item as ParagraphItem;
             }
         }
         #endregion
@@ -349,19 +484,23 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 段落编号(默认为1)
         /// </summary>
-        public string ListText
+        private string ListText
         {
             get
             {
+                /*
                 if (_pFormat.NumberingFormat == null) return string.Empty;
                 string lvlText = _pFormat.NumberingFormat.Format;
+                //Console.WriteLine($"{lvlText},{_pFormat.NumberingFormat.Style}");
                 if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.Decimal)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "1");
                 else if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCounting
-                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand)
+                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand
+                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.JapaneseCounting)
                     lvlText = lvlText.RxReplace(@"%[0-9]", "一");
-
-                return lvlText;
+                
+                return lvlText;*/
+                return "";
             }
         }
 

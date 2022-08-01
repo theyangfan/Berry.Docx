@@ -3,23 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Berry.Docx.Documents;
+using Berry.Docx.Formatting;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Collections
 {
     /// <summary>
     /// Represent a style collection.
     /// </summary>
-    public class StyleCollection : IEnumerable
+    public class StyleCollection : IEnumerable<Style>
     {
         #region Private Members
+        private readonly Document _doc;
         private IEnumerable<Style> _styles;
         #endregion
 
         #region Constructors
-        internal StyleCollection(IEnumerable<Style> styles)
+        internal StyleCollection(Document doc)
         {
-            _styles = styles;
+            _doc = doc;
+            _styles = GetStyles();
         }
         #endregion
 
@@ -39,6 +42,19 @@ namespace Berry.Docx.Collections
 
         #region Public Methods
         /// <summary>
+        /// Adds the specified style to the document.
+        /// <para>将指定的样式添加到文档中.</para>
+        /// </summary>
+        /// <param name="style">The specified style.</param>
+        public void Add(Style style)
+        {
+            if(FindByName(style.Name, style.Type) == null)
+            {
+                _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Append(style.XElement);
+            }
+        }
+
+        /// <summary>
         /// Searchs for the style with the specified stylename and type within the entire collection.
         /// </summary>
         /// <param name="name">The name of style.</param>
@@ -46,16 +62,36 @@ namespace Berry.Docx.Collections
         /// <returns>The style with the specified stylename and type</returns>
         public Style FindByName(string name, StyleType type)
         {
-            return _styles.Where(s => s.Name.ToLower() == name.ToLower() && s.Type == type).FirstOrDefault();
+            name = Style.NameToBuiltInString(name);
+            return _styles.Where(s => s.Name.ToLower() == name && s.Type == type).FirstOrDefault();
         }
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Style> GetEnumerator()
         {
             return _styles.GetEnumerator();
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _styles.GetEnumerator();
+        }
+        #endregion
+
+        #region Private Methods
+        private IEnumerable<Style> GetStyles()
+        {
+            foreach (W.Style style in _doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles.Elements<W.Style>())
+            {
+                if (style.Type == W.StyleValues.Paragraph)
+                    yield return new ParagraphStyle(_doc, style);
+                else if (style.Type == W.StyleValues.Character)
+                    yield return new CharacterStyle(_doc, style);
+                else if (style.Type == W.StyleValues.Table)
+                    yield return new TableStyle(_doc, style);
+            }
         }
         #endregion
     }

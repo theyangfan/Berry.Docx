@@ -36,6 +36,11 @@ namespace Berry.Docx
             return val;
         }
 
+        public static float Round(this float val, int decimals)
+        {
+            return (float)Math.Round(val, decimals);
+        }
+
         /// <summary>
         /// In current string, replaces all strings that match a specified regular
         /// expression with a specified replacement string.
@@ -83,15 +88,26 @@ namespace Berry.Docx
         internal static OW.Style GetStyle(this OW.Paragraph p, Document doc)
         {
             OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
-            if(p.ParagraphProperties != null && p.ParagraphProperties.ParagraphStyleId != null)
+            if(p?.ParagraphProperties?.ParagraphStyleId != null)
             {
                 string styleId = p.ParagraphProperties.ParagraphStyleId.Val.ToString();
                 return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
             }
             else
             {
-                return styles.Elements<OW.Style>().Where(s => s.Type.Value == OW.StyleValues.Paragraph && s.Default != null && s.Default.Value == true).FirstOrDefault();
+                return styles.Elements<OW.Style>().Where(s => s.Type.Value == OW.StyleValues.Paragraph &&  s.Default?.Value == true).FirstOrDefault();
             }
+        }
+
+        internal static OW.Style GetStyle(this OW.Run run, Document doc)
+        {
+            OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
+            if (run?.RunProperties?.RunStyle != null)
+            {
+                string styleId = run.RunProperties.RunStyle.Val.ToString();
+                return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
+            }
+            return null;
         }
 
         /// <summary>
@@ -99,11 +115,11 @@ namespace Berry.Docx
         /// </summary>
         /// <param name="style">The OpenXMl style.</param>
         /// <returns>The based-on OpenXMl style.</returns>
-        internal static OW.Style GetBaseStyle(this OW.Style style)
+        internal static OW.Style GetBaseStyle(this OW.Style style, Document doc)
         {
             if(style.BasedOn != null)
             {
-                OW.Styles styles = style.Parent as OW.Styles;
+                OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
                 string styleId = style.BasedOn.Val.ToString();
                 return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
             }
@@ -145,46 +161,6 @@ namespace Berry.Docx
                     return minorFont.LatinFont.Typeface;
                 default:
                     return string.Empty;
-            }
-        }
-        #endregion
-
-        #region Enum Converter
-
-        internal static JustificationType Convert(this OW.JustificationValues type)
-        {
-            switch (type)
-            {
-                case OW.JustificationValues.Left:
-                    return JustificationType.Left;
-                case OW.JustificationValues.Center:
-                    return JustificationType.Center;
-                case OW.JustificationValues.Right:
-                    return JustificationType.Right;
-                case OW.JustificationValues.Both:
-                    return JustificationType.Both;
-                case OW.JustificationValues.Distribute:
-                    return JustificationType.Distribute;
-                default:
-                    return JustificationType.None;
-            }
-        }
-        public static OW.JustificationValues Convert(this JustificationType type)
-        {
-            switch (type)
-            {
-                case JustificationType.Left:
-                    return OW.JustificationValues.Left;
-                case JustificationType.Center:
-                    return OW.JustificationValues.Center;
-                case JustificationType.Right:
-                    return OW.JustificationValues.Right;
-                case JustificationType.Both:
-                    return OW.JustificationValues.Both;
-                case JustificationType.Distribute:
-                    return OW.JustificationValues.Distribute;
-                default:
-                    return OW.JustificationValues.Both;
             }
         }
         #endregion

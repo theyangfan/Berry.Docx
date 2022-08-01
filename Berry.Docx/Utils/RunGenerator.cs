@@ -4,7 +4,7 @@ using System.Text;
 
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace Berry.Docx.Utils
+namespace Berry.Docx
 {
     internal class RunGenerator
     {

@@ -14,6 +14,7 @@ namespace Berry.Docx.Field
     {
         #region Private Member
         private readonly Paragraph _ownerParagraph;
+        private readonly string _text;
         private readonly int _startCharPos;
         private readonly int _endCharPos;
         private List<TextRange> _ranges;
@@ -29,6 +30,7 @@ namespace Berry.Docx.Field
         internal TextMatch(Paragraph ownerParagraph, int startCharPos, int endCharPos)
         {
             _ownerParagraph = ownerParagraph;
+            _text = ownerParagraph.Text;
             _startCharPos = startCharPos;
             _endCharPos = endCharPos;
             _ranges = new List<TextRange>();
@@ -39,7 +41,7 @@ namespace Berry.Docx.Field
         /// <summary>
         /// Gets the matched text.
         /// </summary>
-        public string Text => _ownerParagraph.Text.Substring(_startCharPos, _endCharPos - _startCharPos + 1);
+        public string Text => _text.Substring(_startCharPos, _endCharPos - _startCharPos + 1);
         #endregion
 
         #region Public Methods

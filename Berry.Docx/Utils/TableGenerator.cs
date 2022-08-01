@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace Berry.Docx.Utils
+namespace Berry.Docx
 {
     internal class TableGenerator
     {

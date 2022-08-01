@@ -8,9 +8,8 @@ namespace Berry.Docx
     /// <summary>
     /// Represent the <see cref="int"/> value.
     /// </summary>
-    public class IntegerValue
+    internal class IntegerValue : SimpleValue<int>
     {
-        private int _value = 0;
         /// <summary>
         /// Initializes a new instance of the <see cref="IntegerValue"/> class.
         /// </summary>
@@ -20,38 +19,14 @@ namespace Berry.Docx
         /// Initializes a new instance of the <see cref="IntegerValue"/> class using the supplied <see cref="int"/> value.
         /// </summary>
         /// <param name="value">The <see cref="int"/> value.</param>
-        public IntegerValue(int value)
-        {
-            _value = value;
-        }
+        public IntegerValue(int value) : base(value) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntegerValue"/> class by deep copying
         /// the supplied <see cref="IntegerValue"/> class.
         /// </summary>
         /// <param name="source">The source <see cref="IntegerValue"/> class.</param>
-        public IntegerValue(IntegerValue source)
-        {
-            _value = source.Val;
-        }
-
-        /// <summary>
-        /// Gets or sets the inner <see cref="int"/> value.
-        /// </summary>
-        public int Val
-        {
-            get => _value;
-            set => _value = value;
-        }
-
-        /// <summary>
-        /// Implicitly converting the <see cref="IntegerValue"/> value to <see cref="int"/> value.
-        /// </summary>
-        /// <param name="value">The <see cref="IntegerValue"/> value.</param>
-        public static implicit operator int(IntegerValue value)
-        {
-            return value.Val;
-        }
+        public IntegerValue(IntegerValue source) : base(source) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntegerValue"/> class by implicitly

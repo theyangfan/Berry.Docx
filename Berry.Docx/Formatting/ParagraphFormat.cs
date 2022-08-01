@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using OOxml = DocumentFormat.OpenXml.Wordprocessing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 using P = DocumentFormat.OpenXml.Packaging;
 
 namespace Berry.Docx.Formatting
@@ -15,42 +15,26 @@ namespace Berry.Docx.Formatting
     {
         #region Private Members
 
-        private Document _document = null;
+        private Document _doc = null;
 
         // Paragraph Members
-        private OOxml.Paragraph _ownerParagraph = null;
-        private ParagraphPropertiesHolder _curPHld = null;
-        private ParagraphFormat _styleFormat = null;
-
+        private W.Paragraph _ownerParagraph;
+        private ParagraphPropertiesHolder _directPHld;
         // Style Members
-        private OOxml.Style _ownerStyle = null;
-        private ParagraphPropertiesHolder _curSHld = null;
-        private ParagraphFormat _styleHierarchyFormat = null;
+        private W.Style _ownerStyle;
+        private ParagraphPropertiesHolder _directSHld;
+        private readonly ParagraphPropertiesHolder _tblStyleHld;
 
         // Formats Members
         // Normal
         private JustificationType _justification = JustificationType.Both;
         private OutlineLevelType _outlineLevel = OutlineLevelType.BodyText;
         // Indentation
-        private float _leftIndent = -1;
-        private float _rightIndent = -1;
-        private float _leftCharsIndent = -1;
-        private float _rightCharsIndent = -1;
-        private float _firstLineIndent = -1;
-        private float _firstLineCharsIndent = -1;
-        private float _hangingIndent = -1;
-        private float _hangingCharsIndent = -1;
         private bool _mirrorIndents = false;
         private bool _adjustRightIndent = true;
         // Spacing
-        private float _beforeSpacing = -1;
-        private float _beforeLinesSpacing = -1;
         private bool _beforeAutoSpacing = false;
-        private float _afterSpacing = -1;
-        private float _afterLinesSpacing = -1;
         private bool _afterAutoSpacing = false;
-        private float _lineSpacing = 12;
-        private LineSpacingRule _lineSpacingRule = LineSpacingRule.Multiple;
         private bool _contextualSpacing = false;
         private bool _snapToGrid = true;
         // Pagination
@@ -69,8 +53,10 @@ namespace Berry.Docx.Formatting
         private bool _topLinePunctuation = false;
         private bool _autoSpaceDE = true;
         private bool _autoSpaceDN = true;
-        // Numbering
-        private NumberingFormat _numFormat = null;
+        private VerticalTextAlignment _textAlignment = VerticalTextAlignment.Auto;
+        // borders & tabs
+        private Borders _borders;
+        private TabStops _tabs;
 
         #endregion
 
@@ -84,14 +70,13 @@ namespace Berry.Docx.Formatting
         /// </summary>
         /// <param name="document"></param>
         /// <param name="ownerParagraph"></param>
-        internal ParagraphFormat(Document document, OOxml.Paragraph ownerParagraph)
+        internal ParagraphFormat(Document document, W.Paragraph ownerParagraph)
         {
-            _document = document;
+            _doc = document;
             _ownerParagraph = ownerParagraph;
-            if (ownerParagraph.ParagraphProperties == null)
-                ownerParagraph.ParagraphProperties = new OOxml.ParagraphProperties();
-            _curPHld = new ParagraphPropertiesHolder(document, ownerParagraph.ParagraphProperties);
-            _styleFormat = new ParagraphFormat(document, ownerParagraph.GetStyle(document));
+            _directPHld = new ParagraphPropertiesHolder(document, ownerParagraph);
+            _borders = new Borders(document, ownerParagraph);
+            _tabs = new TabStops(document, ownerParagraph);
         }
 
         /// <summary>
@@ -99,43 +84,28 @@ namespace Berry.Docx.Formatting
         /// </summary>
         /// <param name="document"></param>
         /// <param name="ownerStyle"></param>
-        internal ParagraphFormat(Document document, OOxml.Style ownerStyle)
+        internal ParagraphFormat(Document document, W.Style ownerStyle)
         {
-            _document = document;
+            _doc = document;
             _ownerStyle = ownerStyle;
-            _curSHld = new ParagraphPropertiesHolder(document, ownerStyle.StyleParagraphProperties);
-            _styleHierarchyFormat = GetStyleParagraphFormatRecursively(ownerStyle);
+            _directSHld = new ParagraphPropertiesHolder(document, ownerStyle);
+            _borders = new Borders(document, ownerStyle);
+            _tabs= new TabStops(document, ownerStyle);
+        }
+
+        internal ParagraphFormat(Document document, W.Style ownerStyle, TableRegionType region)
+        {
+            _doc = document;
+            _ownerStyle = ownerStyle;
+            _directSHld = new ParagraphPropertiesHolder(document, ownerStyle);
+            _borders = new Borders(document, ownerStyle);
+            _tabs = new TabStops(document, ownerStyle);
+            _tblStyleHld = new ParagraphPropertiesHolder(document, ownerStyle, region);
         }
 
         #endregion
 
         #region Public Properties
-        /// <summary>
-        /// Gets paragraph numbering format.
-        /// </summary>
-        public NumberingFormat NumberingFormat
-        {
-            get
-            {
-                if(_ownerParagraph != null)
-                {
-                    return _ownerParagraph.ParagraphProperties != null && _ownerParagraph.ParagraphProperties.NumberingProperties != null ? _curPHld.NumberingFormat : _styleFormat.NumberingFormat;
-                }
-                else if(_ownerStyle != null)
-                {
-                    return _styleHierarchyFormat.NumberingFormat;
-                }
-                else
-                {
-                    return _numFormat;
-                }
-            }
-            set
-            {
-                if(_ownerParagraph == null && _ownerStyle == null)
-                    _numFormat = value;
-            }
-        }
 
         #region Normal
         /// <summary>
@@ -147,11 +117,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.Justification != JustificationType.None ? _curPHld.Justification : _styleFormat.Justification;
+                    // direct formatting
+                    if (_directPHld.Justification != null) return _directPHld.Justification;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.Justification != null) return inheritedStyle.Justification;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.Justification;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.Justification != JustificationType.None ? _curSHld.Justification : _styleHierarchyFormat.Justification;
+                    // table style
+                    if(_tblStyleHld?.Justification != null) return _tblStyleHld.Justification;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.Justification != null) return inheritedStyle.Justification;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.Justification;
                 }
                 else
                 {
@@ -162,11 +144,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.Justification = value;
+                    _directPHld.Justification = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.Justification = value;
+                    if (_tblStyleHld != null) _tblStyleHld.Justification = value;
+                    else _directSHld.Justification = value;
                 }
                 else
                 {
@@ -184,11 +167,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.OutlineLevel != OutlineLevelType.None ? _curPHld.OutlineLevel : _styleFormat.OutlineLevel;
+                    // direct formatting
+                    if (_directPHld.OutlineLevel != null) return _directPHld.OutlineLevel;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.OutlineLevel != null) return inheritedStyle.OutlineLevel;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.OutlineLevel;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.OutlineLevel != OutlineLevelType.None ? _curSHld.OutlineLevel : _styleHierarchyFormat.OutlineLevel;
+                    // table style
+                    if (_tblStyleHld?.OutlineLevel != null) return _tblStyleHld.OutlineLevel;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.OutlineLevel != null) return inheritedStyle.OutlineLevel;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.OutlineLevel;
                 }
                 else
                 {
@@ -199,11 +194,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.OutlineLevel = value;
+                    _directPHld.OutlineLevel = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.OutlineLevel = value;
+                    if (_tblStyleHld != null) _tblStyleHld.OutlineLevel = value;
+                    else _directSHld.OutlineLevel = value;
                 }
                 else
                 {
@@ -215,290 +211,51 @@ namespace Berry.Docx.Formatting
 
         #region Indentation
         /// <summary>
-        /// Gets or sets the left indent (in points) for paragraph.
+        /// Gets or sets a value indicating whether the paragraph indents should be interpreted as mirrored indents.
         /// </summary>
-        public float LeftIndent
+        public bool MirrorIndents
         {
             get
             {
-                if(_ownerParagraph != null)
+                if (_ownerParagraph != null)
                 {
-                    return _curPHld.LeftIndent ?? _styleFormat.LeftIndent;
+                    // direct formatting
+                    if (_directPHld.MirrorIndents != null) return _directPHld.MirrorIndents;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.MirrorIndents != null) return inheritedStyle.MirrorIndents;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.MirrorIndents;
                 }
-                else if(_ownerStyle != null)
+                else if (_ownerStyle != null)
                 {
-                    return _curSHld.LeftIndent ?? _styleHierarchyFormat.LeftIndent;
+                    // table style
+                    if (_tblStyleHld?.MirrorIndents != null) return _tblStyleHld.MirrorIndents;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.MirrorIndents != null) return inheritedStyle.MirrorIndents;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.MirrorIndents;
                 }
                 else
                 {
-                    return _leftIndent;
+                    return _mirrorIndents;
                 }
             }
             set
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.LeftIndent = value;
+                    _directPHld.MirrorIndents = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.LeftIndent = value;
+                    if (_tblStyleHld != null) _tblStyleHld.MirrorIndents = value;
+                    else _directSHld.MirrorIndents = value;
                 }
                 else
                 {
-                    _leftIndent = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the left indent (in chars) for paragraph.
-        /// </summary>
-        public float LeftCharsIndent
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.LeftCharsIndent ?? _styleFormat.LeftCharsIndent;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.LeftCharsIndent ?? _styleHierarchyFormat.LeftCharsIndent;
-                }
-                else
-                {
-                    return _leftCharsIndent;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.LeftCharsIndent = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.LeftCharsIndent = value;
-                }
-                else
-                {
-                    _leftCharsIndent = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the right indent (in points) for paragraph.
-        /// </summary>
-        public float RightIndent
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.RightIndent ?? _styleFormat.RightIndent;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.RightIndent ?? _styleHierarchyFormat.RightIndent;
-                }
-                else
-                {
-                    return _rightIndent;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.RightIndent = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.RightIndent = value;
-                }
-                else
-                {
-                    _rightIndent = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the right indent (in chars) for paragraph.
-        /// </summary>
-        public float RightCharsIndent
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.RightCharsIndent ?? _styleFormat.RightCharsIndent;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.RightCharsIndent ?? _styleHierarchyFormat.RightCharsIndent;
-                }
-                else
-                {
-                    return _rightCharsIndent;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.RightCharsIndent = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.RightCharsIndent = value;
-                }
-                else
-                {
-                    _rightCharsIndent = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the first line indent (in points) for paragraph.
-        /// </summary>
-        public float FirstLineIndent
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.FirstLineIndent ?? _styleFormat.FirstLineIndent;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.FirstLineIndent ?? _styleHierarchyFormat.FirstLineIndent;
-                }
-                else
-                {
-                    return _firstLineIndent;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.FirstLineIndent = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.FirstLineIndent = value;
-                }
-                else
-                {
-                    _firstLineIndent = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the first line indent (in chars) for paragraph.
-        /// </summary>
-        public float FirstLineCharsIndent
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.FirstLineCharsIndent ?? _styleFormat.FirstLineCharsIndent;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.FirstLineCharsIndent ?? _styleHierarchyFormat.FirstLineCharsIndent;
-                }
-                else
-                {
-                    return _firstLineCharsIndent;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.FirstLineCharsIndent = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.FirstLineCharsIndent = value;
-                }
-                else
-                {
-                    _firstLineCharsIndent = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the hanging indent (in points) for paragraph.
-        /// </summary>
-        public float HangingIndent
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.HangingIndent ?? _styleFormat.HangingIndent;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.HangingIndent ?? _styleHierarchyFormat.HangingIndent;
-                }
-                else
-                {
-                    return _hangingIndent;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.HangingIndent = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.HangingIndent = value;
-                }
-                else
-                {
-                    _hangingIndent = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the hanging indent (in chars) for paragraph.
-        /// </summary>
-        public float HangingCharsIndent
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.HangingCharsIndent ?? _styleFormat.HangingCharsIndent;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.HangingCharsIndent ?? _styleHierarchyFormat.HangingCharsIndent;
-                }
-                else
-                {
-                    return _hangingCharsIndent;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.HangingCharsIndent = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.HangingCharsIndent = value;
-                }
-                else
-                {
-                    _hangingCharsIndent = value;
+                    _mirrorIndents = value;
                 }
             }
         }
@@ -512,11 +269,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AdjustRightIndent ?? _styleFormat.AdjustRightIndent;
+                    // direct formatting
+                    if (_directPHld.AdjustRightIndent != null) return _directPHld.AdjustRightIndent;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.AdjustRightIndent != null) return inheritedStyle.AdjustRightIndent;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AdjustRightIndent;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.AdjustRightIndent ?? _styleHierarchyFormat.AdjustRightIndent;
+                    // table style
+                    if (_tblStyleHld?.AdjustRightIndent != null) return _tblStyleHld.AdjustRightIndent;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.AdjustRightIndent != null) return inheritedStyle.AdjustRightIndent;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AdjustRightIndent;
                 }
                 else
                 {
@@ -527,11 +296,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.AdjustRightIndent = value;
+                    _directPHld.AdjustRightIndent = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.AdjustRightIndent = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AdjustRightIndent = value;
+                    else _directSHld.AdjustRightIndent = value;
                 }
                 else
                 {
@@ -539,118 +309,9 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the paragraph indents should be interpreted as mirrored indents.
-        /// </summary>
-        public bool MirrorIndents
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.MirrorIndents ?? _styleFormat.MirrorIndents;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.MirrorIndents ?? _styleHierarchyFormat.MirrorIndents;
-                }
-                else
-                {
-                    return _mirrorIndents;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.MirrorIndents = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.MirrorIndents = value;
-                }
-                else
-                {
-                    _mirrorIndents = value;
-                }
-            }
-        }
         #endregion
 
         #region Spacing
-        /// <summary>
-        /// Gets or sets the spacing (in points) before the paragraph.
-        /// </summary>
-        public float BeforeSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.BeforeSpacing ?? _styleFormat.BeforeSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.BeforeSpacing ?? _styleHierarchyFormat.BeforeSpacing;
-                }
-                else
-                {
-                    return _beforeSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.BeforeSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.BeforeSpacing = value;
-                }
-                else
-                {
-                    _beforeSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the spacing (in lines) before the paragraph.
-        /// </summary>
-        public float BeforeLinesSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.BeforeLinesSpacing ?? _styleFormat.BeforeLinesSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.BeforeLinesSpacing ?? _styleHierarchyFormat.BeforeLinesSpacing;
-                }
-                else
-                {
-                    return _beforeLinesSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.BeforeLinesSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.BeforeLinesSpacing = value;
-                }
-                else
-                {
-                    _beforeLinesSpacing = value;
-                }
-            }
-        }
         /// <summary>
         /// Gets or sets a value indicating whether spacing before is automatic.
         /// </summary>
@@ -660,11 +321,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.BeforeAutoSpacing ?? _styleFormat.BeforeAutoSpacing;
+                    // direct formatting
+                    if (_directPHld.BeforeAutoSpacing != null) return _directPHld.BeforeAutoSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.BeforeAutoSpacing != null) return inheritedStyle.BeforeAutoSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.BeforeAutoSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.BeforeAutoSpacing ?? _styleHierarchyFormat.BeforeAutoSpacing;
+                    // table style
+                    if (_tblStyleHld?.BeforeAutoSpacing != null) return _tblStyleHld.BeforeAutoSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.BeforeAutoSpacing != null) return inheritedStyle.BeforeAutoSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.BeforeAutoSpacing;
                 }
                 else
                 {
@@ -675,89 +348,19 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.BeforeAutoSpacing = value;
+                    _directPHld.BeforeAutoSpacing = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.BeforeAutoSpacing = value;
+                    if (_tblStyleHld != null) _tblStyleHld.BeforeAutoSpacing = value;
+                    else _directSHld.BeforeAutoSpacing = value;
                 }
                 else
                 {
                     _beforeAutoSpacing = value;
                 }
             }
-        }
-        /// <summary>
-        /// Gets or sets the spacing (in points) after the paragraph.
-        /// </summary>
-        public float AfterSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.AfterSpacing ??_styleFormat.AfterSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.AfterSpacing ?? _styleHierarchyFormat.AfterSpacing;
-                }
-                else
-                {
-                    return _afterSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.AfterSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.AfterSpacing = value;
-                }
-                else
-                {
-                    _afterSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the spacing (in lines) after the paragraph.
-        /// </summary>
-        public float AfterLinesSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.AfterLinesSpacing ?? _styleFormat.AfterLinesSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.AfterLinesSpacing ?? _styleHierarchyFormat.AfterLinesSpacing;
-                }
-                else
-                {
-                    return _afterLinesSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.AfterLinesSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.AfterLinesSpacing = value;
-                }
-                else
-                {
-                    _afterLinesSpacing = value;
-                }
-            }
+
         }
 
         /// <summary>
@@ -769,11 +372,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AfterAutoSpacing ?? _styleFormat.AfterAutoSpacing;
+                    // direct formatting
+                    if (_directPHld.AfterAutoSpacing != null) return _directPHld.AfterAutoSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.AfterAutoSpacing != null) return inheritedStyle.AfterAutoSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AfterAutoSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.AfterAutoSpacing ?? _styleHierarchyFormat.AfterAutoSpacing;
+                    // table style
+                    if (_tblStyleHld?.AfterAutoSpacing != null) return _tblStyleHld.AfterAutoSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.AfterAutoSpacing != null) return inheritedStyle.AfterAutoSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AfterAutoSpacing;
                 }
                 else
                 {
@@ -784,87 +399,16 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.AfterAutoSpacing = value;
+                    _directPHld.AfterAutoSpacing = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.AfterAutoSpacing = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AfterAutoSpacing = value;
+                    else _directSHld.AfterAutoSpacing = value;
                 }
                 else
                 {
                     _afterAutoSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the line spacing (in points) for paragraph.
-        /// </summary>
-        public float LineSpacing
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.LineSpacing ?? _styleFormat.LineSpacing;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.LineSpacing ?? _styleHierarchyFormat.LineSpacing;
-                }
-                else
-                {
-                    return _lineSpacing;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.LineSpacing = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.LineSpacing = value;
-                }
-                else
-                {
-                    _lineSpacing = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the line spacing rule of paragraph.
-        /// </summary>
-        public LineSpacingRule LineSpacingRule
-        {
-            get
-            {
-                if (_ownerParagraph != null)
-                {
-                    return _curPHld.LineSpacingRule != LineSpacingRule.None ? _curPHld.LineSpacingRule : _styleFormat.LineSpacingRule;
-                }
-                else if (_ownerStyle != null)
-                {
-                    return _curSHld.LineSpacingRule != LineSpacingRule.None ? _curSHld.LineSpacingRule : _styleHierarchyFormat.LineSpacingRule;
-                }
-                else
-                {
-                    return _lineSpacingRule;
-                }
-            }
-            set
-            {
-                if (_ownerParagraph != null)
-                {
-                    _curPHld.LineSpacingRule = value;
-                }
-                else if (_ownerStyle != null)
-                {
-                    _curSHld.LineSpacingRule = value;
-                }
-                else
-                {
-                    _lineSpacingRule = value;
                 }
             }
         }
@@ -878,11 +422,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.ContextualSpacing ?? _styleFormat.ContextualSpacing;
+                    // direct formatting
+                    if (_directPHld.ContextualSpacing != null) return _directPHld.ContextualSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.ContextualSpacing != null) return inheritedStyle.ContextualSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.ContextualSpacing;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.ContextualSpacing ?? _styleHierarchyFormat.ContextualSpacing;
+                    // table style
+                    if (_tblStyleHld?.ContextualSpacing != null) return _tblStyleHld.ContextualSpacing;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.ContextualSpacing != null) return inheritedStyle.ContextualSpacing;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.ContextualSpacing;
                 }
                 else
                 {
@@ -893,11 +449,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.ContextualSpacing = value;
+                    _directPHld.ContextualSpacing = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.ContextualSpacing = value;
+                    if (_tblStyleHld != null) _tblStyleHld.ContextualSpacing = value;
+                    else _directSHld.ContextualSpacing = value;
                 }
                 else
                 {
@@ -915,11 +472,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.SnapToGrid ?? _styleFormat.SnapToGrid;
+                    // direct formatting
+                    if (_directPHld.SnapToGrid != null) return _directPHld.SnapToGrid;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.SnapToGrid != null) return inheritedStyle.SnapToGrid;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.SnapToGrid;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.SnapToGrid ?? _styleHierarchyFormat.SnapToGrid;
+                    // table style
+                    if (_tblStyleHld?.SnapToGrid != null) return _tblStyleHld.SnapToGrid;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.SnapToGrid != null) return inheritedStyle.SnapToGrid;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.SnapToGrid;
                 }
                 else
                 {
@@ -930,11 +499,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.SnapToGrid = value;
+                    _directPHld.SnapToGrid = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.SnapToGrid = value;
+                    if (_tblStyleHld != null) _tblStyleHld.SnapToGrid = value;
+                    else _directSHld.SnapToGrid = value;
                 }
                 else
                 {
@@ -955,11 +525,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.WidowControl ?? _styleFormat.WidowControl;
+                    // direct formatting
+                    if (_directPHld.WidowControl != null) return _directPHld.WidowControl;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.WidowControl != null) return inheritedStyle.WidowControl;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.WidowControl;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.WidowControl ?? _styleHierarchyFormat.WidowControl;
+                    // table style
+                    if (_tblStyleHld?.WidowControl != null) return _tblStyleHld.WidowControl;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.WidowControl != null) return inheritedStyle.WidowControl;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.WidowControl;
                 }
                 else
                 {
@@ -970,11 +552,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.WidowControl = value;
+                    _directPHld.WidowControl = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.WidowControl = value;
+                    if (_tblStyleHld != null) _tblStyleHld.WidowControl = value;
+                    else _directSHld.WidowControl = value;
                 }
                 else
                 {
@@ -992,11 +575,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.KeepNext ?? _styleFormat.KeepNext;
+                    // direct formatting
+                    if (_directPHld.KeepNext != null) return _directPHld.KeepNext;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.KeepNext != null) return inheritedStyle.KeepNext;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.KeepNext;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.KeepNext ?? _styleHierarchyFormat.KeepNext;
+                    // table style
+                    if (_tblStyleHld?.KeepNext != null) return _tblStyleHld.KeepNext;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.KeepNext != null) return inheritedStyle.KeepNext;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.KeepNext;
                 }
                 else
                 {
@@ -1007,11 +602,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.KeepNext = value;
+                    _directPHld.KeepNext = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.KeepNext = value;
+                    if (_tblStyleHld != null) _tblStyleHld.KeepNext = value;
+                    else _directSHld.KeepNext = value;
                 }
                 else
                 {
@@ -1029,11 +625,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.KeepLines ?? _styleFormat.KeepLines;
+                    // direct formatting
+                    if (_directPHld.KeepLines != null) return _directPHld.KeepLines;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.KeepLines != null) return inheritedStyle.KeepLines;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.KeepLines;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.KeepLines ?? _styleHierarchyFormat.KeepLines;
+                    // table style
+                    if (_tblStyleHld?.KeepLines != null) return _tblStyleHld.KeepLines;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.KeepLines != null) return inheritedStyle.KeepLines;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.KeepLines;
                 }
                 else
                 {
@@ -1044,11 +652,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.KeepLines = value;
+                    _directPHld.KeepLines = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.KeepLines = value;
+                    if (_tblStyleHld != null) _tblStyleHld.KeepLines = value;
+                    else _directSHld.KeepLines = value;
                 }
                 else
                 {
@@ -1066,11 +675,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.PageBreakBefore ?? _styleFormat.PageBreakBefore;
+                    // direct formatting
+                    if (_directPHld.PageBreakBefore != null) return _directPHld.PageBreakBefore;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.PageBreakBefore != null) return inheritedStyle.PageBreakBefore;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.PageBreakBefore;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.PageBreakBefore ?? _styleHierarchyFormat.PageBreakBefore;
+                    // table style
+                    if (_tblStyleHld?.PageBreakBefore != null) return _tblStyleHld.PageBreakBefore;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.PageBreakBefore != null) return inheritedStyle.PageBreakBefore;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.PageBreakBefore;
                 }
                 else
                 {
@@ -1081,11 +702,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.PageBreakBefore = value;
+                    _directPHld.PageBreakBefore = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.PageBreakBefore = value;
+                    if (_tblStyleHld != null) _tblStyleHld.PageBreakBefore = value;
+                    else _directSHld.PageBreakBefore = value;
                 }
                 else
                 {
@@ -1105,11 +727,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.SuppressLineNumbers ?? _styleFormat.SuppressLineNumbers;
+                    // direct formatting
+                    if (_directPHld.SuppressLineNumbers != null) return _directPHld.SuppressLineNumbers;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.SuppressLineNumbers != null) return inheritedStyle.SuppressLineNumbers;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.SuppressLineNumbers;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.SuppressLineNumbers ?? _styleHierarchyFormat.SuppressLineNumbers;
+                    // table style
+                    if (_tblStyleHld?.SuppressLineNumbers != null) return _tblStyleHld.SuppressLineNumbers;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.SuppressLineNumbers != null) return inheritedStyle.SuppressLineNumbers;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.SuppressLineNumbers;
                 }
                 else
                 {
@@ -1120,11 +754,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.SuppressLineNumbers = value;
+                    _directPHld.SuppressLineNumbers = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.SuppressLineNumbers = value;
+                    if (_tblStyleHld != null) _tblStyleHld.SuppressLineNumbers = value;
+                    else _directSHld.SuppressLineNumbers = value;
                 }
                 else
                 {
@@ -1142,11 +777,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.SuppressAutoHyphens ?? _styleFormat.SuppressAutoHyphens;
+                    // direct formatting
+                    if (_directPHld.SuppressAutoHyphens != null) return _directPHld.SuppressAutoHyphens;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.SuppressAutoHyphens != null) return inheritedStyle.SuppressAutoHyphens;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.SuppressAutoHyphens;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.SuppressAutoHyphens ?? _styleHierarchyFormat.SuppressAutoHyphens;
+                    // table style
+                    if (_tblStyleHld?.SuppressAutoHyphens != null) return _tblStyleHld.SuppressAutoHyphens;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.SuppressAutoHyphens != null) return inheritedStyle.SuppressAutoHyphens;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.SuppressAutoHyphens;
                 }
                 else
                 {
@@ -1157,11 +804,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.SuppressAutoHyphens = value;
+                    _directPHld.SuppressAutoHyphens = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.SuppressAutoHyphens = value;
+                    if (_tblStyleHld != null) _tblStyleHld.SuppressAutoHyphens = value;
+                    else _directSHld.SuppressAutoHyphens = value;
                 }
                 else
                 {
@@ -1181,11 +829,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.Kinsoku ?? _styleFormat.Kinsoku;
+                    // direct formatting
+                    if (_directPHld.Kinsoku != null) return _directPHld.Kinsoku;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.Kinsoku != null) return inheritedStyle.Kinsoku;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.Kinsoku;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.Kinsoku ?? _styleHierarchyFormat.Kinsoku;
+                    // table style
+                    if (_tblStyleHld?.Kinsoku != null) return _tblStyleHld.Kinsoku;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.Kinsoku != null) return inheritedStyle.Kinsoku;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.Kinsoku;
                 }
                 else
                 {
@@ -1196,11 +856,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.Kinsoku = value;
+                    _directPHld.Kinsoku = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.Kinsoku = value;
+                    if (_tblStyleHld != null) _tblStyleHld.Kinsoku = value;
+                    else _directSHld.Kinsoku = value;
                 }
                 else
                 {
@@ -1218,11 +879,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.WordWrap ?? _styleFormat.WordWrap;
+                    // direct formatting
+                    if (_directPHld.WordWrap != null) return _directPHld.WordWrap;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.WordWrap != null) return inheritedStyle.WordWrap;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.WordWrap;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.WordWrap ?? _styleHierarchyFormat.WordWrap;
+                    // table style
+                    if (_tblStyleHld?.WordWrap != null) return _tblStyleHld.WordWrap;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.WordWrap != null) return inheritedStyle.WordWrap;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.WordWrap;
                 }
                 else
                 {
@@ -1233,11 +906,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.WordWrap = value;
+                    _directPHld.WordWrap = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.WordWrap = value;
+                    if (_tblStyleHld != null) _tblStyleHld.WordWrap = value;
+                    else _directSHld.WordWrap = value;
                 }
                 else
                 {
@@ -1255,11 +929,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.OverflowPunctuation ?? _styleFormat.OverflowPunctuation;
+                    // direct formatting
+                    if (_directPHld.OverflowPunctuation != null) return _directPHld.OverflowPunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.OverflowPunctuation != null) return inheritedStyle.OverflowPunctuation;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.OverflowPunctuation;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.OverflowPunctuation ?? _styleHierarchyFormat.OverflowPunctuation;
+                    // table style
+                    if (_tblStyleHld?.OverflowPunctuation != null) return _tblStyleHld.OverflowPunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.OverflowPunctuation != null) return inheritedStyle.OverflowPunctuation;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.OverflowPunctuation;
                 }
                 else
                 {
@@ -1270,11 +956,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.OverflowPunctuation = value;
+                    _directPHld.OverflowPunctuation = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.OverflowPunctuation = value;
+                    if (_tblStyleHld != null) _tblStyleHld.OverflowPunctuation = value;
+                    else _directSHld.OverflowPunctuation = value;
                 }
                 else
                 {
@@ -1294,11 +981,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.TopLinePunctuation ?? _styleFormat.TopLinePunctuation;
+                    // direct formatting
+                    if (_directPHld.TopLinePunctuation != null) return _directPHld.TopLinePunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.TopLinePunctuation != null) return inheritedStyle.TopLinePunctuation;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.TopLinePunctuation;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.TopLinePunctuation ?? _styleHierarchyFormat.TopLinePunctuation;
+                    // table style
+                    if (_tblStyleHld?.TopLinePunctuation != null) return _tblStyleHld.TopLinePunctuation;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.TopLinePunctuation != null) return inheritedStyle.TopLinePunctuation;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.TopLinePunctuation;
                 }
                 else
                 {
@@ -1309,11 +1008,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.TopLinePunctuation = value;
+                    _directPHld.TopLinePunctuation = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.TopLinePunctuation = value;
+                    if (_tblStyleHld != null) _tblStyleHld.TopLinePunctuation = value;
+                    else _directSHld.TopLinePunctuation = value;
                 }
                 else
                 {
@@ -1331,11 +1031,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AutoSpaceDE ?? _styleFormat.AutoSpaceDE;
+                    // direct formatting
+                    if (_directPHld.AutoSpaceDE != null) return _directPHld.AutoSpaceDE;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.AutoSpaceDE != null) return inheritedStyle.AutoSpaceDE;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDE;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.AutoSpaceDE ?? _styleHierarchyFormat.AutoSpaceDE;
+                    // table style
+                    if (_tblStyleHld?.AutoSpaceDE != null) return _tblStyleHld.AutoSpaceDE;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.AutoSpaceDE != null) return inheritedStyle.AutoSpaceDE;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDE;
                 }
                 else
                 {
@@ -1346,11 +1058,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.AutoSpaceDE = value;
+                    _directPHld.AutoSpaceDE = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.AutoSpaceDE = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AutoSpaceDE = value;
+                    else _directSHld.AutoSpaceDE = value;
                 }
                 else
                 {
@@ -1368,11 +1081,23 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    return _curPHld.AutoSpaceDN ?? _styleFormat.AutoSpaceDN;
+                    // direct formatting
+                    if (_directPHld.AutoSpaceDN != null) return _directPHld.AutoSpaceDN;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.AutoSpaceDN != null) return inheritedStyle.AutoSpaceDN;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDN;
                 }
                 else if (_ownerStyle != null)
                 {
-                    return _curSHld.AutoSpaceDN ?? _styleHierarchyFormat.AutoSpaceDN;
+                    // table style
+                    if (_tblStyleHld?.AutoSpaceDN != null) return _tblStyleHld.AutoSpaceDN;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.AutoSpaceDN != null) return inheritedStyle.AutoSpaceDN;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.AutoSpaceDN;
                 }
                 else
                 {
@@ -1383,11 +1108,12 @@ namespace Berry.Docx.Formatting
             {
                 if (_ownerParagraph != null)
                 {
-                    _curPHld.AutoSpaceDN = value;
+                    _directPHld.AutoSpaceDN = value;
                 }
                 else if (_ownerStyle != null)
                 {
-                    _curSHld.AutoSpaceDN = value;
+                    if (_tblStyleHld != null) _tblStyleHld.AutoSpaceDN = value;
+                    else _directSHld.AutoSpaceDN = value;
                 }
                 else
                 {
@@ -1395,11 +1121,676 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of all text on each line displayed within a paragraph.
+        /// </summary>
+        public VerticalTextAlignment TextAlignment
+        {
+            get
+            {
+                if (_ownerParagraph != null)
+                {
+                    // direct formatting
+                    if (_directPHld.TextAlignment != null) return _directPHld.TextAlignment;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (inheritedStyle.TextAlignment != null) return inheritedStyle.TextAlignment;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.TextAlignment;
+                }
+                else if (_ownerStyle != null)
+                {
+                    // table style
+                    if (_tblStyleHld?.TextAlignment != null) return _tblStyleHld.TextAlignment;
+                    // paragraph style inheritance
+                    ParagraphPropertiesHolder inheritedStyle = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                    if (inheritedStyle.TextAlignment != null) return inheritedStyle.TextAlignment;
+                    // document defaults
+                    return _doc.DefaultFormat.ParagraphFormat.TextAlignment;
+                }
+                else
+                {
+                    return _textAlignment;
+                }
+            }
+            set
+            {
+                if (_ownerParagraph != null)
+                {
+                    _directPHld.TextAlignment = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.TextAlignment = value;
+                    else _directSHld.TextAlignment = value;
+                }
+                else
+                {
+                    _textAlignment = value;
+                }
+            }
+        }
+        #endregion
+
+        #region Borders & Tabs
+        /// <summary>
+        /// Gets paragraph borders.
+        /// </summary>
+        public Borders Borders => _borders;
+
+        /// <summary>
+        /// Gets paragraph tab stops.
+        /// </summary>
+        public TabStops Tabs => _tabs;
         #endregion
 
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Gets the left indent of the paragraph.
+        /// </summary>
+        /// <returns></returns>
+        public Indentation GetLeftIndent()
+        {
+            Indentation ind = null;
+            if (_ownerParagraph != null)
+            {
+                ind = ParagraphPropertiesHolder.GetParagraphLeftIndentation(_doc, _ownerParagraph);
+            }
+            else if(_ownerStyle != null)
+            {
+                ind = ParagraphPropertiesHolder.GetStyleLeftIndentation(_doc, _ownerStyle);
+            }
+            return ind ?? new Indentation(0, IndentationUnit.Character);
+        }
+
+        /// <summary>
+        /// Sets the left indent for paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="unit"></param>
+        public void SetLeftIndent(float val, IndentationUnit unit)
+        {
+            if(_ownerParagraph != null)
+            {
+                SpecialIndentation hangingInd = ParagraphPropertiesHolder.GetParagraphSpecialPointsIndentation(_doc, _ownerParagraph);
+                if(unit == IndentationUnit.Character)
+                {
+                    _directPHld.LeftIndent = val * 5;
+                    if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                    {
+                        _directPHld.LeftIndent = val * 5 + hangingInd.Val;
+                    }
+                    _directPHld.LeftCharsIndent = val;
+                }
+                else
+                {
+                    _directPHld.LeftCharsIndent = 0;
+                    if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                    {
+                        _directPHld.LeftIndent = val + hangingInd.Val;
+                    }
+                    else
+                    {
+                        _directPHld.LeftIndent = val;
+                    }
+                }
+            }
+            else if(_ownerStyle != null)
+            {
+                SpecialIndentation hangingInd = ParagraphPropertiesHolder.GetStyleSpecialPointsIndentation(_doc, _ownerStyle);
+                if (_tblStyleHld != null)
+                {
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _tblStyleHld.LeftIndent = val * 5;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _tblStyleHld.LeftIndent = val * 5 + hangingInd.Val;
+                        }
+                        _tblStyleHld.LeftCharsIndent = val;
+                    }
+                    else
+                    {
+                        _tblStyleHld.LeftCharsIndent = 0;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _tblStyleHld.LeftIndent = val + hangingInd.Val;
+                        }
+                        else
+                        {
+                            _tblStyleHld.LeftIndent = val;
+                        }
+                    }
+                }
+                else
+                {
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _directSHld.LeftIndent = val * 5;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _directSHld.LeftIndent = val * 5 + hangingInd.Val;
+                        }
+                        _directSHld.LeftCharsIndent = val;
+                    }
+                    else
+                    {
+                        _directSHld.LeftCharsIndent = 0;
+                        if (hangingInd != null && hangingInd.Type == SpecialIndentationType.Hanging)
+                        {
+                            _directSHld.LeftIndent = val + hangingInd.Val;
+                        }
+                        else
+                        {
+                            _directSHld.LeftIndent = val;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the right indent of the paragraph.
+        /// </summary>
+        /// <returns></returns>
+        public Indentation GetRightIndent()
+        {
+            Indentation ind = null;
+            if (_ownerParagraph != null)
+            {
+                ind = ParagraphPropertiesHolder.GetParagraphRightIndentation(_doc, _ownerParagraph);
+            }
+            else if (_ownerStyle != null)
+            {
+                ind = ParagraphPropertiesHolder.GetStyleRightIndentation(_doc, _ownerStyle);
+            }
+            return ind ?? new Indentation(0, IndentationUnit.Character);
+        }
+
+        /// <summary>
+        /// Sets the right indent for paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="unit"></param>
+        public void SetRightIndent(float val, IndentationUnit unit)
+        {
+            if (_ownerParagraph != null)
+            {
+                if (unit == IndentationUnit.Character)
+                {
+                    _directPHld.RightIndent = val * 5;
+                    _directPHld.RightCharsIndent = val;
+                }
+                else
+                {
+                    _directPHld.RightCharsIndent = 0;
+                    _directPHld.RightIndent = val;
+                }
+            }
+            else if (_ownerStyle != null)
+            {
+                if (_tblStyleHld != null)
+                {
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _tblStyleHld.RightIndent = val * 5;
+                        _tblStyleHld.RightCharsIndent = val;
+                    }
+                    else
+                    {
+                        _tblStyleHld.RightCharsIndent = 0;
+                        _tblStyleHld.RightIndent = val;
+                    }
+                }
+                else
+                {
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _directSHld.RightIndent = val * 5;
+                        _directSHld.RightCharsIndent = val;
+                    }
+                    else
+                    {
+                        _directSHld.RightCharsIndent = 0;
+                        _directSHld.RightIndent = val;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the special indent of the paragraph.
+        /// </summary>
+        /// <returns></returns>
+        public SpecialIndentation GetSpecialIndentation()
+        {
+            SpecialIndentation ind = null;
+            if (_ownerParagraph != null)
+            {
+                 ind = ParagraphPropertiesHolder.GetParagraphSpecialIndentation(_doc, _ownerParagraph);
+            }
+            else if(_ownerStyle != null)
+            {
+                ind = ParagraphPropertiesHolder.GetStyleSpecialIndentation(_doc, _ownerStyle);
+            }
+            return ind ?? new SpecialIndentation(SpecialIndentationType.None, 0, IndentationUnit.Character);
+        }
+
+        /// <summary>
+        /// Sets the special indent for paragraph.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="val"></param>
+        /// <param name="unit"></param>
+        public void SetSpecialIndentation(SpecialIndentationType type, float val = 0, IndentationUnit unit = IndentationUnit.Character)
+        {
+            if(_ownerParagraph != null)
+            {
+                if (type == SpecialIndentationType.FirstLine)
+                {
+                    if(unit == IndentationUnit.Character)
+                    {
+                        _directPHld.HangingIndent = null;
+                        _directPHld.HangingCharsIndent = null;
+                        _directPHld.FirstLineIndent = val * 5;
+                        _directPHld.FirstLineCharsIndent = val;
+                    }
+                    else
+                    {
+                        _directPHld.HangingIndent = null;
+                        _directPHld.HangingCharsIndent = null;
+                        _directPHld.FirstLineCharsIndent = 0;
+                        _directPHld.FirstLineIndent = val;
+                    }
+                }
+                else if(type == SpecialIndentationType.Hanging)
+                {
+                    if (unit == IndentationUnit.Character)
+                    {
+                        _directPHld.FirstLineIndent = null;
+                        _directPHld.FirstLineCharsIndent = null;
+                        _directPHld.HangingIndent = val * 5;
+                        _directPHld.HangingCharsIndent = val;
+                    }
+                    else
+                    {
+                        Indentation ind = GetLeftIndent();
+                        float leftTemp = ind.Unit == IndentationUnit.Point ? ind.Val : -1;
+
+                        _directPHld.FirstLineIndent = null;
+                        _directPHld.FirstLineCharsIndent = null;
+                        _directPHld.HangingCharsIndent = 0;
+                        _directPHld.HangingIndent = val;
+                        // 重新设置左缩进
+                        if(leftTemp >= 0) SetLeftIndent(leftTemp, IndentationUnit.Point);
+                    }
+                }
+                else
+                {
+                    _directPHld.HangingIndent = null;
+                    _directPHld.HangingCharsIndent = null;
+                    _directPHld.FirstLineCharsIndent = 0;
+                    _directPHld.FirstLineIndent = 0;
+                }
+            }
+            else if(_ownerStyle != null)
+            {
+                if (_tblStyleHld != null)
+                {
+                    if (type == SpecialIndentationType.FirstLine)
+                    {
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _tblStyleHld.HangingIndent = null;
+                            _tblStyleHld.HangingCharsIndent = null;
+                            _tblStyleHld.FirstLineIndent = val * 5;
+                            _tblStyleHld.FirstLineCharsIndent = val;
+                        }
+                        else
+                        {
+                            _tblStyleHld.HangingIndent = null;
+                            _tblStyleHld.HangingCharsIndent = null;
+                            _tblStyleHld.FirstLineCharsIndent = 0;
+                            _tblStyleHld.FirstLineIndent = val;
+                        }
+                    }
+                    else if (type == SpecialIndentationType.Hanging)
+                    {
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _tblStyleHld.FirstLineIndent = null;
+                            _tblStyleHld.FirstLineCharsIndent = null;
+                            _tblStyleHld.HangingIndent = val * 5;
+                            _tblStyleHld.HangingCharsIndent = val;
+                        }
+                        else
+                        {
+                            _tblStyleHld.FirstLineIndent = null;
+                            _tblStyleHld.FirstLineCharsIndent = null;
+                            _tblStyleHld.HangingCharsIndent = 0;
+                            _tblStyleHld.HangingIndent = val;
+                        }
+                    }
+                    else
+                    {
+                        _tblStyleHld.HangingIndent = null;
+                        _tblStyleHld.HangingCharsIndent = null;
+                        _tblStyleHld.FirstLineCharsIndent = 0;
+                        _tblStyleHld.FirstLineIndent = 0;
+                    }
+                }
+                else
+                {
+                    if (type == SpecialIndentationType.FirstLine)
+                    {
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _directSHld.HangingIndent = null;
+                            _directSHld.HangingCharsIndent = null;
+                            _directSHld.FirstLineIndent = val * 5;
+                            _directSHld.FirstLineCharsIndent = val;
+                        }
+                        else
+                        {
+                            _directSHld.HangingIndent = null;
+                            _directSHld.HangingCharsIndent = null;
+                            _directSHld.FirstLineCharsIndent = 0;
+                            _directSHld.FirstLineIndent = val;
+                        }
+                    }
+                    else if (type == SpecialIndentationType.Hanging)
+                    {
+                        if (unit == IndentationUnit.Character)
+                        {
+                            _directSHld.FirstLineIndent = null;
+                            _directSHld.FirstLineCharsIndent = null;
+                            _directSHld.HangingIndent = val * 5;
+                            _directSHld.HangingCharsIndent = val;
+                        }
+                        else
+                        {
+                            _directSHld.FirstLineIndent = null;
+                            _directSHld.FirstLineCharsIndent = null;
+                            _directSHld.HangingCharsIndent = 0;
+                            _directSHld.HangingIndent = val;
+                        }
+                    }
+                    else
+                    {
+                        _directSHld.HangingIndent = null;
+                        _directSHld.HangingCharsIndent = null;
+                        _directSHld.FirstLineCharsIndent = 0;
+                        _directSHld.FirstLineIndent = 0;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the spacing above the paragraph.
+        /// </summary>
+        /// <returns></returns>
+        public Spacing GetBeforeSpacing()
+        {
+            FloatValue beforeSpacing = null;
+            FloatValue beforeSpacingLines = null;
+            if(_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                beforeSpacing = _directPHld.BeforeSpacing ?? style.BeforeSpacing;
+                beforeSpacingLines = _directPHld.BeforeLinesSpacing ?? style.BeforeLinesSpacing;
+            }
+            else if(_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                beforeSpacing = style.BeforeSpacing;
+                beforeSpacingLines = style.BeforeLinesSpacing;
+            }
+            if(beforeSpacingLines != null && beforeSpacingLines != 0)
+            {
+                return new Spacing(beforeSpacingLines, SpacingUnit.Line);
+            }
+            else if(beforeSpacing != null && beforeSpacing != 0)
+            {
+                return new Spacing(beforeSpacing, SpacingUnit.Point);
+            }
+            return new Spacing(0, SpacingUnit.Line);
+        }
+
+        /// <summary>
+        /// Sets the spacing above the paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="unit"></param>
+        public void SetBeforeSpacing(float val, SpacingUnit unit)
+        {
+            if(_ownerParagraph != null)
+            {
+                if(unit == SpacingUnit.Line)
+                {
+                    _directPHld.BeforeSpacing = val * 5;
+                    _directPHld.BeforeLinesSpacing = val;
+                }
+                else
+                {
+                    _directPHld.BeforeLinesSpacing = 0;
+                    _directPHld.BeforeSpacing = val;
+                }
+            }
+            else if(_ownerStyle != null)
+            {
+                if (_tblStyleHld != null)
+                {
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _tblStyleHld.BeforeSpacing = val * 5;
+                        _tblStyleHld.BeforeLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _tblStyleHld.BeforeLinesSpacing = 0;
+                        _tblStyleHld.BeforeSpacing = val;
+                    }
+                }
+                else
+                {
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _directSHld.BeforeSpacing = val * 5;
+                        _directSHld.BeforeLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _directSHld.BeforeLinesSpacing = 0;
+                        _directSHld.BeforeSpacing = val;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the spacing below the paragraph.
+        /// </summary>
+        /// <returns></returns>
+        public Spacing GetAfterSpacing()
+        {
+            FloatValue afterSpacing = null;
+            FloatValue afterSpacingLines = null;
+            if (_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                afterSpacing = _directPHld.AfterSpacing ?? style.AfterSpacing;
+                afterSpacingLines = _directPHld.AfterLinesSpacing ?? style.AfterLinesSpacing;
+            }
+            else if (_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                afterSpacing = style.AfterSpacing;
+                afterSpacingLines = style.AfterLinesSpacing;
+            }
+            if (afterSpacingLines != null && afterSpacingLines != 0)
+            {
+                return new Spacing(afterSpacingLines, SpacingUnit.Line);
+            }
+            else if (afterSpacing != null && afterSpacing != 0)
+            {
+                return new Spacing(afterSpacing, SpacingUnit.Point);
+            }
+            return new Spacing(0, SpacingUnit.Line);
+        }
+
+        /// <summary>
+        /// Sets the spacing below the paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="unit"></param>
+        public void SetAfterSpacing(float val, SpacingUnit unit)
+        {
+            if (_ownerParagraph != null)
+            {
+                if (unit == SpacingUnit.Line)
+                {
+                    _directPHld.AfterSpacing = val * 5;
+                    _directPHld.AfterLinesSpacing = val;
+                }
+                else
+                {
+                    _directPHld.AfterLinesSpacing = 0;
+                    _directPHld.AfterSpacing = val;
+                }
+            }
+            else if (_ownerStyle != null)
+            {
+                if (_tblStyleHld != null)
+                {
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _tblStyleHld.AfterSpacing = val * 5;
+                        _tblStyleHld.AfterLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _tblStyleHld.AfterLinesSpacing = 0;
+                        _tblStyleHld.AfterSpacing = val;
+                    }
+                }
+                else
+                {
+                    if (unit == SpacingUnit.Line)
+                    {
+                        _directSHld.AfterSpacing = val * 5;
+                        _directSHld.AfterLinesSpacing = val;
+                    }
+                    else
+                    {
+                        _directSHld.AfterLinesSpacing = 0;
+                        _directSHld.AfterSpacing = val;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the spacing between lines in paragraph.
+        /// </summary>
+        /// <returns></returns>
+        public LineSpacing GetLineSpacing()
+        {
+            FloatValue lineSpacing = null;
+            EnumValue<LineSpacingRule> rule = null; 
+            if(_ownerParagraph != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                lineSpacing = _directPHld.LineSpacing ?? style.LineSpacing;
+                rule = _directPHld.LineSpacingRule ?? style.LineSpacingRule;
+            }
+            else if(_ownerStyle != null)
+            {
+                ParagraphPropertiesHolder style = ParagraphPropertiesHolder.GetParagraphStyleFormatRecursively(_doc, _ownerStyle);
+                lineSpacing = style.LineSpacing;
+                rule = style.LineSpacingRule;
+            }
+            if(rule != null && lineSpacing != null)
+            {
+                if (rule == LineSpacingRule.Multiple)
+                    return new LineSpacing(lineSpacing / 12, rule);
+                else
+                    return new LineSpacing(lineSpacing, rule);
+            }
+            else if(lineSpacing != null)
+            {
+                return new LineSpacing(lineSpacing / 12, LineSpacingRule.Multiple);
+            }
+            else
+            {
+                return new LineSpacing(1, LineSpacingRule.Multiple);
+            }
+        }
+
+        /// <summary>
+        /// Sets the spacing between lines in paragraph.
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="rule"></param>
+        public void SetLineSpacing(float val, LineSpacingRule rule)
+        {
+            if(_ownerParagraph != null)
+            {
+                if(rule == LineSpacingRule.Multiple)
+                {
+                    _directPHld.LineSpacing = val * 12;
+                    _directPHld.LineSpacingRule = rule;
+                }
+                else
+                {
+                    _directPHld.LineSpacing = val;
+                    _directPHld.LineSpacingRule = rule;
+                }   
+            }
+            else if(_ownerStyle != null)
+            {
+                if (_tblStyleHld != null)
+                {
+                    if (rule == LineSpacingRule.Multiple)
+                    {
+                        _tblStyleHld.LineSpacing = val * 12;
+                        _tblStyleHld.LineSpacingRule = rule;
+                    }
+                    else
+                    {
+                        _tblStyleHld.LineSpacing = val;
+                        _tblStyleHld.LineSpacingRule = rule;
+                    }
+                }
+                else
+                {
+                    if (rule == LineSpacingRule.Multiple)
+                    {
+                        _directSHld.LineSpacing = val * 12;
+                        _directSHld.LineSpacingRule = rule;
+                    }
+                    else
+                    {
+                        _directSHld.LineSpacing = val;
+                        _directSHld.LineSpacingRule = rule;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears all paragraph formats.
+        /// </summary>
+        public void ClearFormatting()
+        {
+            _directPHld?.ClearFormatting();
+            if(_tblStyleHld != null) _tblStyleHld.ClearFormatting();
+            else _directSHld?.ClearFormatting();
+        }
+
         /// <summary>
         /// Remove the text box options of paragraph.
         /// </summary>
@@ -1407,76 +1798,12 @@ namespace Berry.Docx.Formatting
         {
             if (_ownerParagraph != null)
             {
-                _curPHld.RemoveFrame();
+                _directPHld.RemoveFrame();
             }
             else if (_ownerStyle != null)
             {
-                _curSHld.RemoveFrame();
+                _directSHld.RemoveFrame();
             }
-        }
-        #endregion
-
-        #region Private Methods
-        /// <summary>
-        /// Returns the paragraph format that specified in the style hierarchy of a style.
-        /// </summary>
-        /// <param name="style"> The style</param>
-        /// <returns>The paragraph format that specified in the style hierarchy.</returns>
-        private ParagraphFormat GetStyleParagraphFormatRecursively(OOxml.Style style)
-        {
-            ParagraphFormat format = new ParagraphFormat();
-            ParagraphFormat baseFormat = new ParagraphFormat();
-            // Gets base style format.
-            OOxml.Style baseStyle = style.GetBaseStyle();
-            if (baseStyle != null)
-                baseFormat = GetStyleParagraphFormatRecursively(baseStyle);
-
-            ParagraphPropertiesHolder curSHld = new ParagraphPropertiesHolder(_document, style.StyleParagraphProperties);
-            // Normal
-            format.Justification = curSHld.Justification != JustificationType.None ? curSHld.Justification : baseFormat.Justification;
-            format.OutlineLevel = curSHld.OutlineLevel != OutlineLevelType.None ? curSHld.OutlineLevel : baseFormat.OutlineLevel;
-            // Indentation
-            format.LeftIndent = curSHld.LeftIndent ?? baseFormat.LeftIndent;
-            format.LeftCharsIndent = curSHld.LeftCharsIndent ?? baseFormat.LeftCharsIndent;
-            format.RightIndent = curSHld.RightIndent ?? baseFormat.RightIndent;
-            format.RightCharsIndent = curSHld.RightCharsIndent ?? baseFormat.RightCharsIndent;
-            format.FirstLineIndent = curSHld.FirstLineIndent ?? baseFormat.FirstLineIndent;
-            format.FirstLineCharsIndent = curSHld.FirstLineCharsIndent ?? baseFormat.FirstLineCharsIndent;
-            format.HangingIndent = curSHld.HangingIndent ?? baseFormat.HangingIndent;
-            format.HangingCharsIndent = curSHld.HangingCharsIndent ?? baseFormat.HangingCharsIndent;
-            format.MirrorIndents = curSHld.MirrorIndents ?? baseFormat.MirrorIndents;
-            format.AdjustRightIndent = curSHld.AdjustRightIndent ?? baseFormat.AdjustRightIndent;
-            // Spacing
-            format.BeforeSpacing = curSHld.BeforeSpacing ?? baseFormat.BeforeSpacing;
-            format.BeforeLinesSpacing = curSHld.BeforeLinesSpacing ?? baseFormat.BeforeLinesSpacing;
-            format.BeforeAutoSpacing = curSHld.BeforeAutoSpacing ?? baseFormat.BeforeAutoSpacing;
-            format.AfterSpacing = curSHld.AfterSpacing ?? baseFormat.AfterSpacing;
-            format.AfterLinesSpacing = curSHld.AfterLinesSpacing ?? baseFormat.AfterLinesSpacing;
-            format.AfterAutoSpacing = curSHld.AfterAutoSpacing ?? baseFormat.AfterAutoSpacing;
-            format.LineSpacing = curSHld.LineSpacing ?? baseFormat.LineSpacing;
-            format.LineSpacingRule = curSHld.LineSpacingRule != LineSpacingRule.None
-                ? curSHld.LineSpacingRule : baseFormat.LineSpacingRule;
-            format.ContextualSpacing = curSHld.ContextualSpacing ?? baseFormat.ContextualSpacing;
-            format.SnapToGrid = curSHld.SnapToGrid ?? baseFormat.SnapToGrid;
-            // Pagination
-            format.WidowControl = curSHld.WidowControl ?? baseFormat.WidowControl;
-            format.KeepNext = curSHld.KeepNext ?? baseFormat.KeepNext;
-            format.KeepLines = curSHld.KeepLines ?? baseFormat.KeepLines;
-            format.PageBreakBefore = curSHld.PageBreakBefore ?? baseFormat.PageBreakBefore;
-            // Formatting Exceptions
-            format.SuppressLineNumbers = curSHld.SuppressLineNumbers ?? baseFormat.SuppressLineNumbers;
-            format.SuppressAutoHyphens = curSHld.SuppressAutoHyphens ?? baseFormat.SuppressAutoHyphens;
-            // Line Break
-            format.Kinsoku = curSHld.Kinsoku ?? baseFormat.Kinsoku;
-            format.WordWrap = curSHld.WordWrap ?? baseFormat.WordWrap;
-            format.OverflowPunctuation = curSHld.OverflowPunctuation ?? baseFormat.OverflowPunctuation;
-            // Character Spacing
-            format.TopLinePunctuation = curSHld.TopLinePunctuation ?? baseFormat.TopLinePunctuation;
-            format.AutoSpaceDE = curSHld.AutoSpaceDE ?? baseFormat.AutoSpaceDE;
-            format.AutoSpaceDN = curSHld.AutoSpaceDN ?? baseFormat.AutoSpaceDN;
-            // Numbering
-            format.NumberingFormat = curSHld.NumberingFormat ?? baseFormat.NumberingFormat;
-            return format;
         }
         #endregion
     }

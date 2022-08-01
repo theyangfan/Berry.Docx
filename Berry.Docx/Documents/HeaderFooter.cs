@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx;
-using Berry.Docx.Utils;
 using Berry.Docx.Collections;
 
 namespace Berry.Docx.Documents
@@ -107,7 +106,7 @@ namespace Berry.Docx.Documents
                     {
                         if (!_section.XElement.ChildElements.Contains(_hdrRef))
                         {
-                            string id = RelationshipIdGenerator.Generate(_doc);
+                            string id = IDGenerator.GenerateRelationshipID(_doc);
                             PartGenerator.AddNewHeaderPart(_doc, id);
                             W.HeaderReference hdrRef = (W.HeaderReference)_hdrRef.CloneNode(true);
                             hdrRef.Id = id;
@@ -118,7 +117,7 @@ namespace Berry.Docx.Documents
                     {
                         if (!_section.XElement.ChildElements.Contains(_ftrRef))
                         {
-                            string id = RelationshipIdGenerator.Generate(_doc);
+                            string id = IDGenerator.GenerateRelationshipID(_doc);
                             PartGenerator.AddNewFooterPart(_doc, id);
                             W.FooterReference ftrRef = (W.FooterReference)_ftrRef.CloneNode(true);
                             ftrRef.Id = id;
