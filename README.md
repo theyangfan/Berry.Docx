@@ -120,6 +120,10 @@ namespace Example
 
 # 更新日志（Release History）
 
+### v1.3.1 (2022-08-02)
+
+- 修复 `TextMatch.GetAsOneRange()` 方法抛出异常的问题 (Fixed the bug that  `TextMatch.GetAsOneRange()` throw an exception)。
+
 ### v1.3.0 (2022-08-01)
 
 - 支持更多字符和段落格式 (*Support more character and paragraph format*)；
