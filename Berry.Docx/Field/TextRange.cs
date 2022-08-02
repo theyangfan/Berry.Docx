@@ -44,12 +44,12 @@ namespace Berry.Docx.Field
 
         #region Public Properties
         /// <summary>
-        /// The DocumentObject type.
+        /// Gets the DocumentObject type.
         /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.TextRange;
 
         /// <summary>
-        /// The text.
+        /// Gets or sets the text.
         /// </summary>
         public string Text
         {
@@ -71,12 +71,16 @@ namespace Berry.Docx.Field
         }
 
         /// <summary>
-        /// The character format.
+        /// Gets the character format.
         /// </summary>
         public override CharacterFormat CharacterFormat => _cFormat;
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Gets the character style.
+        /// </summary>
+        /// <returns></returns>
         public CharacterStyle GetStyle()
         {
             if (_ownerRun?.RunProperties?.RunStyle != null)
@@ -90,6 +94,11 @@ namespace Berry.Docx.Field
             return null;
         }
 
+        /// <summary>
+        /// Applies the character style with the specified name. 
+        /// If the specified style not exist, a new style with the specified name will be created.
+        /// </summary>
+        /// <param name="styleName">The style name.</param>
         public void ApplyStyle(string styleName)
         {
             if (_ownerRun == null || string.IsNullOrEmpty(styleName)) return;
@@ -110,6 +119,10 @@ namespace Berry.Docx.Field
             _ownerRun.RunProperties.RunStyle = new W.RunStyle() { Val = linkedStyle.StyleId };
         }
 
+        /// <summary>
+        /// Applies the built-in style.
+        /// </summary>
+        /// <param name="bstyle">The built-in style.</param>
         public void ApplyStyle(BuiltInStyle bstyle)
         {
             if(_ownerRun == null) return;

@@ -12,6 +12,7 @@ using Berry.Docx.Field;
 using Berry.Docx.Formatting;
 
 using P = DocumentFormat.OpenXml.Packaging;
+using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Test
@@ -19,21 +20,18 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\bugs\14.大唐渭河热电厂热控专业检修工艺规程 389(校正).docx";
-            //string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
-            bool begin = false;
             using (Document doc = new Document(src))
             {
-                foreach(Paragraph p in doc.Paragraphs)
+                TextMatch match = doc.Find(new Regex("电阻测"));
+                if(match != null)
                 {
-                    if (p.Text.Contains("电气线路的绝缘测试条件"))
-                    {
-                        begin = true;
-                    }
-                    if(begin) Console.WriteLine(p.Text);
+                    TextRange tr = match.GetAsOneRange();
+                    tr.CharacterFormat.UnderlineStyle = UnderlineStyle.Dotted;
+                    tr.CharacterFormat.TextColor = Color.Red;
                 }
-                //doc.SaveAs(dst);
+                doc.SaveAs(dst);
             }
         }
     }

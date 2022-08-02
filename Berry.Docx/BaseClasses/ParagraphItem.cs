@@ -230,7 +230,7 @@ namespace Berry.Docx.Field
         /// Inserts the specified item before the current item.
         /// </summary>
         /// <param name="item">The specified paragraph item.</param>
-        public void InserBeforeSelf(ParagraphItem item)
+        public void InsertBeforeSelf(ParagraphItem item)
         {
             if (InsideRun)
             {
@@ -252,11 +252,11 @@ namespace Berry.Docx.Field
         /// Inserts the specified item before the current item.
         /// </summary>
         /// <param name="obj">The specified paragraph item.</param>
-        public override void InserBeforeSelf(DocumentObject obj)
+        public override void InsertBeforeSelf(DocumentObject obj)
         {
             if(obj is ParagraphItem)
             {
-                InserBeforeSelf(obj as ParagraphItem);
+                InsertBeforeSelf(obj as ParagraphItem);
             }
         }
 
