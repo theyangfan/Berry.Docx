@@ -81,7 +81,7 @@ namespace Berry.Docx
         /// Inserts the specified object immediately before the current object.
         /// </summary>
         /// <param name="obj">The new object to insert.</param>
-        public override void InserBeforeSelf(DocumentObject obj)
+        public override void InsertBeforeSelf(DocumentObject obj)
         {
             XElement.InsertBeforeSelf(obj.XElement);
         }

@@ -91,9 +91,9 @@ namespace Berry.Docx.Field
                     }
                     else
                     {
-                        W.Run run = (W.Run)tr.XElement.CloneNode(true);
-                        tr.XElement.InsertAfterSelf(run);
-                        new TextRange(tr.Document, run).Text = tr.Text.Substring(endPos + 1);
+                        TextRange rightTr = tr.Clone() as TextRange;
+                        tr.InsertAfterSelf(rightTr);
+                        rightTr.Text = tr.Text.Substring(endPos + 1);
                         tr.Text = tr.Text.Substring(startPos, endPos - startPos + 1);
                         return tr;
                     }
@@ -102,20 +102,20 @@ namespace Berry.Docx.Field
                 {
                     if (endPos == tr.Text.Length - 1)
                     {
-                        W.Run run = (W.Run)tr.XElement.CloneNode(true);
-                        tr.XElement.InsertBeforeSelf(run);
-                        new TextRange(tr.Document, run).Text = tr.Text.Substring(0, startPos);
+                        TextRange leftTr = tr.Clone() as TextRange;
+                        tr.InsertBeforeSelf(leftTr);
+                        leftTr.Text = tr.Text.Substring(0, startPos);
                         tr.Text = tr.Text.Substring(startPos);
                         return tr;
                     }
                     else
                     {
-                        W.Run run1 = (W.Run)tr.XElement.CloneNode(true);
-                        W.Run run2 = (W.Run)tr.XElement.CloneNode(true);
-                        tr.XElement.InsertBeforeSelf(run1);
-                        tr.XElement.InsertAfterSelf(run2);
-                        new TextRange(tr.Document, run1).Text = tr.Text.Substring(0, startPos);
-                        new TextRange(tr.Document, run2).Text = tr.Text.Substring(endPos + 1);
+                        TextRange leftTr = tr.Clone() as TextRange;
+                        TextRange rightTr = tr.Clone() as TextRange;
+                        tr.InsertBeforeSelf(leftTr);
+                        tr.InsertAfterSelf(rightTr);
+                        leftTr.Text = tr.Text.Substring(0, startPos);
+                        rightTr.Text = tr.Text.Substring(endPos + 1);
                         tr.Text = tr.Text.Substring(startPos, endPos - startPos + 1);
                         return tr;
                     }
@@ -130,9 +130,9 @@ namespace Berry.Docx.Field
                     {
                         if(startPos != 0)
                         {
-                            W.Run run = (W.Run)tr.XElement.CloneNode(true);
-                            tr.XElement.InsertBeforeSelf(run);
-                            new TextRange(tr.Document, run).Text = tr.Text.Substring(0, startPos);
+                            TextRange leftTr = tr.Clone() as TextRange;
+                            tr.InsertBeforeSelf(leftTr);
+                            leftTr.Text = tr.Text.Substring(0, startPos);
                         }
                         tr.Text = Text;
                     }

@@ -16,12 +16,8 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.0</Version>
-    <PackageReleaseNotes>1. 支持更多字符和段落格式 (Support more character and paragraph format)；
-2. 支持读写页面设置 (Support read-write page setup)；
-3. 支持读写段落、字符和表格样式(Support read-write paragraph, table and character style)；
-4. 支持读写列表样式 (Support read-write list style)；
-5. 支持查找文本 (*Support find text*)。
+    <Version>1.3.1</Version>
+    <PackageReleaseNotes>修复 TextMatch.GetAsOneRange() 方法抛出异常的问题 (Fixed the bug that TextMatch.GetAsOneRange() throw an exception)。
 </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/theyangfan/Berry.Docx</RepositoryUrl>
   </PropertyGroup>

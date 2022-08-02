@@ -87,7 +87,7 @@ namespace Berry.Docx
         /// Inserts the specified object immediately before the current object.
         /// </summary>
         /// <param name="obj">The new object to insert.</param>
-        public abstract void InserBeforeSelf(DocumentObject obj);
+        public abstract void InsertBeforeSelf(DocumentObject obj);
 
         /// <summary>
         /// Inserts the specified object immediately after the current object.

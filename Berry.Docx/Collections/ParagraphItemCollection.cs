@@ -67,7 +67,7 @@ namespace Berry.Docx.Collections
             }
             else
             {
-                _items.ElementAt(index).InserBeforeSelf(item);
+                _items.ElementAt(index).InsertBeforeSelf(item);
             }
         }
     }
