@@ -2185,4 +2185,19 @@ namespace Berry.Docx
         /// </summary>
         Bottom = 2
     }
+
+    /// <summary>
+    /// Defines the page borders position enumeration.
+    /// </summary>
+    public enum PageBordersPosition
+    {
+        /// <summary>
+        /// Page Border Is Positioned Relative to Page Edges. 
+        /// </summary>
+        Page = 0,
+        /// <summary>
+        /// Page Border Is Positioned Relative to Text Extents. 
+        /// </summary>
+        Text = 1
+    }
 }

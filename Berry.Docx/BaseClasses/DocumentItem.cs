@@ -27,6 +27,7 @@ namespace Berry.Docx
         private readonly Document _doc;
         private readonly O.OpenXmlElement _element;
         #endregion
+
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the DocumentItem class using the supplied underlying OpenXmlElement.
