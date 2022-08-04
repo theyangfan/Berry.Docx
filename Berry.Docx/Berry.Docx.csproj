@@ -24,6 +24,7 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
 5. 支持查找文本 (*Support find text*)。
 </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/theyangfan/Berry.Docx</RepositoryUrl>
+    <PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -44,6 +45,10 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+    <None Include="..\logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Include="..\README.md">
       <Pack>True</Pack>
