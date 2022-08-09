@@ -17,8 +17,8 @@ namespace Berry.Docx.Documents
     public class Table : DocumentItem
     {
         #region Private Members
-        private Document _doc;
-        private W.Table _table;
+        private readonly Document _doc;
+        private readonly W.Table _table;
         #endregion
 
         #region Constructors
@@ -31,6 +31,7 @@ namespace Berry.Docx.Documents
         public Table(Document doc, int rowCnt, int columnCnt)
             : this(doc, TableGenerator.GenerateTable(rowCnt, columnCnt))
         {
+
         }
 
         internal Table(Document doc, W.Table table) : base(doc, table)
@@ -41,6 +42,11 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the table format.
+        /// </summary>
+        public TableFormat Format => new TableFormat(_doc, this);
+
         /// <summary>
         /// The DocumentObject type.
         /// </summary>
@@ -90,6 +96,10 @@ namespace Berry.Docx.Documents
             W.TableProperties tblPr = _table.GetFirstChild<W.TableProperties>();
             tblPr.TableStyle = new W.TableStyle() { Val = style.StyleId };
         }
+        #endregion
+
+        #region Internal
+        internal new W.Table XElement => _table;
         #endregion
 
         #region Private Methods

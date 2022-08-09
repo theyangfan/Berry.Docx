@@ -15,7 +15,7 @@ namespace Berry.Docx.Formatting
     /// Repersent the list style, Each style has 9 levels.
     /// <para>表示一个多级列表样式，每种样式有9个级别. </para>
     /// </summary>
-    public class ListStyle
+    public class ListStyle : IEquatable<ListStyle>
     {
         #region Private Members
         private readonly Document _doc;
@@ -54,6 +54,11 @@ namespace Berry.Docx.Formatting
         public static ListStyle Create(Document doc, BuiltInListStyle style)
         {
             return new ListStyle(doc, BuiltInListStyleGenerator.Generate(doc, style));
+        }
+
+        public bool Equals(ListStyle style)
+        {
+            return this.AbstractNum.Equals(style.AbstractNum);
         }
         #endregion
 

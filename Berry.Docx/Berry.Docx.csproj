@@ -16,7 +16,7 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.2</Version>
+    <Version>1.3.5</Version>
     <PackageReleaseNotes>1. 支持更多字符和段落格式 (Support more character and paragraph format)；
 2. 支持读写页面设置 (Support read-write page setup)；
 3. 支持读写段落、字符和表格样式(Support read-write paragraph, table and character style)；

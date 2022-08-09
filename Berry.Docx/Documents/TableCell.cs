@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {
@@ -44,6 +45,8 @@ namespace Berry.Docx.Documents
         /// The child paragraphs.
         /// </summary>
         public ParagraphCollection Paragraphs => new ParagraphCollection(_cell, GetParagraphs());
+
+        public TableBorders Borders => new TableBorders(_ownerDoc, this);
 
         #endregion
 
@@ -128,6 +131,10 @@ namespace Berry.Docx.Documents
             W.TableCell newCell = (W.TableCell)_cell.CloneNode(true);
             return new TableCell(_ownerDoc, _ownerTable, _ownerTableRow, newCell);
         }
+        #endregion
+
+        #region Internal
+        internal new W.TableCell XElement => _cell;
         #endregion
 
         #region Private Methods

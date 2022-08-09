@@ -191,6 +191,29 @@ namespace Berry.Docx.Formatting
             ApplyStyle(style, levelNumber);
         }
 
+        /// <summary>
+        /// Clears the list format.
+        /// </summary>
+        public void ClearFormatting()
+        {
+            if(_ownerParagraph?.ParagraphProperties?.NumberingProperties != null)
+            {
+                _ownerParagraph.ParagraphProperties.NumberingProperties = null;
+            }
+            else if(_ownerStyle != null)
+            {
+                if(_ownerStyle.StyleParagraphProperties?.NumberingProperties != null)
+                {
+                    _ownerStyle.StyleParagraphProperties.NumberingProperties = null;
+                }
+                W.Style baseStyle = _ownerStyle.GetBaseStyle(_doc);
+                if (baseStyle != null)
+                {
+                    new ListFormat(_doc, baseStyle).ClearFormatting();
+                }
+            }
+        }
+
         #endregion
 
         #region Private Methods

@@ -472,7 +472,7 @@ namespace Berry.Docx.Documents
         #region Private Methods
         private IEnumerable<ParagraphItem> ParagraphItems()
         {
-            foreach(DocumentItem item in ChildObjects)
+            foreach(DocumentItem item in base.ChildObjects)
             {
                 yield return item as ParagraphItem;
             }

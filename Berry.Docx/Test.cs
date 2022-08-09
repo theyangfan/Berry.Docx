@@ -22,14 +22,17 @@ namespace Test
         public static void Main() {
             string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
-            using (Document doc = new Document())
+            using (Document doc = new Document(src))
             {
-                Paragraph p = doc.CreateParagraph();
-                p.Text = "wqwqewqe";
-                doc.Sections[0].ChildObjects.Add(p);
-                doc.Sections[0].PageSetup.Borders.Left.Style = BorderStyle.ThinThickSmallGap;
-                doc.Sections[0].PageSetup.Borders.Left.Color = Color.Red;
-                doc.Sections[0].PageSetup.Borders.Left.Width = 3;
+                Paragraph p = doc.Paragraphs[0];
+                Table table = doc.Tables[1];
+
+                table.Format.FirstRowEnabled = true;
+                table.Format.FirstColumnEnabled = true;
+                table.Format.LastRowEnabled = true;
+                table.Format.LastColumnEnabled = true;
+
+
                 doc.SaveAs(dst);
             }
         }

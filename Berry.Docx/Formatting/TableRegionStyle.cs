@@ -18,7 +18,7 @@ namespace Berry.Docx.Formatting
         private readonly TableRegionType _region;
         private readonly CharacterFormat _cFormat;
         private readonly ParagraphFormat _pFormat;
-        private readonly TableCellBorders _borders;
+        private readonly TableBorders _borders;
         #endregion
 
         #region Constructors
@@ -29,7 +29,7 @@ namespace Berry.Docx.Formatting
             _region = region;
             _cFormat = new CharacterFormat(doc, style, region);
             _pFormat = new ParagraphFormat(doc, style, region);
-            _borders = new TableCellBorders(doc, style, region);
+            _borders = new TableBorders(doc, style, region);
         }
         #endregion
 
@@ -125,7 +125,7 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets the table cell borders.
         /// </summary>
-        public TableCellBorders Borders => _borders;
+        public TableBorders Borders => _borders;
         #endregion
     }
 
