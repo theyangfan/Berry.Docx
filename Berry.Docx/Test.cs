@@ -24,16 +24,13 @@ namespace Test
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.Paragraphs[0];
-                Table table = doc.Tables[1];
-
-                table.Format.FirstRowEnabled = true;
-                table.Format.FirstColumnEnabled = true;
-                table.Format.LastRowEnabled = true;
-                table.Format.LastColumnEnabled = true;
+                foreach(Paragraph p in doc.Paragraphs)
+                {
+                    Console.WriteLine(p.ListText);
+                }
 
 
-                doc.SaveAs(dst);
+               // doc.SaveAs(dst);
             }
         }
     }

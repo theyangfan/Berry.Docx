@@ -60,6 +60,18 @@ namespace Berry.Docx.Formatting
         {
             return this.AbstractNum.Equals(style.AbstractNum);
         }
+
+        public static bool operator ==(ListStyle lhs, ListStyle rhs)
+        {
+            if (ReferenceEquals(lhs, rhs)) return true;
+            if (((object)lhs == null) || (object)rhs == null) return false;
+            return lhs.AbstractNum == rhs.AbstractNum;
+        }
+
+        public static bool operator !=(ListStyle lhs, ListStyle rhs)
+        {
+            return !(lhs == rhs);
+        }
         #endregion
 
         #region Internal Properties

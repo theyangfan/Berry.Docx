@@ -484,7 +484,7 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// 段落编号(默认为1)
         /// </summary>
-        private string ListText
+        public string ListText
         {
             get
             {
@@ -500,7 +500,47 @@ namespace Berry.Docx.Documents
                     lvlText = lvlText.RxReplace(@"%[0-9]", "一");
                 
                 return lvlText;*/
-                return "";
+                ListStyle curStyle = ListFormat.CurrentStyle;
+                int curLevel = ListFormat.ListLevelNumber;
+                if (curStyle == null) return string.Empty;
+                int[] levels = new int[9];
+                foreach(Paragraph p in _doc.Paragraphs)
+                {
+
+                    ListStyle style = p.ListFormat.CurrentStyle;
+                    int level = p.ListFormat.ListLevelNumber;
+                    int startNumber = p.ListFormat.CurrentLevel?.StartNumber ?? 1;
+                    if(style != null && style == curStyle && level > 0)
+                    {
+                        if (levels[level - 1] == 0) levels[level - 1] = startNumber;
+                        else levels[level - 1]++;
+                        for (int i = 0; i < levels.Length; i++)
+                        {
+                            if(i < level)
+                            {
+                                if (levels[i] == 0) levels[i] = 1;
+                            }
+                            else
+                            {
+                                levels[i] = 0;
+                            }
+                        }
+                        if (p == this) break;
+                    }
+                }
+                
+                string pattern = ListFormat.CurrentLevel.Pattern;
+                StringBuilder str = new StringBuilder();
+                foreach(var i in pattern)
+                {
+                    int.TryParse(i.ToString(), out int lvl);
+                    if (lvl > 0)
+                        str.Append(levels[lvl - 1]);
+                    else
+                        str.Append(i);
+                }
+
+                return str.ToString();
             }
         }
 
