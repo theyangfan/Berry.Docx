@@ -22,11 +22,13 @@ namespace Test
         public static void Main() {
             string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
+
             using (Document doc = new Document(src))
             {
                 foreach(Paragraph p in doc.Paragraphs)
                 {
-                    Console.WriteLine(p.ListText);
+                    if(!string.IsNullOrEmpty(p.ListText))
+                        Console.WriteLine(p.ListText);
                 }
 
 
