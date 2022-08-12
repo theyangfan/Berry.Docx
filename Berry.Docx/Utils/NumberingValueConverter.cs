@@ -59,25 +59,27 @@ namespace Berry.Docx
 
         public static string IntToChineseCounting(int num)
         {
+            if (num < 0) return string.Empty;
             StringBuilder symbols = new StringBuilder();
             string strNum = num.ToString();
             while(strNum.Length > 0)
             {
                 if(strNum.Length == 1)
                 {
-                    if(strNum != "0")
-                        symbols.Append(cnSymbols[strNum.ToInt()]);
+                    if (strNum[0] != '0' || symbols.Length == 0) symbols.Append(cnSymbols[strNum.ToInt()]);
                     break;
                 }
                 else
                 {
                     symbols.Append(cnSymbols[strNum[0] - 48]);
-                    if (strNum[0] != '0')
+                    if (strNum[0] != '0' || strNum.Length == 5 || strNum.Length == 9)
                         symbols.Append(unitSymbols[strNum.Length]);
                     strNum = strNum.Remove(0, 1);
                 }
             }
-            return symbols.ToString().RxReplace("零+", "零");
+            string symbol = symbols.ToString().RxReplace("零+", "零").RxReplace("零亿", "亿").RxReplace("零万","万");
+            if(symbol.Length > 1 && symbol.EndsWith("零")) symbol = symbol.Substring(0, symbol.Length - 1);
+            return symbol;
         }
 
         public static string IntToUpperRoman(int num)

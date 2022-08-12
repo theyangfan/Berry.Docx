@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Diagnostics;
 
 using Berry.Docx;
 using Berry.Docx.Documents;
@@ -20,20 +21,25 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\bugs\北京开放大学-原稿-702(校正).docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
-
+            Stopwatch sw = Stopwatch.StartNew();
+            sw.Start();
+            // 打开指定文档
             using (Document doc = new Document(src))
             {
-                foreach(Paragraph p in doc.Paragraphs)
+                // 打印所有段落的编号
+                foreach (Paragraph p in doc.Paragraphs)
                 {
                     if(!string.IsNullOrEmpty(p.ListText))
-                        Console.WriteLine(p.ListText);
+                    Console.WriteLine(p.ListText);
                 }
 
 
-               // doc.SaveAs(dst);
+                // doc.SaveAs(dst);
             }
+            sw.Stop();
+            Console.WriteLine(sw.Elapsed);
         }
     }
 }

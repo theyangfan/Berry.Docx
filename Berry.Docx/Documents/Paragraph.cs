@@ -125,25 +125,31 @@ namespace Berry.Docx.Documents
                 ListLevel curLevel = ListFormat.CurrentLevel;
                 if (curStyle == null || curLevel == null) return string.Empty;
 
-                int[] levels = new int[9];
+                int[] levels = new int[9] {-1,-1,-1,-1, -1, -1, -1, -1,-1 };
+
                 foreach (Paragraph p in _doc.Paragraphs)
                 {
-                    ListStyle style = p.ListFormat.CurrentStyle;
-                    int level = p.ListFormat.ListLevelNumber;
-                    int startNumber = p.ListFormat.CurrentLevel?.StartNumber ?? 1;
-                    if (style != null && style == curStyle && level > 0)
+                    ListStyle pStyle = p.ListFormat.CurrentStyle;
+                    ListLevel pLevel = p.ListFormat.CurrentLevel;
+                    if (pStyle == null || pLevel == null) continue;
+                    
+                    if (pStyle == curStyle)
                     {
-                        if (levels[level - 1] == 0) levels[level - 1] = startNumber;
-                        else levels[level - 1]++;
+                        int levelNum = p.ListFormat.ListLevelNumber;
+                        if (levels[levelNum - 1] == -1) 
+                            levels[levelNum - 1] = pLevel.StartNumber;
+                        else 
+                            levels[levelNum - 1]++;
+
                         for (int i = 0; i < levels.Length; i++)
                         {
-                            if (i < level)
+                            if (i < levelNum)
                             {
-                                if (levels[i] == 0) levels[i] = 1;
+                                if (levels[i] == -1) levels[i] = curStyle.Levels[i].StartNumber;
                             }
                             else
                             {
-                                levels[i] = 0;
+                                levels[i] = -1;
                             }
                         }
                         if (p == this) break;
