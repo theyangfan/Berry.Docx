@@ -85,7 +85,8 @@ namespace Berry.Docx
         SdtBlock,
         SdtContent,
         SdtProperties,
-        Break
+        Break,
+        Tab
     }
 
     /// <summary>

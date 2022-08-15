@@ -21,25 +21,21 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\bugs\北京开放大学-原稿-702(校正).docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
-            Stopwatch sw = Stopwatch.StartNew();
-            sw.Start();
-            // 打开指定文档
+
             using (Document doc = new Document(src))
             {
-                // 打印所有段落的编号
-                foreach (Paragraph p in doc.Paragraphs)
+                Paragraph p = doc.Paragraphs[0];
+                foreach(Tab tab in p.ChildItems.OfType<Tab>())
                 {
-                    if(!string.IsNullOrEmpty(p.ListText))
-                    Console.WriteLine(p.ListText);
+                    tab.CharacterFormat.FontNameEastAsia = "微软雅黑";
+                    tab.CharacterFormat.FontNameAscii = "微软雅黑";
+                    tab.CharacterFormat.FontSize = 14.0f;
                 }
 
-
-                // doc.SaveAs(dst);
+                doc.SaveAs(dst);
             }
-            sw.Stop();
-            Console.WriteLine(sw.Elapsed);
         }
     }
 }

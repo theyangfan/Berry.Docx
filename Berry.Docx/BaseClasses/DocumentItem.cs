@@ -189,6 +189,11 @@ namespace Berry.Docx
             {
                 yield return new Break(_doc, run, run.Elements<W.Break>().First());
             }
+            // tab
+            if (run.Elements<W.TabChar>().Any())
+            {
+                yield return new Tab(_doc, run, run.GetFirstChild<W.TabChar>());
+            }
             // drawing
             foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
             {
