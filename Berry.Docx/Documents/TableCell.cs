@@ -51,6 +51,27 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Public Methods
+        public void SetCellWidth(float width, CellWidthType cellWidthType)
+        {
+            if(_cell.TableCellProperties == null)
+            {
+                _cell.TableCellProperties = new W.TableCellProperties();
+            }
+            if(cellWidthType == CellWidthType.Auto)
+            {
+                _cell.TableCellProperties.TableCellWidth = new W.TableCellWidth() { Width = "0", Type = W.TableWidthUnitValues.Auto };
+            }
+            else if(cellWidthType == CellWidthType.Percent)
+            {
+                int percent = (int)Math.Round(width * 50);
+                _cell.TableCellProperties.TableCellWidth = new W.TableCellWidth() { Width = percent.ToString(), Type = W.TableWidthUnitValues.Pct };
+            }
+            else
+            {
+                int w = (int)Math.Round(width * 20);
+                _cell.TableCellProperties.TableCellWidth = new W.TableCellWidth() { Width = w.ToString(), Type = W.TableWidthUnitValues.Dxa };
+            }
+        }
 
         /// <summary>
         /// Inserts a new row above.

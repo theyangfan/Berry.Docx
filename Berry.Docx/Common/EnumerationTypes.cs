@@ -2201,4 +2201,61 @@ namespace Berry.Docx
         /// </summary>
         Text = 1
     }
+
+    /// <summary>
+    /// Defines the AutoFitMethod enumeration.
+    /// </summary>
+    public enum AutoFitMethod
+    {
+        /// <summary>
+        /// Resize the table columns to be the same with as contents.
+        /// </summary>
+        AutoFitContents = 0,
+        /// <summary>
+        /// Resize the table columns to stretch across the page.
+        /// </summary>
+        AutoFitWindow = 1,
+        /// <summary>
+        /// Resize the table columns to fixed width.
+        /// </summary>
+        FixedColumnWidth = 2
+    }
+
+    /// <summary>
+    /// Defines the CellWidthType enumeration.
+    /// </summary>
+    public enum CellWidthType
+    {
+        /// <summary>
+        /// Automatically Determined Width. 
+        /// </summary>
+        Auto = 0,
+        /// <summary>
+        /// Width in Percent.
+        /// </summary>
+        Percent = 1,
+        /// <summary>
+        /// Width in Point. 
+        /// </summary>
+        Point = 2
+    }
+
+    /// <summary>
+    /// Defines the TableRowAlignment enumeration.
+    /// </summary>
+    public enum TableRowAlignment
+    {
+        /// <summary>
+        /// Left.
+        /// </summary>
+        Left = 0,
+        /// <summary>
+        /// Center.
+        /// </summary>
+        Center = 1,
+        /// <summary>
+        /// Right.
+        /// </summary>
+        Right = 2
+    }
 }

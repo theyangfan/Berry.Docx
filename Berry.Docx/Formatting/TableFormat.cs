@@ -19,6 +19,7 @@ namespace Berry.Docx.Formatting
             _xtable = table.XElement;
         }
 
+        #region Public Properties
         /// <summary>
         /// Specifies that the first row format shall be applied to the table.
         /// </summary>
@@ -139,6 +140,41 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public TableRowAlignment HorizontalAlignment
+        {
+            get
+            {
+                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
+                if(tblPr?.TableJustification != null)
+                {
+                    return tblPr.TableJustification.Val.Value.Convert<TableRowAlignment>();
+                }
+                return TableRowAlignment.Left;
+            }
+            set
+            {
+                if (_xtable.GetFirstChild<W.TableProperties>() == null)
+                {
+                    _xtable.AddChild(new W.TableProperties());
+                }
+                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
+                tblPr.TableJustification = new W.TableJustification() { Val = value.Convert<W.TableRowAlignmentValues>() };
+                foreach(TableRow row in _table.Rows)
+                {
+                    row.HorizontalAlignment = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the table borders.
+        /// </summary>
         public TableBorders Borders => new TableBorders(_doc, _table);
+        #endregion
+
+        #region Public Methods
+        
+        #endregion
+
     }
 }

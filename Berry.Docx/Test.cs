@@ -26,13 +26,9 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                Paragraph p = doc.Paragraphs[0];
-                foreach(Tab tab in p.ChildItems.OfType<Tab>())
-                {
-                    tab.CharacterFormat.FontNameEastAsia = "微软雅黑";
-                    tab.CharacterFormat.FontNameAscii = "微软雅黑";
-                    tab.CharacterFormat.FontSize = 14.0f;
-                }
+                Table table = doc.Tables[0];
+                table.AutoFit(AutoFitMethod.AutoFitContents);
+                table.Format.HorizontalAlignment = TableRowAlignment.Center;
 
                 doc.SaveAs(dst);
             }

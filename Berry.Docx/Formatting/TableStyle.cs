@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Formatting
@@ -71,6 +72,19 @@ namespace Berry.Docx.Formatting
         /// Gets the last column format of the current table.
         /// </summary>
         public TableRegionStyle LastColumn => _lastColumn;
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Gets the default table style.
+        /// <para>获取默认表格样式.</para>
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns>The default table style.</returns>
+        public static TableStyle Default(Document doc)
+        {
+            return doc.Styles.Where(s => s.Type == StyleType.Table && s.IsDefault).FirstOrDefault() as TableStyle;
+        }
         #endregion
     }
 }
