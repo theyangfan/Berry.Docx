@@ -27,8 +27,11 @@ namespace Test
             using (Document doc = new Document(src))
             {
                 Table table = doc.Tables[0];
-                table.AutoFit(AutoFitMethod.AutoFitContents);
+                //table.AutoFit(AutoFitMethod.AutoFitContents);
                 table.Format.HorizontalAlignment = TableRowAlignment.Center;
+                table.Format.WrapTextAround = true;
+                Console.WriteLine(table.Format.HorizontalAlignment);
+                Console.WriteLine(table.Format.WrapTextAround);
 
                 doc.SaveAs(dst);
             }

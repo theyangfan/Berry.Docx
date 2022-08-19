@@ -43,6 +43,9 @@ namespace Berry.Docx.Documents
         /// </summary>
         public TableCellCollection Cells => new TableCellCollection(_row, GetTableCells());
 
+        /// <summary>
+        /// Gets or sets the horizontal alignment.
+        /// </summary>
         public TableRowAlignment HorizontalAlignment
         {
             get
@@ -66,6 +69,35 @@ namespace Berry.Docx.Documents
                 }
                 W.TableJustification jc = _row.TableRowProperties.GetFirstChild<W.TableJustification>();
                 jc.Val = value.Convert<W.TableRowAlignmentValues>();
+            }
+        }
+
+        public bool AllowBreakAcrossPages
+        {
+            get
+            {
+                W.CantSplit cantSplit = _row.TableRowProperties?.GetFirstChild<W.CantSplit>();
+                if(cantSplit != null)
+                {
+                    if (cantSplit.Val == null) return false;
+                    return cantSplit.Val.Value == W.OnOffOnlyValues.Off;
+                }
+                return _ownerTable.GetStyle().WholeTable.AllowBreakAcrossPages;
+            }
+            set
+            {
+                if (value)
+                {
+                    _row.TableRowProperties?.GetFirstChild<W.CantSplit>()?.Remove();
+                }
+                else
+                {
+                    if (_row.TableRowProperties == null)
+                    {
+                        _row.TableRowProperties = new W.TableRowProperties();
+                    }
+                    _row.TableRowProperties.AddChild(new W.CantSplit());
+                }
             }
         }
         #endregion

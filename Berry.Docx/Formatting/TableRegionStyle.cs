@@ -44,6 +44,124 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public ParagraphFormat ParagraphFormat => _pFormat;
 
+        public TableRowAlignment HorizontalAlignment
+        {
+            get
+            {
+                W.TableJustification jc = null;
+                if(_region == TableRegionType.WholeTable)
+                {
+                    jc = _style.StyleTableProperties?.TableJustification;
+                    if(jc == null)
+                    {
+                        W.Style baseStyle = _style.GetBaseStyle(_doc);
+                        if (baseStyle != null)
+                        {
+                            return new TableRegionStyle(_doc, baseStyle, _region).HorizontalAlignment;
+                        }
+                        return TableRowAlignment.Left;
+                    }
+                    return jc.Val.Value.Convert<TableRowAlignment>();
+                }
+                else
+                {
+                    W.TableStyleOverrideValues type = _region.Convert<W.TableStyleOverrideValues>();
+                    W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                    jc = tblStylePr?.TableStyleConditionalFormattingTableProperties?.TableJustification;
+                    if (jc == null)
+                    {
+                        return new TableRegionStyle(_doc, _style, TableRegionType.WholeTable).HorizontalAlignment;
+                    }
+                    return jc.Val.Value.Convert<TableRowAlignment>();
+                }
+            }
+            set
+            {
+                if (_region == TableRegionType.WholeTable)
+                {
+                    if (_style.StyleTableProperties == null)
+                    {
+                        _style.StyleTableProperties = new W.StyleTableProperties();
+                    }
+                    _style.StyleTableProperties.TableJustification = new W.TableJustification()
+                    {
+                        Val = value.Convert<W.TableRowAlignmentValues>()
+                    };
+                    if (_style.TableStyleConditionalFormattingTableRowProperties == null)
+                    {
+                        _style.TableStyleConditionalFormattingTableRowProperties = new W.TableStyleConditionalFormattingTableRowProperties();
+                    }
+                    _style.TableStyleConditionalFormattingTableRowProperties.AddChild(new W.TableJustification() { Val = value.Convert<W.TableRowAlignmentValues>() });
+                }
+                else if(_region == TableRegionType.FirstRow || _region == TableRegionType.LastRow)
+                {
+                    W.TableStyleOverrideValues type = _region.Convert<W.TableStyleOverrideValues>();
+                    if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                    {
+                        _style.Append(new W.TableStyleProperties() { Type = type });
+                    }
+                    W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                    if (tblStylePr.TableStyleConditionalFormattingTableProperties == null)
+                    {
+                        tblStylePr.TableStyleConditionalFormattingTableProperties = new W.TableStyleConditionalFormattingTableProperties();
+                    }
+                    if (tblStylePr.TableStyleConditionalFormattingTableProperties.TableJustification == null)
+                    {
+                        tblStylePr.TableStyleConditionalFormattingTableProperties.TableJustification = new W.TableJustification();
+                    }
+                    tblStylePr.TableStyleConditionalFormattingTableProperties.TableJustification = new W.TableJustification()
+                    {
+                        Val = value.Convert<W.TableRowAlignmentValues>()
+                    };
+                    if(tblStylePr.TableStyleConditionalFormattingTableRowProperties == null)
+                    {
+                        tblStylePr.TableStyleConditionalFormattingTableRowProperties = new W.TableStyleConditionalFormattingTableRowProperties();
+                    }
+                    tblStylePr.TableStyleConditionalFormattingTableRowProperties.AddChild(new W.TableJustification() { Val = value.Convert<W.TableRowAlignmentValues>() });
+                }
+            }
+        }
+
+        public bool AllowBreakAcrossPages
+        {
+            get
+            {
+                W.CantSplit cantSplit = null;
+                if (_region == TableRegionType.WholeTable)
+                {
+                    cantSplit = _style.TableStyleConditionalFormattingTableRowProperties?.GetFirstChild<W.CantSplit>();
+                    if (cantSplit == null)
+                    {
+                        W.Style baseStyle = _style.GetBaseStyle(_doc);
+                        if (baseStyle != null)
+                        {
+                            return new TableRegionStyle(_doc, baseStyle, _region).AllowBreakAcrossPages;
+                        }
+                        return true;
+                    }
+                    if (cantSplit.Val == null) return false;
+                    return cantSplit.Val.Value == W.OnOffOnlyValues.Off;
+                }
+                return true;
+            }
+            set
+            {
+                if (_region != TableRegionType.WholeTable) return;
+                if (value)
+                {
+                    _style.TableStyleConditionalFormattingTableRowProperties?.GetFirstChild<W.CantSplit>()?.Remove();
+                }
+                else
+                {
+                    if (_style.TableStyleConditionalFormattingTableRowProperties == null)
+                    {
+                        _style.TableStyleConditionalFormattingTableRowProperties = new W.TableStyleConditionalFormattingTableRowProperties();
+                    }
+                    _style.TableStyleConditionalFormattingTableRowProperties.AddChild(new W.CantSplit());
+                }
+            }
+        }
+
         /// <summary>
         /// Gets or sets the table cell vertical alignment.
         /// </summary>

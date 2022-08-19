@@ -140,6 +140,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets the table horizontal alignment.
+        /// </summary>
         public TableRowAlignment HorizontalAlignment
         {
             get
@@ -149,7 +152,7 @@ namespace Berry.Docx.Formatting
                 {
                     return tblPr.TableJustification.Val.Value.Convert<TableRowAlignment>();
                 }
-                return TableRowAlignment.Left;
+                return _table.GetStyle().WholeTable.HorizontalAlignment;
             }
             set
             {
@@ -162,6 +165,44 @@ namespace Berry.Docx.Formatting
                 foreach(TableRow row in _table.Rows)
                 {
                     row.HorizontalAlignment = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the table is floating.
+        /// </summary>
+        public bool WrapTextAround
+        {
+            get
+            {
+                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
+                return tblPr?.TablePositionProperties != null;
+            }
+            set
+            {
+                if (_xtable.GetFirstChild<W.TableProperties>() == null)
+                {
+                    _xtable.AddChild(new W.TableProperties());
+                }
+                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
+                if (value)
+                {
+                    if(tblPr.TablePositionProperties == null)
+                    {
+                        // set initial properties
+                        tblPr.TablePositionProperties = new W.TablePositionProperties()
+                        {
+                            LeftFromText = 180,
+                            RightFromText = 180,
+                            VerticalAnchor = W.VerticalAnchorValues.Text,
+                            TablePositionY = 1
+                        };
+                    }
+                }
+                else
+                {
+                    tblPr.TablePositionProperties = null;
                 }
             }
         }
