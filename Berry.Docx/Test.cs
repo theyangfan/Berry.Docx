@@ -21,17 +21,15 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
-            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
+            string dst = @"C:\Users\tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src))
             {
                 Table table = doc.Tables[0];
                 //table.AutoFit(AutoFitMethod.AutoFitContents);
-                table.Format.HorizontalAlignment = TableRowAlignment.Center;
-                table.Format.WrapTextAround = true;
-                Console.WriteLine(table.Format.HorizontalAlignment);
-                Console.WriteLine(table.Format.WrapTextAround);
+                table.Format.RepeatHeaderRow = true;
+                Console.WriteLine(table.Format.RepeatHeaderRow);
 
                 doc.SaveAs(dst);
             }

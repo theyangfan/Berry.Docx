@@ -46,11 +46,43 @@ namespace Berry.Docx.Documents
         /// </summary>
         public ParagraphCollection Paragraphs => new ParagraphCollection(_cell, GetParagraphs());
 
+        /// <summary>
+        /// Gets the cell borders.
+        /// </summary>
         public TableBorders Borders => new TableBorders(_ownerDoc, this);
+
+        public TableCellVerticalAlignment VerticalCellAlignment
+        {
+            get
+            {
+                W.TableCellVerticalAlignment vAlign = _cell.TableCellProperties?.TableCellVerticalAlignment;
+                if(vAlign == null)
+                {
+                    return vAlign.Val.Value.Convert<TableCellVerticalAlignment>();
+                }
+                return _ownerTable.GetStyle().WholeTable.VerticalCellAlignment;
+            }
+            set
+            {
+                if(_cell.TableCellProperties == null)
+                {
+                    _cell.TableCellProperties = new W.TableCellProperties();
+                }
+                _cell.TableCellProperties.TableCellVerticalAlignment = new W.TableCellVerticalAlignment()
+                {
+                    Val = value.Convert<W.TableVerticalAlignmentValues>()
+                };
+            }
+        }
 
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Sets the width of the current cell.
+        /// </summary>
+        /// <param name="width">The cell width.</param>
+        /// <param name="cellWidthType">The measurement type of the width.  </param>
         public void SetCellWidth(float width, CellWidthType cellWidthType)
         {
             if(_cell.TableCellProperties == null)

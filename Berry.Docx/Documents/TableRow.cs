@@ -72,6 +72,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether allow row to break across pages.
+        /// </summary>
         public bool AllowBreakAcrossPages
         {
             get
@@ -100,6 +103,8 @@ namespace Berry.Docx.Documents
                 }
             }
         }
+
+        
         #endregion
 
         #region Public Methods

@@ -44,6 +44,9 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public ParagraphFormat ParagraphFormat => _pFormat;
 
+        /// <summary>
+        /// Gets or sets the horizontal alignment.
+        /// </summary>
         public TableRowAlignment HorizontalAlignment
         {
             get
@@ -122,6 +125,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether allow row to break across pages.
+        /// </summary>
         public bool AllowBreakAcrossPages
         {
             get

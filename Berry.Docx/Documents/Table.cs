@@ -42,8 +42,14 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the row count.
+        /// </summary>
         public int RowCount => Rows.Count;
 
+        /// <summary>
+        /// Gets the column count.
+        /// </summary>
         public int ColumnCount => Rows[0].Cells.Count;
 
         /// <summary>
@@ -130,6 +136,10 @@ namespace Berry.Docx.Documents
             tblPr.TableStyle = new W.TableStyle() { Val = style.StyleId };
         }
 
+        /// <summary>
+        /// Automatically resize the table columns.
+        /// </summary>
+        /// <param name="method">The resize method.</param>
         public void AutoFit(AutoFitMethod method)
         {
             if (_table.GetFirstChild<W.TableProperties>() == null)
@@ -154,6 +164,13 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Sets the width of the specified column.
+        /// </summary>
+        /// <param name="colIndex">The zero-based column index.</param>
+        /// <param name="width">The column width.</param>
+        /// <param name="cellWidthType">The measurement type of the width.  </param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void SetColumnWidth(int colIndex, float width, CellWidthType cellWidthType)
         {
             if(colIndex < 0 || colIndex >= ColumnCount)

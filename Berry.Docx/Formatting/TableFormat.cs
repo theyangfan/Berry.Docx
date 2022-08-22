@@ -208,6 +208,37 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether repeat the first row as header row at the top of each page.
+        /// </summary>
+        public bool RepeatHeaderRow
+        {
+            get
+            {
+                W.TableRow row = _table.Rows[0].XElement as W.TableRow;
+                W.TableHeader header = row.TableRowProperties.GetFirstChild<W.TableHeader>();
+                if (header == null) return false;
+                if (header.Val == null) return true;
+                return header.Val.Value == W.OnOffOnlyValues.On;
+            }
+            set
+            {
+                W.TableRow row = _table.Rows[0].XElement as W.TableRow;
+                if (value)
+                {
+                    if (row.TableRowProperties == null)
+                    {
+                        row.TableRowProperties = new W.TableRowProperties();
+                    }
+                    row.TableRowProperties.AddChild(new W.TableHeader());
+                }
+                else
+                {
+                    row.TableRowProperties?.GetFirstChild<W.TableHeader>()?.Remove();
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the table borders.
         /// </summary>
         public TableBorders Borders => new TableBorders(_doc, _table);
