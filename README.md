@@ -107,6 +107,7 @@ namespace Example
 | 读写页面设置\|*Read-write page setup*                        |
 | 读写列表样式\|*Read-write list style*                        |
 | 查找文本\|*Find text*                                        |
+| 读写表格格式 \| *Read-write table formats*                   |
 
 <br/>
 
@@ -119,6 +120,10 @@ namespace Example
 <br/>
 
 # 更新日志（Release History）
+
+### v1.3.2 (2022-08-26)
+
+- 支持读写表格格式 (*Support read-write table formats*)。
 
 ### v1.3.1 (2022-08-02)
 
@@ -156,8 +161,6 @@ namespace Example
 <br/>
 
 # 下版本计划（Next Version Plan）
-
-- 支持读写表格格式 (*Support read-write table formats*)
 
 - 支持读写域代码 (*Support read-write field codes*)
 - 支持插入脚注和尾注 (*Support insert footnote and endnote*)

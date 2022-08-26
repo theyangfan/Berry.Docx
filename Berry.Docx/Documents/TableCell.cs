@@ -51,6 +51,9 @@ namespace Berry.Docx.Documents
         /// </summary>
         public TableBorders Borders => new TableBorders(_ownerDoc, this);
 
+        /// <summary>
+        /// Gets or sets the table cell vertical alignment.
+        /// </summary>
         public TableCellVerticalAlignment VerticalCellAlignment
         {
             get

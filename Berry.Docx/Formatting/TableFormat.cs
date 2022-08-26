@@ -6,18 +6,25 @@ using Berry.Docx.Documents;
 
 namespace Berry.Docx.Formatting
 {
+    /// <summary>
+    /// Represents the table format.
+    /// </summary>
     public class TableFormat
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly Table _table;
         private readonly W.Table _xtable;
+        #endregion
 
-        public TableFormat(Document doc, Table table)
+        #region Constructors
+        internal TableFormat(Document doc, Table table)
         {
             _doc = doc;
             _table = table;
             _xtable = table.XElement;
         }
+        #endregion
 
         #region Public Properties
         /// <summary>
@@ -243,10 +250,5 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public TableBorders Borders => new TableBorders(_doc, _table);
         #endregion
-
-        #region Public Methods
-        
-        #endregion
-
     }
 }
