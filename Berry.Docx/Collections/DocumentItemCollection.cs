@@ -115,7 +115,7 @@ namespace Berry.Docx.Collections
             }
             else
             {
-                _items.ElementAt(index).XElement.InsertBeforeSelf(obj.XElement);
+                _items.ElementAt(index).InsertBeforeSelf(obj);
             }
         }
 

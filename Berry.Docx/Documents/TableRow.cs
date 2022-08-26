@@ -42,6 +42,69 @@ namespace Berry.Docx.Documents
         /// The table cells.
         /// </summary>
         public TableCellCollection Cells => new TableCellCollection(_row, GetTableCells());
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment.
+        /// </summary>
+        public TableRowAlignment HorizontalAlignment
+        {
+            get
+            {
+                if(_row.TableRowProperties?.GetFirstChild<W.TableJustification>() != null)
+                {
+                    W.TableJustification jc = _row.TableRowProperties.GetFirstChild<W.TableJustification>();
+                    return jc.Val.Value.Convert<TableRowAlignment>();
+                }
+                return _ownerTable.Format.HorizontalAlignment;
+            }
+            set
+            {
+                if(_row.TableRowProperties == null)
+                {
+                    _row.TableRowProperties = new W.TableRowProperties();
+                }
+                if (_row.TableRowProperties.GetFirstChild<W.TableJustification>() == null)
+                {
+                    _row.TableRowProperties.AddChild(new W.TableJustification());
+                }
+                W.TableJustification jc = _row.TableRowProperties.GetFirstChild<W.TableJustification>();
+                jc.Val = value.Convert<W.TableRowAlignmentValues>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether allow row to break across pages.
+        /// </summary>
+        public bool AllowBreakAcrossPages
+        {
+            get
+            {
+                W.CantSplit cantSplit = _row.TableRowProperties?.GetFirstChild<W.CantSplit>();
+                if(cantSplit != null)
+                {
+                    if (cantSplit.Val == null) return false;
+                    return cantSplit.Val.Value == W.OnOffOnlyValues.Off;
+                }
+                return _ownerTable.GetStyle().WholeTable.AllowBreakAcrossPages;
+            }
+            set
+            {
+                if (value)
+                {
+                    _row.TableRowProperties?.GetFirstChild<W.CantSplit>()?.Remove();
+                }
+                else
+                {
+                    if (_row.TableRowProperties == null)
+                    {
+                        _row.TableRowProperties = new W.TableRowProperties();
+                    }
+                    _row.TableRowProperties.AddChild(new W.CantSplit());
+                }
+            }
+        }
+
+        
         #endregion
 
         #region Public Methods

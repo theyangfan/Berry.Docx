@@ -85,7 +85,8 @@ namespace Berry.Docx
         SdtBlock,
         SdtContent,
         SdtProperties,
-        Break
+        Break,
+        Tab
     }
 
     /// <summary>
@@ -735,970 +736,777 @@ namespace Berry.Docx
         /// Single Line Border.
         /// </summary>
         Thick = 3,
-        //
-        // 摘要:
-        //     Double Line Border.
-        //     When the item is serialized out as xml, its value is "double".
+        /// <summary>
+        /// Double Line Border.
+        /// </summary>
         Double = 4,
-        //
-        // 摘要:
-        //     Dotted Line Border.
-        //     When the item is serialized out as xml, its value is "dotted".
+        /// <summary>
+        /// Dotted Line Border.
+        /// </summary>
         Dotted = 5,
-        //
-        // 摘要:
-        //     Dashed Line Border.
-        //     When the item is serialized out as xml, its value is "dashed".
+        /// <summary>
+        /// Dashed Line Border.
+        /// </summary>
         Dashed = 6,
-        //
-        // 摘要:
-        //     Dot Dash Line Border.
-        //     When the item is serialized out as xml, its value is "dotDash".
+        /// <summary>
+        /// Dot Dash Line Border.
+        /// </summary>
         DotDash = 7,
-        //
-        // 摘要:
-        //     Dot Dot Dash Line Border.
-        //     When the item is serialized out as xml, its value is "dotDotDash".
+        /// <summary>
+        /// Dot Dot Dash Line Border.
+        /// </summary>
         DotDotDash = 8,
-        //
-        // 摘要:
-        //     Triple Line Border.
-        //     When the item is serialized out as xml, its value is "triple".
+        /// <summary>
+        /// Triple Line Border.
+        /// </summary>
         Triple = 9,
-        //
-        // 摘要:
-        //     Thin, Thick Line Border.
-        //     When the item is serialized out as xml, its value is "thinThickSmallGap".
+        /// <summary>
+        /// Thin, Thick Line Border.
+        /// </summary>
         ThinThickSmallGap = 10,
-        //
-        // 摘要:
-        //     Thick, Thin Line Border.
-        //     When the item is serialized out as xml, its value is "thickThinSmallGap".
+        /// <summary>
+        /// Thick, Thin Line Border.
+        /// </summary>
         ThickThinSmallGap = 11,
-        //
-        // 摘要:
-        //     Thin, Thick, Thin Line Border.
-        //     When the item is serialized out as xml, its value is "thinThickThinSmallGap".
+        /// <summary>
+        /// Thin, Thick, Thin Line Border.
+        /// </summary>
         ThinThickThinSmallGap = 12,
-        //
-        // 摘要:
-        //     Thin, Thick Line Border.
-        //     When the item is serialized out as xml, its value is "thinThickMediumGap".
+        /// <summary>
+        /// Thin, Thick Line Border.
+        /// </summary>
         ThinThickMediumGap = 13,
-        //
-        // 摘要:
-        //     Thick, Thin Line Border.
-        //     When the item is serialized out as xml, its value is "thickThinMediumGap".
+        /// <summary>
+        /// Thick, Thin Line Border.
+        /// </summary>
         ThickThinMediumGap = 14,
-        //
-        // 摘要:
-        //     Thin, Thick, Thin Line Border.
-        //     When the item is serialized out as xml, its value is "thinThickThinMediumGap".
+        /// <summary>
+        /// Thin, Thick, Thin Line Border.
+        /// </summary>
         ThinThickThinMediumGap = 15,
-        //
-        // 摘要:
-        //     Thin, Thick Line Border.
-        //     When the item is serialized out as xml, its value is "thinThickLargeGap".
+        /// <summary>
+        /// Thin, Thick Line Border.
+        /// </summary>
         ThinThickLargeGap = 16,
-        //
-        // 摘要:
-        //     Thick, Thin Line Border.
-        //     When the item is serialized out as xml, its value is "thickThinLargeGap".
+        /// <summary>
+        /// Thick, Thin Line Border.
+        /// </summary>
         ThickThinLargeGap = 17,
-        //
-        // 摘要:
-        //     Thin, Thick, Thin Line Border.
-        //     When the item is serialized out as xml, its value is "thinThickThinLargeGap".
+        /// <summary>
+        /// Thin, Thick, Thin Line Border.
+        /// </summary>
         ThinThickThinLargeGap = 18,
-        //
-        // 摘要:
-        //     Wavy Line Border.
-        //     When the item is serialized out as xml, its value is "wave".
+        /// <summary>
+        /// Wavy Line Border.
+        /// </summary>
         Wave = 19,
-        //
-        // 摘要:
-        //     Double Wave Line Border.
-        //     When the item is serialized out as xml, its value is "doubleWave".
+        /// <summary>
+        /// Double Wave Line Border.
+        /// </summary>
         DoubleWave = 20,
-        //
-        // 摘要:
-        //     Dashed Line Border.
-        //     When the item is serialized out as xml, its value is "dashSmallGap".
+        /// <summary>
+        /// Dashed Line Border.
+        /// </summary>
         DashSmallGap = 21,
-        //
-        // 摘要:
-        //     Dash Dot Strokes Line Border.
-        //     When the item is serialized out as xml, its value is "dashDotStroked".
+        /// <summary>
+        /// Dash Dot Strokes Line Border.
+        /// </summary>
         DashDotStroked = 22,
-        //
-        // 摘要:
-        //     3D Embossed Line Border.
-        //     When the item is serialized out as xml, its value is "threeDEmboss".
+        /// <summary>
+        /// 3D Embossed Line Border.
+        /// </summary>
         ThreeDEmboss = 23,
-        //
-        // 摘要:
-        //     3D Engraved Line Border.
-        //     When the item is serialized out as xml, its value is "threeDEngrave".
+        /// <summary>
+        /// 3D Engraved Line Border.
+        /// </summary>
         ThreeDEngrave = 24,
-        //
-        // 摘要:
-        //     Outset Line Border.
-        //     When the item is serialized out as xml, its value is "outset".
+        /// <summary>
+        /// Outset Line Border.
+        /// </summary>
         Outset = 25,
-        //
-        // 摘要:
-        //     Inset Line Border.
-        //     When the item is serialized out as xml, its value is "inset".
+        /// <summary>
+        /// Inset Line Border.
+        /// </summary>
         Inset = 26,
-        //
-        // 摘要:
-        //     Apples Art Border.
-        //     When the item is serialized out as xml, its value is "apples".
+        /// <summary>
+        /// Apples Art Border.
+        /// </summary>
         Apples = 27,
-        //
-        // 摘要:
-        //     Arched Scallops Art Border.
-        //     When the item is serialized out as xml, its value is "archedScallops".
+        /// <summary>
+        /// Arched Scallops Art Border.
+        /// </summary>
         ArchedScallops = 28,
-        //
-        // 摘要:
-        //     Baby Pacifier Art Border.
-        //     When the item is serialized out as xml, its value is "babyPacifier".
+        /// <summary>
+        /// Baby Pacifier Art Border.
+        /// </summary>
         BabyPacifier = 29,
-        //
-        // 摘要:
-        //     Baby Rattle Art Border.
-        //     When the item is serialized out as xml, its value is "babyRattle".
+        /// <summary>
+        /// Baby Rattle Art Border.
+        /// </summary>
         BabyRattle = 30,
-        //
-        // 摘要:
-        //     Three Color Balloons Art Border.
-        //     When the item is serialized out as xml, its value is "balloons3Colors".
+        /// <summary>
+        /// Three Color Balloons Art Border.
+        /// </summary>
         Balloons3Colors = 31,
-        //
-        // 摘要:
-        //     Hot Air Balloons Art Border.
-        //     When the item is serialized out as xml, its value is "balloonsHotAir".
+        /// <summary>
+        /// Hot Air Balloons Art Border.
+        /// </summary>
         BalloonsHotAir = 32,
-        //
-        // 摘要:
-        //     Black Dash Art Border.
-        //     When the item is serialized out as xml, its value is "basicBlackDashes".
+        /// <summary>
+        /// Black Dash Art Border.
+        /// </summary>
         BasicBlackDashes = 33,
-        //
-        // 摘要:
-        //     Black Dot Art Border.
-        //     When the item is serialized out as xml, its value is "basicBlackDots".
+        /// <summary>
+        /// Black Dot Art Border.
+        /// </summary>
         BasicBlackDots = 34,
-        //
-        // 摘要:
-        //     Black Square Art Border.
-        //     When the item is serialized out as xml, its value is "basicBlackSquares".
+        /// <summary>
+        /// Black Square Art Border.
+        /// </summary>
         BasicBlackSquares = 35,
-        //
-        // 摘要:
-        //     Thin Line Art Border.
-        //     When the item is serialized out as xml, its value is "basicThinLines".
+        /// <summary>
+        /// Thin Line Art Border.
+        /// </summary>
         BasicThinLines = 36,
-        //
-        // 摘要:
-        //     White Dash Art Border.
-        //     When the item is serialized out as xml, its value is "basicWhiteDashes".
+        /// <summary>
+        /// White Dash Art Border.
+        /// </summary>
         BasicWhiteDashes = 37,
-        //
-        // 摘要:
-        //     White Dot Art Border.
-        //     When the item is serialized out as xml, its value is "basicWhiteDots".
+        /// <summary>
+        /// White Dot Art Border.
+        /// </summary>
         BasicWhiteDots = 38,
-        //
-        // 摘要:
-        //     White Square Art Border.
-        //     When the item is serialized out as xml, its value is "basicWhiteSquares".
+        /// <summary>
+        /// White Square Art Border.
+        /// </summary>
         BasicWhiteSquares = 39,
-        //
-        // 摘要:
-        //     Wide Inline Art Border.
-        //     When the item is serialized out as xml, its value is "basicWideInline".
+        /// <summary>
+        /// Wide Inline Art Border.
+        /// </summary>
         BasicWideInline = 40,
-        //
-        // 摘要:
-        //     Wide Midline Art Border.
-        //     When the item is serialized out as xml, its value is "basicWideMidline".
+        /// <summary>
+        /// Wide Midline Art Border.
+        /// </summary>
         BasicWideMidline = 41,
-        //
-        // 摘要:
-        //     Wide Outline Art Border.
-        //     When the item is serialized out as xml, its value is "basicWideOutline".
+        /// <summary>
+        /// Wide Outline Art Border.
+        /// </summary>
         BasicWideOutline = 42,
-        //
-        // 摘要:
-        //     Bats Art Border.
-        //     When the item is serialized out as xml, its value is "bats".
+        /// <summary>
+        /// Bats Art Border.
+        /// </summary>
         Bats = 43,
-        //
-        // 摘要:
-        //     Birds Art Border.
-        //     When the item is serialized out as xml, its value is "birds".
+        /// <summary>
+        /// Birds Art Border.
+        /// </summary>
         Birds = 44,
-        //
-        // 摘要:
-        //     Birds Flying Art Border.
-        //     When the item is serialized out as xml, its value is "birdsFlight".
+        /// <summary>
+        /// Birds Flying Art Border.
+        /// </summary>
         BirdsFlight = 45,
-        //
-        // 摘要:
-        //     Cabin Art Border.
-        //     When the item is serialized out as xml, its value is "cabins".
+        /// <summary>
+        /// Cabin Art Border.
+        /// </summary>
         Cabins = 46,
-        //
-        // 摘要:
-        //     Cake Art Border.
-        //     When the item is serialized out as xml, its value is "cakeSlice".
+        /// <summary>
+        /// Cake Art Border.
+        /// </summary>
         CakeSlice = 47,
-        //
-        // 摘要:
-        //     Candy Corn Art Border.
-        //     When the item is serialized out as xml, its value is "candyCorn".
+        /// <summary>
+        /// Candy Corn Art Border.
+        /// </summary>
         CandyCorn = 48,
-        //
-        // 摘要:
-        //     Knot Work Art Border.
-        //     When the item is serialized out as xml, its value is "celticKnotwork".
+        /// <summary>
+        /// Knot Work Art Border.
+        /// </summary>
         CelticKnotwork = 49,
-        //
-        // 摘要:
-        //     Certificate Banner Art Border.
-        //     When the item is serialized out as xml, its value is "certificateBanner".
+        /// <summary>
+        /// Certificate Banner Art Border.
+        /// </summary>
         CertificateBanner = 50,
-        //
-        // 摘要:
-        //     Chain Link Art Border.
-        //     When the item is serialized out as xml, its value is "chainLink".
+        /// <summary>
+        /// Chain Link Art Border.
+        /// </summary>
         ChainLink = 51,
-        //
-        // 摘要:
-        //     Champagne Bottle Art Border.
-        //     When the item is serialized out as xml, its value is "champagneBottle".
+        /// <summary>
+        /// Champagne Bottle Art Border.
+        /// </summary>
         ChampagneBottle = 52,
-        //
-        // 摘要:
-        //     Black and White Bar Art Border.
-        //     When the item is serialized out as xml, its value is "checkedBarBlack".
+        /// <summary>
+        /// Black and White Bar Art Border.
+        /// </summary>
         CheckedBarBlack = 53,
-        //
-        // 摘要:
-        //     Color Checked Bar Art Border.
-        //     When the item is serialized out as xml, its value is "checkedBarColor".
+        /// <summary>
+        /// Color Checked Bar Art Border.
+        /// </summary>
         CheckedBarColor = 54,
-        //
-        // 摘要:
-        //     Checkerboard Art Border.
-        //     When the item is serialized out as xml, its value is "checkered".
+        /// <summary>
+        /// Checkerboard Art Border.
+        /// </summary>
         Checkered = 55,
-        //
-        // 摘要:
-        //     Christmas Tree Art Border.
-        //     When the item is serialized out as xml, its value is "christmasTree".
+        /// <summary>
+        /// Christmas Tree Art Border.
+        /// </summary>
         ChristmasTree = 56,
-        //
-        // 摘要:
-        //     Circles And Lines Art Border.
-        //     When the item is serialized out as xml, its value is "circlesLines".
+        /// <summary>
+        /// Circles And Lines Art Border.
+        /// </summary>
         CirclesLines = 57,
-        //
-        // 摘要:
-        //     Circles and Rectangles Art Border.
-        //     When the item is serialized out as xml, its value is "circlesRectangles".
+        /// <summary>
+        /// Circles and Rectangles Art Border.
+        /// </summary>
         CirclesRectangles = 58,
-        //
-        // 摘要:
-        //     Wave Art Border.
-        //     When the item is serialized out as xml, its value is "classicalWave".
+        /// <summary>
+        /// Wave Art Border.
+        /// </summary>
         ClassicalWave = 59,
-        //
-        // 摘要:
-        //     Clocks Art Border.
-        //     When the item is serialized out as xml, its value is "clocks".
+        /// <summary>
+        /// Clocks Art Border.
+        /// </summary>
         Clocks = 60,
-        //
-        // 摘要:
-        //     Compass Art Border.
-        //     When the item is serialized out as xml, its value is "compass".
+        /// <summary>
+        /// Compass Art Border.
+        /// </summary>
         Compass = 61,
-        //
-        // 摘要:
-        //     Confetti Art Border.
-        //     When the item is serialized out as xml, its value is "confetti".
+        /// <summary>
+        /// Confetti Art Border.
+        /// </summary>
         Confetti = 62,
-        //
-        // 摘要:
-        //     Confetti Art Border.
-        //     When the item is serialized out as xml, its value is "confettiGrays".
+        /// <summary>
+        /// Confetti Art Border.
+        /// </summary>
         ConfettiGrays = 63,
-        //
-        // 摘要:
-        //     Confetti Art Border.
-        //     When the item is serialized out as xml, its value is "confettiOutline".
+        /// <summary>
+        /// Confetti Art Border.
+        /// </summary>
         ConfettiOutline = 64,
-        //
-        // 摘要:
-        //     Confetti Streamers Art Border.
-        //     When the item is serialized out as xml, its value is "confettiStreamers".
+        /// <summary>
+        /// Confetti Streamers Art Border.
+        /// </summary>
         ConfettiStreamers = 65,
-        //
-        // 摘要:
-        //     Confetti Art Border.
-        //     When the item is serialized out as xml, its value is "confettiWhite".
+        /// <summary>
+        /// Confetti Art Border.
+        /// </summary>
         ConfettiWhite = 66,
-        //
-        // 摘要:
-        //     Corner Triangle Art Border.
-        //     When the item is serialized out as xml, its value is "cornerTriangles".
+        /// <summary>
+        /// Corner Triangle Art Border.
+        /// </summary>
         CornerTriangles = 67,
-        //
-        // 摘要:
-        //     Dashed Line Art Border.
-        //     When the item is serialized out as xml, its value is "couponCutoutDashes".
+        /// <summary>
+        /// Dashed Line Art Border.
+        /// </summary>
         CouponCutoutDashes = 68,
-        //
-        // 摘要:
-        //     Dotted Line Art Border.
-        //     When the item is serialized out as xml, its value is "couponCutoutDots".
+        /// <summary>
+        /// Dotted Line Art Border.
+        /// </summary>
         CouponCutoutDots = 69,
-        //
-        // 摘要:
-        //     Maze Art Border.
-        //     When the item is serialized out as xml, its value is "crazyMaze".
+        /// <summary>
+        /// Maze Art Border.
+        /// </summary>
         CrazyMaze = 70,
-        //
-        // 摘要:
-        //     Butterfly Art Border.
-        //     When the item is serialized out as xml, its value is "creaturesButterfly".
+        /// <summary>
+        /// Butterfly Art Border.
+        /// </summary>
         CreaturesButterfly = 71,
-        //
-        // 摘要:
-        //     Fish Art Border.
-        //     When the item is serialized out as xml, its value is "creaturesFish".
+        /// <summary>
+        /// Fish Art Border.
+        /// </summary>
         CreaturesFish = 72,
-        //
-        // 摘要:
-        //     Insects Art Border.
-        //     When the item is serialized out as xml, its value is "creaturesInsects".
+        /// <summary>
+        /// Insects Art Border.
+        /// </summary>
         CreaturesInsects = 73,
-        //
-        // 摘要:
-        //     Ladybug Art Border.
-        //     When the item is serialized out as xml, its value is "creaturesLadyBug".
+        /// <summary>
+        /// Ladybug Art Border.
+        /// </summary>
         CreaturesLadyBug = 74,
-        //
-        // 摘要:
-        //     Cross-stitch Art Border.
-        //     When the item is serialized out as xml, its value is "crossStitch".
+        /// <summary>
+        /// Cross-stitch Art Border.
+        /// </summary>
         CrossStitch = 75,
-        //
-        // 摘要:
-        //     Cupid Art Border.
-        //     When the item is serialized out as xml, its value is "cup".
+        /// <summary>
+        /// Cupid Art Border.
+        /// </summary>
         Cup = 76,
-        //
-        // 摘要:
-        //     Archway Art Border.
-        //     When the item is serialized out as xml, its value is "decoArch".
+        /// <summary>
+        /// Archway Art Border.
+        /// </summary>
         DecoArch = 77,
-        //
-        // 摘要:
-        //     Color Archway Art Border.
-        //     When the item is serialized out as xml, its value is "decoArchColor".
+        /// <summary>
+        /// Color Archway Art Border.
+        /// </summary>
         DecoArchColor = 78,
-        //
-        // 摘要:
-        //     Blocks Art Border.
-        //     When the item is serialized out as xml, its value is "decoBlocks".
+        /// <summary>
+        /// Blocks Art Border.
+        /// </summary>
         DecoBlocks = 79,
-        //
-        // 摘要:
-        //     Gray Diamond Art Border.
-        //     When the item is serialized out as xml, its value is "diamondsGray".
+        /// <summary>
+        /// Gray Diamond Art Border.
+        /// </summary>
         DiamondsGray = 80,
-        //
-        // 摘要:
-        //     Double D Art Border.
-        //     When the item is serialized out as xml, its value is "doubleD".
+        /// <summary>
+        /// Double D Art Border.
+        /// </summary>
         DoubleD = 81,
-        //
-        // 摘要:
-        //     Diamond Art Border.
-        //     When the item is serialized out as xml, its value is "doubleDiamonds".
+        /// <summary>
+        /// Diamond Art Border.
+        /// </summary>
         DoubleDiamonds = 82,
-        //
-        // 摘要:
-        //     Earth Art Border.
-        //     When the item is serialized out as xml, its value is "earth1".
+        /// <summary>
+        /// Earth Art Border.
+        /// </summary>
         Earth1 = 83,
-        //
-        // 摘要:
-        //     Earth Art Border.
-        //     When the item is serialized out as xml, its value is "earth2".
+        /// <summary>
+        /// Earth Art Border.
+        /// </summary>
         Earth2 = 84,
-        //
-        // 摘要:
-        //     Shadowed Square Art Border.
-        //     When the item is serialized out as xml, its value is "eclipsingSquares1".
+        /// <summary>
+        /// Shadowed Square Art Border.
+        /// </summary>
         EclipsingSquares1 = 85,
-        //
-        // 摘要:
-        //     Shadowed Square Art Border.
-        //     When the item is serialized out as xml, its value is "eclipsingSquares2".
+        /// <summary>
+        /// Shadowed Square Art Border.
+        /// </summary>
         EclipsingSquares2 = 86,
-        //
-        // 摘要:
-        //     Painted Egg Art Border.
-        //     When the item is serialized out as xml, its value is "eggsBlack".
+        /// <summary>
+        /// Painted Egg Art Border.
+        /// </summary>
         EggsBlack = 87,
-        //
-        // 摘要:
-        //     Fans Art Border.
-        //     When the item is serialized out as xml, its value is "fans".
+        /// <summary>
+        /// Fans Art Border.
+        /// </summary>
         Fans = 88,
-        //
-        // 摘要:
-        //     Film Reel Art Border.
-        //     When the item is serialized out as xml, its value is "film".
+        /// <summary>
+        /// Film Reel Art Border.
+        /// </summary>
         Film = 89,
-        //
-        // 摘要:
-        //     Firecracker Art Border.
-        //     When the item is serialized out as xml, its value is "firecrackers".
+        /// <summary>
+        /// Firecracker Art Border.
+        /// </summary>
         Firecrackers = 90,
-        //
-        // 摘要:
-        //     Flowers Art Border.
-        //     When the item is serialized out as xml, its value is "flowersBlockPrint".
+        /// <summary>
+        /// Flowers Art Border.
+        /// </summary>
         FlowersBlockPrint = 91,
-        //
-        // 摘要:
-        //     Daisy Art Border.
-        //     When the item is serialized out as xml, its value is "flowersDaisies".
+        /// <summary>
+        /// Daisy Art Border.
+        /// </summary>
         FlowersDaisies = 92,
-        //
-        // 摘要:
-        //     Flowers Art Border.
-        //     When the item is serialized out as xml, its value is "flowersModern1".
+        /// <summary>
+        /// Flowers Art Border.
+        /// </summary>
         FlowersModern1 = 93,
-        //
-        // 摘要:
-        //     Flowers Art Border.
-        //     When the item is serialized out as xml, its value is "flowersModern2".
+        /// <summary>
+        /// Flowers Art Border.
+        /// </summary>
         FlowersModern2 = 94,
-        //
-        // 摘要:
-        //     Pansy Art Border.
-        //     When the item is serialized out as xml, its value is "flowersPansy".
+        /// <summary>
+        /// Pansy Art Border.
+        /// </summary>
         FlowersPansy = 95,
-        //
-        // 摘要:
-        //     Red Rose Art Border.
-        //     When the item is serialized out as xml, its value is "flowersRedRose".
+        /// <summary>
+        /// Red Rose Art Border.
+        /// </summary>
         FlowersRedRose = 96,
-        //
-        // 摘要:
-        //     Roses Art Border.
-        //     When the item is serialized out as xml, its value is "flowersRoses".
+        /// <summary>
+        /// Roses Art Border.
+        /// </summary>
         FlowersRoses = 97,
-        //
-        // 摘要:
-        //     Flowers in a Teacup Art Border.
-        //     When the item is serialized out as xml, its value is "flowersTeacup".
+        /// <summary>
+        /// Flowers in a Teacup Art Border.
+        /// </summary>
         FlowersTeacup = 98,
-        //
-        // 摘要:
-        //     Small Flower Art Border.
-        //     When the item is serialized out as xml, its value is "flowersTiny".
+        /// <summary>
+        /// Small Flower Art Border.
+        /// </summary>
         FlowersTiny = 99,
-        //
-        // 摘要:
-        //     Gems Art Border.
-        //     When the item is serialized out as xml, its value is "gems".
+        /// <summary>
+        /// Gems Art Border.
+        /// </summary>
         Gems = 100,
-        //
-        // 摘要:
-        //     Gingerbread Man Art Border.
-        //     When the item is serialized out as xml, its value is "gingerbreadMan".
+        /// <summary>
+        /// Gingerbread Man Art Border.
+        /// </summary>
         GingerbreadMan = 101,
-        //
-        // 摘要:
-        //     Triangle Gradient Art Border.
-        //     When the item is serialized out as xml, its value is "gradient".
+        /// <summary>
+        /// Triangle Gradient Art Border.
+        /// </summary>
         Gradient = 102,
-        //
-        // 摘要:
-        //     Handmade Art Border.
-        //     When the item is serialized out as xml, its value is "handmade1".
+        /// <summary>
+        /// Handmade Art Border.
+        /// </summary>
         Handmade1 = 103,
-        //
-        // 摘要:
-        //     Handmade Art Border.
-        //     When the item is serialized out as xml, its value is "handmade2".
+        /// <summary>
+        /// Handmade Art Border.
+        /// </summary>
         Handmade2 = 104,
-        //
-        // 摘要:
-        //     Heart-Shaped Balloon Art Border.
-        //     When the item is serialized out as xml, its value is "heartBalloon".
+        /// <summary>
+        /// Heart-Shaped Balloon Art Border.
+        /// </summary>
         HeartBalloon = 105,
-        //
-        // 摘要:
-        //     Gray Heart Art Border.
-        //     When the item is serialized out as xml, its value is "heartGray".
+        /// <summary>
+        /// Gray Heart Art Border.
+        /// </summary>
         HeartGray = 106,
-        //
-        // 摘要:
-        //     Hearts Art Border.
-        //     When the item is serialized out as xml, its value is "hearts".
+        /// <summary>
+        /// Hearts Art Border.
+        /// </summary>
         Hearts = 107,
-        //
-        // 摘要:
-        //     Pattern Art Border.
-        //     When the item is serialized out as xml, its value is "heebieJeebies".
+        /// <summary>
+        /// Pattern Art Border.
+        /// </summary>
         HeebieJeebies = 108,
-        //
-        // 摘要:
-        //     Holly Art Border.
-        //     When the item is serialized out as xml, its value is "holly".
+        /// <summary>
+        /// Holly Art Border.
+        /// </summary>
         Holly = 109,
-        //
-        // 摘要:
-        //     House Art Border.
-        //     When the item is serialized out as xml, its value is "houseFunky".
+        /// <summary>
+        /// House Art Border.
+        /// </summary>
         HouseFunky = 110,
-        //
-        // 摘要:
-        //     Circular Art Border.
-        //     When the item is serialized out as xml, its value is "hypnotic".
+        /// <summary>
+        /// Circular Art Border.
+        /// </summary>
         Hypnotic = 111,
-        //
-        // 摘要:
-        //     Ice Cream Cone Art Border.
-        //     When the item is serialized out as xml, its value is "iceCreamCones".
+        /// <summary>
+        /// Ice Cream Cone Art Border.
+        /// </summary>
         IceCreamCones = 112,
-        //
-        // 摘要:
-        //     Light Bulb Art Border.
-        //     When the item is serialized out as xml, its value is "lightBulb".
+        /// <summary>
+        /// Light Bulb Art Border.
+        /// </summary>
         LightBulb = 113,
-        //
-        // 摘要:
-        //     Lightning Art Border.
-        //     When the item is serialized out as xml, its value is "lightning1".
+        /// <summary>
+        /// Lightning Art Border.
+        /// </summary>
         Lightning1 = 114,
-        //
-        // 摘要:
-        //     Lightning Art Border.
-        //     When the item is serialized out as xml, its value is "lightning2".
+        /// <summary>
+        /// Lightning Art Border.
+        /// </summary>
         Lightning2 = 115,
-        //
-        // 摘要:
-        //     Map Pins Art Border.
-        //     When the item is serialized out as xml, its value is "mapPins".
+        /// <summary>
+        /// Map Pins Art Border.
+        /// </summary>
         MapPins = 116,
-        //
-        // 摘要:
-        //     Maple Leaf Art Border.
-        //     When the item is serialized out as xml, its value is "mapleLeaf".
+        /// <summary>
+        /// Maple Leaf Art Border.
+        /// </summary>
         MapleLeaf = 117,
-        //
-        // 摘要:
-        //     Muffin Art Border.
-        //     When the item is serialized out as xml, its value is "mapleMuffins".
+        /// <summary>
+        /// Muffin Art Border.
+        /// </summary>
         MapleMuffins = 118,
-        //
-        // 摘要:
-        //     Marquee Art Border.
-        //     When the item is serialized out as xml, its value is "marquee".
+        /// <summary>
+        /// Marquee Art Border.
+        /// </summary>
         Marquee = 119,
-        //
-        // 摘要:
-        //     Marquee Art Border.
-        //     When the item is serialized out as xml, its value is "marqueeToothed".
+        /// <summary>
+        /// Marquee Art Border.
+        /// </summary>
         MarqueeToothed = 120,
-        //
-        // 摘要:
-        //     Moon Art Border.
-        //     When the item is serialized out as xml, its value is "moons".
+        /// <summary>
+        /// Moon Art Border.
+        /// </summary>
         Moons = 121,
-        //
-        // 摘要:
-        //     Mosaic Art Border.
-        //     When the item is serialized out as xml, its value is "mosaic".
+        /// <summary>
+        /// Mosaic Art Border.
+        /// </summary>
         Mosaic = 122,
-        //
-        // 摘要:
-        //     Musical Note Art Border.
-        //     When the item is serialized out as xml, its value is "musicNotes".
+        /// <summary>
+        /// Musical Note Art Border.
+        /// </summary>
         MusicNotes = 123,
-        //
-        // 摘要:
-        //     Patterned Art Border.
-        //     When the item is serialized out as xml, its value is "northwest".
+        /// <summary>
+        /// Patterned Art Border.
+        /// </summary>
         Northwest = 124,
-        //
-        // 摘要:
-        //     Oval Art Border.
-        //     When the item is serialized out as xml, its value is "ovals".
+        /// <summary>
+        /// Oval Art Border.
+        /// </summary>
         Ovals = 125,
-        //
-        // 摘要:
-        //     Package Art Border.
-        //     When the item is serialized out as xml, its value is "packages".
+        /// <summary>
+        /// Package Art Border.
+        /// </summary>
         Packages = 126,
-        //
-        // 摘要:
-        //     Black Palm Tree Art Border.
-        //     When the item is serialized out as xml, its value is "palmsBlack".
+        /// <summary>
+        /// Black Palm Tree Art Border.
+        /// </summary>
         PalmsBlack = 127,
-        //
-        // 摘要:
-        //     Color Palm Tree Art Border.
-        //     When the item is serialized out as xml, its value is "palmsColor".
+        /// <summary>
+        /// Color Palm Tree Art Border.
+        /// </summary>
         PalmsColor = 128,
-        //
-        // 摘要:
-        //     Paper Clip Art Border.
-        //     When the item is serialized out as xml, its value is "paperClips".
+        /// <summary>
+        /// Paper Clip Art Border.
+        /// </summary>
         PaperClips = 129,
-        //
-        // 摘要:
-        //     Papyrus Art Border.
-        //     When the item is serialized out as xml, its value is "papyrus".
+        /// <summary>
+        /// Papyrus Art Border.
+        /// </summary>
         Papyrus = 130,
-        //
-        // 摘要:
-        //     Party Favor Art Border.
-        //     When the item is serialized out as xml, its value is "partyFavor".
+        /// <summary>
+        /// Party Favor Art Border.
+        /// </summary>
         PartyFavor = 131,
-        //
-        // 摘要:
-        //     Party Glass Art Border.
-        //     When the item is serialized out as xml, its value is "partyGlass".
+        /// <summary>
+        /// Party Glass Art Border.
+        /// </summary>
         PartyGlass = 132,
-        //
-        // 摘要:
-        //     Pencils Art Border.
-        //     When the item is serialized out as xml, its value is "pencils".
+        /// <summary>
+        /// Pencils Art Border.
+        /// </summary>
         Pencils = 133,
-        //
-        // 摘要:
-        //     Character Art Border.
-        //     When the item is serialized out as xml, its value is "people".
+        /// <summary>
+        /// Character Art Border.
+        /// </summary>
         People = 134,
-        //
-        // 摘要:
-        //     Waving Character Border.
-        //     When the item is serialized out as xml, its value is "peopleWaving".
+        /// <summary>
+        /// Waving Character Border.
+        /// </summary>
         PeopleWaving = 135,
-        //
-        // 摘要:
-        //     Character With Hat Art Border.
-        //     When the item is serialized out as xml, its value is "peopleHats".
+        /// <summary>
+        /// Character With Hat Art Border.
+        /// </summary>
         PeopleHats = 136,
-        //
-        // 摘要:
-        //     Poinsettia Art Border.
-        //     When the item is serialized out as xml, its value is "poinsettias".
+        /// <summary>
+        /// Poinsettia Art Border.
+        /// </summary>
         Poinsettias = 137,
-        //
-        // 摘要:
-        //     Postage Stamp Art Border.
-        //     When the item is serialized out as xml, its value is "postageStamp".
+        /// <summary>
+        /// Postage Stamp Art Border.
+        /// </summary>
         PostageStamp = 138,
-        //
-        // 摘要:
-        //     Pumpkin Art Border.
-        //     When the item is serialized out as xml, its value is "pumpkin1".
+        /// <summary>
+        /// Pumpkin Art Border.
+        /// </summary>
         Pumpkin1 = 139,
-        //
-        // 摘要:
-        //     Push Pin Art Border.
-        //     When the item is serialized out as xml, its value is "pushPinNote2".
+        /// <summary>
+        /// Push Pin Art Border.
+        /// </summary>
         PushPinNote2 = 140,
-        //
-        // 摘要:
-        //     Push Pin Art Border.
-        //     When the item is serialized out as xml, its value is "pushPinNote1".
+        /// <summary>
+        /// Push Pin Art Border.
+        /// </summary>
         PushPinNote1 = 141,
-        //
-        // 摘要:
-        //     Pyramid Art Border.
-        //     When the item is serialized out as xml, its value is "pyramids".
+        /// <summary>
+        /// Pyramid Art Border.
+        /// </summary>
         Pyramids = 142,
-        //
-        // 摘要:
-        //     Pyramid Art Border.
-        //     When the item is serialized out as xml, its value is "pyramidsAbove".
+        /// <summary>
+        /// Pyramid Art Border.
+        /// </summary>
         PyramidsAbove = 143,
-        //
-        // 摘要:
-        //     Quadrants Art Border.
-        //     When the item is serialized out as xml, its value is "quadrants".
+        /// <summary>
+        /// Quadrants Art Border.
+        /// </summary>
         Quadrants = 144,
-        //
-        // 摘要:
-        //     Rings Art Border.
-        //     When the item is serialized out as xml, its value is "rings".
+        /// <summary>
+        /// Rings Art Border.
+        /// </summary>
         Rings = 145,
-        //
-        // 摘要:
-        //     Safari Art Border.
-        //     When the item is serialized out as xml, its value is "safari".
+        /// <summary>
+        /// Safari Art Border.
+        /// </summary>
         Safari = 146,
-        //
-        // 摘要:
-        //     Saw tooth Art Border.
-        //     When the item is serialized out as xml, its value is "sawtooth".
+        /// <summary>
+        /// Saw tooth Art Border.
+        /// </summary>
         Sawtooth = 147,
-        //
-        // 摘要:
-        //     Gray Saw tooth Art Border.
-        //     When the item is serialized out as xml, its value is "sawtoothGray".
+        /// <summary>
+        /// Gray Saw tooth Art Border.
+        /// </summary>
         SawtoothGray = 148,
-        //
-        // 摘要:
-        //     Scared Cat Art Border.
-        //     When the item is serialized out as xml, its value is "scaredCat".
+        /// <summary>
+        /// Scared Cat Art Border.
+        /// </summary>
         ScaredCat = 149,
-        //
-        // 摘要:
-        //     Umbrella Art Border.
-        //     When the item is serialized out as xml, its value is "seattle".
+        /// <summary>
+        /// Umbrella Art Border.
+        /// </summary>
         Seattle = 150,
-        //
-        // 摘要:
-        //     Shadowed Squares Art Border.
-        //     When the item is serialized out as xml, its value is "shadowedSquares".
+        /// <summary>
+        /// Shadowed Squares Art Border.
+        /// </summary>
         ShadowedSquares = 151,
-        //
-        // 摘要:
-        //     Shark Tooth Art Border.
-        //     When the item is serialized out as xml, its value is "sharksTeeth".
+        /// <summary>
+        /// Shark Tooth Art Border.
+        /// </summary>
         SharksTeeth = 152,
-        //
-        // 摘要:
-        //     Bird Tracks Art Border.
-        //     When the item is serialized out as xml, its value is "shorebirdTracks".
+        /// <summary>
+        /// Bird Tracks Art Border.
+        /// </summary>
         ShorebirdTracks = 153,
-        //
-        // 摘要:
-        //     Rocket Art Border.
-        //     When the item is serialized out as xml, its value is "skyrocket".
+        /// <summary>
+        /// Rocket Art Border.
+        /// </summary>
         Skyrocket = 154,
-        //
-        // 摘要:
-        //     Snowflake Art Border.
-        //     When the item is serialized out as xml, its value is "snowflakeFancy".
+        /// <summary>
+        /// Snowflake Art Border.
+        /// </summary>
         SnowflakeFancy = 155,
-        //
-        // 摘要:
-        //     Snowflake Art Border.
-        //     When the item is serialized out as xml, its value is "snowflakes".
+        /// <summary>
+        /// Snowflake Art Border.
+        /// </summary>
         Snowflakes = 156,
-        //
-        // 摘要:
-        //     Sombrero Art Border.
-        //     When the item is serialized out as xml, its value is "sombrero".
+        /// <summary>
+        /// Sombrero Art Border.
+        /// </summary>
         Sombrero = 157,
-        //
-        // 摘要:
-        //     Southwest-themed Art Border.
-        //     When the item is serialized out as xml, its value is "southwest".
+        /// <summary>
+        /// Southwest-themed Art Border.
+        /// </summary>
         Southwest = 158,
-        //
-        // 摘要:
-        //     Stars Art Border.
-        //     When the item is serialized out as xml, its value is "stars".
+        /// <summary>
+        /// Stars Art Border.
+        /// </summary>
         Stars = 159,
-        //
-        // 摘要:
-        //     Stars On Top Art Border.
-        //     When the item is serialized out as xml, its value is "starsTop".
+        /// <summary>
+        /// Stars On Top Art Border.
+        /// </summary>
         StarsTop = 160,
-        //
-        // 摘要:
-        //     3-D Stars Art Border.
-        //     When the item is serialized out as xml, its value is "stars3d".
+        /// <summary>
+        /// 3-D Stars Art Border.
+        /// </summary>
         Stars3d = 161,
-        //
-        // 摘要:
-        //     Stars Art Border.
-        //     When the item is serialized out as xml, its value is "starsBlack".
+        /// <summary>
+        /// Stars Art Border.
+        /// </summary>
         StarsBlack = 162,
-        //
-        // 摘要:
-        //     Stars With Shadows Art Border.
-        //     When the item is serialized out as xml, its value is "starsShadowed".
+        /// <summary>
+        /// Stars With Shadows Art Border.
+        /// </summary>
         StarsShadowed = 163,
-        //
-        // 摘要:
-        //     Sun Art Border.
-        //     When the item is serialized out as xml, its value is "sun".
+        /// <summary>
+        /// Sun Art Border.
+        /// </summary>
         Sun = 164,
-        //
-        // 摘要:
-        //     Whirligig Art Border.
-        //     When the item is serialized out as xml, its value is "swirligig".
+        /// <summary>
+        /// Whirligig Art Border.
+        /// </summary>
         Swirligig = 165,
-        //
-        // 摘要:
-        //     Torn Paper Art Border.
-        //     When the item is serialized out as xml, its value is "tornPaper".
+        /// <summary>
+        /// Torn Paper Art Border.
+        /// </summary>
         TornPaper = 166,
-        //
-        // 摘要:
-        //     Black Torn Paper Art Border.
-        //     When the item is serialized out as xml, its value is "tornPaperBlack".
+        /// <summary>
+        /// Black Torn Paper Art Border.
+        /// </summary>
         TornPaperBlack = 167,
-        //
-        // 摘要:
-        //     Tree Art Border.
-        //     When the item is serialized out as xml, its value is "trees".
+        /// <summary>
+        /// Tree Art Border.
+        /// </summary>
         Trees = 168,
-        //
-        // 摘要:
-        //     Triangle Art Border.
-        //     When the item is serialized out as xml, its value is "triangleParty".
+        /// <summary>
+        /// Triangle Art Border.
+        /// </summary>
         TriangleParty = 169,
-        //
-        // 摘要:
-        //     Triangles Art Border.
-        //     When the item is serialized out as xml, its value is "triangles".
+        /// <summary>
+        /// Triangles Art Border.
+        /// </summary>
         Triangles = 170,
-        //
-        // 摘要:
-        //     Tribal Art Border One.
-        //     When the item is serialized out as xml, its value is "tribal1".
+        /// <summary>
+        /// Tribal Art Border One.
+        /// </summary>
         Tribal1 = 171,
-        //
-        // 摘要:
-        //     Tribal Art Border Two.
-        //     When the item is serialized out as xml, its value is "tribal2".
+        /// <summary>
+        /// Tribal Art Border Two.
+        /// </summary>
         Tribal2 = 172,
-        //
-        // 摘要:
-        //     Tribal Art Border Three.
-        //     When the item is serialized out as xml, its value is "tribal3".
+        /// <summary>
+        /// Tribal Art Border Three.
+        /// </summary>
         Tribal3 = 173,
-        //
-        // 摘要:
-        //     Tribal Art Border Four.
-        //     When the item is serialized out as xml, its value is "tribal4".
+        /// <summary>
+        /// Tribal Art Border Four.
+        /// </summary>
         Tribal4 = 174,
-        //
-        // 摘要:
-        //     Tribal Art Border Five.
-        //     When the item is serialized out as xml, its value is "tribal5".
+        /// <summary>
+        /// Tribal Art Border Five.
+        /// </summary>
         Tribal5 = 175,
-        //
-        // 摘要:
-        //     Tribal Art Border Six.
-        //     When the item is serialized out as xml, its value is "tribal6".
+        /// <summary>
+        /// Tribal Art Border Six.
+        /// </summary>
         Tribal6 = 176,
-        //
-        // 摘要:
-        //     triangle1.
-        //     When the item is serialized out as xml, its value is "triangle1".
+        /// <summary>
+        /// triangle1.
+        /// </summary>
         Triangle1 = 177,
-        //
-        // 摘要:
-        //     triangle2.
-        //     When the item is serialized out as xml, its value is "triangle2".
+        /// <summary>
+        /// triangle2.
+        /// </summary>
         Triangle2 = 178,
-        //
-        // 摘要:
-        //     triangleCircle1.
-        //     When the item is serialized out as xml, its value is "triangleCircle1".
+        /// <summary>
+        /// triangleCircle1.
+        /// </summary>
         TriangleCircle1 = 179,
-        //
-        // 摘要:
-        //     triangleCircle2.
-        //     When the item is serialized out as xml, its value is "triangleCircle2".
+        /// <summary>
+        /// triangleCircle2.
+        /// </summary>
         TriangleCircle2 = 180,
-        //
-        // 摘要:
-        //     shapes1.
-        //     When the item is serialized out as xml, its value is "shapes1".
+        /// <summary>
+        /// shapes1.
+        /// </summary>
         Shapes1 = 181,
-        //
-        // 摘要:
-        //     shapes2.
-        //     When the item is serialized out as xml, its value is "shapes2".
+        /// <summary>
+        /// shapes2.
+        /// </summary>
         Shapes2 = 182,
-        //
-        // 摘要:
-        //     Twisted Lines Art Border.
-        //     When the item is serialized out as xml, its value is "twistedLines1".
+        /// <summary>
+        /// Twisted Lines Art Border.
+        /// </summary>
         TwistedLines1 = 183,
-        //
-        // 摘要:
-        //     Twisted Lines Art Border.
-        //     When the item is serialized out as xml, its value is "twistedLines2".
+        /// <summary>
+        /// Twisted Lines Art Border.
+        /// </summary>
         TwistedLines2 = 184,
-        //
-        // 摘要:
-        //     Vine Art Border.
-        //     When the item is serialized out as xml, its value is "vine".
+        /// <summary>
+        /// Vine Art Border.
+        /// </summary>
         Vine = 185,
-        //
-        // 摘要:
-        //     Wavy Line Art Border.
-        //     When the item is serialized out as xml, its value is "waveline".
+        /// <summary>
+        /// Wavy Line Art Border.
+        /// </summary>
         Waveline = 186,
-        //
-        // 摘要:
-        //     Weaving Angles Art Border.
-        //     When the item is serialized out as xml, its value is "weavingAngles".
+        /// <summary>
+        /// Weaving Angles Art Border.
+        /// </summary>
         WeavingAngles = 187,
-        //
-        // 摘要:
-        //     Weaving Braid Art Border.
-        //     When the item is serialized out as xml, its value is "weavingBraid".
+        /// <summary>
+        /// Weaving Braid Art Border.
+        /// </summary>
         WeavingBraid = 188,
-        //
-        // 摘要:
-        //     Weaving Ribbon Art Border.
-        //     When the item is serialized out as xml, its value is "weavingRibbon".
+        /// <summary>
+        /// Weaving Ribbon Art Border.
+        /// </summary>
         WeavingRibbon = 189,
-        //
-        // 摘要:
-        //     Weaving Strips Art Border.
-        //     When the item is serialized out as xml, its value is "weavingStrips".
+        /// <summary>
+        /// Weaving Strips Art Border.
+        /// </summary>
         WeavingStrips = 190,
-        //
-        // 摘要:
-        //     White Flowers Art Border.
-        //     When the item is serialized out as xml, its value is "whiteFlowers".
+        /// <summary>
+        /// White Flowers Art Border.
+        /// </summary>
         WhiteFlowers = 191,
-        //
-        // 摘要:
-        //     Woodwork Art Border.
-        //     When the item is serialized out as xml, its value is "woodwork".
+        /// <summary>
+        /// Woodwork Art Border.
+        /// </summary>
         Woodwork = 192,
-        //
-        // 摘要:
-        //     Crisscross Art Border.
-        //     When the item is serialized out as xml, its value is "xIllusions".
+        /// <summary>
+        /// Crisscross Art Border.
+        /// </summary>
         XIllusions = 193,
-        //
-        // 摘要:
-        //     Triangle Art Border.
-        //     When the item is serialized out as xml, its value is "zanyTriangles".
+        /// <summary>
+        /// Triangle Art Border.
+        /// </summary>
         ZanyTriangles = 194,
-        //
-        // 摘要:
-        //     Zigzag Art Border.
-        //     When the item is serialized out as xml, its value is "zigZag".
+        /// <summary>
+        /// Zigzag Art Border.
+        /// </summary>
         ZigZag = 195,
-        //
-        // 摘要:
-        //     Zigzag stitch.
-        //     When the item is serialized out as xml, its value is "zigZagStitch".
+        /// <summary>
+        /// Zigzag stitch.
+        /// </summary>
         ZigZagStitch = 196
     }
 
@@ -1776,325 +1584,262 @@ namespace Berry.Docx
         MiddleDot = 5
     }
 
+    /// <summary>
+    /// Defines the ListNumberStyle enumeration.
+    /// </summary>
     public enum ListNumberStyle
     {
-        //
-        // 摘要:
-        //     Decimal Numbers.
-        //     When the item is serialized out as xml, its value is "decimal".
+        /// <summary>
+        /// Decimal Numbers.
+        /// </summary>
         Decimal = 0,
-        //
-        // 摘要:
-        //     Uppercase Roman Numerals.
-        //     When the item is serialized out as xml, its value is "upperRoman".
+        /// <summary>
+        /// Uppercase Roman Numerals.
+        /// </summary>
         UpperRoman = 1,
-        //
-        // 摘要:
-        //     Lowercase Roman Numerals.
-        //     When the item is serialized out as xml, its value is "lowerRoman".
+        /// <summary>
+        /// Lowercase Roman Numerals.
+        /// </summary>
         LowerRoman = 2,
-        //
-        // 摘要:
-        //     Uppercase Latin Alphabet.
-        //     When the item is serialized out as xml, its value is "upperLetter".
+        /// <summary>
+        /// Uppercase Latin Alphabet.
+        /// </summary>
         UpperLetter = 3,
-        //
-        // 摘要:
-        //     Lowercase Latin Alphabet.
-        //     When the item is serialized out as xml, its value is "lowerLetter".
+        /// <summary>
+        /// Lowercase Latin Alphabet.
+        /// </summary>
         LowerLetter = 4,
-        //
-        // 摘要:
-        //     Ordinal.
-        //     When the item is serialized out as xml, its value is "ordinal".
+        /// <summary>
+        /// Ordinal.
+        /// </summary>
         Ordinal = 5,
-        //
-        // 摘要:
-        //     Cardinal Text.
-        //     When the item is serialized out as xml, its value is "cardinalText".
+        /// <summary>
+        /// Cardinal Text.
+        /// </summary>
         CardinalText = 6,
-        //
-        // 摘要:
-        //     Ordinal Text.
-        //     When the item is serialized out as xml, its value is "ordinalText".
+        /// <summary>
+        /// Ordinal Text.
+        /// </summary>
         OrdinalText = 7,
-        //
-        // 摘要:
-        //     Hexadecimal Numbering.
-        //     When the item is serialized out as xml, its value is "hex".
+        /// <summary>
+        /// Hexadecimal Numbering.
+        /// </summary>
         Hex = 8,
-        //
-        // 摘要:
-        //     Chicago Manual of Style.
-        //     When the item is serialized out as xml, its value is "chicago".
+        /// <summary>
+        /// Chicago Manual of Style.
+        /// </summary>
         Chicago = 9,
-        //
-        // 摘要:
-        //     Ideographs.
-        //     When the item is serialized out as xml, its value is "ideographDigital".
+        /// <summary>
+        /// Ideographs.
+        /// </summary>
         IdeographDigital = 10,
-        //
-        // 摘要:
-        //     Japanese Counting System.
-        //     When the item is serialized out as xml, its value is "japaneseCounting".
+        /// <summary>
+        /// Japanese Counting System.
+        /// </summary>
         JapaneseCounting = 11,
-        //
-        // 摘要:
-        //     AIUEO Order Hiragana.
-        //     When the item is serialized out as xml, its value is "aiueo".
+        /// <summary>
+        /// AIUEO Order Hiragana.
+        /// </summary>
         Aiueo = 12,
-        //
-        // 摘要:
-        //     Iroha Ordered Katakana.
-        //     When the item is serialized out as xml, its value is "iroha".
+        /// <summary>
+        /// Iroha Ordered Katakana.
+        /// </summary>
         Iroha = 13,
-        //
-        // 摘要:
-        //     Double Byte Arabic Numerals.
-        //     When the item is serialized out as xml, its value is "decimalFullWidth".
+        /// <summary>
+        /// Double Byte Arabic Numerals.
+        /// </summary>
         DecimalFullWidth = 14,
-        //
-        // 摘要:
-        //     Single Byte Arabic Numerals.
-        //     When the item is serialized out as xml, its value is "decimalHalfWidth".
+        /// <summary>
+        /// Single Byte Arabic Numerals.
+        /// </summary>
         DecimalHalfWidth = 15,
-        //
-        // 摘要:
-        //     Japanese Legal Numbering.
-        //     When the item is serialized out as xml, its value is "japaneseLegal".
+        /// <summary>
+        /// Japanese Legal Numbering.
+        /// </summary>
         JapaneseLegal = 16,
-        //
-        // 摘要:
-        //     Japanese Digital Ten Thousand Counting System.
-        //     When the item is serialized out as xml, its value is "japaneseDigitalTenThousand".
+        /// <summary>
+        /// Japanese Digital Ten Thousand Counting System.
+        /// </summary>
         JapaneseDigitalTenThousand = 17,
-        //
-        // 摘要:
-        //     Decimal Numbers Enclosed in a Circle.
-        //     When the item is serialized out as xml, its value is "decimalEnclosedCircle".
+        /// <summary>
+        /// Decimal Numbers Enclosed in a Circle.
+        /// </summary>
         DecimalEnclosedCircle = 18,
-        //
-        // 摘要:
-        //     Double Byte Arabic Numerals Alternate.
-        //     When the item is serialized out as xml, its value is "decimalFullWidth2".
+        /// <summary>
+        /// Double Byte Arabic Numerals Alternate.
+        /// </summary>
         DecimalFullWidth2 = 19,
-        //
-        // 摘要:
-        //     Full-Width AIUEO Order Hiragana.
-        //     When the item is serialized out as xml, its value is "aiueoFullWidth".
+        /// <summary>
+        /// Full-Width AIUEO Order Hiragana.
+        /// </summary>
         AiueoFullWidth = 20,
-        //
-        // 摘要:
-        //     Full-Width Iroha Ordered Katakana.
-        //     When the item is serialized out as xml, its value is "irohaFullWidth".
+        /// <summary>
+        /// Full-Width Iroha Ordered Katakana.
+        /// </summary>
         IrohaFullWidth = 21,
-        //
-        // 摘要:
-        //     Initial Zero Arabic Numerals.
-        //     When the item is serialized out as xml, its value is "decimalZero".
+        /// <summary>
+        /// Initial Zero Arabic Numerals.
+        /// </summary>
         DecimalZero = 22,
-        //
-        // 摘要:
-        //     Bullet.
-        //     When the item is serialized out as xml, its value is "bullet".
+        /// <summary>
+        /// Bullet.
+        /// </summary>
         Bullet = 23,
-        //
-        // 摘要:
-        //     Korean Ganada Numbering.
-        //     When the item is serialized out as xml, its value is "ganada".
+        /// <summary>
+        /// Korean Ganada Numbering.
+        /// </summary>
         Ganada = 24,
-        //
-        // 摘要:
-        //     Korean Chosung Numbering.
-        //     When the item is serialized out as xml, its value is "chosung".
+        /// <summary>
+        /// Korean Chosung Numbering.
+        /// </summary>
         Chosung = 25,
-        //
-        // 摘要:
-        //     Decimal Numbers Followed by a Period.
-        //     When the item is serialized out as xml, its value is "decimalEnclosedFullstop".
+        /// <summary>
+        /// Decimal Numbers Followed by a Period.
+        /// </summary>
         DecimalEnclosedFullstop = 26,
-        //
-        // 摘要:
-        //     Decimal Numbers Enclosed in Parenthesis.
-        //     When the item is serialized out as xml, its value is "decimalEnclosedParen".
+        /// <summary>
+        /// Decimal Numbers Enclosed in Parenthesis.
+        /// </summary>
         DecimalEnclosedParen = 27,
-        //
-        // 摘要:
-        //     Decimal Numbers Enclosed in a Circle.
-        //     When the item is serialized out as xml, its value is "decimalEnclosedCircleChinese".
+        /// <summary>
+        /// Decimal Numbers Enclosed in a Circle.
+        /// </summary>
         DecimalEnclosedCircleChinese = 28,
-        //
-        // 摘要:
-        //     Ideographs Enclosed in a Circle.
-        //     When the item is serialized out as xml, its value is "ideographEnclosedCircle".
+        /// <summary>
+        /// Ideographs Enclosed in a Circle.
+        /// </summary>
         IdeographEnclosedCircle = 29,
-        //
-        // 摘要:
-        //     Traditional Ideograph Format.
-        //     When the item is serialized out as xml, its value is "ideographTraditional".
+        /// <summary>
+        /// Traditional Ideograph Format.
+        /// </summary>
         IdeographTraditional = 30,
-        //
-        // 摘要:
-        //     Zodiac Ideograph Format.
-        //     When the item is serialized out as xml, its value is "ideographZodiac".
+        /// <summary>
+        /// Zodiac Ideograph Format.
+        /// </summary>
         IdeographZodiac = 31,
-        //
-        // 摘要:
-        //     Traditional Zodiac Ideograph Format.
-        //     When the item is serialized out as xml, its value is "ideographZodiacTraditional".
+        /// <summary>
+        /// Traditional Zodiac Ideograph Format.
+        /// </summary>
         IdeographZodiacTraditional = 32,
-        //
-        // 摘要:
-        //     Taiwanese Counting System.
-        //     When the item is serialized out as xml, its value is "taiwaneseCounting".
+        /// <summary>
+        /// Taiwanese Counting System.
+        /// </summary>
         TaiwaneseCounting = 33,
-        //
-        // 摘要:
-        //     Traditional Legal Ideograph Format.
-        //     When the item is serialized out as xml, its value is "ideographLegalTraditional".
+        /// <summary>
+        /// Traditional Legal Ideograph Format.
+        /// </summary>
         IdeographLegalTraditional = 34,
-        //
-        // 摘要:
-        //     Taiwanese Counting Thousand System.
-        //     When the item is serialized out as xml, its value is "taiwaneseCountingThousand".
+        /// <summary>
+        /// Taiwanese Counting Thousand System.
+        /// </summary>
         TaiwaneseCountingThousand = 35,
-        //
-        // 摘要:
-        //     Taiwanese Digital Counting System.
-        //     When the item is serialized out as xml, its value is "taiwaneseDigital".
+        /// <summary>
+        /// Taiwanese Digital Counting System.
+        /// </summary>
         TaiwaneseDigital = 36,
-        //
-        // 摘要:
-        //     Chinese Counting System.
-        //     When the item is serialized out as xml, its value is "chineseCounting".
+        /// <summary>
+        /// Chinese Counting System.
+        /// </summary>
         ChineseCounting = 37,
-        //
-        // 摘要:
-        //     Chinese Legal Simplified Format.
-        //     When the item is serialized out as xml, its value is "chineseLegalSimplified".
+        /// <summary>
+        /// Chinese Legal Simplified Format.
+        /// </summary>
         ChineseLegalSimplified = 38,
-        //
-        // 摘要:
-        //     Chinese Counting Thousand System.
-        //     When the item is serialized out as xml, its value is "chineseCountingThousand".
+        /// <summary>
+        /// Chinese Counting Thousand System.
+        /// </summary>
         ChineseCountingThousand = 39,
-        //
-        // 摘要:
-        //     Korean Digital Counting System.
-        //     When the item is serialized out as xml, its value is "koreanDigital".
+        /// <summary>
+        /// Korean Digital Counting System.
+        /// </summary>
         KoreanDigital = 40,
-        //
-        // 摘要:
-        //     Korean Counting System.
-        //     When the item is serialized out as xml, its value is "koreanCounting".
+        /// <summary>
+        /// Korean Counting System.
+        /// </summary>
         KoreanCounting = 41,
-        //
-        // 摘要:
-        //     Korean Legal Numbering.
-        //     When the item is serialized out as xml, its value is "koreanLegal".
+        /// <summary>
+        /// Korean Legal Numbering.
+        /// </summary>
         KoreanLegal = 42,
-        //
-        // 摘要:
-        //     Korean Digital Counting System Alternate.
-        //     When the item is serialized out as xml, its value is "koreanDigital2".
+        /// <summary>
+        /// Korean Digital Counting System Alternate.
+        /// </summary>
         KoreanDigital2 = 43,
-        //
-        // 摘要:
-        //     Vietnamese Numerals.
-        //     When the item is serialized out as xml, its value is "vietnameseCounting".
+        /// <summary>
+        /// Vietnamese Numerals.
+        /// </summary>
         VietnameseCounting = 44,
-        //
-        // 摘要:
-        //     Lowercase Russian Alphabet.
-        //     When the item is serialized out as xml, its value is "russianLower".
+        /// <summary>
+        /// Lowercase Russian Alphabet.
+        /// </summary>
         RussianLower = 45,
-        //
-        // 摘要:
-        //     Uppercase Russian Alphabet.
-        //     When the item is serialized out as xml, its value is "russianUpper".
+        /// <summary>
+        /// Uppercase Russian Alphabet.
+        /// </summary>
         RussianUpper = 46,
-        //
-        // 摘要:
-        //     No Numbering.
-        //     When the item is serialized out as xml, its value is "none".
+        /// <summary>
+        /// No Numbering.
+        /// </summary>
         None = 47,
-        //
-        // 摘要:
-        //     Number With Dashes.
-        //     When the item is serialized out as xml, its value is "numberInDash".
+        /// <summary>
+        /// Number With Dashes.
+        /// </summary>
         NumberInDash = 48,
-        //
-        // 摘要:
-        //     Hebrew Numerals.
-        //     When the item is serialized out as xml, its value is "hebrew1".
+        /// <summary>
+        /// Hebrew Numerals.
+        /// </summary>
         Hebrew1 = 49,
-        //
-        // 摘要:
-        //     Hebrew Alphabet.
-        //     When the item is serialized out as xml, its value is "hebrew2".
+        /// <summary>
+        /// Hebrew Alphabet.
+        /// </summary>
         Hebrew2 = 50,
-        //
-        // 摘要:
-        //     Arabic Alphabet.
-        //     When the item is serialized out as xml, its value is "arabicAlpha".
+        /// <summary>
+        /// Arabic Alphabet.
+        /// </summary>
         ArabicAlpha = 51,
-        //
-        // 摘要:
-        //     Arabic Abjad Numerals.
-        //     When the item is serialized out as xml, its value is "arabicAbjad".
+        /// <summary>
+        /// Arabic Abjad Numerals.
+        /// </summary>
         ArabicAbjad = 52,
-        //
-        // 摘要:
-        //     Hindi Vowels.
-        //     When the item is serialized out as xml, its value is "hindiVowels".
+        /// <summary>
+        /// Hindi Vowels.
+        /// </summary>
         HindiVowels = 53,
-        //
-        // 摘要:
-        //     Hindi Consonants.
-        //     When the item is serialized out as xml, its value is "hindiConsonants".
+        /// <summary>
+        /// Hindi Consonants.
+        /// </summary>
         HindiConsonants = 54,
-        //
-        // 摘要:
-        //     Hindi Numbers.
-        //     When the item is serialized out as xml, its value is "hindiNumbers".
+        /// <summary>
+        /// Hindi Numbers.
+        /// </summary>
         HindiNumbers = 55,
-        //
-        // 摘要:
-        //     Hindi Counting System.
-        //     When the item is serialized out as xml, its value is "hindiCounting".
+        /// <summary>
+        /// Hindi Counting System.
+        /// </summary>
         HindiCounting = 56,
-        //
-        // 摘要:
-        //     Thai Letters.
-        //     When the item is serialized out as xml, its value is "thaiLetters".
+        /// <summary>
+        /// Thai Letters.
+        /// </summary>
         ThaiLetters = 57,
-        //
-        // 摘要:
-        //     Thai Numerals.
-        //     When the item is serialized out as xml, its value is "thaiNumbers".
+        /// <summary>
+        /// Thai Numerals.
+        /// </summary>
         ThaiNumbers = 58,
-        //
-        // 摘要:
-        //     Thai Counting System.
-        //     When the item is serialized out as xml, its value is "thaiCounting".
+        /// <summary>
+        /// Thai Counting System.
+        /// </summary>
         ThaiCounting = 59,
-        //
-        // 摘要:
-        //     bahtText.
-        //     When the item is serialized out as xml, its value is "bahtText".
-        //     This item is only available in Office 2010 and later.
+        /// <summary>
+        /// bahtText. This item is only available in Office 2010 and later.
+        /// </summary>
         BahtText = 60,
-        //
-        // 摘要:
-        //     dollarText.
-        //     When the item is serialized out as xml, its value is "dollarText".
-        //     This item is only available in Office 2010 and later.
+        /// <summary>
+        /// dollarText. This item is only available in Office 2010 and later.
+        /// </summary>
         DollarText = 61,
-        //
-        // 摘要:
-        //     custom.
-        //     When the item is serialized out as xml, its value is "custom".
-        //     This item is only available in Office 2010 and later.
+        /// <summary>
+        /// custom. This item is only available in Office 2010 and later.
+        /// </summary>
         Custom = 62
     }
 
@@ -2184,5 +1929,77 @@ namespace Berry.Docx
         /// bottom.
         /// </summary>
         Bottom = 2
+    }
+
+    /// <summary>
+    /// Defines the page borders position enumeration.
+    /// </summary>
+    public enum PageBordersPosition
+    {
+        /// <summary>
+        /// Page Border Is Positioned Relative to Page Edges. 
+        /// </summary>
+        Page = 0,
+        /// <summary>
+        /// Page Border Is Positioned Relative to Text Extents. 
+        /// </summary>
+        Text = 1
+    }
+
+    /// <summary>
+    /// Defines the AutoFitMethod enumeration.
+    /// </summary>
+    public enum AutoFitMethod
+    {
+        /// <summary>
+        /// Resize the table columns to be the same with as contents.
+        /// </summary>
+        AutoFitContents = 0,
+        /// <summary>
+        /// Resize the table columns to stretch across the page.
+        /// </summary>
+        AutoFitWindow = 1,
+        /// <summary>
+        /// Resize the table columns to fixed width.
+        /// </summary>
+        FixedColumnWidth = 2
+    }
+
+    /// <summary>
+    /// Defines the CellWidthType enumeration.
+    /// </summary>
+    public enum CellWidthType
+    {
+        /// <summary>
+        /// Automatically Determined Width. 
+        /// </summary>
+        Auto = 0,
+        /// <summary>
+        /// Width in Percent.
+        /// </summary>
+        Percent = 1,
+        /// <summary>
+        /// Width in Point. 
+        /// </summary>
+        Point = 2
+    }
+
+    /// <summary>
+    /// Defines the TableRowAlignment enumeration.
+    /// </summary>
+    public enum TableRowAlignment
+    {
+        /// <summary>
+        /// Left.
+        /// </summary>
+        Left = 0,
+        /// <summary>
+        /// Center.
+        /// </summary>
+        Center = 1,
+        /// <summary>
+        /// Right.
+        /// </summary>
+        Right = 2
     }
 }

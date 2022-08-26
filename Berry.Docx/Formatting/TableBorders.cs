@@ -3,32 +3,48 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using W = DocumentFormat.OpenXml.Wordprocessing;
+using Berry.Docx.Documents;
 
 namespace Berry.Docx.Formatting
 {
     /// <summary>
     /// Represents the table cell borders.
     /// </summary>
-    public class TableCellBorders
+    public class TableBorders
     {
         #region Private Members
-        private readonly TableCellBorder _left;
-        private readonly TableCellBorder _top;
-        private readonly TableCellBorder _right;
-        private readonly TableCellBorder _bottom;
-        private readonly TableCellBorder _insideH;
-        private readonly TableCellBorder _insideV;
+        private readonly W.Style _style;
+        private readonly Table _table;
+        private readonly TableCell _cell;
+
+        private readonly TableBorder _left;
+        private readonly TableBorder _top;
+        private readonly TableBorder _right;
+        private readonly TableBorder _bottom;
+        private readonly TableBorder _insideH;
+        private readonly TableBorder _insideV;
         #endregion
 
         #region Constructors
-        internal TableCellBorders(Document doc, W.Style style, TableRegionType region)
+        internal TableBorders(Document doc, W.Style style, TableRegionType region)
         {
-            _left = new TableCellBorder(doc, style, region, TableCellBorderType.Left);
-            _right = new TableCellBorder(doc, style, region, TableCellBorderType.Right);
-            _top = new TableCellBorder(doc, style, region, TableCellBorderType.Top);
-            _bottom = new TableCellBorder(doc, style, region, TableCellBorderType.Bottom);
-            _insideH = new TableCellBorder(doc, style, region, TableCellBorderType.InsideH);
-            _insideV = new TableCellBorder(doc, style, region, TableCellBorderType.InsideV);
+            _style = style;
+            _left = new TableBorder(doc, style, region, TableCellBorderType.Left);
+            _right = new TableBorder(doc, style, region, TableCellBorderType.Right);
+            _top = new TableBorder(doc, style, region, TableCellBorderType.Top);
+            _bottom = new TableBorder(doc, style, region, TableCellBorderType.Bottom);
+            _insideH = new TableBorder(doc, style, region, TableCellBorderType.InsideH);
+            _insideV = new TableBorder(doc, style, region, TableCellBorderType.InsideV);
+        }
+
+        internal TableBorders(Document doc, Table table)
+        {
+            _table = table;
+        }
+
+        internal TableBorders(Document doc, TableCell cell)
+        {
+            _cell = cell;
         }
         #endregion
 
@@ -36,32 +52,54 @@ namespace Berry.Docx.Formatting
         /// <summary>
         /// Gets the table cell top border.
         /// </summary>
-        public TableCellBorder Top => _top;
+        public TableBorder Top => _top;
 
         /// <summary>
         /// Gets the table cell bottom border.
         /// </summary>
-        public TableCellBorder Bottom => _bottom;
+        public TableBorder Bottom => _bottom;
 
         /// <summary>
         /// Gets the table cell left border.
         /// </summary>
-        public TableCellBorder Left => _left;
+        public TableBorder Left => _left;
 
         /// <summary>
         /// Gets the table cell right border.
         /// </summary>
-        public TableCellBorder Right => _right;
+        public TableBorder Right => _right;
 
         /// <summary>
         /// Gets the table cell inside horizontal border.
         /// </summary>
-        public TableCellBorder InsideH => _insideH;
+        public TableBorder InsideH => _insideH;
 
         /// <summary>
         /// Gets the table cell inside vertical border.
         /// </summary>
-        public TableCellBorder InsideV => _insideV;
+        public TableBorder InsideV => _insideV;
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Clears all table borders.
+        /// </summary>
+        public void Clear()
+        {
+            if(_cell != null)
+            {
+                if(_cell.XElement?.TableCellProperties?.TableCellBorders != null)
+                    _cell.XElement.TableCellProperties.TableCellBorders = null;
+            }
+            else if(_table != null)
+            {
+                W.TableProperties tblPr = _table.XElement.GetFirstChild<W.TableProperties>();
+                if(tblPr.TableBorders != null)
+                {
+                    tblPr.TableBorders = null;
+                }
+            }
+        }
         #endregion
 
     }
@@ -69,7 +107,7 @@ namespace Berry.Docx.Formatting
     /// <summary>
     /// Represents the table cell border.
     /// </summary>
-    public class TableCellBorder
+    public class TableBorder
     {
         #region Private Members
         private readonly Document _doc;
@@ -79,7 +117,7 @@ namespace Berry.Docx.Formatting
         #endregion
 
         #region Constructors
-        internal TableCellBorder(Document doc, W.Style style, TableRegionType region, TableCellBorderType type)
+        internal TableBorder(Document doc, W.Style style, TableRegionType region, TableCellBorderType type)
         {
             _doc = doc;
             _style = style;
@@ -104,13 +142,13 @@ namespace Berry.Docx.Formatting
                         W.Style baseStyle = _style.GetBaseStyle(_doc);
                         if (baseStyle != null)
                         {
-                            return new TableCellBorder(_doc, baseStyle, _region, _type).Style;
+                            return new TableBorder(_doc, baseStyle, _region, _type).Style;
                         }
                         return BorderStyle.Nil;
                     }
                     else
                     {
-                        return new TableCellBorder(_doc, _style, TableRegionType.WholeTable, _type).Style;
+                        return new TableBorder(_doc, _style, TableRegionType.WholeTable, _type).Style;
                     }
                 }
                 if (border.Val == null) return BorderStyle.Nil;
@@ -169,13 +207,13 @@ namespace Berry.Docx.Formatting
                         W.Style baseStyle = _style.GetBaseStyle(_doc);
                         if (baseStyle != null)
                         {
-                            return new TableCellBorder(_doc, baseStyle, _region, _type).Color;
+                            return new TableBorder(_doc, baseStyle, _region, _type).Color;
                         }
                         return ColorValue.Auto;
                     }
                     else
                     {
-                        return new TableCellBorder(_doc, _style, TableRegionType.WholeTable, _type).Color;
+                        return new TableBorder(_doc, _style, TableRegionType.WholeTable, _type).Color;
                     }
                 }
                 return border.Color?.Value ?? ColorValue.Auto;
@@ -233,13 +271,13 @@ namespace Berry.Docx.Formatting
                         W.Style baseStyle = _style.GetBaseStyle(_doc);
                         if (baseStyle != null)
                         {
-                            return new TableCellBorder(_doc, baseStyle, _region, _type).Width;
+                            return new TableBorder(_doc, baseStyle, _region, _type).Width;
                         }
                         return 0;
                     }
                     else
                     {
-                        return new TableCellBorder(_doc, _style, TableRegionType.WholeTable, _type).Width;
+                        return new TableBorder(_doc, _style, TableRegionType.WholeTable, _type).Width;
                     }
                 }
                 if ((int)Style < 27)

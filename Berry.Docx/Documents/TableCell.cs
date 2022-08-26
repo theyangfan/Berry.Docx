@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {
@@ -45,9 +46,67 @@ namespace Berry.Docx.Documents
         /// </summary>
         public ParagraphCollection Paragraphs => new ParagraphCollection(_cell, GetParagraphs());
 
+        /// <summary>
+        /// Gets the cell borders.
+        /// </summary>
+        public TableBorders Borders => new TableBorders(_ownerDoc, this);
+
+        /// <summary>
+        /// Gets or sets the table cell vertical alignment.
+        /// </summary>
+        public TableCellVerticalAlignment VerticalCellAlignment
+        {
+            get
+            {
+                W.TableCellVerticalAlignment vAlign = _cell.TableCellProperties?.TableCellVerticalAlignment;
+                if(vAlign == null)
+                {
+                    return vAlign.Val.Value.Convert<TableCellVerticalAlignment>();
+                }
+                return _ownerTable.GetStyle().WholeTable.VerticalCellAlignment;
+            }
+            set
+            {
+                if(_cell.TableCellProperties == null)
+                {
+                    _cell.TableCellProperties = new W.TableCellProperties();
+                }
+                _cell.TableCellProperties.TableCellVerticalAlignment = new W.TableCellVerticalAlignment()
+                {
+                    Val = value.Convert<W.TableVerticalAlignmentValues>()
+                };
+            }
+        }
+
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Sets the width of the current cell.
+        /// </summary>
+        /// <param name="width">The cell width.</param>
+        /// <param name="cellWidthType">The measurement type of the width.  </param>
+        public void SetCellWidth(float width, CellWidthType cellWidthType)
+        {
+            if(_cell.TableCellProperties == null)
+            {
+                _cell.TableCellProperties = new W.TableCellProperties();
+            }
+            if(cellWidthType == CellWidthType.Auto)
+            {
+                _cell.TableCellProperties.TableCellWidth = new W.TableCellWidth() { Width = "0", Type = W.TableWidthUnitValues.Auto };
+            }
+            else if(cellWidthType == CellWidthType.Percent)
+            {
+                int percent = (int)Math.Round(width * 50);
+                _cell.TableCellProperties.TableCellWidth = new W.TableCellWidth() { Width = percent.ToString(), Type = W.TableWidthUnitValues.Pct };
+            }
+            else
+            {
+                int w = (int)Math.Round(width * 20);
+                _cell.TableCellProperties.TableCellWidth = new W.TableCellWidth() { Width = w.ToString(), Type = W.TableWidthUnitValues.Dxa };
+            }
+        }
 
         /// <summary>
         /// Inserts a new row above.
@@ -128,6 +187,10 @@ namespace Berry.Docx.Documents
             W.TableCell newCell = (W.TableCell)_cell.CloneNode(true);
             return new TableCell(_ownerDoc, _ownerTable, _ownerTableRow, newCell);
         }
+        #endregion
+
+        #region Internal
+        internal new W.TableCell XElement => _cell;
         #endregion
 
         #region Private Methods

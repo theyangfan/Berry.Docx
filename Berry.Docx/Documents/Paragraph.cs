@@ -90,7 +90,7 @@ namespace Berry.Docx.Documents
         public ParagraphItemCollection ChildItems => new ParagraphItemCollection(_paragraph, ParagraphItems());
 
         /// <summary>
-        /// The paragraph text.
+        /// Gets or sets the paragraph text.
         /// </summary>
         public string Text
         {
@@ -111,6 +111,79 @@ namespace Berry.Docx.Documents
                 _paragraph.RemoveAllChildren<W.Run>();
                 W.Run run = RunGenerator.Generate(value);
                 _paragraph.AddChild(run);
+            }
+        }
+
+        /// <summary>
+        /// Gets the paragraph list text.
+        /// </summary>
+        public string ListText
+        {
+            get
+            {
+                ListStyle curStyle = ListFormat.CurrentStyle;
+                ListLevel curLevel = ListFormat.CurrentLevel;
+                if (curStyle == null || curLevel == null) return string.Empty;
+
+                int[] levels = new int[9] {-1,-1,-1,-1, -1, -1, -1, -1,-1 };
+
+                foreach (Paragraph p in _doc.Paragraphs)
+                {
+                    ListStyle pStyle = p.ListFormat.CurrentStyle;
+                    ListLevel pLevel = p.ListFormat.CurrentLevel;
+                    if (pStyle == null || pLevel == null) continue;
+                    
+                    if (pStyle == curStyle)
+                    {
+                        int levelNum = p.ListFormat.ListLevelNumber;
+                        if (levels[levelNum - 1] == -1) 
+                            levels[levelNum - 1] = pLevel.StartNumber;
+                        else 
+                            levels[levelNum - 1]++;
+
+                        for (int i = 0; i < levels.Length; i++)
+                        {
+                            if (i < levelNum)
+                            {
+                                if (levels[i] == -1) levels[i] = curStyle.Levels[i].StartNumber;
+                            }
+                            else
+                            {
+                                levels[i] = -1;
+                            }
+                        }
+                        if (p == this) break;
+                    }
+                }
+
+                string pattern = ListFormat.CurrentLevel.Pattern;
+                StringBuilder listText = new StringBuilder();
+                foreach (var i in pattern)
+                {
+                    int.TryParse(i.ToString(), out int lvlNum);
+                    if (lvlNum > 0)
+                    {
+                        ListLevel level = curStyle.Levels[lvlNum - 1];
+                        string val = levels[lvlNum - 1].ToString();
+                        if (!curLevel.IsLegalNumberingStyle)
+                        {
+                            if (level.NumberStyle == ListNumberStyle.UpperRoman)
+                                val = NumberValueConverter.IntToUpperRoman(levels[lvlNum - 1]);
+                            else if (level.NumberStyle == ListNumberStyle.LowerRoman)
+                                val = NumberValueConverter.IntToLowerRoman(levels[lvlNum - 1]);
+                            else if (level.NumberStyle == ListNumberStyle.ChineseCounting
+                                || level.NumberStyle == ListNumberStyle.ChineseCountingThousand
+                                || level.NumberStyle == ListNumberStyle.JapaneseCounting)
+                                val = NumberValueConverter.IntToChineseCounting(levels[lvlNum - 1]);
+                        }
+                        listText.Append(val);
+                    }
+                    else
+                    {
+                        listText.Append(i);
+                    }
+                }
+                return listText.ToString();
             }
         }
 
@@ -472,7 +545,7 @@ namespace Berry.Docx.Documents
         #region Private Methods
         private IEnumerable<ParagraphItem> ParagraphItems()
         {
-            foreach(DocumentItem item in ChildObjects)
+            foreach(DocumentItem item in base.ChildObjects)
             {
                 yield return item as ParagraphItem;
             }
@@ -480,30 +553,6 @@ namespace Berry.Docx.Documents
         #endregion
 
         #region TODO
-
-        /// <summary>
-        /// 段落编号(默认为1)
-        /// </summary>
-        private string ListText
-        {
-            get
-            {
-                /*
-                if (_pFormat.NumberingFormat == null) return string.Empty;
-                string lvlText = _pFormat.NumberingFormat.Format;
-                //Console.WriteLine($"{lvlText},{_pFormat.NumberingFormat.Style}");
-                if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.Decimal)
-                    lvlText = lvlText.RxReplace(@"%[0-9]", "1");
-                else if (_pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCounting
-                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.ChineseCountingThousand
-                    || _pFormat.NumberingFormat.Style == W.NumberFormatValues.JapaneseCounting)
-                    lvlText = lvlText.RxReplace(@"%[0-9]", "一");
-                
-                return lvlText;*/
-                return "";
-            }
-        }
-
         private FieldCodeCollection FieldCodes
         {
             get

@@ -14,5 +14,13 @@ namespace Berry.Docx
             run.AddChild(br);
             return br;
         }
+
+        public static TabChar GenerateTab()
+        {
+            Run run = new Run();
+            TabChar tab = new TabChar();
+            run.AddChild(tab);
+            return tab;
+        }
     }
 }

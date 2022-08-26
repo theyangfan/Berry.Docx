@@ -23,6 +23,7 @@ namespace Berry.Docx.Documents
         private W.DocGrid _docGrid;
         private W.TextDirection _textDirection;
         private W.Columns _columns;
+        private PageBorders _pageBorders;
         #endregion
 
         #region Constructors
@@ -36,6 +37,7 @@ namespace Berry.Docx.Documents
             _docGrid = section.XElement.GetFirstChild<W.DocGrid>();
             _textDirection = section.XElement.GetFirstChild<W.TextDirection>();
             _columns = section.XElement.GetFirstChild<W.Columns>();
+            _pageBorders = new PageBorders(doc, section);
         }
         #endregion
 
@@ -442,6 +444,8 @@ namespace Berry.Docx.Documents
                 _docGrid.LinePitch = Convert.ToInt32(value * 20.0F);
             }
         }
+
+        public PageBorders Borders => _pageBorders;
         #endregion
     }
 }

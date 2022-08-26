@@ -27,6 +27,7 @@ namespace Berry.Docx
         private readonly Document _doc;
         private readonly O.OpenXmlElement _element;
         #endregion
+
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the DocumentItem class using the supplied underlying OpenXmlElement.
@@ -187,6 +188,11 @@ namespace Berry.Docx
             if (run.Elements<W.Break>().Any())
             {
                 yield return new Break(_doc, run, run.Elements<W.Break>().First());
+            }
+            // tab
+            if (run.Elements<W.TabChar>().Any())
+            {
+                yield return new Tab(_doc, run, run.GetFirstChild<W.TabChar>());
             }
             // drawing
             foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
