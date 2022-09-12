@@ -45,6 +45,7 @@ namespace Berry.Docx
         private readonly Stream _stream;
         private readonly P.WordprocessingDocument _doc;
         private readonly Settings _settings;
+        private bool _closeStream = true;
         #endregion
 
         #region Constructor
@@ -323,6 +324,15 @@ namespace Berry.Docx
         }
 
         /// <summary>
+        /// Sets a Boolean value indicating whether close the source stream when close the document.
+        /// </summary>
+        /// <param name="close"></param>
+        public void SetCloseStream(bool close)
+        {
+            _closeStream = close;
+        }
+
+        /// <summary>
         /// Close the document.
         /// <para>关闭文档。</para>
         /// </summary>
@@ -337,7 +347,8 @@ namespace Berry.Docx
         /// </summary>
         public void Dispose()
         {
-            _stream?.Close();
+            if(_closeStream)
+                _stream?.Close();
             _doc?.Close();
         }
 

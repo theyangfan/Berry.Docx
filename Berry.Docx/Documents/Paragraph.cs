@@ -406,6 +406,31 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
+        /// Replace the matched text with the specified text.
+        /// </summary>
+        /// <param name="pattern">The match pattern.</param>
+        /// <param name="replace">The replaced string.</param>
+        public void Replace(Regex pattern, string replace)
+        {
+            List<TextRange> ranges = new List<TextRange> ();
+            foreach(var match in FindAll(pattern))
+            {
+                ranges.Add(match.GetAsOneRange());
+            }
+            foreach(var tr in ranges)
+            {
+                if (!string.IsNullOrEmpty(replace))
+                {
+                    tr.Text = replace;
+                }
+                else
+                {
+                    tr.Remove();
+                }
+            }
+        }
+
+        /// <summary>
         /// Appends a comment to the current paragraph.
         /// </summary>
         /// <param name="author">The author of the comment.</param>

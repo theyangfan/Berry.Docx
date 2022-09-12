@@ -26,11 +26,8 @@ namespace Test
 
             using (Document doc = new Document(src))
             {
-                Table table = doc.Tables[0];
-                //table.AutoFit(AutoFitMethod.AutoFitContents);
-                table.Format.RepeatHeaderRow = true;
-                Console.WriteLine(table.Format.RepeatHeaderRow);
-
+                Paragraph p = doc.Paragraphs[0];
+                p.Replace(new Regex(@"(\s*[,，;；､、]\s*|\s+)", RegexOptions.IgnoreCase), ";   ");
                 doc.SaveAs(dst);
             }
         }

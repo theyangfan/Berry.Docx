@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
@@ -67,6 +67,10 @@ namespace Berry.Docx.Field
                     _ownerRun.AddChild(_text);
                 }
                 _text.Text = value;
+                if(Regex.IsMatch(value, @"\s"))
+                {
+                    _text.Space = O.SpaceProcessingModeValues.Preserve;
+                }
             }
         }
 
