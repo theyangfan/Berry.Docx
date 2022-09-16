@@ -101,7 +101,15 @@ namespace Berry.Docx.Documents
                 {
                     if(item is TextRange)
                     {
-                        text.Append(((TextRange)item).Text);
+                        text.Append((item as TextRange).Text);
+                    }
+                    else if(item is InsertedRange)
+                    {
+                        text.Append((item as InsertedRange).Text);
+                    }
+                    else if (item is DeletedRange)
+                    {
+                        text.Append((item as DeletedRange).Text);
                     }
                 }
                 return text.ToString();
@@ -111,6 +119,26 @@ namespace Berry.Docx.Documents
                 _paragraph.RemoveAllChildren<W.Run>();
                 W.Run run = RunGenerator.Generate(value);
                 _paragraph.AddChild(run);
+            }
+        }
+
+        public string RevisionAcceptedText
+        {
+            get
+            {
+                StringBuilder text = new StringBuilder();
+                foreach (DocumentObject item in ChildObjects)
+                {
+                    if (item is TextRange)
+                    {
+                        text.Append((item as TextRange).Text);
+                    }
+                    else if (item is InsertedRange)
+                    {
+                        text.Append((item as InsertedRange).Text);
+                    }
+                }
+                return text.ToString();
             }
         }
 

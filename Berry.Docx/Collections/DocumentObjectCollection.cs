@@ -7,7 +7,7 @@ namespace Berry.Docx.Collections
     /// <summary>
     /// Represent a DocumentObject collection.
     /// </summary>
-    public abstract class DocumentObjectCollection : IEnumerable
+    public abstract class DocumentObjectCollection : IEnumerable<DocumentObject>
     {
         #region Private Members
         private IEnumerable<DocumentObject> _objects;
@@ -108,7 +108,14 @@ namespace Berry.Docx.Collections
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator GetEnumerator()
+        
+
+        public IEnumerator<DocumentObject> GetEnumerator()
+        {
+            return _objects.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _objects.GetEnumerator();
         }

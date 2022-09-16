@@ -7,12 +7,17 @@ namespace Berry.Docx.Collections
     /// <summary>
     /// Represent a Paragraph collection.
     /// </summary>
-    public class ParagraphCollection : DocumentItemCollection
+    public class ParagraphCollection : DocumentItemCollection, IEnumerable<Paragraph>
     {
+        #region Private Members
+        private IEnumerable<Paragraph> _paragraphs;
+        #endregion
+
         #region Constructors
         internal ParagraphCollection(O.OpenXmlElement owner, IEnumerable<Paragraph> paragraphs)
             : base(owner, paragraphs)
         {
+            _paragraphs = paragraphs;
         }
         #endregion
 
@@ -90,6 +95,11 @@ namespace Berry.Docx.Collections
         public void Remove(Paragraph paragraph)
         {
             base.Remove(paragraph);
+        }
+
+        public IEnumerator<Paragraph> GetEnumerator()
+        {
+            return _paragraphs.GetEnumerator();
         }
         #endregion
 

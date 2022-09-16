@@ -86,7 +86,10 @@ namespace Berry.Docx
         SdtContent,
         SdtProperties,
         Break,
-        Tab
+        Tab,
+        DeletedRange,
+        InsertedRange,
+        DeletedTextRange
     }
 
     /// <summary>

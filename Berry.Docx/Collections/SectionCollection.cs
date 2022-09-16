@@ -9,7 +9,7 @@ namespace Berry.Docx.Collections
     /// <summary>
     /// Represent a section collection.
     /// </summary>
-    public class SectionCollection : IEnumerable
+    public class SectionCollection : IEnumerable<Section>
     {
         #region Private Members
         private IEnumerable<Section> _sections;
@@ -48,11 +48,15 @@ namespace Berry.Docx.Collections
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator GetEnumerator()
+        public IEnumerator<Section> GetEnumerator()
         {
             return _sections.GetEnumerator();
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _sections.GetEnumerator();
+        }
         #endregion
     }
 }

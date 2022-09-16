@@ -68,15 +68,29 @@ namespace Berry.Docx
         /// 打开指定文件来创建一个新 Document 实例。如果文件不存在，则会创建一个新文件。
         /// </para>
         /// </summary>
-        /// <param name="filename">Name of the file</param>
-        public Document(string filename)
+        /// <param name="filename">The name of the specified file.</param>
+        public Document(string filename):this(filename, FileShare.Read)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of the Document class from the specified file. 
+        /// If the file dose not exists, a new file will be created .
+        /// <para>
+        /// 打开指定文件来创建一个新 Document 实例。如果文件不存在，则会创建一个新文件。
+        /// </para>
+        /// </summary>
+        /// <param name="filename">The name of the specified file.</param>
+        /// <param name="share">A System.IO.FileShare value specifying the type of access other threads have
+        ///     to the file.</param>
+        public Document(string filename, FileShare share)
         {
             _filename = filename;
             if (File.Exists(filename))
             {
                 // open existing file
                 MemoryStream tempStream = new MemoryStream();
-                using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, share))
                 {
                     stream.CopyTo(tempStream);
                 }

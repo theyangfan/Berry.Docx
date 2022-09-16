@@ -21,14 +21,15 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\tomato\Desktop\test.docx";
-            string dst = @"C:\Users\tomato\Desktop\dst.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
 
-            using (Document doc = new Document(src))
+            using (Document doc = new Document(src, FileShare.ReadWrite))
             {
                 Paragraph p = doc.Paragraphs[0];
-                p.Replace(new Regex(@"(\s*[,，;；､、]\s*|\s+)", RegexOptions.IgnoreCase), ";   ");
-                doc.SaveAs(dst);
+                Console.WriteLine(p.Text);
+                Console.WriteLine(p.RevisionAcceptedText);
+                //doc.SaveAs(dst);
             }
         }
     }
