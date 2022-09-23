@@ -61,7 +61,12 @@ namespace Berry.Docx.Field
             }
             set
             {
-                if(_text == null)
+                if (string.IsNullOrEmpty(value))
+                {
+                    Remove();
+                    return;
+                }
+                if (_text == null)
                 {
                     _text = new W.Text();
                     _ownerRun.AddChild(_text);

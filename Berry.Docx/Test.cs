@@ -22,13 +22,26 @@ namespace Test
     {
         public static void Main() {
             string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
-            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
+            string dst = @"C:\Users\Zhailiao123\Desktop\test\test.png";
 
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
-                Paragraph p = doc.Paragraphs[0];
-                Console.WriteLine(p.Text);
-                Console.WriteLine(p.RevisionAcceptedText);
+                Paragraph p = doc.Paragraphs.Last();
+                foreach(var obj in p.ChildItems)
+                {
+                    Console.WriteLine(obj);
+                    if(obj is Picture)
+                    {
+                        Picture pic = obj as Picture;
+                        using(var stream = pic.Stream)
+                        {
+#if NET40_OR_GREATER
+                            Image image = Image.FromStream(stream);
+                            image.Save(dst);
+#endif
+                        }
+                    }
+                }
                 //doc.SaveAs(dst);
             }
         }

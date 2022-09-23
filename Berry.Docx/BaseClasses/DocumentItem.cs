@@ -173,6 +173,10 @@ namespace Berry.Docx
                 {
                     yield return new InsertedRange(_doc, ele as W.InsertedRun);
                 }
+                else if(ele is W.SimpleField) // SimpleField
+                {
+                    yield return new SimpleField(_doc, ele as W.SimpleField);
+                }
             }
         }
 

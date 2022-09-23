@@ -103,6 +103,10 @@ namespace Berry.Docx.Documents
                     {
                         text.Append((item as TextRange).Text);
                     }
+                    else if(item is SimpleField)
+                    {
+                        text.Append((item as SimpleField).Result);
+                    }
                     else if(item is InsertedRange)
                     {
                         text.Append((item as InsertedRange).Text);
@@ -406,7 +410,7 @@ namespace Berry.Docx.Documents
         public TextMatch Find(Regex pattern)
         {
             Match match = pattern.Match(Text);
-            if (match.Success)
+            if (match.Success && match.Length > 0)
             {
                 return new TextMatch(this, match.Index, match.Index + match.Length - 1);
             }
@@ -423,9 +427,10 @@ namespace Berry.Docx.Documents
         public List<TextMatch> FindAll(Regex pattern)
         {
             List<TextMatch> matches = new List<TextMatch>();
+            
             foreach (Match match in pattern.Matches(Text))
             {
-                if (match.Success)
+                if (match.Success && match.Length > 0)
                 {
                     matches.Add(new TextMatch(this, match.Index, match.Index + match.Length - 1));
                 }
@@ -447,14 +452,7 @@ namespace Berry.Docx.Documents
             }
             foreach(var tr in ranges)
             {
-                if (!string.IsNullOrEmpty(replace))
-                {
-                    tr.Text = replace;
-                }
-                else
-                {
-                    tr.Remove();
-                }
+                tr.Text = replace;
             }
         }
 
@@ -605,48 +603,5 @@ namespace Berry.Docx.Documents
         }
         #endregion
 
-        #region TODO
-        private FieldCodeCollection FieldCodes
-        {
-            get
-            {
-                List<FieldCode> fieldcodes = new List<FieldCode>();
-                List<O.OpenXmlElement> childElements = new List<O.OpenXmlElement>();
-
-                int begin_times = 0;
-                int end_times = 0;
-
-                foreach (O.OpenXmlElement ele in _paragraph.Descendants())
-                {
-                    if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.SimpleField"))
-                    {
-                        fieldcodes.Add(new FieldCode((W.SimpleField)ele));
-                    }
-                    else if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.Run"))
-                    {
-                        W.Run run = (W.Run)ele;
-                        if (run.Elements<W.FieldChar>().Any() && run.Elements<W.FieldChar>().First().FieldCharType != null)
-                        {
-                            string field_type = run.Elements<W.FieldChar>().First().FieldCharType.ToString();
-                            if (field_type == "begin") begin_times++;
-                            else if (field_type == "end") end_times++;
-                        }
-                        if (begin_times > 0)
-                        {
-                            childElements.Add(ele);
-                            if (end_times == begin_times)
-                            {
-                                fieldcodes.Add(new FieldCode(childElements));
-                                begin_times = 0;
-                                end_times = 0;
-                                childElements.Clear();
-                            }
-                        }
-                    }
-                }
-                return new FieldCodeCollection(fieldcodes);
-            }
-        }
-        #endregion
     }
 }

@@ -1,8 +1,14 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
+
+using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using Wp = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using A = DocumentFormat.OpenXml.Drawing;
 
 namespace Berry.Docx.Field
 {
@@ -50,6 +56,18 @@ namespace Berry.Docx.Field
                 return new Picture(_doc, run, pic);
             }
         }
-        #endregion
+
+        public Stream Stream
+        {
+            get
+            {
+                A.Blip blip = _drawing.Descendants<A.Blip>().FirstOrDefault();
+                if (blip == null) return null;
+                string rId = blip.Embed;
+                P.ImagePart imagePart = (P.ImagePart)_doc.Package.MainDocumentPart.GetPartById(rId);
+                return imagePart?.GetStream();
+            }
+        }
+#endregion
     }
 }

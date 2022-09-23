@@ -89,7 +89,9 @@ namespace Berry.Docx
         Tab,
         DeletedRange,
         InsertedRange,
-        DeletedTextRange
+        DeletedTextRange,
+        SimpleField,
+        ComplexField
     }
 
     /// <summary>
