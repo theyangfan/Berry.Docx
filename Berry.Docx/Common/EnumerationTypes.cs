@@ -2007,4 +2007,36 @@ namespace Berry.Docx
         /// </summary>
         Right = 2
     }
+
+    /// <summary>
+    /// Defines the text reading mode enumeration.
+    /// </summary>
+    [Flags]
+    public enum TextReadingMode : uint
+    {
+        /// <summary>
+        /// Include nothing below.
+        /// </summary>
+        IncludeNothing = 0x00,
+        /// <summary>
+        /// Include hidden text.
+        /// </summary>
+        IncludeHiddenText = 0x01,
+        /// <summary>
+        /// Include field code result.
+        /// </summary>
+        IncludeFieldCode = 0x02,
+        /// <summary>
+        /// Include inserted revisions.
+        /// </summary>
+        IncludeInsertedRevisions = 0x04,
+        /// <summary>
+        /// Include deleted revisions.
+        /// </summary>
+        IncludeDeletedRevisions = 0x08,
+        /// <summary>
+        /// Include all above.
+        /// </summary>
+        IncludeAll = 0xFF
+    }
 }

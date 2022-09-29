@@ -29,7 +29,7 @@ namespace Berry.Docx.Field
         /// The TextRange constructor.
         /// </summary>
         /// <param name="doc">The owner document.</param>
-        public TextRange(Document doc) : this(doc, RunGenerator.Generate(""))
+        public TextRange(Document doc) : this(doc, RunGenerator.GenerateTextRange(""))
         {
         }
 

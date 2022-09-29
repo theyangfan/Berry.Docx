@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;NET4.6.1</TargetFrameworks>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon />
@@ -16,7 +16,7 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.12</Version>
+    <Version>1.3.17</Version>
     <PackageReleaseNotes>1. 支持更多字符和段落格式 (Support more character and paragraph format)；
 2. 支持读写页面设置 (Support read-write page setup)；
 3. 支持读写段落、字符和表格样式(Support read-write paragraph, table and character style)；
@@ -39,6 +39,7 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
   </ItemGroup>
 
   <ItemGroup>

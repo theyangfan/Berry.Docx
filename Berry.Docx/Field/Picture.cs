@@ -32,7 +32,87 @@ namespace Berry.Docx.Field
             _picture = picture;
         }
 
+        #region Public Properties
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Picture;
+
+        public Stream Stream
+        {
+            get
+            {
+                A.Blip blip = _drawing.Descendants<A.Blip>().FirstOrDefault();
+                if (blip == null) return null;
+                string rId = blip.Embed;
+                P.ImagePart imagePart = (P.ImagePart)_doc.Package.MainDocumentPart.GetPartById(rId);
+                return imagePart?.GetStream();
+            }
+        }
+
+        public int Width
+        {
+            get
+            {
+                if(_drawing != null)
+                {
+                    Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
+                    if(extent != null)
+                    {
+                        return (int)Math.Round(extent.Cx.Value / 12700.0);
+                    }
+                }
+                return 0;
+            }
+            set
+            {
+                if (_drawing != null)
+                {
+                    Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
+                    if (extent != null)
+                    {
+                        extent.Cx = value * 12700;
+                    }
+                    A.Extents extents = _drawing.Descendants<A.Extents>().FirstOrDefault();
+                    if(extents != null)
+                    {
+                        extents.Cx = value * 12700;
+                    }
+                }
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                if (_drawing != null)
+                {
+                    Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
+                    if (extent != null)
+                    {
+                        return (int)Math.Round(extent.Cy.Value / 12700.0);
+                    }
+                }
+                return 0;
+            }
+            set
+            {
+                if (_drawing != null)
+                {
+                    Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
+                    if (extent != null)
+                    {
+                        extent.Cy = value * 12700;
+                    }
+                    A.Extents extents = _drawing.Descendants<A.Extents>().FirstOrDefault();
+                    if (extents != null)
+                    {
+                        extents.Cy = value * 12700;
+                    }
+                }
+            }
+        }
+        #endregion
+
+
 
         #region Public Methods
         /// <summary>
@@ -54,18 +134,6 @@ namespace Berry.Docx.Field
                 W.Picture pic = (W.Picture)_picture.CloneNode(true);
                 run.AppendChild(pic);
                 return new Picture(_doc, run, pic);
-            }
-        }
-
-        public Stream Stream
-        {
-            get
-            {
-                A.Blip blip = _drawing.Descendants<A.Blip>().FirstOrDefault();
-                if (blip == null) return null;
-                string rId = blip.Embed;
-                P.ImagePart imagePart = (P.ImagePart)_doc.Package.MainDocumentPart.GetPartById(rId);
-                return imagePart?.GetStream();
             }
         }
 #endregion

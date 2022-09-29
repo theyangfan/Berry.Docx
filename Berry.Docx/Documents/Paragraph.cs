@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -91,6 +92,7 @@ namespace Berry.Docx.Documents
 
         /// <summary>
         /// Gets or sets the paragraph text.
+        /// <para>See <see cref="TextReadingMode"/> for more details.</para>
         /// </summary>
         public string Text
         {
@@ -101,17 +103,19 @@ namespace Berry.Docx.Documents
                 {
                     if(item is TextRange)
                     {
-                        text.Append((item as TextRange).Text);
+                        TextRange tr = item as TextRange;
+                        if (!TextReadingMode.HasFlag(TextReadingMode.IncludeHiddenText) && tr.CharacterFormat.IsHidden) continue;
+                        text.Append(tr.Text);
                     }
-                    else if(item is SimpleField)
+                    else if(item is SimpleField && TextReadingMode.HasFlag(TextReadingMode.IncludeFieldCode))
                     {
                         text.Append((item as SimpleField).Result);
                     }
-                    else if(item is InsertedRange)
+                    else if(item is InsertedRange && TextReadingMode.HasFlag(TextReadingMode.IncludeInsertedRevisions))
                     {
                         text.Append((item as InsertedRange).Text);
                     }
-                    else if (item is DeletedRange)
+                    else if (item is DeletedRange && TextReadingMode.HasFlag(TextReadingMode.IncludeDeletedRevisions))
                     {
                         text.Append((item as DeletedRange).Text);
                     }
@@ -121,30 +125,17 @@ namespace Berry.Docx.Documents
             set
             {
                 _paragraph.RemoveAllChildren<W.Run>();
-                W.Run run = RunGenerator.Generate(value);
+                W.Run run = RunGenerator.GenerateTextRange(value);
                 _paragraph.AddChild(run);
             }
         }
 
-        public string RevisionAcceptedText
-        {
-            get
-            {
-                StringBuilder text = new StringBuilder();
-                foreach (DocumentObject item in ChildObjects)
-                {
-                    if (item is TextRange)
-                    {
-                        text.Append((item as TextRange).Text);
-                    }
-                    else if (item is InsertedRange)
-                    {
-                        text.Append((item as InsertedRange).Text);
-                    }
-                }
-                return text.ToString();
-            }
-        }
+        /// <summary>
+        /// Gets or sets a value indicating whether include the special text object when get <see cref="Text"/>.
+        /// <para>The default value is <see cref="TextReadingMode.IncludeHiddenText"/> | <see cref="TextReadingMode.IncludeFieldCode"/> | <see cref="TextReadingMode.IncludeInsertedRevisions"/>".</para>
+        /// </summary>
+        public TextReadingMode TextReadingMode { get; set; }
+            = TextReadingMode.IncludeHiddenText | TextReadingMode.IncludeFieldCode | TextReadingMode.IncludeInsertedRevisions;
 
         /// <summary>
         /// Gets the paragraph list text.
@@ -400,6 +391,43 @@ namespace Berry.Docx.Documents
                 br.Clear = BreakTextRestartLocation.All;
             this.ChildItems.Add(br);
             return br;
+        }
+
+        /// <summary>
+        /// Append a Picture to the end of the current paragraph.
+        /// </summary>
+        /// <param name="filename">The picture filename.</param>
+        /// <returns>The added picture.</returns>
+        public Picture AppendPicture(string filename)
+        {
+            string rId = IDGenerator.GenerateRelationshipID(_doc);
+            P.ImagePartType type = P.ImagePartType.Bmp;
+            if (filename.EndsWith(".png")) type = P.ImagePartType.Png;
+            else if (filename.EndsWith(".jpg") || filename.EndsWith(".jpeg")) type = P.ImagePartType.Jpeg;
+            else if (filename.EndsWith(".gif")) type = P.ImagePartType.Gif;
+            else if (filename.EndsWith(".bmp")) type = P.ImagePartType.Bmp;
+            else if (filename.EndsWith(".svg")) type = P.ImagePartType.Svg;
+            P.ImagePart imagePart = _doc.Package.MainDocumentPart.AddImagePart(type, rId);
+            using (var fs = File.OpenRead(filename))
+            {
+                imagePart.FeedData(fs);
+            }
+            Section section = _doc.LastSection;
+            foreach(var s in _doc.Sections)
+            {
+                if (s.Paragraphs.Contains(this))
+                {
+                    section = s;
+                    break;
+                }
+            }
+            float pgWidth = section.PageSetup.PageWidth - section.PageSetup.LeftMargin - section.PageSetup.RightMargin;
+            float pgHeight = section.PageSetup.PageHeight - section.PageSetup.TopMargin - section.PageSetup.BottomMargin;
+            W.Run drawingRun = RunGenerator.GenerateDrawing(rId, filename, pgWidth, pgHeight);
+
+            Picture pic = new Picture(_doc, drawingRun, drawingRun.GetFirstChild<W.Drawing>());
+            ChildItems.Add(pic);
+            return pic;
         }
 
         /// <summary>

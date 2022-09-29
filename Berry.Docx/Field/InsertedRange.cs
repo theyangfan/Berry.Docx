@@ -40,7 +40,7 @@ namespace Berry.Docx.Field
             set
             {
                 _ins.RemoveAllChildren<W.Run>();
-                W.Run run = RunGenerator.Generate(value);
+                W.Run run = RunGenerator.GenerateTextRange(value);
                 _ins.Append(run);
             }
         }
