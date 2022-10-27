@@ -97,7 +97,7 @@ namespace Berry.Docx.Documents
         public string Text
         {
             get
-            {
+            { 
                 StringBuilder text = new StringBuilder();
                 foreach(DocumentObject item in ChildObjects)
                 {
@@ -118,6 +118,10 @@ namespace Berry.Docx.Documents
                     else if (item is DeletedRange && TextReadingMode.HasFlag(TextReadingMode.IncludeDeletedRevisions))
                     {
                         text.Append((item as DeletedRange).Text);
+                    }
+                    else if(item is Tab)
+                    {
+                        text.Append("\t");
                     }
                 }
                 return text.ToString();
@@ -225,6 +229,28 @@ namespace Berry.Docx.Documents
         /// <para>获取段落标记的字符格式.</para>
         /// </summary>
         public CharacterFormat MarkFormat => _cFormat;
+
+        /// <summary>
+        /// Return true if the current paragraph is inserted in revision mode, otherwise false.
+        /// </summary>
+        public bool IsInserted
+        {
+            get
+            {
+                return _paragraph.ParagraphProperties?.ParagraphMarkRunProperties?.Inserted != null;
+            }
+        }
+
+        /// <summary>
+        /// Return true if the current paragraph is deleted in revision mode, otherwise false.
+        /// </summary>
+        public bool IsDeleted
+        {
+            get
+            {
+                return _paragraph.ParagraphProperties?.ParagraphMarkRunProperties?.Deleted != null;
+            }
+        }
 
         /// <summary>
         /// Gets the owener section of the current paragraph.

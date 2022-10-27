@@ -28,8 +28,15 @@ namespace Test
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
                 Paragraph p = doc.Paragraphs[0];
-                p.TextReadingMode = TextReadingMode.IncludeAll;
-                Console.WriteLine(p.Text);
+                foreach(var item in p.ChildItems)
+                {
+                    Console.WriteLine(item);
+                    foreach(var i in item.ChildObjects)
+                    {
+                        Console.WriteLine(i);
+                        Console.WriteLine("--");
+                    }
+                }
                 //doc.SaveAs(dst);
             }
         }

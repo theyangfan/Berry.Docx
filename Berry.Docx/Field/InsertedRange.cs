@@ -34,6 +34,10 @@ namespace Berry.Docx.Field
                     {
                         text.Append(((TextRange)item).Text);
                     }
+                    else if(item is Tab)
+                    {
+                        text.Append("\t");
+                    }
                 }
                 return text.ToString();
             }
