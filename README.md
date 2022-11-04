@@ -2,9 +2,9 @@
 
 [![Downloads](https://img.shields.io/nuget/dt/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx)
 
-Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 Word 应用程序。 旨在提供简便，完整，友好的接口来封装底层的 [OpenXML](https://github.com/OfficeDev/Open-XML-SDK) API。
+根据 Office Open XML 格式规范(ECMA 375 第二版) 开发的一款用于读写 Word 2007+ (.docx) 文档的 .NET 库，基于 OpenXML SDK。作为一个 .NET 新手，建立此项目的主要目的是锻炼自己的 API 设计能力，目前项目仍在建设中...
 
-*Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying [OpenXML](https://github.com/OfficeDev/Open-XML-SDK) API.*
+A .NET library for reading and writing Word 2007+ (.docx) files developed according to the Office OpenXML Format specification (ECMA-375, second edition), based on the OpenXML SDK. As a .NET novice, the main purpose of this project is to exercise my API design ability, which is still under construction...
 
 <br/>
 
