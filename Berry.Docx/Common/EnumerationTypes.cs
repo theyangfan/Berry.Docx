@@ -2039,4 +2039,42 @@ namespace Berry.Docx
         /// </summary>
         IncludeAll = 0xFF
     }
+
+    /// <summary>
+    /// Defines the vertical merge type enumeration.
+    /// </summary>
+    public enum TableCellVerticalMergeType
+    {
+        /// <summary>
+        /// Not part of a vertically merged set of cells. 
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Starts a new merged group of cells.
+        /// </summary>
+        Restart = 1,
+        /// <summary>
+        /// Continues the vertical merge.
+        /// </summary>
+        Continue = 2
+    }
+
+    /// <summary>
+    /// Defines the table row height type enumeration.
+    /// </summary>
+    public enum TableRowHeightType
+    {
+        /// <summary>
+        /// Determine Height Based On Contents.
+        /// </summary>
+        Auto = 0,
+        /// <summary>
+        /// Exact Height.
+        /// </summary>
+        Exactly = 1,
+        /// <summary>
+        /// Minimum Height.
+        /// </summary>
+        AtLeast = 2
+    }
 }

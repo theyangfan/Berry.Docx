@@ -63,8 +63,8 @@ namespace Berry.Docx
             {
                 TableRow row = new TableRow();
 
-                TableRowProperties tableRowProperties1 = new TableRowProperties();
-                row.Append(tableRowProperties1);
+                /*TableRowProperties tableRowProperties1 = new TableRowProperties();
+                row.Append(tableRowProperties1);*/
 
                 for (int c = 1; c <= columnCnt; c++)
                 {
@@ -92,9 +92,9 @@ namespace Berry.Docx
                     tableCellProperties1.Append(shading1);
 
                     Paragraph paragraph1 = new Paragraph();
-                    ParagraphProperties paragraphProperties1 = new ParagraphProperties();
+                    /*ParagraphProperties paragraphProperties1 = new ParagraphProperties();
 
-                    paragraph1.Append(paragraphProperties1);
+                    paragraph1.Append(paragraphProperties1);*/
 
                     tableCell1.Append(tableCellProperties1);
                     tableCell1.Append(paragraph1);

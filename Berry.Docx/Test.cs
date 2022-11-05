@@ -27,16 +27,11 @@ namespace Test
 
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
-                Paragraph p = doc.Paragraphs[0];
-                foreach(var item in p.ChildItems)
-                {
-                    Console.WriteLine(item);
-                    foreach(var i in item.ChildObjects)
-                    {
-                        Console.WriteLine(i);
-                        Console.WriteLine("--");
-                    }
-                }
+                Table tbl = doc.Tables[0];
+                TableCell cell = tbl[1][0];
+                Console.WriteLine(cell.GetCellWidth().Val);
+                Console.WriteLine(cell.GetCellWidth().Type);
+                
                 //doc.SaveAs(dst);
             }
         }

@@ -39,9 +39,82 @@ namespace Berry.Docx.Documents
         public override DocumentObjectCollection ChildObjects => Cells;
 
         /// <summary>
+        /// Gets the table cell at the specified column.
+        /// </summary>
+        /// <param name="column">The zero-based index.</param>
+        /// <returns>The table cell at the specified index.</returns>
+        public TableCell this[int column] => Cells[column];
+
+        /// <summary>
         /// The table cells.
         /// </summary>
         public TableCellCollection Cells => new TableCellCollection(_row, GetTableCells());
+
+        public float Height
+        {
+            get
+            {
+                W.TableRowHeight trHeight = _row.TableRowProperties?.GetFirstChild<W.TableRowHeight>();
+                if(trHeight?.Val == null) return 0f;
+                return trHeight.Val.Value / 20.0f;
+            }
+            set
+            {
+                if(value <= 0)
+                {
+                    if(_row.TableRowProperties?.GetFirstChild<W.TableRowHeight>() != null)
+                    {
+                        W.TableRowHeight trH = _row.TableRowProperties.GetFirstChild<W.TableRowHeight>();
+                        if (trH.HeightType == null) _row.TableRowProperties.RemoveChild(trH);
+                        else _row.TableRowProperties.GetFirstChild<W.TableRowHeight>().Val = null;
+                    }
+                    return;
+                }
+                if(_row.TableRowProperties == null)
+                {
+                    _row.TableRowProperties = new W.TableRowProperties();
+                }
+                if(_row.TableRowProperties.GetFirstChild<W.TableRowHeight>() == null)
+                {
+                    _row.TableRowProperties.AddChild(new W.TableRowHeight()); 
+                }
+                W.TableRowHeight trHeight = _row.TableRowProperties.GetFirstChild<W.TableRowHeight>();
+                trHeight.Val = (uint)(value * 20);
+            }
+        }
+
+        public TableRowHeightType HeightType
+        {
+            get
+            {
+                W.TableRowHeight trHeight = _row.TableRowProperties?.GetFirstChild<W.TableRowHeight>();
+                if (trHeight?.HeightType == null) return TableRowHeightType.Auto;
+                return trHeight.HeightType.Value.Convert<TableRowHeightType>();
+            }
+            set
+            {
+                if (value == TableRowHeightType.Auto)
+                {
+                    if (_row.TableRowProperties?.GetFirstChild<W.TableRowHeight>() != null)
+                    {
+                        W.TableRowHeight trH = _row.TableRowProperties.GetFirstChild<W.TableRowHeight>();
+                        if (trH.Val == null) _row.TableRowProperties.RemoveChild(trH);
+                        else _row.TableRowProperties.GetFirstChild<W.TableRowHeight>().HeightType = null;
+                    }
+                    return;
+                }
+                if (_row.TableRowProperties == null)
+                {
+                    _row.TableRowProperties = new W.TableRowProperties();
+                }
+                if (_row.TableRowProperties.GetFirstChild<W.TableRowHeight>() == null)
+                {
+                    _row.TableRowProperties.AddChild(new W.TableRowHeight());
+                }
+                W.TableRowHeight trHeight = _row.TableRowProperties.GetFirstChild<W.TableRowHeight>();
+                trHeight.HeightType = value.Convert<W.HeightRuleValues>();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
