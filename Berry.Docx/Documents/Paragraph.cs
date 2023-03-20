@@ -58,17 +58,13 @@ namespace Berry.Docx.Documents
 
         #region Constructors
         /// <summary>
-        /// The paragraph constructor.
+        /// Initializes a new empty paragraph.
         /// </summary>
         /// <param name="doc">The owner document.</param>
         public Paragraph(Document doc) : this(doc, new W.Paragraph())
         {
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="paragraph"></param>
+        
         internal Paragraph(Document doc, W.Paragraph paragraph) : base(doc, paragraph)
         {
             _doc = doc;

@@ -15,6 +15,7 @@ using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Field;
 using Berry.Docx.Formatting;
+using Berry.Docx.Utils;
 
 namespace Berry.Docx
 {
@@ -25,17 +26,6 @@ namespace Berry.Docx
     /// </para>
     /// <para>Document 类支持创建空白 Word 文档对象实例，或者通过打开指定文件或流(仅支持docx文件或流)创建对象实例。</para>
     /// <para>对文档做出修改后，如果想保存修改的内容，你应该显式调用 Save 或 SaveAs 方法。</para>
-    /// <para>该类实现了 IDisposable 接口，所以你可以在 using 语句中声明对象，而非显式调用 Close 方法，如下所示：</para>
-    /// <example>
-    /// <code>
-    /// using (Document doc = new Document("example.docx"))
-    /// {
-    ///     // 一些操作
-    ///     ...
-    ///     doc.Save();
-    /// }
-    /// </code>
-    /// </example>
     /// <para>通过 Document 对象可以访问文档中的节，样式，脚注尾注等内容。</para>
     /// </summary>
     public class Document : IDisposable
@@ -44,6 +34,7 @@ namespace Berry.Docx
         private readonly string _filename = string.Empty;
         private readonly Stream _stream;
         private readonly P.WordprocessingDocument _doc;
+        private readonly P.OpenSettings _openSettings;
         private readonly Settings _settings;
         private bool _closeStream = true;
         #endregion
@@ -95,7 +86,14 @@ namespace Berry.Docx
                     stream.CopyTo(tempStream);
                 }
                 tempStream.Seek(0, SeekOrigin.Begin);
-                _doc = P.WordprocessingDocument.Open(tempStream, true);
+                // handle malformed hyperlink
+                _openSettings = new P.OpenSettings();
+                _openSettings.AutoSave = false;
+                _openSettings.RelationshipErrorHandlerFactory += (pkg) =>
+                {
+                    return new MalformedURIHandler();
+                };
+                _doc = P.WordprocessingDocument.Open(tempStream, true, _openSettings);
             }
             else
             {
@@ -117,7 +115,14 @@ namespace Berry.Docx
             _stream = stream;
             MemoryStream temp_stream = new MemoryStream();
             stream.CopyTo(temp_stream);
-            _doc = P.WordprocessingDocument.Open(temp_stream, true);
+            // handle malformed hyperlink
+            _openSettings = new P.OpenSettings();
+            _openSettings.AutoSave = false;
+            _openSettings.RelationshipErrorHandlerFactory += (pkg) =>
+            {
+                return new MalformedURIHandler();
+            };
+            _doc = P.WordprocessingDocument.Open(temp_stream, true, _openSettings);
             _settings = new Settings(this, _doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
         #endregion

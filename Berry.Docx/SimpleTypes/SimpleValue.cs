@@ -51,9 +51,19 @@ namespace Berry.Docx
             return this == other;
         }
 
+        public override bool Equals(object o)
+        {
+            return Equals(o as SimpleValue<T>);
+        }
+
         public override string ToString()
         {
             return _value.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

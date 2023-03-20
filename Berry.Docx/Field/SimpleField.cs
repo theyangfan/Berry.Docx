@@ -8,10 +8,14 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SimpleField : ParagraphItem
     {
         private readonly Document _doc;
         private readonly W.SimpleField _fldSimple;
+
         internal SimpleField(Document doc, W.SimpleField fldSimple) : base(doc, fldSimple)
         {
             _doc = doc;
@@ -19,6 +23,7 @@ namespace Berry.Docx.Field
         }
 
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.SimpleField;
+
         public string Code
         {
             get

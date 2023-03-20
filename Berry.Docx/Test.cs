@@ -21,18 +21,12 @@ namespace Test
     internal class Test
     {
         public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\test\test.docx";
+            string src = @"C:\Users\Zhailiao123\Desktop\任小光(213627)_24021678625504063(1).docx";
             string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
-            string file = @"C:\Users\Zhailiao123\Desktop\test\test1.jpg";
 
-            using (Document doc = new Document(src, FileShare.ReadWrite))
+            using (Document doc = new Document(src))
             {
-                Table tbl = doc.Tables[0];
-                TableCell cell = tbl[1][0];
-                Console.WriteLine(cell.GetCellWidth().Val);
-                Console.WriteLine(cell.GetCellWidth().Type);
-                
-                //doc.SaveAs(dst);
+
             }
         }
     }

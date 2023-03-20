@@ -7,6 +7,9 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// Represent a break charater in the paragraph.
+    /// </summary>
     public class Break : ParagraphItem
     {
         #region Private Members
@@ -16,6 +19,11 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Initializes a new break with the specified type.
+        /// </summary>
+        /// <param name="doc">The owner document.</param>
+        /// <param name="type">The break type.</param>
         public Break(Document doc, BreakType type) : this(doc, ParagraphItemGenerator.GenerateBreak())
         {
             Type = type;
@@ -33,8 +41,14 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the type of the current object.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Break;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public BreakType Type
         {
             get
