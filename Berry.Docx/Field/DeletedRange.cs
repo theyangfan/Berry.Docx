@@ -6,6 +6,9 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// Represent a revision of deleted range in the paragraph.
+    /// </summary>
     public class DeletedRange : ParagraphItem
     {
         #region Priavate Members
@@ -21,8 +24,14 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the type of the current object.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.DeletedRange;
 
+        /// <summary>
+        /// Gets the deleted text.
+        /// </summary>
         public string Text
         {
             get

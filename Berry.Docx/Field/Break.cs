@@ -47,7 +47,7 @@ namespace Berry.Docx.Field
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Break;
 
         /// <summary>
-        /// 
+        /// Gets or sets the break type.
         /// </summary>
         public BreakType Type
         {
@@ -65,6 +65,9 @@ namespace Berry.Docx.Field
             }
         }
 
+        /// <summary>
+        /// Gets or sets the restart location for text wrapping break.
+        /// </summary>
         public BreakTextRestartLocation Clear
         {
             get

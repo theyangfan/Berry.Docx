@@ -9,21 +9,32 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 namespace Berry.Docx.Field
 {
     /// <summary>
-    /// 
+    /// Represent a simple filed code.
     /// </summary>
     public class SimpleField : ParagraphItem
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly W.SimpleField _fldSimple;
+        #endregion
 
+        #region Constructor
         internal SimpleField(Document doc, W.SimpleField fldSimple) : base(doc, fldSimple)
         {
             _doc = doc;
             _fldSimple = fldSimple;
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Gets the type of the current object.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.SimpleField;
 
+        /// <summary>
+        /// Gets or sets the field code.
+        /// </summary>
         public string Code
         {
             get
@@ -36,6 +47,9 @@ namespace Berry.Docx.Field
             }
         }
 
+        /// <summary>
+        /// Gets or sets the result of the field code.
+        /// </summary>
         public string Result
         {
             get
@@ -59,5 +73,6 @@ namespace Berry.Docx.Field
                 tr.Text = value;
             }
         }
+        #endregion
     }
 }

@@ -8,7 +8,10 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
-    public class ComplexField : ParagraphItem
+    /// <summary>
+    /// TODO
+    /// </summary>
+    internal class ComplexField : ParagraphItem
     {
         private readonly Document _doc;
         private readonly W.Run _begin;

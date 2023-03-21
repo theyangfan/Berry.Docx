@@ -6,7 +6,9 @@ using Wp = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
-
+    /// <summary>
+    /// TODO
+    /// </summary>
     public abstract class DrawingItem : ParagraphItem
     {
         private readonly W.Drawing _drawing;

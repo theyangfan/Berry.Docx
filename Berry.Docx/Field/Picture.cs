@@ -12,12 +12,19 @@ using A = DocumentFormat.OpenXml.Drawing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// Represent a picture in the paragraph.
+    /// </summary>
     public class Picture : DrawingItem
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly W.Run _ownerRun;
         private readonly W.Drawing _drawing;
         private readonly W.Picture _picture;
+        #endregion
+
+        #region Constructors
         internal Picture(Document doc, W.Run ownerRun, W.Drawing drawing) : base(doc, ownerRun, drawing)
         {
             _doc = doc;
@@ -31,10 +38,17 @@ namespace Berry.Docx.Field
             _ownerRun = ownerRun;
             _picture = picture;
         }
+        #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the type of the current object.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Picture;
 
+        /// <summary>
+        /// Gets the picture data stream.
+        /// </summary>
         public Stream Stream
         {
             get
@@ -47,6 +61,9 @@ namespace Berry.Docx.Field
             }
         }
 
+        /// <summary>
+        /// Gets or sets the width of the picture.
+        /// </summary>
         public int Width
         {
             get
@@ -79,6 +96,9 @@ namespace Berry.Docx.Field
             }
         }
 
+        /// <summary>
+        /// ets or sets the height of the picture.
+        /// </summary>
         public int Height
         {
             get
@@ -112,8 +132,6 @@ namespace Berry.Docx.Field
         }
         #endregion
 
-
-
         #region Public Methods
         /// <summary>
         /// Creates a duplicate of the object.
@@ -136,6 +154,6 @@ namespace Berry.Docx.Field
                 return new Picture(_doc, run, pic);
             }
         }
-#endregion
+        #endregion
     }
 }
