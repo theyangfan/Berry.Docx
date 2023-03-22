@@ -20,14 +20,9 @@ namespace Test
 {
     internal class Test
     {
-        public static void Main() {
-            string src = @"C:\Users\Zhailiao123\Desktop\任小光(213627)_24021678625504063(1).docx";
-            string dst = @"C:\Users\Zhailiao123\Desktop\test\dst.docx";
+        public static void Main() 
+        {
 
-            using (Document doc = new Document(src))
-            {
-
-            }
         }
     }
 }
