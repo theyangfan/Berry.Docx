@@ -165,6 +165,18 @@ namespace Berry.Docx
                     foreach (M.OfficeMath oMath in ele.Elements<M.OfficeMath>())
                         yield return new OfficeMath(_doc, oMath);
                 }
+                else if(ele is W.DeletedRun) // DeletedRun
+                {
+                    yield return new DeletedRange(_doc, ele as W.DeletedRun);
+                }
+                else if (ele is W.InsertedRun) // InsertedRun
+                {
+                    yield return new InsertedRange(_doc, ele as W.InsertedRun);
+                }
+                else if(ele is W.SimpleField) // SimpleField
+                {
+                    yield return new SimpleField(_doc, ele as W.SimpleField);
+                }
             }
         }
 
@@ -224,6 +236,9 @@ namespace Berry.Docx
             {
                 yield return new EmbeddedObject(_doc, run, obj);
             }
+            // deleted text range
+            if (run.Elements<W.DeletedText>().Any())
+                yield return new DeletedTextRange(_doc, run);
         }
 
         private DocumentObject Construct(O.OpenXmlElement element)

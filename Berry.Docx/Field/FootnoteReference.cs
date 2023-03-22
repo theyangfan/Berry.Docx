@@ -6,6 +6,9 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class FootnoteReference : ParagraphItem
     {
         private readonly Document _doc;

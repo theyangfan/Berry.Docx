@@ -86,7 +86,12 @@ namespace Berry.Docx
         SdtContent,
         SdtProperties,
         Break,
-        Tab
+        Tab,
+        DeletedRange,
+        InsertedRange,
+        DeletedTextRange,
+        SimpleField,
+        ComplexField
     }
 
     /// <summary>
@@ -431,8 +436,14 @@ namespace Berry.Docx
         Bottom = 3
     }
 
+    /// <summary>
+    /// Defines the built-in style enumeration.
+    /// </summary>
     public enum BuiltInStyle
     {
+        /// <summary>
+        /// Invalid style.
+        /// </summary>
         None = -1,
         /// <summary>
         /// 正文(Normal)
@@ -442,13 +453,37 @@ namespace Berry.Docx
         /// 标题 1(heading 1)
         /// </summary>
         Heading1 = 1,
+        /// <summary>
+        /// 标题 2(heading 2)
+        /// </summary>
         Heading2 = 2,
+        /// <summary>
+        /// 标题 3(heading 3)
+        /// </summary>
         Heading3 = 3,
+        /// <summary>
+        /// 标题 4(heading 4)
+        /// </summary>
         Heading4 = 4,
+        /// <summary>
+        /// 标题 5(heading 5)
+        /// </summary>
         Heading5 = 5,
+        /// <summary>
+        /// 标题 6(heading 6)
+        /// </summary>
         Heading6 = 6,
+        /// <summary>
+        /// 标题 7(heading 7)
+        /// </summary>
         Heading7 = 7,
+        /// <summary>
+        /// 标题 8(heading 8)
+        /// </summary>
         Heading8 = 8,
+        /// <summary>
+        /// 标题 9(heading 9)
+        /// </summary>
         Heading9 = 9,
         /// <summary>
         /// 标题(Title)
@@ -462,13 +497,37 @@ namespace Berry.Docx
         /// 目录 1(toc 1)
         /// </summary>
         TOC1 = 12,
+        /// <summary>
+        /// 目录 2(toc 2)
+        /// </summary>
         TOC2 = 13,
+        /// <summary>
+        /// 目录 3(toc 3)
+        /// </summary>
         TOC3 = 14,
+        /// <summary>
+        /// 目录 4(toc 4)
+        /// </summary>
         TOC4 = 15,
+        /// <summary>
+        /// 目录 5(toc 5)
+        /// </summary>
         TOC5 = 16,
+        /// <summary>
+        /// 目录 6(toc 6)
+        /// </summary>
         TOC6 = 17,
+        /// <summary>
+        /// 目录 7(toc 7)
+        /// </summary>
         TOC7 = 18,
+        /// <summary>
+        /// 目录 8(toc 8)
+        /// </summary>
         TOC8 = 19,
+        /// <summary>
+        /// 目录 9(toc 9)
+        /// </summary>
         TOC9 = 20,
         /// <summary>
         /// 页眉(header)
@@ -2001,5 +2060,75 @@ namespace Berry.Docx
         /// Right.
         /// </summary>
         Right = 2
+    }
+
+    /// <summary>
+    /// Defines the text reading mode enumeration.
+    /// </summary>
+    [Flags]
+    public enum TextReadingMode : uint
+    {
+        /// <summary>
+        /// Include nothing below.
+        /// </summary>
+        IncludeNothing = 0x00,
+        /// <summary>
+        /// Include hidden text.
+        /// </summary>
+        IncludeHiddenText = 0x01,
+        /// <summary>
+        /// Include field code result.
+        /// </summary>
+        IncludeFieldCode = 0x02,
+        /// <summary>
+        /// Include inserted revisions.
+        /// </summary>
+        IncludeInsertedRevisions = 0x04,
+        /// <summary>
+        /// Include deleted revisions.
+        /// </summary>
+        IncludeDeletedRevisions = 0x08,
+        /// <summary>
+        /// Include all above.
+        /// </summary>
+        IncludeAll = 0xFF
+    }
+
+    /// <summary>
+    /// Defines the vertical merge type enumeration.
+    /// </summary>
+    public enum TableCellVerticalMergeType
+    {
+        /// <summary>
+        /// Not part of a vertically merged set of cells. 
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Starts a new merged group of cells.
+        /// </summary>
+        Restart = 1,
+        /// <summary>
+        /// Continues the vertical merge.
+        /// </summary>
+        Continue = 2
+    }
+
+    /// <summary>
+    /// Defines the table row height type enumeration.
+    /// </summary>
+    public enum TableRowHeightType
+    {
+        /// <summary>
+        /// Determine Height Based On Contents.
+        /// </summary>
+        Auto = 0,
+        /// <summary>
+        /// Exact Height.
+        /// </summary>
+        Exactly = 1,
+        /// <summary>
+        /// Minimum Height.
+        /// </summary>
+        AtLeast = 2
     }
 }

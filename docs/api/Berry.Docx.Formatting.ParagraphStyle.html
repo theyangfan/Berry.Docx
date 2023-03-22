@@ -1,0 +1,494 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ParagraphStyle
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ParagraphStyle
+   ">
+    <meta name="generator" content="docfx 2.59.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Berry.Docx.Formatting.ParagraphStyle">
+  
+  
+  <h1 id="Berry_Docx_Formatting_ParagraphStyle" data-uid="Berry.Docx.Formatting.ParagraphStyle" class="text-break">Class ParagraphStyle
+  </h1>
+  <div class="markdown level0 summary"><p>Represent the paragraph style.</p>
+<p>表示一个段落样式，支持读写其字符和段落格式。可以通过 <code>CreateBuiltInStyle</code> 静态方法创建指定的内置样式。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Berry.Docx.Formatting.Style.html">Style</a></div>
+    <div class="level2"><span class="xref">ParagraphStyle</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Berry.Docx.Formatting.Style.html#Berry_Docx_Formatting_Style_Type">Style.Type</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Formatting.Style.html#Berry_Docx_Formatting_Style_StyleId">Style.StyleId</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Formatting.Style.html#Berry_Docx_Formatting_Style_IsDefault">Style.IsDefault</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Formatting.Style.html#Berry_Docx_Formatting_Style_Name">Style.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Formatting.Style.html#Berry_Docx_Formatting_Style_IsCustom">Style.IsCustom</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Formatting.Style.html#Berry_Docx_Formatting_Style_NameToBuiltIn_System_String_">Style.NameToBuiltIn(String)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Berry.Docx.Formatting.html">Berry.Docx.Formatting</a></h6>
+  <h6><strong>Assembly</strong>: Berry.Docx.dll</h6>
+  <h5 id="Berry_Docx_Formatting_ParagraphStyle_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ParagraphStyle : Style</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle__ctor_" data-uid="Berry.Docx.Formatting.ParagraphStyle.#ctor*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle__ctor_Berry_Docx_Document_System_String_" data-uid="Berry.Docx.Formatting.ParagraphStyle.#ctor(Berry.Docx.Document,System.String)">ParagraphStyle(Document, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a paragraph style with the specified name which is based on normal style.</p>
+<p>创建一个指定名称的段落样式，其基于正文样式。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphStyle(Document doc, string styleName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Document.html">Document</a></td>
+        <td><span class="parametername">doc</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">styleName</span></td>
+        <td><p>样式名</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle__ctor_" data-uid="Berry.Docx.Formatting.ParagraphStyle.#ctor*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle__ctor_Berry_Docx_Document_System_String_Berry_Docx_BuiltInStyle_" data-uid="Berry.Docx.Formatting.ParagraphStyle.#ctor(Berry.Docx.Document,System.String,Berry.Docx.BuiltInStyle)">ParagraphStyle(Document, String, BuiltInStyle)</h4>
+  <div class="markdown level1 summary"><p>Creates a paragraph style with the specified name which is based on the specified style.</p>
+<p>创建一个基于指定样式的指定名称的段落样式。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphStyle(Document doc, string styleName, BuiltInStyle basedStyle)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Document.html">Document</a></td>
+        <td><span class="parametername">doc</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">styleName</span></td>
+        <td><p>样式名</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.BuiltInStyle.html">BuiltInStyle</a></td>
+        <td><span class="parametername">basedStyle</span></td>
+        <td><p>基类样式</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_BaseStyle_" data-uid="Berry.Docx.Formatting.ParagraphStyle.BaseStyle*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_BaseStyle" data-uid="Berry.Docx.Formatting.ParagraphStyle.BaseStyle">BaseStyle</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the base style.</p>
+<p>获取或设置基样式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphStyle BaseStyle { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ParagraphStyle.html">ParagraphStyle</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_CharacterFormat_" data-uid="Berry.Docx.Formatting.ParagraphStyle.CharacterFormat*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_CharacterFormat" data-uid="Berry.Docx.Formatting.ParagraphStyle.CharacterFormat">CharacterFormat</h4>
+  <div class="markdown level1 summary"><p>Gets the CharacterFormat of the style.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CharacterFormat CharacterFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.CharacterFormat.html">CharacterFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_ListFormat_" data-uid="Berry.Docx.Formatting.ParagraphStyle.ListFormat*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_ListFormat" data-uid="Berry.Docx.Formatting.ParagraphStyle.ListFormat">ListFormat</h4>
+  <div class="markdown level1 summary"><p>Gets the list format.</p>
+<p>访问当前样式的列表格式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ListFormat ListFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ListFormat.html">ListFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_ParagraphFormat_" data-uid="Berry.Docx.Formatting.ParagraphStyle.ParagraphFormat*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_ParagraphFormat" data-uid="Berry.Docx.Formatting.ParagraphStyle.ParagraphFormat">ParagraphFormat</h4>
+  <div class="markdown level1 summary"><p>Gets the paragraph format.</p>
+<p>访问当前样式的段落格式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphFormat ParagraphFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ParagraphFormat.html">ParagraphFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_CreateBuiltInStyle_" data-uid="Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_CreateBuiltInStyle_Berry_Docx_BuiltInStyle_Berry_Docx_Document_" data-uid="Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(Berry.Docx.BuiltInStyle,Berry.Docx.Document)">CreateBuiltInStyle(BuiltInStyle, Document)</h4>
+  <div class="markdown level1 summary"><p>Creates a specified built-in paragraph style.</p>
+<p>创建一个指定的内置段落样式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ParagraphStyle CreateBuiltInStyle(BuiltInStyle bstyle, Document doc)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.BuiltInStyle.html">BuiltInStyle</a></td>
+        <td><span class="parametername">bstyle</span></td>
+        <td><p>The BuiltInStyle type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Document.html">Document</a></td>
+        <td><span class="parametername">doc</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ParagraphStyle.html">ParagraphStyle</a></td>
+        <td><p>The built-in paragraph style.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_CreateLinkedStyle_" data-uid="Berry.Docx.Formatting.ParagraphStyle.CreateLinkedStyle*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_CreateLinkedStyle" data-uid="Berry.Docx.Formatting.ParagraphStyle.CreateLinkedStyle">CreateLinkedStyle()</h4>
+  <div class="markdown level1 summary"><p>Creates the linked character style.</p>
+<p>创建链接的字符样式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CharacterStyle CreateLinkedStyle()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.CharacterStyle.html">CharacterStyle</a></td>
+        <td><p>The linked character style.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_Default_" data-uid="Berry.Docx.Formatting.ParagraphStyle.Default*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_Default_Berry_Docx_Document_" data-uid="Berry.Docx.Formatting.ParagraphStyle.Default(Berry.Docx.Document)">Default(Document)</h4>
+  <div class="markdown level1 summary"><p>Gets the default paragraph style (normal style usually).</p>
+<p>获取默认段落样式 (通常是正文样式).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ParagraphStyle Default(Document doc)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Document.html">Document</a></td>
+        <td><span class="parametername">doc</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ParagraphStyle.html">ParagraphStyle</a></td>
+        <td><p>The default paragraph style.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Formatting_ParagraphStyle_GetLinkedStyle_" data-uid="Berry.Docx.Formatting.ParagraphStyle.GetLinkedStyle*"></a>
+  <h4 id="Berry_Docx_Formatting_ParagraphStyle_GetLinkedStyle" data-uid="Berry.Docx.Formatting.ParagraphStyle.GetLinkedStyle">GetLinkedStyle()</h4>
+  <div class="markdown level1 summary"><p>Gets the linked character style.</p>
+<p>获取链接的字符样式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CharacterStyle GetLinkedStyle()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.CharacterStyle.html">CharacterStyle</a></td>
+        <td><p>The linked character style.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Berry.Docx.EnumExtentions.html#Berry_Docx_EnumExtentions_Description__1___0_">EnumExtentions.Description&lt;T&gt;(T)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

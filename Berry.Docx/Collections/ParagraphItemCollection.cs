@@ -9,7 +9,7 @@ namespace Berry.Docx.Collections
     /// <summary>
     /// Represent a ParagraphItem collection.
     /// </summary>
-    public class ParagraphItemCollection : DocumentItemCollection
+    public class ParagraphItemCollection : DocumentItemCollection, IEnumerable<ParagraphItem>
     {
         #region Private Members
         private readonly O.OpenXmlElement _owner;
@@ -69,6 +69,11 @@ namespace Berry.Docx.Collections
             {
                 _items.ElementAt(index).InsertBeforeSelf(item);
             }
+        }
+
+        public IEnumerator<ParagraphItem> GetEnumerator()
+        {
+            return _items.GetEnumerator();
         }
     }
 }

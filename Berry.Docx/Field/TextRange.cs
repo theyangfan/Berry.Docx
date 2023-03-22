@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
@@ -29,7 +29,7 @@ namespace Berry.Docx.Field
         /// The TextRange constructor.
         /// </summary>
         /// <param name="doc">The owner document.</param>
-        public TextRange(Document doc) : this(doc, RunGenerator.Generate(""))
+        public TextRange(Document doc) : this(doc, RunGenerator.GenerateTextRange(""))
         {
         }
 
@@ -61,12 +61,21 @@ namespace Berry.Docx.Field
             }
             set
             {
-                if(_text == null)
+                if (string.IsNullOrEmpty(value))
+                {
+                    Remove();
+                    return;
+                }
+                if (_text == null)
                 {
                     _text = new W.Text();
                     _ownerRun.AddChild(_text);
                 }
                 _text.Text = value;
+                if(Regex.IsMatch(value, @"\s"))
+                {
+                    _text.Space = O.SpaceProcessingModeValues.Preserve;
+                }
             }
         }
 

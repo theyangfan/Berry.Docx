@@ -7,12 +7,17 @@ namespace Berry.Docx.Collections
     /// <summary>
     /// Represent a table cell collection.
     /// </summary>
-    public class TableCellCollection : DocumentItemCollection
+    public class TableCellCollection : DocumentItemCollection, IEnumerable<TableCell>
     {
+        #region Private Members
+        private IEnumerable<TableCell> _cells;
+        #endregion
+
         #region Constructors
         internal TableCellCollection(O.OpenXmlElement owner, IEnumerable<TableCell> cells)
             : base(owner, cells)
         {
+            _cells = cells;
         }
         #endregion
 
@@ -42,6 +47,11 @@ namespace Berry.Docx.Collections
         public new TableCell Last()
         {
             return (TableCell)base.Last();
+        }
+
+        public IEnumerator<TableCell> GetEnumerator()
+        {
+            return _cells.GetEnumerator();
         }
         #endregion
     }

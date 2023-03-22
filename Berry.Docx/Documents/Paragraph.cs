@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -57,17 +58,13 @@ namespace Berry.Docx.Documents
 
         #region Constructors
         /// <summary>
-        /// The paragraph constructor.
+        /// Initializes a new empty paragraph.
         /// </summary>
         /// <param name="doc">The owner document.</param>
         public Paragraph(Document doc) : this(doc, new W.Paragraph())
         {
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="paragraph"></param>
+        
         internal Paragraph(Document doc, W.Paragraph paragraph) : base(doc, paragraph)
         {
             _doc = doc;
@@ -91,17 +88,36 @@ namespace Berry.Docx.Documents
 
         /// <summary>
         /// Gets or sets the paragraph text.
+        /// <para>See <see cref="TextReadingMode"/> for more details.</para>
         /// </summary>
         public string Text
         {
             get
-            {
+            { 
                 StringBuilder text = new StringBuilder();
                 foreach(DocumentObject item in ChildObjects)
                 {
                     if(item is TextRange)
                     {
-                        text.Append(((TextRange)item).Text);
+                        TextRange tr = item as TextRange;
+                        if (!TextReadingMode.HasFlag(TextReadingMode.IncludeHiddenText) && tr.CharacterFormat.IsHidden) continue;
+                        text.Append(tr.Text);
+                    }
+                    else if(item is SimpleField && TextReadingMode.HasFlag(TextReadingMode.IncludeFieldCode))
+                    {
+                        text.Append((item as SimpleField).Result);
+                    }
+                    else if(item is InsertedRange && TextReadingMode.HasFlag(TextReadingMode.IncludeInsertedRevisions))
+                    {
+                        text.Append((item as InsertedRange).Text);
+                    }
+                    else if (item is DeletedRange && TextReadingMode.HasFlag(TextReadingMode.IncludeDeletedRevisions))
+                    {
+                        text.Append((item as DeletedRange).Text);
+                    }
+                    else if(item is Tab)
+                    {
+                        text.Append("\t");
                     }
                 }
                 return text.ToString();
@@ -109,10 +125,17 @@ namespace Berry.Docx.Documents
             set
             {
                 _paragraph.RemoveAllChildren<W.Run>();
-                W.Run run = RunGenerator.Generate(value);
+                W.Run run = RunGenerator.GenerateTextRange(value);
                 _paragraph.AddChild(run);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether include the special text object when get <see cref="Text"/>.
+        /// <para>The default value is <see cref="TextReadingMode.IncludeHiddenText"/> | <see cref="TextReadingMode.IncludeFieldCode"/> | <see cref="TextReadingMode.IncludeInsertedRevisions"/>".</para>
+        /// </summary>
+        public TextReadingMode TextReadingMode { get; set; }
+            = TextReadingMode.IncludeHiddenText | TextReadingMode.IncludeFieldCode | TextReadingMode.IncludeInsertedRevisions;
 
         /// <summary>
         /// Gets the paragraph list text.
@@ -202,6 +225,28 @@ namespace Berry.Docx.Documents
         /// <para>获取段落标记的字符格式.</para>
         /// </summary>
         public CharacterFormat MarkFormat => _cFormat;
+
+        /// <summary>
+        /// Return true if the current paragraph is inserted in revision mode, otherwise false.
+        /// </summary>
+        public bool IsInserted
+        {
+            get
+            {
+                return _paragraph.ParagraphProperties?.ParagraphMarkRunProperties?.Inserted != null;
+            }
+        }
+
+        /// <summary>
+        /// Return true if the current paragraph is deleted in revision mode, otherwise false.
+        /// </summary>
+        public bool IsDeleted
+        {
+            get
+            {
+                return _paragraph.ParagraphProperties?.ParagraphMarkRunProperties?.Deleted != null;
+            }
+        }
 
         /// <summary>
         /// Gets the owener section of the current paragraph.
@@ -371,6 +416,43 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
+        /// Append a Picture to the end of the current paragraph.
+        /// </summary>
+        /// <param name="filename">The picture filename.</param>
+        /// <returns>The added picture.</returns>
+        public Picture AppendPicture(string filename)
+        {
+            string rId = IDGenerator.GenerateRelationshipID(_doc);
+            P.ImagePartType type = P.ImagePartType.Bmp;
+            if (filename.EndsWith(".png")) type = P.ImagePartType.Png;
+            else if (filename.EndsWith(".jpg") || filename.EndsWith(".jpeg")) type = P.ImagePartType.Jpeg;
+            else if (filename.EndsWith(".gif")) type = P.ImagePartType.Gif;
+            else if (filename.EndsWith(".bmp")) type = P.ImagePartType.Bmp;
+            else if (filename.EndsWith(".svg")) type = P.ImagePartType.Svg;
+            P.ImagePart imagePart = _doc.Package.MainDocumentPart.AddImagePart(type, rId);
+            using (var fs = File.OpenRead(filename))
+            {
+                imagePart.FeedData(fs);
+            }
+            Section section = _doc.LastSection;
+            foreach(var s in _doc.Sections)
+            {
+                if (s.Paragraphs.Contains(this))
+                {
+                    section = s;
+                    break;
+                }
+            }
+            float pgWidth = section.PageSetup.PageWidth - section.PageSetup.LeftMargin - section.PageSetup.RightMargin;
+            float pgHeight = section.PageSetup.PageHeight - section.PageSetup.TopMargin - section.PageSetup.BottomMargin;
+            W.Run drawingRun = RunGenerator.GenerateDrawing(rId, filename, pgWidth, pgHeight);
+
+            Picture pic = new Picture(_doc, drawingRun, drawingRun.GetFirstChild<W.Drawing>());
+            ChildItems.Add(pic);
+            return pic;
+        }
+
+        /// <summary>
         ///  Searches the paragraph for the first occurrence of the specified regular expression.
         /// </summary>
         /// <param name="pattern">The regular expression to search for a match</param>
@@ -378,7 +460,7 @@ namespace Berry.Docx.Documents
         public TextMatch Find(Regex pattern)
         {
             Match match = pattern.Match(Text);
-            if (match.Success)
+            if (match.Success && match.Length > 0)
             {
                 return new TextMatch(this, match.Index, match.Index + match.Length - 1);
             }
@@ -395,14 +477,33 @@ namespace Berry.Docx.Documents
         public List<TextMatch> FindAll(Regex pattern)
         {
             List<TextMatch> matches = new List<TextMatch>();
+            
             foreach (Match match in pattern.Matches(Text))
             {
-                if (match.Success)
+                if (match.Success && match.Length > 0)
                 {
                     matches.Add(new TextMatch(this, match.Index, match.Index + match.Length - 1));
                 }
             }
             return matches;
+        }
+
+        /// <summary>
+        /// Replace the matched text with the specified text.
+        /// </summary>
+        /// <param name="pattern">The match pattern.</param>
+        /// <param name="replace">The replaced string.</param>
+        public void Replace(Regex pattern, string replace)
+        {
+            List<TextRange> ranges = new List<TextRange> ();
+            foreach(var match in FindAll(pattern))
+            {
+                ranges.Add(match.GetAsOneRange());
+            }
+            foreach(var tr in ranges)
+            {
+                tr.Text = replace;
+            }
         }
 
         /// <summary>
@@ -552,48 +653,5 @@ namespace Berry.Docx.Documents
         }
         #endregion
 
-        #region TODO
-        private FieldCodeCollection FieldCodes
-        {
-            get
-            {
-                List<FieldCode> fieldcodes = new List<FieldCode>();
-                List<O.OpenXmlElement> childElements = new List<O.OpenXmlElement>();
-
-                int begin_times = 0;
-                int end_times = 0;
-
-                foreach (O.OpenXmlElement ele in _paragraph.Descendants())
-                {
-                    if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.SimpleField"))
-                    {
-                        fieldcodes.Add(new FieldCode((W.SimpleField)ele));
-                    }
-                    else if (ele.GetType().FullName.Equals("DocumentFormat.OpenXml.Wordprocessing.Run"))
-                    {
-                        W.Run run = (W.Run)ele;
-                        if (run.Elements<W.FieldChar>().Any() && run.Elements<W.FieldChar>().First().FieldCharType != null)
-                        {
-                            string field_type = run.Elements<W.FieldChar>().First().FieldCharType.ToString();
-                            if (field_type == "begin") begin_times++;
-                            else if (field_type == "end") end_times++;
-                        }
-                        if (begin_times > 0)
-                        {
-                            childElements.Add(ele);
-                            if (end_times == begin_times)
-                            {
-                                fieldcodes.Add(new FieldCode(childElements));
-                                begin_times = 0;
-                                end_times = 0;
-                                childElements.Clear();
-                            }
-                        }
-                    }
-                }
-                return new FieldCodeCollection(fieldcodes);
-            }
-        }
-        #endregion
     }
 }

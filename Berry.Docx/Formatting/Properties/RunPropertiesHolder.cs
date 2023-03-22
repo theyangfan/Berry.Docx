@@ -35,6 +35,7 @@ namespace Berry.Docx.Formatting
         private IntegerValue _characterScale;
         private FloatValue _characterSpacing;
         private FloatValue _position;
+        private BooleanValue _isHidden;
         #endregion
 
         #region Constructors
@@ -1053,6 +1054,7 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
         /// <summary>
         /// Gets or sets italic style.
         /// </summary>
@@ -1887,6 +1889,139 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _position = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the text is hidden.
+        /// </summary>
+        public BooleanValue IsHidden
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _isHidden;
+                }
+                W.Vanish vanish = null;
+                if (_run?.RunProperties?.Vanish != null)
+                {
+                    vanish = _run.RunProperties.Vanish;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        vanish = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.Vanish;
+                    }
+                    else
+                    {
+                        vanish = _style.StyleRunProperties?.Vanish;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.Vanish != null)
+                {
+                    vanish = _defaultRPr.RunPropertiesBaseStyle.Vanish;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.Vanish>() != null)
+                {
+                    vanish = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Vanish>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.Vanish != null)
+                {
+                    vanish = _numberingLevel.NumberingSymbolRunProperties.Vanish;
+                }
+                if (vanish == null) return null;
+                if (vanish.Val == null) return true;
+                return vanish.Val.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.Vanish == null)
+                    {
+                        _run.RunProperties.Vanish = new W.Vanish();
+                    }
+                    if (value)
+                    {
+                        _run.RunProperties.Vanish.Val = null;
+                    }
+                    else
+                    {
+                        _run.RunProperties.Vanish.Val = false;
+                    }
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.Vanish == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.Vanish = new W.Vanish();
+                        }
+                        if (value)
+                            tblStylePr.RunPropertiesBaseStyle.Vanish.Val = null;
+                        else
+                            tblStylePr.RunPropertiesBaseStyle.Vanish.Val = false;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.Vanish == null)
+                        {
+                            _style.StyleRunProperties.Vanish = new W.Vanish();
+                        }
+                        if (value)
+                            _style.StyleRunProperties.Vanish.Val = null;
+                        else
+                            _style.StyleRunProperties.Vanish.Val = false;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Vanish>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.Vanish());
+                    W.Vanish vanish = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.Vanish>();
+                    if (value) vanish.Val = null;
+                    else vanish.Val = false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.Vanish == null)
+                        _numberingLevel.NumberingSymbolRunProperties.Vanish = new W.Vanish();
+                    if (value) _numberingLevel.NumberingSymbolRunProperties.Vanish.Val = null;
+                    else _numberingLevel.NumberingSymbolRunProperties.Vanish.Val = false;
+                }
+                else
+                {
+                    _isHidden = value;
                 }
             }
         }

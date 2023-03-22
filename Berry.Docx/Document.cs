@@ -15,6 +15,7 @@ using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Field;
 using Berry.Docx.Formatting;
+using Berry.Docx.Utils;
 
 namespace Berry.Docx
 {
@@ -25,17 +26,6 @@ namespace Berry.Docx
     /// </para>
     /// <para>Document 类支持创建空白 Word 文档对象实例，或者通过打开指定文件或流(仅支持docx文件或流)创建对象实例。</para>
     /// <para>对文档做出修改后，如果想保存修改的内容，你应该显式调用 Save 或 SaveAs 方法。</para>
-    /// <para>该类实现了 IDisposable 接口，所以你可以在 using 语句中声明对象，而非显式调用 Close 方法，如下所示：</para>
-    /// <example>
-    /// <code>
-    /// using (Document doc = new Document("example.docx"))
-    /// {
-    ///     // 一些操作
-    ///     ...
-    ///     doc.Save();
-    /// }
-    /// </code>
-    /// </example>
     /// <para>通过 Document 对象可以访问文档中的节，样式，脚注尾注等内容。</para>
     /// </summary>
     public class Document : IDisposable
@@ -44,7 +34,9 @@ namespace Berry.Docx
         private readonly string _filename = string.Empty;
         private readonly Stream _stream;
         private readonly P.WordprocessingDocument _doc;
+        private readonly P.OpenSettings _openSettings;
         private readonly Settings _settings;
+        private bool _closeStream = true;
         #endregion
 
         #region Constructor
@@ -67,20 +59,41 @@ namespace Berry.Docx
         /// 打开指定文件来创建一个新 Document 实例。如果文件不存在，则会创建一个新文件。
         /// </para>
         /// </summary>
-        /// <param name="filename">Name of the file</param>
-        public Document(string filename)
+        /// <param name="filename">The name of the specified file.</param>
+        public Document(string filename):this(filename, FileShare.Read)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of the Document class from the specified file. 
+        /// If the file dose not exists, a new file will be created .
+        /// <para>
+        /// 打开指定文件来创建一个新 Document 实例。如果文件不存在，则会创建一个新文件。
+        /// </para>
+        /// </summary>
+        /// <param name="filename">The name of the specified file.</param>
+        /// <param name="share">A System.IO.FileShare value specifying the type of access other threads have
+        ///     to the file.</param>
+        public Document(string filename, FileShare share)
         {
             _filename = filename;
             if (File.Exists(filename))
             {
                 // open existing file
                 MemoryStream tempStream = new MemoryStream();
-                using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, share))
                 {
                     stream.CopyTo(tempStream);
                 }
                 tempStream.Seek(0, SeekOrigin.Begin);
-                _doc = P.WordprocessingDocument.Open(tempStream, true);
+                // handle malformed hyperlink
+                _openSettings = new P.OpenSettings();
+                _openSettings.AutoSave = false;
+                _openSettings.RelationshipErrorHandlerFactory += (pkg) =>
+                {
+                    return new MalformedURIHandler();
+                };
+                _doc = P.WordprocessingDocument.Open(tempStream, true, _openSettings);
             }
             else
             {
@@ -102,7 +115,14 @@ namespace Berry.Docx
             _stream = stream;
             MemoryStream temp_stream = new MemoryStream();
             stream.CopyTo(temp_stream);
-            _doc = P.WordprocessingDocument.Open(temp_stream, true);
+            // handle malformed hyperlink
+            _openSettings = new P.OpenSettings();
+            _openSettings.AutoSave = false;
+            _openSettings.RelationshipErrorHandlerFactory += (pkg) =>
+            {
+                return new MalformedURIHandler();
+            };
+            _doc = P.WordprocessingDocument.Open(temp_stream, true, _openSettings);
             _settings = new Settings(this, _doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
         #endregion
@@ -323,6 +343,15 @@ namespace Berry.Docx
         }
 
         /// <summary>
+        /// Sets a Boolean value indicating whether close the source stream when close the document.
+        /// </summary>
+        /// <param name="close"></param>
+        public void SetCloseStream(bool close)
+        {
+            _closeStream = close;
+        }
+
+        /// <summary>
         /// Close the document.
         /// <para>关闭文档。</para>
         /// </summary>
@@ -337,7 +366,8 @@ namespace Berry.Docx
         /// </summary>
         public void Dispose()
         {
-            _stream?.Close();
+            if(_closeStream)
+                _stream?.Close();
             _doc?.Close();
         }
 

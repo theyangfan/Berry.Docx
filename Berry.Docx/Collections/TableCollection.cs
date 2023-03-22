@@ -9,9 +9,14 @@ namespace Berry.Docx.Collections
     /// </summary>
     public class TableCollection : DocumentItemCollection
     {
+        #region Private Members
+        private IEnumerable<Table> _tables;
+        #endregion
+
         #region Constructors
         internal TableCollection(O.OpenXmlElement owner, IEnumerable<Table> tables) : base(owner, tables)
         {
+            _tables = tables;
         }
         #endregion
 
@@ -89,6 +94,11 @@ namespace Berry.Docx.Collections
         public void Remove(Table table)
         {
             base.Remove(table);
+        }
+
+        public IEnumerator<Table> GetEnumerator()
+        {
+            return _tables.GetEnumerator();
         }
         #endregion
     }

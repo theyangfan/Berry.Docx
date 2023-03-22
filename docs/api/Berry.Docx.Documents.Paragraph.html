@@ -1,0 +1,944 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Paragraph
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Paragraph
+   ">
+    <meta name="generator" content="docfx 2.59.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Berry.Docx.Documents.Paragraph">
+  
+  
+  <h1 id="Berry_Docx_Documents_Paragraph" data-uid="Berry.Docx.Documents.Paragraph" class="text-break">Class Paragraph
+  </h1>
+  <div class="markdown level0 summary"><p>Represent the paragraph.</p>
+<p>该类表示 Word 文档的一种基本元素：段落。</p>
+<p>Paragraph 类支持创建空白段落实例。通过该类可以读写段落的文本内容，段落格式，
+同时支持访问段落中的各类子元素：字符，图片，图形，图表，嵌入式对象等。</p>
+<p>通过该类的 AppendSectionBreak 函数可以向段落中插入分节符，以达到文档分节的目的，如下所示：</p>
+<example>
+<pre><code>using (Document doc = new Document(&quot;example.docx&quot;))
+{
+     // 在文档末尾插入一个“下一页”分节符
+     Paragraph p = doc.LastSection.Paragraphs.Last();
+     p.AppendSectionBreak(SectionBreakType.NextPage);
+     doc.Save();
+}</code></pre>
+</example>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></div>
+    <div class="level2"><a class="xref" href="Berry.Docx.DocumentItem.html">DocumentItem</a></div>
+    <div class="level3"><span class="xref">Paragraph</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_ChildObjects">DocumentItem.ChildObjects</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_PreviousSibling">DocumentItem.PreviousSibling</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_NextSibling">DocumentItem.NextSibling</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_InsertBeforeSelf_Berry_Docx_DocumentObject_">DocumentItem.InsertBeforeSelf(DocumentObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_InsertAfterSelf_Berry_Docx_DocumentObject_">DocumentItem.InsertAfterSelf(DocumentObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_Clone">DocumentItem.Clone()</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_Remove">DocumentItem.Remove()</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Document">DocumentObject.Document</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Equals_Berry_Docx_DocumentObject_">DocumentObject.Equals(DocumentObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Equals_System_Object_">DocumentObject.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_GetHashCode">DocumentObject.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Berry.Docx.Documents.html">Berry.Docx.Documents</a></h6>
+  <h6><strong>Assembly</strong>: Berry.Docx.dll</h6>
+  <h5 id="Berry_Docx_Documents_Paragraph_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Paragraph : DocumentItem</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph__ctor_" data-uid="Berry.Docx.Documents.Paragraph.#ctor*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph__ctor_Berry_Docx_Document_" data-uid="Berry.Docx.Documents.Paragraph.#ctor(Berry.Docx.Document)">Paragraph(Document)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new empty paragraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Paragraph(Document doc)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Document.html">Document</a></td>
+        <td><span class="parametername">doc</span></td>
+        <td><p>The owner document.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_ChildItems_" data-uid="Berry.Docx.Documents.Paragraph.ChildItems*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_ChildItems" data-uid="Berry.Docx.Documents.Paragraph.ChildItems">ChildItems</h4>
+  <div class="markdown level1 summary"><p>Gets all child <a class="xref" href="Berry.Docx.Field.ParagraphItem.html">ParagraphItem</a> of this paragraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphItemCollection ChildItems { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Collections.ParagraphItemCollection.html">ParagraphItemCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_DocumentObjectType_" data-uid="Berry.Docx.Documents.Paragraph.DocumentObjectType*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_DocumentObjectType" data-uid="Berry.Docx.Documents.Paragraph.DocumentObjectType">DocumentObjectType</h4>
+  <div class="markdown level1 summary"><p>The DocumentObject type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DocumentObjectType DocumentObjectType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObjectType.html">DocumentObjectType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_DocumentObjectType">DocumentObject.DocumentObjectType</a></div>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_Format_" data-uid="Berry.Docx.Documents.Paragraph.Format*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_Format" data-uid="Berry.Docx.Documents.Paragraph.Format">Format</h4>
+  <div class="markdown level1 summary"><p>Gets the paragraph format.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphFormat Format { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ParagraphFormat.html">ParagraphFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_IsDeleted_" data-uid="Berry.Docx.Documents.Paragraph.IsDeleted*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_IsDeleted" data-uid="Berry.Docx.Documents.Paragraph.IsDeleted">IsDeleted</h4>
+  <div class="markdown level1 summary"><p>Return true if the current paragraph is deleted in revision mode, otherwise false.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDeleted { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_IsInserted_" data-uid="Berry.Docx.Documents.Paragraph.IsInserted*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_IsInserted" data-uid="Berry.Docx.Documents.Paragraph.IsInserted">IsInserted</h4>
+  <div class="markdown level1 summary"><p>Return true if the current paragraph is inserted in revision mode, otherwise false.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInserted { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_ListFormat_" data-uid="Berry.Docx.Documents.Paragraph.ListFormat*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_ListFormat" data-uid="Berry.Docx.Documents.Paragraph.ListFormat">ListFormat</h4>
+  <div class="markdown level1 summary"><p>Gets the list format.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ListFormat ListFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ListFormat.html">ListFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_ListText_" data-uid="Berry.Docx.Documents.Paragraph.ListText*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_ListText" data-uid="Berry.Docx.Documents.Paragraph.ListText">ListText</h4>
+  <div class="markdown level1 summary"><p>Gets the paragraph list text.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ListText { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_MarkFormat_" data-uid="Berry.Docx.Documents.Paragraph.MarkFormat*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_MarkFormat" data-uid="Berry.Docx.Documents.Paragraph.MarkFormat">MarkFormat</h4>
+  <div class="markdown level1 summary"><p>Gets the character format of paragraph mark for this paragraph.</p>
+<p>获取段落标记的字符格式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CharacterFormat MarkFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.CharacterFormat.html">CharacterFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_Text_" data-uid="Berry.Docx.Documents.Paragraph.Text*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_Text" data-uid="Berry.Docx.Documents.Paragraph.Text">Text</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the paragraph text.</p>
+<p>See <a class="xref" href="Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_TextReadingMode">TextReadingMode</a> for more details.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Text { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_TextReadingMode_" data-uid="Berry.Docx.Documents.Paragraph.TextReadingMode*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_TextReadingMode" data-uid="Berry.Docx.Documents.Paragraph.TextReadingMode">TextReadingMode</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether include the special text object when get <a class="xref" href="Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_Text">Text</a>.</p>
+<p>The default value is <a class="xref" href="Berry.Docx.TextReadingMode.html#Berry_Docx_TextReadingMode_IncludeHiddenText">IncludeHiddenText</a> | <a class="xref" href="Berry.Docx.TextReadingMode.html#Berry_Docx_TextReadingMode_IncludeFieldCode">IncludeFieldCode</a> | <a class="xref" href="Berry.Docx.TextReadingMode.html#Berry_Docx_TextReadingMode_IncludeInsertedRevisions">IncludeInsertedRevisions</a>&quot;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextReadingMode TextReadingMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.TextReadingMode.html">TextReadingMode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_AppendBreak_" data-uid="Berry.Docx.Documents.Paragraph.AppendBreak*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_AppendBreak_Berry_Docx_BreakType_" data-uid="Berry.Docx.Documents.Paragraph.AppendBreak(Berry.Docx.BreakType)">AppendBreak(BreakType)</h4>
+  <div class="markdown level1 summary"><p>Append a Break to the end of the current paragraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Break AppendBreak(BreakType breakType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.BreakType.html">BreakType</a></td>
+        <td><span class="parametername">breakType</span></td>
+        <td><p>The BreakType.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Field.Break.html">Break</a></td>
+        <td><p>The Break.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_AppendComment_" data-uid="Berry.Docx.Documents.Paragraph.AppendComment*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_AppendComment_System_String_IEnumerable_System_String__" data-uid="Berry.Docx.Documents.Paragraph.AppendComment(System.String,IEnumerable{System.String})">AppendComment(String, IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Appends a comment to the current paragraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AppendComment(string author, IEnumerable&lt;string&gt; contents)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">author</span></td>
+        <td><p>The author of the comment.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">contents</span></td>
+        <td><p>The paragraphs content of the comment.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_AppendComment_" data-uid="Berry.Docx.Documents.Paragraph.AppendComment*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_AppendComment_System_String_System_String___" data-uid="Berry.Docx.Documents.Paragraph.AppendComment(System.String,System.String[])">AppendComment(String, String[])</h4>
+  <div class="markdown level1 summary"><p>Appends a comment to the current paragraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AppendComment(string author, params string[] contents)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">author</span></td>
+        <td><p>The author of the comment.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">contents</span></td>
+        <td><p>The paragraphs content of the comment.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_AppendPicture_" data-uid="Berry.Docx.Documents.Paragraph.AppendPicture*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_AppendPicture_System_String_" data-uid="Berry.Docx.Documents.Paragraph.AppendPicture(System.String)">AppendPicture(String)</h4>
+  <div class="markdown level1 summary"><p>Append a Picture to the end of the current paragraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Picture AppendPicture(string filename)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filename</span></td>
+        <td><p>The picture filename.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Field.Picture.html">Picture</a></td>
+        <td><p>The added picture.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_AppendSectionBreak_" data-uid="Berry.Docx.Documents.Paragraph.AppendSectionBreak*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_AppendSectionBreak_Berry_Docx_SectionBreakType_" data-uid="Berry.Docx.Documents.Paragraph.AppendSectionBreak(Berry.Docx.SectionBreakType)">AppendSectionBreak(SectionBreakType)</h4>
+  <div class="markdown level1 summary"><p>Append a section break with the specified type to the current paragraph.</p>
+<p>The current paragraph must have an owner section, otherwise an exception will be thrown.</p>
+<p>在当前段落结尾添加一个分节符。当前段落必须在节中，否则会抛出一个异常.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Section AppendSectionBreak(SectionBreakType type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.SectionBreakType.html">SectionBreakType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>Type of section break.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Section.html">Section</a></td>
+        <td><p>The section.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_AppendText_" data-uid="Berry.Docx.Documents.Paragraph.AppendText*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_AppendText_System_String_" data-uid="Berry.Docx.Documents.Paragraph.AppendText(System.String)">AppendText(String)</h4>
+  <div class="markdown level1 summary"><p>Appends the specified text to the end of the current paragraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextRange AppendText(string text)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">text</span></td>
+        <td><p>The specified text.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Field.TextRange.html">TextRange</a></td>
+        <td><p>The added text range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_ApplyStyle_" data-uid="Berry.Docx.Documents.Paragraph.ApplyStyle*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_ApplyStyle_Berry_Docx_BuiltInStyle_" data-uid="Berry.Docx.Documents.Paragraph.ApplyStyle(Berry.Docx.BuiltInStyle)">ApplyStyle(BuiltInStyle)</h4>
+  <div class="markdown level1 summary"><p>Apply the specified built-in style to the current paragraph.</p>
+<p>为当前段落应用指定的内置样式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyStyle(BuiltInStyle bstyle)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.BuiltInStyle.html">BuiltInStyle</a></td>
+        <td><span class="parametername">bstyle</span></td>
+        <td><p>The built-in style type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_ApplyStyle_" data-uid="Berry.Docx.Documents.Paragraph.ApplyStyle*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_ApplyStyle_System_String_" data-uid="Berry.Docx.Documents.Paragraph.ApplyStyle(System.String)">ApplyStyle(String)</h4>
+  <div class="markdown level1 summary"><p>Apply the paragraph style with the specified name to the current paragraph.</p>
+<p>为当前段落应用指定名称的段落样式.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyStyle(string styleName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">styleName</span></td>
+        <td><p>The style name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_Find_" data-uid="Berry.Docx.Documents.Paragraph.Find*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_Find_Regex_" data-uid="Berry.Docx.Documents.Paragraph.Find(Regex)">Find(Regex)</h4>
+  <div class="markdown level1 summary"><p>Searches the paragraph for the first occurrence of the specified regular expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextMatch Find(Regex pattern)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Regex</span></td>
+        <td><span class="parametername">pattern</span></td>
+        <td><p>The regular expression to search for a match</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Field.TextMatch.html">TextMatch</a></td>
+        <td><p>An object that contains information about the match.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_FindAll_" data-uid="Berry.Docx.Documents.Paragraph.FindAll*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_FindAll_Regex_" data-uid="Berry.Docx.Documents.Paragraph.FindAll(Regex)">FindAll(Regex)</h4>
+  <div class="markdown level1 summary"><p>Searches the paragraph for all occurrences of a regular expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;TextMatch&gt; FindAll(Regex pattern)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Regex</span></td>
+        <td><span class="parametername">pattern</span></td>
+        <td><p>The regular expression to search for a match</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Berry.Docx.Field.TextMatch.html">TextMatch</a>&gt;</td>
+        <td><p>A list of the <a class="xref" href="Berry.Docx.Field.TextMatch.html">TextMatch</a> objects found by the search.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_GetStyle_" data-uid="Berry.Docx.Documents.Paragraph.GetStyle*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_GetStyle" data-uid="Berry.Docx.Documents.Paragraph.GetStyle">GetStyle()</h4>
+  <div class="markdown level1 summary"><p>The paragraph style.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphStyle GetStyle()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.ParagraphStyle.html">ParagraphStyle</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Documents_Paragraph_Replace_" data-uid="Berry.Docx.Documents.Paragraph.Replace*"></a>
+  <h4 id="Berry_Docx_Documents_Paragraph_Replace_Regex_System_String_" data-uid="Berry.Docx.Documents.Paragraph.Replace(Regex,System.String)">Replace(Regex, String)</h4>
+  <div class="markdown level1 summary"><p>Replace the matched text with the specified text.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Replace(Regex pattern, string replace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Regex</span></td>
+        <td><span class="parametername">pattern</span></td>
+        <td><p>The match pattern.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>The replaced string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Berry.Docx.EnumExtentions.html#Berry_Docx_EnumExtentions_Description__1___0_">EnumExtentions.Description&lt;T&gt;(T)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

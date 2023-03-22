@@ -10,10 +10,15 @@ namespace Berry.Docx.Collections
     /// </summary>
     public class TableRowCollection : DocumentItemCollection
     {
+        #region Private Members
+        private IEnumerable<TableRow> _rows;
+        #endregion
+
         #region Constructors
         internal TableRowCollection(O.OpenXmlElement owner, IEnumerable<TableRow> rows)
             : base(owner, rows)
         {
+            _rows = rows;
         }
         #endregion
 
@@ -43,6 +48,11 @@ namespace Berry.Docx.Collections
         public new TableRow Last()
         {
             return (TableRow)base.Last();
+        }
+
+        public IEnumerator<TableRow> GetEnumerator()
+        {
+            return _rows.GetEnumerator();
         }
         #endregion
     }

@@ -7,6 +7,9 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// Represent a tab character in the paragraph.
+    /// </summary>
     public class Tab : ParagraphItem
     {
         #region Private Members
@@ -16,6 +19,10 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Initializes a new tab character.
+        /// </summary>
+        /// <param name="doc"></param>
         public Tab(Document doc) : this(doc, ParagraphItemGenerator.GenerateTab())
         {
         }
@@ -34,6 +41,9 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// Gets the type of the current objetc.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Tab;
 
         #endregion

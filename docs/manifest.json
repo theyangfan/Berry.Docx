@@ -1,0 +1,1628 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/docs/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.AutoFitMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.AutoFitMethod.html",
+          "hash": "Q79N39o1BvGWsXs7kczOclF3QxVDAbYpCSJJsEXe5Os="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.BorderStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.BorderStyle.html",
+          "hash": "7WeABYtakfIGkFDS1euijnH/cDeGGL0o5Q/uC1041EQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.BreakTextRestartLocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.BreakTextRestartLocation.html",
+          "hash": "ui3AizYPvRZM0u3GrSfI7E/zAfv5BjzF6GjLr7rl5wU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.BreakType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.BreakType.html",
+          "hash": "ItVWb0gVNh03GECHpcshS0i9G2u4Bt0/5rBYDXRP9Zk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.BuiltInListStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.BuiltInListStyle.html",
+          "hash": "6e/6+ffSJpuVGnd8pUfWgyKVOw8E7WuOsIACf5J2oEQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.BuiltInStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.BuiltInStyle.html",
+          "hash": "3eXseRGB9tEEA1UpIPJhRQybUc/uYQVJ10o76b+zK/o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.CellWidthType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.CellWidthType.html",
+          "hash": "eN0LVbCyu6ngcEvhKgac8XE907rmxZmt3tkpUcPPH1I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.DocumentItemCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.DocumentItemCollection.html",
+          "hash": "Pq7SGctRXHkkDllyconCHO85nbmcfNXXoMhi08K1lkQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.DocumentObjectCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.DocumentObjectCollection.html",
+          "hash": "mdpYMar6bQAbf3i25x6fj9urReMUb6/irHBaxAV5ogk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.ListLevelCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.ListLevelCollection.html",
+          "hash": "gqv0B2vukcEOSvZJqng/pAk+8VN+/xZ4yBodZYyh3OI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.ListStyleCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.ListStyleCollection.html",
+          "hash": "Ox71NkKOwGFeAxkOZKDsbBIeSI6I33DNVc0QQ8+/dEM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.ParagraphCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.ParagraphCollection.html",
+          "hash": "8i0V2V4jcaGIhWTZDMobluJSUID4R/gu8PcHnOw/RII="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.ParagraphItemCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.ParagraphItemCollection.html",
+          "hash": "YCs8dxlIYV8U/V8JSvQ30l8NY5psNUAmji/2+vr+1wg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.SectionCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.SectionCollection.html",
+          "hash": "ftNOe8WDL0+yfrpYtlUqG+9U46+j3YFc98d0DI5xVds="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.StyleCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.StyleCollection.html",
+          "hash": "xe/CVtKIVuztG6yInDVw7dSjDNmYZ7g0+DbEP5e5oLw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.TableCellCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.TableCellCollection.html",
+          "hash": "F6Tias/S24oPddLimTh7CNNyvXxzp3hAY7QZ7trdzlg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.TableCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.TableCollection.html",
+          "hash": "EOk5XAM6wFSIG25/3zSgmgKXKNEinqp3yJGhun6n/Lw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.TableRowCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.TableRowCollection.html",
+          "hash": "QiiJBhomEWb7V3EdFJFr/9K5+2Qxy29WrLDOXvooAcs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Collections.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Collections.html",
+          "hash": "4YoLdUf03ndnM+XEXNVgNdimauxHs523OE20n5+Qs74="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.ColorValue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.ColorValue.html",
+          "hash": "LErWt6f7wX9mqj2oEWMObHYUIGnK7TMtPpFy+X2f5Ks="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.DescriptionAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.DescriptionAttribute.html",
+          "hash": "/YMvN4vFvEGHwxWxh0IUMInUKOuqUMsMpSODMxCLJ/o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.DocGridType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.DocGridType.html",
+          "hash": "LuSlaBbofkSp8G8T0MK6XnTVIrFiMIFpfoMI1YA8hIc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Document.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Document.html",
+          "hash": "CB2mLaapbnpsqU/OjEr0OqFfXbbP+1Xd1b8aOhEsYA0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.DocumentItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.DocumentItem.html",
+          "hash": "GDD8IZ8w09OfdX+AQEYkhqj96jsPbTz5tlr3LrB/Gf4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.DocumentObject.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.DocumentObject.html",
+          "hash": "gcXaUSzYQtLf+Z1XBS8NHqYKoCCIZMsYAQMqSezjI0A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.DocumentObjectType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.DocumentObjectType.html",
+          "hash": "add3jgSwdQyRfu5HD9GyXtZaDyrr1Lhk2EZO7L6uSRc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.Column.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.Column.html",
+          "hash": "5wcMQGJEboVhRLNggVc3Dwi3eYGwFQXp2/4LO9ldil0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.Columns.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.Columns.html",
+          "hash": "bfNG5mR8EU7JKeUzFSXZtt0WGHW0UdVZGv08qvbVpG8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.Endnote.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.Endnote.html",
+          "hash": "DD/pgJ46rYFUYnyDhOL+STSoJP49wDVL7TJHRSPCBdg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.Footnote.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.Footnote.html",
+          "hash": "siR1Xn2z5E11s9YKEj+V/JAgKvQYoKw36cBpP2xaH70="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.HeaderFooter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.HeaderFooter.html",
+          "hash": "ocUAohzydBs8/A3wAdV1sbUdmhuckk+KTCT96dXajj8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.HeaderFooters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.HeaderFooters.html",
+          "hash": "FJeWsmWKP/G8HjkVdcxXHww30jDaXeLp3Qc1zmhDIrU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.PageSetup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.PageSetup.html",
+          "hash": "0v70GdwDyoL2ksATQTWAfGbFzqB+QgrV0WWDSwHKxDw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.Paragraph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.Paragraph.html",
+          "hash": "3z0lPicHbpqF6RlO/tvLs2PLxoIyrmk25mZv2k5kNyg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.SdtBlock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.SdtBlock.html",
+          "hash": "NeFEIqfWUMxd+o2BkjuaRYdTlzpyzYFI38+QMMQm9oA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.SdtContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.SdtContent.html",
+          "hash": "yewGea4F/063LjI4FuuDh2Ill6BfResgUTlIEkq5hz0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.SdtProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.SdtProperties.html",
+          "hash": "FTrTbnFo7UXavT8hOJEQZL3mfoMBcDvc6VMgjDyNKLM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.Table.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.Table.html",
+          "hash": "G8S7AwM41Af6Ud3Vrrk0mIQNVb0h2AtJhewqLud5DB0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.TableCell.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.TableCell.html",
+          "hash": "dkdhOtzh/fw+ZS1U38QDELqjoeB5Ya/IdA/lrhKCHWs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.TableCellWidth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.TableCellWidth.html",
+          "hash": "JckHe+ReE8B5Wx8CP6xrgRlkB5pthh9zfy9jEkQTMW4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.TableRow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.TableRow.html",
+          "hash": "OQfDP6MJyKg20wY+onnvveRN0xYoltDKNu5+3HzeVsg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Documents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Documents.html",
+          "hash": "Pw4jF3WZgZQeaA0CT0gWlVvARI9NgC/xFOfOYpgXawM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.EnumExtentions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.EnumExtentions.html",
+          "hash": "4omAYjUSCtK8137aKyGFrBK0sndm/c/7VTIojHY1p8I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.Break.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.Break.html",
+          "hash": "UNDGYGYU0VtNEH1HZ92aR9xgX5mOP1tDgpyfYH3yM3U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.Canvas.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.Canvas.html",
+          "hash": "hUrdKNVmo/hYmnOjjGanEFqmKmgHAMfXc/5k5zqFDjs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.Chart.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.Chart.html",
+          "hash": "9988mBk32RKlwxIjY+dbjXOKV6IGfUIO6GN/BZzJLzo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.DeletedRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.DeletedRange.html",
+          "hash": "rE7zlI25W48rOjmHgd/PkirvajlYUWb2pOs0qYhoNnw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.DeletedTextRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.DeletedTextRange.html",
+          "hash": "bQI8maIphjEQoTLEVop+W/BXJgYsNUDBl6uWh5I+RAM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.Diagram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.Diagram.html",
+          "hash": "Sx8SMC18nEFe23NB5wAUYLCjj+U25oSEEaOPmWIHr60="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.DrawingItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.DrawingItem.html",
+          "hash": "WK/YJcy//0dSU3ySdEm6lDTsotlZcmexUiY+QsCKCvM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.EmbeddedObject.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.EmbeddedObject.html",
+          "hash": "3CsZG2ZUg1HHHDQ0QlmOA/lAnGxgYkPOy1wxskn9Wo4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.EndnoteReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.EndnoteReference.html",
+          "hash": "PApNLkQPNBWCL9frVkR/TdR0wUKt+mNUJlwuGDV6h8g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.FootnoteReference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.FootnoteReference.html",
+          "hash": "QdiHBRbWfVQDGZDyVSbNQFZJvS2g2eYomCWUb0PrY54="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.GroupShape.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.GroupShape.html",
+          "hash": "eTVHPsAeeejKuO2VF8jU4gS7iI3k43d8OfZ3leIhQ5Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.InsertedRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.InsertedRange.html",
+          "hash": "9BF2F+nrQ6C/Rm1c4gBOli4c9Pvml122oK2GfIszdZE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.OfficeMath.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.OfficeMath.html",
+          "hash": "5XlumhuTWTLCISsUD+a1s8D3bt0VGkuCdXB2eLacBSA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.ParagraphItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.ParagraphItem.html",
+          "hash": "Huesmc4UdftoKYUMI26omntsfDzkIv+QJhre0qIe6pk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.Picture.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.Picture.html",
+          "hash": "VRNZ6qczJuA1hp1rh1Y5BJjTl1VbcvsF1h5D/9F92ZI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.Shape.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.Shape.html",
+          "hash": "DHdltepoSoO77iWer+knRBrafrSDWolVXHFHpb5rWsY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.SimpleField.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.SimpleField.html",
+          "hash": "7ayniBswZ5JvJCG0hWEEfriRT1HMqNrVKCyloV5isd4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.Tab.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.Tab.html",
+          "hash": "VW/t3ty8NvZ27Gh3NN2inDI+i50MqxKC8+FT4CLCMOI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.TextMatch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.TextMatch.html",
+          "hash": "I5F1wYeflWrBA2Oi/w881+bhAPauJCkIHRzSEGoGEOI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.TextRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.TextRange.html",
+          "hash": "d7nrE3fSJhd5KcTEWh9MgcC67Dfu3UZ3M6HcGNMGB/c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Field.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Field.html",
+          "hash": "0VeBjy25k2DCWTeBh0FEc4MsmH8OBzmrb1UOTubedO0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.FontContentType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.FontContentType.html",
+          "hash": "3XLSXEq8Zhbj+VjFgZbf6bv6r0Uzm2W0L/wVNDCHJD4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.FootEndnoteNumberRestartRule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.FootEndnoteNumberRestartRule.html",
+          "hash": "hUSkqrk7TtLfHU0VebbqqdAzECd/20YkMHUeF4+EkjM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.Border.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.Border.html",
+          "hash": "n0IVBk5x39HM3QTWiXQHx9BHv4736zHFdPWosSeRzhY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.Borders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.Borders.html",
+          "hash": "1LcWTb079n9aTfozmiv9Sy5LfyN3nHnSP79MnsGS1LY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.CharacterFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.CharacterFormat.html",
+          "hash": "R3NZziVydghON7f221T1chk4kIuZ45G32y48RA/3C5M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.CharacterStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.CharacterStyle.html",
+          "hash": "+bn60wiaAjEeN11yQEffcOB1yGF+1PgPYFFow8oVjAQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.DocDefaultFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.DocDefaultFormat.html",
+          "hash": "u06pRQodWo0P3lERXfxGUH4QhC4WIsJ8ac0Beggexpc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.FootEndnoteFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.FootEndnoteFormat.html",
+          "hash": "Pphjth6DY7L2Nws+6R0Q/c4i1P5uKmZdb1ZpP9HThGw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.ListFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.ListFormat.html",
+          "hash": "+DVQNhDxPU0TzCkqrLZDVE7KMoYAoYKssGF90zfUcUo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.ListLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.ListLevel.html",
+          "hash": "NEXGRIyPTkUVn6T3jl6RS/sxEUKK+kvSaAJmkFV55rE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.ListStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.ListStyle.html",
+          "hash": "QzP2Er5wZaZ4TN0fjTVVtYmDDD4kHiKaXdwaoyPmh6E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.PageBorder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.PageBorder.html",
+          "hash": "JP6c5qCNFjpgIDuzCYeeFetQ86zphonC3GWYJ2JzPL4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.PageBorders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.PageBorders.html",
+          "hash": "mdZDLeeCLIbhR8RpaCO9Rct+IziUNCMxTsgwzlfZ4TU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.ParagraphFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.ParagraphFormat.html",
+          "hash": "hS1FSzrxb6Jqph0EDPh+AawTgz8xjyZwqVA4J8C2vmc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.ParagraphStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.ParagraphStyle.html",
+          "hash": "tLOl4tP3XCnp2M/ju1o/A3c9fJUgnkYw/VNs1wRTgDw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.Style.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.Style.html",
+          "hash": "K0QbFB+t8BjNTNO1SjG2YCQvFfq7hvnPpcva4gJtTXY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.TabStop.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.TabStop.html",
+          "hash": "T8CtRYGNqf87fs0x/fM6mE69EDPcwyh+DAOV+9cpFRw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.TabStops.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.TabStops.html",
+          "hash": "n6noeIyAFwwu94iA9+Bj7a/w2oDdhHmIvl0bUkRHsGc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.TableBorder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.TableBorder.html",
+          "hash": "rGDwq2JBkW5nOMfo3w2WEiYpar2NFUxVIzhP7zeabZw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.TableBorders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.TableBorders.html",
+          "hash": "OHEpZBtyB34AxkALrRUNyUgl3s/P1/Hf3OkYvUWZjmA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.TableFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.TableFormat.html",
+          "hash": "wP9F5xhz9DNgyVHeuCF3fsGRGDstXC+owMhVH+4nirE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.TableRegionStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.TableRegionStyle.html",
+          "hash": "xbYK9NvAkddUINuOOQy/n8Nwy1mHjKgiAoY1s6CxEBM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.TableStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.TableStyle.html",
+          "hash": "xlMhv0TV3awDy5bFRXqJDJH/HASOg0tjzWXXu7zpMLs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Formatting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Formatting.html",
+          "hash": "tTUfNSdAYdLkUddt/7mnzKTNkbt9GGtBUuZgxuMIuD0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.GutterLocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.GutterLocation.html",
+          "hash": "KefA9xaDhhZ0PdMlJv+qiX45Xf0NCMIkcOIhw+CUg3E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Indentation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Indentation.html",
+          "hash": "t9Lh2plNmJiOqtWpz6fmVFBBNIDD1+NxgSzPEqCUd8s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.IndentationUnit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.IndentationUnit.html",
+          "hash": "Vr6GEpKmK5cUYq82B1SV7kxFjmmePRISWmH3CclnH8A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.JustificationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.JustificationType.html",
+          "hash": "A7XIN9V6yUUg2LmIQ9T9TXOH+MwpKRHcS+Wy1te7hso="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.LevelSuffixCharacter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.LevelSuffixCharacter.html",
+          "hash": "Z4w7Ef+F6iaxg/O/cryGaGK0RP1ipyUzdW57/0uMHMw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.LineSpacing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.LineSpacing.html",
+          "hash": "HckU1l+2PCee0i8JdL0krPt6T/IU5j5DT8Z83nCD6RI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.LineSpacingRule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.LineSpacingRule.html",
+          "hash": "59ycIFT577bwkjMblUGxp+PfpcP/qDHz/xrzR4tnHz0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.ListNumberAlignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.ListNumberAlignment.html",
+          "hash": "wmNhOBUY685OxE3tIUBqaF7FGCjuCAnq75X0Sw13O0s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.ListNumberStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.ListNumberStyle.html",
+          "hash": "VBppPkwDmGANBRZ2yf/ASDEP9aj1AXg2UpgLEPeGHR0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.MarginsF.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.MarginsF.html",
+          "hash": "geTCWL7B4VGyo//H3VcvzoRb8+ZUPzs8TbW6QGSM4AA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.MultiPage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.MultiPage.html",
+          "hash": "BTA1diYCvNlHPL63bJdCApbIC6a3R0Khu8uaK/n4wVg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.OfficeMathJustificationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.OfficeMathJustificationType.html",
+          "hash": "5/JVnxTaE947UOlMXW6JMX+uc2ZmhylP6ozP/mlaFE0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.OleObjectType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.OleObjectType.html",
+          "hash": "vf4h1sSPGK+Q72ZZGP6ivWM5z8/QVp5VLiP5viWt38Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.OutlineLevelType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.OutlineLevelType.html",
+          "hash": "W8eTaEm5UUUzpqXXrJF0zwBasik/dHU1KEEu1uty94M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.PageBordersPosition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.PageBordersPosition.html",
+          "hash": "qliGnPHORE1BQUFHKtxPzLoba3OE17LKNfZq2AN6wDU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.PageOrientation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.PageOrientation.html",
+          "hash": "NiUzZXDDgCFQWftxMMVuid+XaYYwFCAwnNyz/y/LNqw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Section.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Section.html",
+          "hash": "VgwftbOOVQTneHAeKiSaOXFzom05IwD8I5tJwlKzL9U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.SectionBreakType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.SectionBreakType.html",
+          "hash": "mLT0SDa3lvUALpVWrQzXz2uUhygTpYZmM+qVXcHeGzI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.Spacing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.Spacing.html",
+          "hash": "Fz/H+4opR4+Unq/5Tdb/Gc76WwPVHUpnok1Kz0ptuXA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.SpacingUnit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.SpacingUnit.html",
+          "hash": "Q9N+y8OR6xKYKxcOHNshII1I2dy07HgVuJGcang2EkE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.SpecialIndentation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.SpecialIndentation.html",
+          "hash": "i9seRi2wdn0O+kOGqWit1XkKT2U2xSzBIFyIeOsR+Ew="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.SpecialIndentationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.SpecialIndentationType.html",
+          "hash": "Q5j4rcH3ZiFE9cUpJRN+UFKZQ9fUUf7xtz+qoyOAFUE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.StyleType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.StyleType.html",
+          "hash": "RrRoM5u9oUErbony0GltV3Dif7El1lb85/39nHlHPUE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.SubSuperScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.SubSuperScript.html",
+          "hash": "NpzFnx0dPvXfIvdqXg8KsYpdY/vncXRqSDofFsIwKqI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TabStopLeader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TabStopLeader.html",
+          "hash": "ue7Tnd66KAEG3KzEEl6RQlQo8+2H0sOYYiU9RN3FI3E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TabStopStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TabStopStyle.html",
+          "hash": "kKmse1kTJ20fDL5cgdn2qcC2AybDlXGlgqTzF0bxgTo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TableCellVerticalAlignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TableCellVerticalAlignment.html",
+          "hash": "iKewx6ZG0k4wqHWxF8/L5bGJThUYSIU+pwF9mL9/jrs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TableCellVerticalMergeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TableCellVerticalMergeType.html",
+          "hash": "WtPlxfZ7kUP7oaS8HkQudJBTrf3FLLAS9PY5QhqnAzk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TableRowAlignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TableRowAlignment.html",
+          "hash": "N3doim8QnlNBXNtml5r8ZrXkzeewMN299UjgzyzI//E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TableRowHeightType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TableRowHeightType.html",
+          "hash": "PGKkSQbS4Q+wK8WUUzGYQ21ThK21FLM2FuHUzYfsND4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TextFlowDirection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TextFlowDirection.html",
+          "hash": "k2XqAFGOY5AB7Vx3eg66O7NqvLCM7KXz1Ye9eD+J1SQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TextReadingMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TextReadingMode.html",
+          "hash": "8T8OfaWaWWJhqzDr3rU9X2ft+8Nf0e2L3kpuVtr0/fc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.TextWrappingStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.TextWrappingStyle.html",
+          "hash": "ocA6IdsscRY8KV4n5ZEYTHxrQtBLtxK5Uj1JSY2KKDA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.UnderlineStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.UnderlineStyle.html",
+          "hash": "54/nrW2VFZdVG43ekblzaufrTnfhtUQieMZM2MIKrWc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.VerticalJustificationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.VerticalJustificationType.html",
+          "hash": "kqdaHz8co/0rZosg9Nsxv1wLZTd3rmsKPqhOMqC5Z4s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.VerticalTextAlignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.VerticalTextAlignment.html",
+          "hash": "W+l60bcznNySYFJWCER8KRgW3cg0GJIEx0ng8jqNcOE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Berry.Docx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Berry.Docx.html",
+          "hash": "acnbVvxA4SQ30+NK5/UVegHgWSagjTZfComyaAwZc+g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "8HIfKPOVc2tA4ihcX15ob6GWPMxMAHhYclEtKYsqqGQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "/YsPqNLhp8hsz/NE3wJIEcxZaKdw86oVFmDhcjKEItI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "e8zlm/eNFqhvmbkDAxJWuD4DpEH8qv/UdCW6tUNpqT4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "BlPxk5mtl2kgfcZUgkEguqiSAR/EUyUTT4EdebwkQvs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "7s+G50aieIryMWBjAwRQAd7Q3Mp3Rh5kM6YoLnF0kb0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "s+UecGKJLe11K3w4+MJjx6QoiqktkO8teeQG06lk8L0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 125,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

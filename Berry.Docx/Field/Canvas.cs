@@ -6,19 +6,29 @@ using Wp = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class Canvas : DrawingItem
     {
+        #region Private Members
         private readonly Document _doc;
         private readonly W.Run _ownerRun;
         private readonly W.Drawing _drawing;
+        #endregion
+
+        #region Constructors
         internal Canvas(Document doc, W.Run ownerRun, W.Drawing drawing) : base(doc, ownerRun, drawing)
         {
             _doc = doc;
             _ownerRun = ownerRun;
             _drawing = drawing;
         }
+        #endregion
 
+        #region Public Properties
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Canvas;
+        #endregion
 
         #region Public Methods
         /// <summary>

@@ -1,0 +1,864 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Document
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Document
+   ">
+    <meta name="generator" content="docfx 2.59.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Berry.Docx.Document">
+  
+  
+  <h1 id="Berry_Docx_Document" data-uid="Berry.Docx.Document" class="text-break">Class Document
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a Word document.</p>
+<p>
+表示一个 Word 文档，读写 Word 文档的入口。
+</p>
+<p>Document 类支持创建空白 Word 文档对象实例，或者通过打开指定文件或流(仅支持docx文件或流)创建对象实例。</p>
+<p>对文档做出修改后，如果想保存修改的内容，你应该显式调用 Save 或 SaveAs 方法。</p>
+<p>通过 Document 对象可以访问文档中的节，样式，脚注尾注等内容。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">Document</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Berry.Docx.html">Berry.Docx</a></h6>
+  <h6><strong>Assembly</strong>: Berry.Docx.dll</h6>
+  <h5 id="Berry_Docx_Document_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Document : IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Berry_Docx_Document__ctor_" data-uid="Berry.Docx.Document.#ctor*"></a>
+  <h4 id="Berry_Docx_Document__ctor" data-uid="Berry.Docx.Document.#ctor">Document()</h4>
+  <div class="markdown level1 summary"><p>Creates a new empty instance of the Document class.</p>
+<p>创建一个新的空白 Word 文档。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Document()</code></pre>
+  </div>
+  
+  
+  <a id="Berry_Docx_Document__ctor_" data-uid="Berry.Docx.Document.#ctor*"></a>
+  <h4 id="Berry_Docx_Document__ctor_Stream_" data-uid="Berry.Docx.Document.#ctor(Stream)">Document(Stream)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the Document class from the io stream.
+The stream must be a valid read-write Word file stream.</p>
+<p>
+打开指定流来创建一个新 Document 实例。流必须是一个有效的可读写 Word 文档流。
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Document(Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>The read-write Word stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document__ctor_" data-uid="Berry.Docx.Document.#ctor*"></a>
+  <h4 id="Berry_Docx_Document__ctor_System_String_" data-uid="Berry.Docx.Document.#ctor(System.String)">Document(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the Document class from the specified file.
+If the file dose not exists, a new file will be created .</p>
+<p>
+打开指定文件来创建一个新 Document 实例。如果文件不存在，则会创建一个新文件。
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Document(string filename)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filename</span></td>
+        <td><p>The name of the specified file.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document__ctor_" data-uid="Berry.Docx.Document.#ctor*"></a>
+  <h4 id="Berry_Docx_Document__ctor_System_String_FileShare_" data-uid="Berry.Docx.Document.#ctor(System.String,FileShare)">Document(String, FileShare)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the Document class from the specified file.
+If the file dose not exists, a new file will be created .</p>
+<p>
+打开指定文件来创建一个新 Document 实例。如果文件不存在，则会创建一个新文件。
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Document(string filename, FileShare share)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filename</span></td>
+        <td><p>The name of the specified file.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">FileShare</span></td>
+        <td><span class="parametername">share</span></td>
+        <td><p>A System.IO.FileShare value specifying the type of access other threads have
+to the file.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Berry_Docx_Document_DefaultFormat_" data-uid="Berry.Docx.Document.DefaultFormat*"></a>
+  <h4 id="Berry_Docx_Document_DefaultFormat" data-uid="Berry.Docx.Document.DefaultFormat">DefaultFormat</h4>
+  <div class="markdown level1 summary"><p>Returns the document default paragraph and character formats.</p>
+<p>返回文档默认段落和字符格式。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocDefaultFormat DefaultFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.DocDefaultFormat.html">DocDefaultFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_EndnoteFormat_" data-uid="Berry.Docx.Document.EndnoteFormat*"></a>
+  <h4 id="Berry_Docx_Document_EndnoteFormat" data-uid="Berry.Docx.Document.EndnoteFormat">EndnoteFormat</h4>
+  <div class="markdown level1 summary"><p>Returns the endnote format in the document.</p>
+<p>返回当前文档的尾注格式。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FootEndnoteFormat EndnoteFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.FootEndnoteFormat.html">FootEndnoteFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Endnotes_" data-uid="Berry.Docx.Document.Endnotes*"></a>
+  <h4 id="Berry_Docx_Document_Endnotes" data-uid="Berry.Docx.Document.Endnotes">Endnotes</h4>
+  <div class="markdown level1 summary"><p>Return a collection of <a class="xref" href="Berry.Docx.Documents.Endnote.html">Endnote</a> in the document.</p>
+<p>返回当前文档中的所有尾注。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Endnote&gt; Endnotes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Berry.Docx.Documents.Endnote.html">Endnote</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_FootnoteFormat_" data-uid="Berry.Docx.Document.FootnoteFormat*"></a>
+  <h4 id="Berry_Docx_Document_FootnoteFormat" data-uid="Berry.Docx.Document.FootnoteFormat">FootnoteFormat</h4>
+  <div class="markdown level1 summary"><p>Returns the footnote format in the document.</p>
+<p>返回当前文档的脚注格式。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FootEndnoteFormat FootnoteFormat { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Formatting.FootEndnoteFormat.html">FootEndnoteFormat</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Footnotes_" data-uid="Berry.Docx.Document.Footnotes*"></a>
+  <h4 id="Berry_Docx_Document_Footnotes" data-uid="Berry.Docx.Document.Footnotes">Footnotes</h4>
+  <div class="markdown level1 summary"><p>Return a collection of <a class="xref" href="Berry.Docx.Documents.Footnote.html">Footnote</a> in the document.</p>
+<p>返回当前文档中的所有脚注。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Footnote&gt; Footnotes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Berry.Docx.Documents.Footnote.html">Footnote</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_LastSection_" data-uid="Berry.Docx.Document.LastSection*"></a>
+  <h4 id="Berry_Docx_Document_LastSection" data-uid="Berry.Docx.Document.LastSection">LastSection</h4>
+  <div class="markdown level1 summary"><p>Return the last section of the document.</p>
+<p>返回文档的最后一节。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Section LastSection { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Section.html">Section</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_ListStyles_" data-uid="Berry.Docx.Document.ListStyles*"></a>
+  <h4 id="Berry_Docx_Document_ListStyles" data-uid="Berry.Docx.Document.ListStyles">ListStyles</h4>
+  <div class="markdown level1 summary"><p>Return a collection of <a class="xref" href="Berry.Docx.Formatting.ListStyle.html">ListStyle</a> that supports traversal in the document.</p>
+<p>返回当前文档中所有列表样式的可遍历集合。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ListStyleCollection ListStyles { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Collections.ListStyleCollection.html">ListStyleCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Paragraphs_" data-uid="Berry.Docx.Document.Paragraphs*"></a>
+  <h4 id="Berry_Docx_Document_Paragraphs" data-uid="Berry.Docx.Document.Paragraphs">Paragraphs</h4>
+  <div class="markdown level1 summary"><p>Gets a collection of all <a class="xref" href="Berry.Docx.Documents.Paragraph.html">Paragraph</a> in the current document.</p>
+<p>返回当前文档中所有段落的集合。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParagraphCollection Paragraphs { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Collections.ParagraphCollection.html">ParagraphCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Sections_" data-uid="Berry.Docx.Document.Sections*"></a>
+  <h4 id="Berry_Docx_Document_Sections" data-uid="Berry.Docx.Document.Sections">Sections</h4>
+  <div class="markdown level1 summary"><p>Return a collection of <a class="xref" href="Berry.Docx.Section.html">Section</a> that supports traversal in the document.</p>
+<p>返回当前文档中所有节的可遍历集合</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SectionCollection Sections { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Collections.SectionCollection.html">SectionCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Styles_" data-uid="Berry.Docx.Document.Styles*"></a>
+  <h4 id="Berry_Docx_Document_Styles" data-uid="Berry.Docx.Document.Styles">Styles</h4>
+  <div class="markdown level1 summary"><p>Return a collection of <a class="xref" href="Berry.Docx.Formatting.Style.html">Style</a> that supports traversal in the document.</p>
+<p>返回当前文档中所有样式的可遍历集合。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StyleCollection Styles { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Collections.StyleCollection.html">StyleCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Tables_" data-uid="Berry.Docx.Document.Tables*"></a>
+  <h4 id="Berry_Docx_Document_Tables" data-uid="Berry.Docx.Document.Tables">Tables</h4>
+  <div class="markdown level1 summary"><p>Gets a collection of all <a class="xref" href="Berry.Docx.Documents.Table.html">Table</a> in the current document.</p>
+<p>返回当前文档中所有表格的集合。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TableCollection Tables { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Collections.TableCollection.html">TableCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Berry_Docx_Document_Close_" data-uid="Berry.Docx.Document.Close*"></a>
+  <h4 id="Berry_Docx_Document_Close" data-uid="Berry.Docx.Document.Close">Close()</h4>
+  <div class="markdown level1 summary"><p>Close the document.</p>
+<p>关闭文档。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Close()</code></pre>
+  </div>
+  
+  
+  <a id="Berry_Docx_Document_CreateParagraph_" data-uid="Berry.Docx.Document.CreateParagraph*"></a>
+  <h4 id="Berry_Docx_Document_CreateParagraph" data-uid="Berry.Docx.Document.CreateParagraph">CreateParagraph()</h4>
+  <div class="markdown level1 summary"><p>Create a new paragraph.</p>
+<p>新建一个段落。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Paragraph CreateParagraph()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Documents.Paragraph.html">Paragraph</a></td>
+        <td><p>The paragraph.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_CreateTable_" data-uid="Berry.Docx.Document.CreateTable*"></a>
+  <h4 id="Berry_Docx_Document_CreateTable_System_Int32_System_Int32_" data-uid="Berry.Docx.Document.CreateTable(System.Int32,System.Int32)">CreateTable(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Create a new table with specified size.</p>
+<p>新建一个指定尺寸的表格。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Table CreateTable(int rowCnt, int columnCnt)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">rowCnt</span></td>
+        <td><p>Table row count</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">columnCnt</span></td>
+        <td><p>Table Column count</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Documents.Table.html">Table</a></td>
+        <td><p>The table.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Dispose_" data-uid="Berry.Docx.Document.Dispose*"></a>
+  <h4 id="Berry_Docx_Document_Dispose" data-uid="Berry.Docx.Document.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Close the document.</p>
+<p>关闭文档。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  <a id="Berry_Docx_Document_Find_" data-uid="Berry.Docx.Document.Find*"></a>
+  <h4 id="Berry_Docx_Document_Find_Regex_" data-uid="Berry.Docx.Document.Find(Regex)">Find(Regex)</h4>
+  <div class="markdown level1 summary"><p>Searches the document for the first occurrence of the specified regular expression.</p>
+<p>查找文档中第一个匹配指定正则表达式的文本。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TextMatch Find(Regex pattern)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Regex</span></td>
+        <td><span class="parametername">pattern</span></td>
+        <td><p>The regular expression to search for a match</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Field.TextMatch.html">TextMatch</a></td>
+        <td><p>An object that contains information about the match.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_FindAll_" data-uid="Berry.Docx.Document.FindAll*"></a>
+  <h4 id="Berry_Docx_Document_FindAll_Regex_" data-uid="Berry.Docx.Document.FindAll(Regex)">FindAll(Regex)</h4>
+  <div class="markdown level1 summary"><p>Searches the document for all occurrences of a regular expression.</p>
+<p>查找文档中所有匹配指定正则表达式的文本。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;TextMatch&gt; FindAll(Regex pattern)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Regex</span></td>
+        <td><span class="parametername">pattern</span></td>
+        <td><p>The regular expression to search for a match</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Berry.Docx.Field.TextMatch.html">TextMatch</a>&gt;</td>
+        <td><p>A list of the <a class="xref" href="Berry.Docx.Field.TextMatch.html">TextMatch</a> objects found by the search.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_Save_" data-uid="Berry.Docx.Document.Save*"></a>
+  <h4 id="Berry_Docx_Document_Save" data-uid="Berry.Docx.Document.Save">Save()</h4>
+  <div class="markdown level1 summary"><p>Save the contents and changes of the docuemnt.</p>
+<p>保存文档内容。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Save()</code></pre>
+  </div>
+  
+  
+  <a id="Berry_Docx_Document_SaveAs_" data-uid="Berry.Docx.Document.SaveAs*"></a>
+  <h4 id="Berry_Docx_Document_SaveAs_Stream_" data-uid="Berry.Docx.Document.SaveAs(Stream)">SaveAs(Stream)</h4>
+  <div class="markdown level1 summary"><p>Save the contents and changes to specified stream.</p>
+<p>保存文档内容至指定流中。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SaveAs(Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>The destination stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_SaveAs_" data-uid="Berry.Docx.Document.SaveAs*"></a>
+  <h4 id="Berry_Docx_Document_SaveAs_System_String_" data-uid="Berry.Docx.Document.SaveAs(System.String)">SaveAs(String)</h4>
+  <div class="markdown level1 summary"><p>Save the contents and changes to specified file.</p>
+<p>保存文档内容至指定文件。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SaveAs(string filename)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filename</span></td>
+        <td><p>Name of file</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_SetCloseStream_" data-uid="Berry.Docx.Document.SetCloseStream*"></a>
+  <h4 id="Berry_Docx_Document_SetCloseStream_System_Boolean_" data-uid="Berry.Docx.Document.SetCloseStream(System.Boolean)">SetCloseStream(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Sets a Boolean value indicating whether close the source stream when close the document.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetCloseStream(bool close)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">close</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Document_UpdateFieldsWhenOpen_" data-uid="Berry.Docx.Document.UpdateFieldsWhenOpen*"></a>
+  <h4 id="Berry_Docx_Document_UpdateFieldsWhenOpen" data-uid="Berry.Docx.Document.UpdateFieldsWhenOpen">UpdateFieldsWhenOpen()</h4>
+  <div class="markdown level1 summary"><p>更新域代码</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateFieldsWhenOpen()</code></pre>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Berry.Docx.EnumExtentions.html#Berry_Docx_EnumExtentions_Description__1___0_">EnumExtentions.Description&lt;T&gt;(T)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

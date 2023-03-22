@@ -54,6 +54,7 @@ namespace Berry.Docx.Formatting
         private float _characterSpacing = 0;
         private float _position = 0;
         private Border _border;
+        private bool _isHidden = false;
         #endregion
 
         #endregion
@@ -1607,6 +1608,112 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _position = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the text is hidden.
+        /// </summary>
+        public bool IsHidden
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.IsHidden != null)
+                    {
+                        return _directRHld.IsHidden;
+                    }
+                    if (_doc.DefaultFormat.CharacterFormat.IsHidden)
+                        return true;
+                    // character & paragraph
+                    BooleanValue cVal = null;
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        cVal = rStyle.IsHidden;
+                    }
+                    BooleanValue pVal = null;
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        pVal = paragraph.IsHidden;
+                    }
+                    if (cVal != null && pVal != null)
+                        return cVal == pVal ? false : true;
+                    else if (cVal != null)
+                        return cVal;
+                    else if (pVal != null)
+                        return pVal;
+                    else
+                        return false;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.IsHidden != null)
+                    {
+                        return _markRHld.IsHidden;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.IsHidden != null)
+                        return paragraph.IsHidden;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.IsHidden;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld?.IsHidden != null)
+                    {
+                        return _tblStyleHld.IsHidden;
+                    }
+                    // direct formatting
+                    if (_directSHld.IsHidden != null)
+                    {
+                        return _directSHld.IsHidden;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.IsHidden != null)
+                        return style.IsHidden;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.IsHidden;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.IsHidden ?? _doc.DefaultFormat.CharacterFormat.IsHidden;
+                }
+                else
+                {
+                    return _isHidden;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.IsHidden = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.IsHidden = value;
+                    else _directSHld.IsHidden = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.IsHidden = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.IsHidden = value;
+                }
+                else
+                {
+                    _isHidden = value;
                 }
             }
         }

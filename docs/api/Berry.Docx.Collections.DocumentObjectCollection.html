@@ -1,0 +1,532 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DocumentObjectCollection
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DocumentObjectCollection
+   ">
+    <meta name="generator" content="docfx 2.59.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Berry.Docx.Collections.DocumentObjectCollection">
+  
+  
+  <h1 id="Berry_Docx_Collections_DocumentObjectCollection" data-uid="Berry.Docx.Collections.DocumentObjectCollection" class="text-break">Class DocumentObjectCollection
+  </h1>
+  <div class="markdown level0 summary"><p>Represent a DocumentObject collection.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">DocumentObjectCollection</span></div>
+      <div class="level2"><a class="xref" href="Berry.Docx.Collections.DocumentItemCollection.html">DocumentItemCollection</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Berry.Docx.Collections.html">Berry.Docx.Collections</a></h6>
+  <h6><strong>Assembly</strong>: Berry.Docx.dll</h6>
+  <h5 id="Berry_Docx_Collections_DocumentObjectCollection_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class DocumentObjectCollection : IEnumerable&lt;DocumentObject&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection__ctor_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.#ctor*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection__ctor_IEnumerable_Berry_Docx_DocumentObject__" data-uid="Berry.Docx.Collections.DocumentObjectCollection.#ctor(IEnumerable{Berry.Docx.DocumentObject})">DocumentObjectCollection(IEnumerable&lt;DocumentObject&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the DocumentObjectCollection class using the supplied collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentObjectCollection(IEnumerable&lt;DocumentObject&gt; objects)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a>&gt;</td>
+        <td><span class="parametername">objects</span></td>
+        <td><p>The DocumentObject collection</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_Count_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Count*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_Count" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets the number of DocumentObjects in the collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_Item_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Item*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_Item_System_Int32_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Item(System.Int32)">Item[Int32]</h4>
+  <div class="markdown level1 summary"><p>Gets the DocumentObject at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentObject this[int index] { get; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><p>The DocumentObject at the specified index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_Add_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Add*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_Add_Berry_Docx_DocumentObject_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Add(Berry.Docx.DocumentObject)">Add(DocumentObject)</h4>
+  <div class="markdown level1 summary"><p>Adds the specified object to the end of the current collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void Add(DocumentObject obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The DocumentObject instance that was added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_Clear_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Clear*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_Clear" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Removes all items of the current collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void Clear()</code></pre>
+  </div>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_Contains_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Contains*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_Contains_Berry_Docx_DocumentObject_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Contains(Berry.Docx.DocumentObject)">Contains(DocumentObject)</h4>
+  <div class="markdown level1 summary"><p>Determines whether this collection contains a specified DocumentObject.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool Contains(DocumentObject obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The specified DocumentObject.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>true if the collection contains the specified DocumentObject; otherwise, false.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_GetEnumerator_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.GetEnumerator*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_GetEnumerator" data-uid="Berry.Docx.Collections.DocumentObjectCollection.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Returns an enumerator that iterates through the collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;DocumentObject&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span>&lt;<a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a>&gt;</td>
+        <td><p>An enumerator that can be used to iterate through the collection.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_IndexOf_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.IndexOf*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_IndexOf_Berry_Docx_DocumentObject_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.IndexOf(Berry.Docx.DocumentObject)">IndexOf(DocumentObject)</h4>
+  <div class="markdown level1 summary"><p>Searchs for the specified object and returns the zero-based index of the first occurrence within the entire collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int IndexOf(DocumentObject obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The specified DocumentObject.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The zero-based index of the first occurrence of item within the entire collection,if found; otherwise, -1.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_InsertAt_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.InsertAt*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_InsertAt_Berry_Docx_DocumentObject_System_Int32_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.InsertAt(Berry.Docx.DocumentObject,System.Int32)">InsertAt(DocumentObject, Int32)</h4>
+  <div class="markdown level1 summary"><p>Insert the specified object immediately to the specified index of the current collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void InsertAt(DocumentObject obj, int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The inserted DocumentObject instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_OfType_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.OfType*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_OfType__1" data-uid="Berry.Docx.Collections.DocumentObjectCollection.OfType``1">OfType&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Filters the elements of an <see cref="!:IEnumerable"></see> based on a specified
+type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;T&gt; OfType&lt;T&gt;()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
+        <td><p>An <see cref="!:IEnumerable"></see> that contains elements from the input
+sequence of type TResult.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type to filter the elements of the sequence on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_Remove_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Remove*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_Remove_Berry_Docx_DocumentObject_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.Remove(Berry.Docx.DocumentObject)">Remove(DocumentObject)</h4>
+  <div class="markdown level1 summary"><p>Removes the specified DocumentObject immediately from the current collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void Remove(DocumentObject obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The DocumentObject instance that was removed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Berry_Docx_Collections_DocumentObjectCollection_RemoveAt_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.RemoveAt*"></a>
+  <h4 id="Berry_Docx_Collections_DocumentObjectCollection_RemoveAt_System_Int32_" data-uid="Berry.Docx.Collections.DocumentObjectCollection.RemoveAt(System.Int32)">RemoveAt(Int32)</h4>
+  <div class="markdown level1 summary"><p>Removes the DocumentObject at the zero-based index immediately from the current collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void RemoveAt(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Berry.Docx.EnumExtentions.html#Berry_Docx_EnumExtentions_Description__1___0_">EnumExtentions.Description&lt;T&gt;(T)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -14,8 +14,8 @@ Berry.Docx 的 NuGet 软件包发布在NuGet.org上:
 
 *The release NuGet packages for Berry.Docx are on NuGet.org:*
 
-| Package    | Download                                                     |
-| ---------- | ------------------------------------------------------------ |
+| Package    | Download                                                                                             |
+| ---------- | ---------------------------------------------------------------------------------------------------- |
 | Berry.Docx | [![NuGet](https://img.shields.io/nuget/v/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx) |
 
 ## 通过 NuGet 安装（Install via NuGet）
@@ -28,7 +28,7 @@ Berry.Docx 的 NuGet 软件包发布在NuGet.org上:
 
 *Open your project in Visual Studio, right-click the solution and select  **Manager NuGet Packages** , then enter "Berry.Docx" in the Browse input box, as follows:*
 
-![image](https://theyangfan.github.io/wiki/Berry.Docx/images/01.png)
+![image](https://github.com/theyangfan/Berry.Docx/blob/main/nuget_package_manager.png)
 
 选择安装即可。
 
@@ -60,7 +60,7 @@ namespace Example
     {
         static void Main() 
         {
-			// 新建一个名为“example.docx”的文档 (Create a new word document called "example.docx")
+            // 新建一个名为“example.docx”的文档 (Create a new word document called "example.docx")
             using (Document doc = new Document("example.docx"))
             {
                 // 新建一个段落 (Create a new paragraph)
@@ -94,32 +94,39 @@ namespace Example
 
 # 主要功能（Main Features）
 
-| Features                                                     |
-| ------------------------------------------------------------ |
-| 操作段落和字符\|*Manipulates paragraphs and characters*      |
-| 操作表格及其行和单元格\|*Manipulates table and it's rows and cells* |
+| Features                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------- |
+| 操作段落和字符\|*Manipulates paragraphs and characters*                                                                          |
+| 操作表格及其行和单元格\|*Manipulates table and it's rows and cells*                                                                  |
 | 读写字符格式(中文字体，西文字体，字号，加粗，斜体等)\|*Read-write character format (FontNameEastAsia, FontNameAscii, FontSize, Bold, Italic etc.)* |
-| 读写段落格式(对齐方式, 大纲级别, 缩进, 间距等.)\|*Read-write paragraph format (Justification, OutlineLevel, Indentation, Spacing etc.)* |
-| 读写段落、表格、字符样式\|*Read-write paragraph, table, character style* |
-| 插入分节符，分页符和手动换行符\|*Inserts section break，page break and line break* |
-| 添加批注\|*Appends comments*                                 |
-| 操作页眉页脚\|*Manipulates header and footers*               |
-| 读写页面设置\|*Read-write page setup*                        |
-| 读写列表样式\|*Read-write list style*                        |
-| 查找文本\|*Find text*                                        |
-| 读写表格格式 \| *Read-write table formats*                   |
+| 读写段落格式(对齐方式, 大纲级别, 缩进, 间距等.)\|*Read-write paragraph format (Justification, OutlineLevel, Indentation, Spacing etc.)*      |
+| 读写段落、表格、字符样式\|*Read-write paragraph, table, character style*                                                              |
+| 插入分节符，分页符和手动换行符\|*Inserts section break，page break and line break*                                                        |
+| 添加批注\|*Appends comments*                                                                                                  |
+| 操作页眉页脚\|*Manipulates header and footers*                                                                                  |
+| 读写页面设置\|*Read-write page setup*                                                                                           |
+| 读写列表样式\|*Read-write list style*                                                                                           |
+| 查找文本\|*Find text*                                                                                                         |
+| 读写表格格式 \| *Read-write table formats*                                                                                      |
+| 向段落中添加图片、分隔符和制表位 \| *Append picture , break and tab to paragraph*                                                         |
 
 <br/>
 
 # 文档（Documentation）
 
-- [API](https://theyangfan.github.io/wiki/Berry.Docx/api/)
-
-- [示例 (Examples)](https://theyangfan.github.io/wiki/Berry.Docx/examples/ParagraphExample.html)
+- [API Documentation](https://theyangfan.github.io/Berry.Docx)
 
 <br/>
 
 # 更新日志（Release History）
+
+### v1.3.3 (2023-03-22)
+
+- 支持向段落中添加图片、分隔符和制表位 (*Support append picture , break and tab to paragraph*)；
+
+- 支持更多的格式 (*Support more formats*)；
+
+- 修复了在解析无效超链接时抛出异常的问题 (*Fixed an exception being thrown when parsing malformed hyperlinks*)。
 
 ### v1.3.2 (2022-08-26)
 
@@ -163,5 +170,4 @@ namespace Example
 # 下版本计划（Next Version Plan）
 
 - 支持读写域代码 (*Support read-write field codes*)
-- 支持插入脚注和尾注 (*Support insert footnote and endnote*)
-
+- 支持更多图形属性 (*Support more shape properties*)

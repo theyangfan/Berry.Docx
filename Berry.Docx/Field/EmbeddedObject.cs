@@ -7,6 +7,9 @@ using Ovml = DocumentFormat.OpenXml.Vml.Office;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class EmbeddedObject : ParagraphItem
     {
         private readonly Document _doc;

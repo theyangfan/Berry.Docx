@@ -1,0 +1,388 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DocumentItem
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DocumentItem
+   ">
+    <meta name="generator" content="docfx 2.59.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Berry.Docx.DocumentItem">
+  
+  
+  <h1 id="Berry_Docx_DocumentItem" data-uid="Berry.Docx.DocumentItem" class="text-break">Class DocumentItem
+  </h1>
+  <div class="markdown level0 summary"><p>Represent a base class that all document item objects derive from.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></div>
+    <div class="level2"><span class="xref">DocumentItem</span></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Documents.Paragraph.html">Paragraph</a></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Documents.SdtBlock.html">SdtBlock</a></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Documents.SdtContent.html">SdtContent</a></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Documents.SdtProperties.html">SdtProperties</a></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Documents.Table.html">Table</a></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Documents.TableCell.html">TableCell</a></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Documents.TableRow.html">TableRow</a></div>
+      <div class="level3"><a class="xref" href="Berry.Docx.Field.ParagraphItem.html">ParagraphItem</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Document">DocumentObject.Document</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_DocumentObjectType">DocumentObject.DocumentObjectType</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Equals_Berry_Docx_DocumentObject_">DocumentObject.Equals(DocumentObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Equals_System_Object_">DocumentObject.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_GetHashCode">DocumentObject.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Berry.Docx.html">Berry.Docx</a></h6>
+  <h6><strong>Assembly</strong>: Berry.Docx.dll</h6>
+  <h5 id="Berry_Docx_DocumentItem_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class DocumentItem : DocumentObject</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Berry_Docx_DocumentItem__ctor_" data-uid="Berry.Docx.DocumentItem.#ctor*"></a>
+  <h4 id="Berry_Docx_DocumentItem__ctor_Berry_Docx_Document_DocumentFormat_OpenXml_OpenXmlElement_" data-uid="Berry.Docx.DocumentItem.#ctor(Berry.Docx.Document,DocumentFormat.OpenXml.OpenXmlElement)">DocumentItem(Document, DocumentFormat.OpenXml.OpenXmlElement)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the DocumentItem class using the supplied underlying OpenXmlElement.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentItem(Document ownerDoc, DocumentFormat.OpenXml.OpenXmlElement ele)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Document.html">Document</a></td>
+        <td><span class="parametername">ownerDoc</span></td>
+        <td><p>Owner document</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DocumentFormat.OpenXml.OpenXmlElement</span></td>
+        <td><span class="parametername">ele</span></td>
+        <td><p>Underlying OpenXmlElement</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Berry_Docx_DocumentItem_ChildObjects_" data-uid="Berry.Docx.DocumentItem.ChildObjects*"></a>
+  <h4 id="Berry_Docx_DocumentItem_ChildObjects" data-uid="Berry.Docx.DocumentItem.ChildObjects">ChildObjects</h4>
+  <div class="markdown level1 summary"><p>Gets all the child objects of the current item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DocumentObjectCollection ChildObjects { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.Collections.DocumentObjectCollection.html">DocumentObjectCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_ChildObjects">DocumentObject.ChildObjects</a></div>
+  
+  
+  <a id="Berry_Docx_DocumentItem_NextSibling_" data-uid="Berry.Docx.DocumentItem.NextSibling*"></a>
+  <h4 id="Berry_Docx_DocumentItem_NextSibling" data-uid="Berry.Docx.DocumentItem.NextSibling">NextSibling</h4>
+  <div class="markdown level1 summary"><p>Gets the object that immediately follows the current object.
+Returns null if there is no next object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DocumentObject NextSibling { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_NextSibling">DocumentObject.NextSibling</a></div>
+  
+  
+  <a id="Berry_Docx_DocumentItem_PreviousSibling_" data-uid="Berry.Docx.DocumentItem.PreviousSibling*"></a>
+  <h4 id="Berry_Docx_DocumentItem_PreviousSibling" data-uid="Berry.Docx.DocumentItem.PreviousSibling">PreviousSibling</h4>
+  <div class="markdown level1 summary"><p>Gets the object that immediately precedes the current object.
+Returns null if there is no preceding object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DocumentObject PreviousSibling { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_PreviousSibling">DocumentObject.PreviousSibling</a></div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Berry_Docx_DocumentItem_Clone_" data-uid="Berry.Docx.DocumentItem.Clone*"></a>
+  <h4 id="Berry_Docx_DocumentItem_Clone" data-uid="Berry.Docx.DocumentItem.Clone">Clone()</h4>
+  <div class="markdown level1 summary"><p>Creates a duplicate of the object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DocumentObject Clone()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><p>The cloned object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Clone">DocumentObject.Clone()</a></div>
+  
+  
+  <a id="Berry_Docx_DocumentItem_InsertAfterSelf_" data-uid="Berry.Docx.DocumentItem.InsertAfterSelf*"></a>
+  <h4 id="Berry_Docx_DocumentItem_InsertAfterSelf_Berry_Docx_DocumentObject_" data-uid="Berry.Docx.DocumentItem.InsertAfterSelf(Berry.Docx.DocumentObject)">InsertAfterSelf(DocumentObject)</h4>
+  <div class="markdown level1 summary"><p>Inserts the specified object immediately after the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void InsertAfterSelf(DocumentObject obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The new object to insert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_InsertAfterSelf_Berry_Docx_DocumentObject_">DocumentObject.InsertAfterSelf(DocumentObject)</a></div>
+  
+  
+  <a id="Berry_Docx_DocumentItem_InsertBeforeSelf_" data-uid="Berry.Docx.DocumentItem.InsertBeforeSelf*"></a>
+  <h4 id="Berry_Docx_DocumentItem_InsertBeforeSelf_Berry_Docx_DocumentObject_" data-uid="Berry.Docx.DocumentItem.InsertBeforeSelf(Berry.Docx.DocumentObject)">InsertBeforeSelf(DocumentObject)</h4>
+  <div class="markdown level1 summary"><p>Inserts the specified object immediately before the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void InsertBeforeSelf(DocumentObject obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The new object to insert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_InsertBeforeSelf_Berry_Docx_DocumentObject_">DocumentObject.InsertBeforeSelf(DocumentObject)</a></div>
+  
+  
+  <a id="Berry_Docx_DocumentItem_Remove_" data-uid="Berry.Docx.DocumentItem.Remove*"></a>
+  <h4 id="Berry_Docx_DocumentItem_Remove" data-uid="Berry.Docx.DocumentItem.Remove">Remove()</h4>
+  <div class="markdown level1 summary"><p>Removes the current element from its parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Remove()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_Remove">DocumentObject.Remove()</a></div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Berry.Docx.EnumExtentions.html#Berry_Docx_EnumExtentions_Description__1___0_">EnumExtentions.Description&lt;T&gt;(T)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

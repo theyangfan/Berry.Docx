@@ -6,6 +6,9 @@ using Wp = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class GroupShape : DrawingItem
     {
         private readonly Document _doc;

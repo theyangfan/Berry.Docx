@@ -6,6 +6,9 @@ using M = DocumentFormat.OpenXml.Math;
 
 namespace Berry.Docx.Field
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class OfficeMath : ParagraphItem
     {
         private readonly Document _doc;

@@ -167,9 +167,12 @@ namespace Berry.Docx.Formatting
             }
             else
             {
+                // Add properties to style
                 W.NumberingProperties num = _ownerStyle.StyleParagraphProperties.NumberingProperties;
                 num.NumberingId = new W.NumberingId() { Val = style.NumberID };
-                foreach(ListLevel level in style.Levels)
+                num.NumberingLevelReference = new W.NumberingLevelReference() { Val = levelNumber - 1 };
+                // Add properties to list
+                foreach (ListLevel level in style.Levels)
                 {
                     if (level.ParagraphStyleId == _ownerStyle.StyleId)
                         level.ParagraphStyleId = null;

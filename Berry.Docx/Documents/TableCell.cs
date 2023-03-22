@@ -78,9 +78,92 @@ namespace Berry.Docx.Documents
             }
         }
 
+        public int GridSpan
+        {
+            get
+            {
+                W.GridSpan gridSpan = _cell.TableCellProperties?.GridSpan;
+                if (gridSpan == null) return 1;
+                return gridSpan.Val.Value;
+            }
+            set
+            {
+                if (value <= 1 && _cell.TableCellProperties?.GridSpan != null)
+                {
+                    _cell.TableCellProperties.GridSpan = null;
+                    return;
+                }
+                if(_cell.TableCellProperties == null)
+                {
+                    _cell.TableCellProperties = new W.TableCellProperties();
+                }
+                if (_cell.TableCellProperties.GridSpan == null)
+                {
+                    _cell.TableCellProperties.GridSpan = new W.GridSpan(); 
+                }
+                _cell.TableCellProperties.GridSpan.Val = value;
+            }
+        }
+
+        public TableCellVerticalMergeType VMerge
+        {
+            get
+            {
+                W.VerticalMerge vMerge = _cell.TableCellProperties?.VerticalMerge;
+                if (vMerge == null) return TableCellVerticalMergeType.None;
+                if (vMerge.Val == null) return TableCellVerticalMergeType.Continue;
+                return vMerge.Val.Value.Convert<TableCellVerticalMergeType>();
+            }
+            set
+            {
+                if(value == TableCellVerticalMergeType.None && _cell.TableCellProperties?.VerticalMerge != null)
+                {
+                    _cell.TableCellProperties.VerticalMerge = null;
+                    return;
+                }
+                if (_cell.TableCellProperties == null)
+                {
+                    _cell.TableCellProperties = new W.TableCellProperties();
+                }
+                if (_cell.TableCellProperties.VerticalMerge == null)
+                {
+                    _cell.TableCellProperties.VerticalMerge = new W.VerticalMerge();
+                }
+                if (value == TableCellVerticalMergeType.Restart)
+                {
+                    _cell.TableCellProperties.VerticalMerge.Val = W.MergedCellValues.Restart;
+                }
+                else if (value == TableCellVerticalMergeType.Continue)
+                {
+                    _cell.TableCellProperties.VerticalMerge.Val = null;
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Gets the width of the current cell.
+        /// </summary>
+        /// <returns></returns>
+        public TableCellWidth GetCellWidth()
+        {
+            float width = 0;
+            W.TableCellWidth tcWidth = _cell.TableCellProperties?.TableCellWidth;
+            if (tcWidth?.Type == null) return new TableCellWidth(0, CellWidthType.Auto);
+            float.TryParse(tcWidth.Width, out width);
+            if(tcWidth.Type.Value == W.TableWidthUnitValues.Pct)
+            {
+                return new TableCellWidth(width / 50.0f, CellWidthType.Percent);
+            }
+            else if(tcWidth.Type.Value == W.TableWidthUnitValues.Dxa)
+            {
+                return new TableCellWidth(width / 20.0f, CellWidthType.Point);
+            }
+            return new TableCellWidth(0, CellWidthType.Auto);
+        }
+
         /// <summary>
         /// Sets the width of the current cell.
         /// </summary>
@@ -182,6 +265,10 @@ namespace Berry.Docx.Documents
             Paragraphs.First().Text = "";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override DocumentObject Clone()
         {
             W.TableCell newCell = (W.TableCell)_cell.CloneNode(true);
@@ -203,5 +290,17 @@ namespace Berry.Docx.Documents
         }
         #endregion
 
+    }
+
+    public class TableCellWidth
+    {
+        public TableCellWidth(float val, CellWidthType type)
+        {
+            Val = val;
+            Type = type;
+        }
+
+        public float Val { get; set; }
+        public CellWidthType Type { get; set; }
     }
 }

@@ -68,6 +68,13 @@ namespace Berry.Docx.Documents
         public override DocumentObjectCollection ChildObjects => Rows;
 
         /// <summary>
+        /// Gets the table row at the specified row.
+        /// </summary>
+        /// <param name="row">The zero-based index.</param>
+        /// <returns>The table row at the specified index.</returns>
+        public TableRow this[int row] => Rows[row];
+
+        /// <summary>
         /// The table rows collection.
         /// </summary>
         public TableRowCollection Rows => new TableRowCollection(_table, TableRowsPrivate());
