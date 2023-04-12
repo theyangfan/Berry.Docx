@@ -26,11 +26,20 @@ namespace Berry.Docx.Field
 
         #region Constructors
         /// <summary>
-        /// The TextRange constructor.
+        /// Initializes a new empty TextRange.
         /// </summary>
         /// <param name="doc">The owner document.</param>
-        public TextRange(Document doc) : this(doc, RunGenerator.GenerateTextRange(""))
+        public TextRange(Document doc) : this(doc, string.Empty)
         {
+        }
+        /// <summary>
+        /// Initializes a new TextRange with the specified text.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="text"></param>
+        public TextRange(Document doc, string text) : this(doc, RunGenerator.GenerateTextRange(text))
+        {
+            Text = text;
         }
 
         internal TextRange(Document doc, W.Run run) : base(doc, run, run.GetFirstChild<W.Text>())
@@ -75,6 +84,10 @@ namespace Berry.Docx.Field
                 if(Regex.IsMatch(value, @"\s"))
                 {
                     _text.Space = O.SpaceProcessingModeValues.Preserve;
+                }
+                else
+                {
+                    _text.Space = null;
                 }
             }
         }

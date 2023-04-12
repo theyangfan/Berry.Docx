@@ -189,22 +189,32 @@ namespace Berry.Docx
             // footnote reference
             if (run.Elements<W.FootnoteReference>().Any())
             {
-                yield return new FootnoteReference(_doc, run, run.Elements<W.FootnoteReference>().First());
+                yield return new FootnoteReference(_doc, run, run.GetFirstChild<W.FootnoteReference>());
             }
             // endnote reference
             if (run.Elements<W.EndnoteReference>().Any())
             {
-                yield return new EndnoteReference(_doc, run, run.Elements<W.EndnoteReference>().First());
+                yield return new EndnoteReference(_doc, run, run.GetFirstChild<W.EndnoteReference>());
             }
             // break
             if (run.Elements<W.Break>().Any())
             {
-                yield return new Break(_doc, run, run.Elements<W.Break>().First());
+                yield return new Break(_doc, run, run.GetFirstChild<W.Break>());
             }
             // tab
             if (run.Elements<W.TabChar>().Any())
             {
                 yield return new Tab(_doc, run, run.GetFirstChild<W.TabChar>());
+            }
+            // field char
+            if (run.Elements<W.FieldChar>().Any())
+            {
+                yield return new FieldChar(_doc, run, run.GetFirstChild<W.FieldChar>());
+            }
+            // field code
+            if (run.Elements<W.FieldCode>().Any())
+            {
+                yield return new FieldCode(_doc, run, run.GetFirstChild<W.FieldCode>());
             }
             // drawing
             foreach (W.Drawing drawing in run.Descendants<W.Drawing>())
@@ -229,7 +239,7 @@ namespace Berry.Docx
             // vml picture
             if (run.Elements<W.Picture>().Any())
             {
-                yield return new Picture(_doc, run, run.Elements<W.Picture>().First());
+                yield return new Picture(_doc, run, run.GetFirstChild<W.Picture>());
             }
             // embedded object
             foreach (W.EmbeddedObject obj in run.Elements<W.EmbeddedObject>())
@@ -238,7 +248,9 @@ namespace Berry.Docx
             }
             // deleted text range
             if (run.Elements<W.DeletedText>().Any())
+            {
                 yield return new DeletedTextRange(_doc, run);
+            }
         }
 
         private DocumentObject Construct(O.OpenXmlElement element)

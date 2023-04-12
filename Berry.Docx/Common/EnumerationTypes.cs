@@ -91,7 +91,8 @@ namespace Berry.Docx
         InsertedRange,
         DeletedTextRange,
         SimpleField,
-        ComplexField
+        FieldCode,
+        FieldChar
     }
 
     /// <summary>
@@ -2130,5 +2131,24 @@ namespace Berry.Docx
         /// Minimum Height.
         /// </summary>
         AtLeast = 2
+    }
+
+    /// <summary>
+    /// Defines the FieldCharType enumeration.
+    /// </summary>
+    public enum FieldCharType
+    {
+        /// <summary>
+        /// Start Character. 
+        /// </summary>
+        Begin = 0,
+        /// <summary>
+        /// Separator Character. 
+        /// </summary>
+        Separate = 1,
+        /// <summary>
+        /// End Character. 
+        /// </summary>
+        End = 2
     }
 }

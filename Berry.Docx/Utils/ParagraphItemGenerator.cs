@@ -22,5 +22,21 @@ namespace Berry.Docx
             run.AddChild(tab);
             return tab;
         }
+
+        public static FieldChar GenerateFieldChar()
+        {
+            Run run = new Run();
+            FieldChar field = new FieldChar();
+            run.AddChild(field);
+            return field;
+        }
+
+        public static FieldCode GenerateFieldCode()
+        {
+            Run run = new Run();
+            FieldCode field = new FieldCode();
+            run.AddChild(field);
+            return field;
+        }
     }
 }
