@@ -38,5 +38,11 @@ namespace Berry.Docx
             run.AddChild(field);
             return field;
         }
+
+        public static SimpleField GenerateSimpleField()
+        {
+            SimpleField field = new SimpleField();
+            return field;
+        }
     }
 }

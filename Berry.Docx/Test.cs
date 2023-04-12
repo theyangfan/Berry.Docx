@@ -22,25 +22,18 @@ namespace Test
     {
         public static void Main()
         {
-            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
             using(Document doc = new Document(src, FileShare.ReadWrite))
             {
-                var p = doc.LastSection.Paragraphs[1];
-                for(int i = 0; i < p.ChildItems.Count; i++)
-                {
-                    var item = p.ChildItems[i];
-                    Console.WriteLine(item);
-                    if(item is SimpleField)
-                    {
-                        p.ChildItems.InsertAt(new TextRange(doc, (item as SimpleField).Result), i);
-                        p.ChildItems.Remove(item);
-                    }
-                    if (item is FieldChar || item is FieldCode)
-                    {
-                        p.ChildItems.Remove(item);
-                        i--;
-                    }
-                }
+                var p = new Paragraph(doc);
+                p.AppendText("图表");
+                p.ChildItems.Add(new FieldChar(doc, FieldCharType.Begin));
+                p.ChildItems.Add(new FieldCode(doc, "SEQ 图表 \\* ARABIC"));
+                p.ChildItems.Add(new FieldChar(doc, FieldCharType.Separate));
+                p.AppendText("1");
+                p.ChildItems.Add(new FieldChar(doc, FieldCharType.End));
+                
+                doc.LastSection.ChildObjects.Add(p);
                 doc.Save();
             }
         }

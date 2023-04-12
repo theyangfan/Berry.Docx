@@ -69,7 +69,7 @@ namespace Berry.Docx.Collections
         /// An <see cref="IEnumerable"/> that contains elements from the input
         /// sequence of type TResult.
         /// </returns>
-        public IEnumerable<T> OfType<T>()
+        public IEnumerable<T> OfType<T>() where T : DocumentObject
         {
             return _objects.OfType<T>();
         }
@@ -100,7 +100,13 @@ namespace Berry.Docx.Collections
         public abstract void RemoveAt(int index);
 
         /// <summary>
-        /// Removes all items of the current collection.
+        /// Removes all specified type items from the current collection.
+        /// </summary>
+        /// <typeparam name="T">The DocumentObject Type.</typeparam>
+        public abstract void RemoveAll<T>() where T : DocumentObject;
+
+        /// <summary>
+        /// Removes all items from the current collection.
         /// </summary>
         public abstract void Clear();
 

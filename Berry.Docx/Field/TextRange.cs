@@ -70,7 +70,7 @@ namespace Berry.Docx.Field
             }
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value) && _ownerRun.Parent != null)
                 {
                     Remove();
                     return;

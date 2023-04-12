@@ -19,6 +19,13 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructor
+        public SimpleField(Document doc, string code, string result)
+            : this(doc, ParagraphItemGenerator.GenerateSimpleField())
+        {
+            Code = code;
+            Result = result;
+        }
+
         internal SimpleField(Document doc, W.SimpleField fldSimple) : base(doc, fldSimple)
         {
             _doc = doc;
@@ -65,10 +72,7 @@ namespace Berry.Docx.Field
             {
                 TextRange tr = ChildObjects.OfType<TextRange>().FirstOrDefault()?.Clone() as TextRange;
                 if (tr == null) tr = new TextRange(_doc);
-                foreach (var item in ChildObjects.OfType<TextRange>())
-                {
-                    item.Remove();
-                }
+                ChildObjects.RemoveAll<TextRange>();
                 ChildObjects.Add(tr);
                 tr.Text = value;
             }
