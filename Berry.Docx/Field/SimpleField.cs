@@ -9,7 +9,7 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 namespace Berry.Docx.Field
 {
     /// <summary>
-    /// Represent a simple filed code.
+    /// The SimpleField class specifies the presence of a simple field at the current location in the document.
     /// </summary>
     public class SimpleField : ParagraphItem
     {
@@ -19,6 +19,12 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Initializes a SimpleField instance with the specified code and result.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="code">The field code.</param>
+        /// <param name="result">The field result</param>
         public SimpleField(Document doc, string code, string result)
             : this(doc, ParagraphItemGenerator.GenerateSimpleField())
         {
@@ -76,6 +82,18 @@ namespace Berry.Docx.Field
                 ChildObjects.Add(tr);
                 tr.Text = value;
             }
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Creates a duplicate of the object.
+        /// </summary>
+        /// <returns>The cloned object.</returns>
+        public override DocumentObject Clone()
+        {
+            W.SimpleField fldSimple = (W.SimpleField)_fldSimple.CloneNode(true);
+            return new SimpleField(_doc, fldSimple);
         }
         #endregion
     }

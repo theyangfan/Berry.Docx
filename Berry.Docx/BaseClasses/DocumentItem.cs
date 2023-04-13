@@ -184,7 +184,7 @@ namespace Berry.Docx
         {
             // text range
             if (run.Elements<W.Text>().Any())
-                yield return new TextRange(_doc, run);
+                yield return new TextRange(_doc, run, run.GetFirstChild<W.Text>());
 
             // footnote reference
             if (run.Elements<W.FootnoteReference>().Any())
@@ -205,6 +205,11 @@ namespace Berry.Docx
             if (run.Elements<W.TabChar>().Any())
             {
                 yield return new Tab(_doc, run, run.GetFirstChild<W.TabChar>());
+            }
+            // non breaking hyphen
+            if (run.Elements<W.NoBreakHyphen>().Any())
+            {
+                yield return new NoBreakHyphen(_doc, run, run.GetFirstChild<W.NoBreakHyphen>());
             }
             // field char
             if (run.Elements<W.FieldChar>().Any())

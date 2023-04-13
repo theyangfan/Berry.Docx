@@ -21,6 +21,7 @@ namespace Berry.Docx.Field
         private readonly Document _doc;
         private readonly W.Run _ownerRun;
         private W.Text _text;
+        private O.OpenXmlElement _element;
         private CharacterFormat _cFormat;
         #endregion
 
@@ -37,17 +38,29 @@ namespace Berry.Docx.Field
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="text"></param>
-        public TextRange(Document doc, string text) : this(doc, RunGenerator.GenerateTextRange(text))
+        public TextRange(Document doc, string text) : this(doc, ParagraphItemGenerator.GenerateTextRange(text))
         {
             Text = text;
         }
 
-        internal TextRange(Document doc, W.Run run) : base(doc, run, run.GetFirstChild<W.Text>())
+        internal TextRange(Document doc, W.Text text) : this(doc, text.Parent as W.Run, text)
+        {
+        }
+
+        internal TextRange(Document doc, W.Run ownerRun, W.Text text) : base(doc, ownerRun, text)
         {
             _doc = doc;
-            _ownerRun = run;
-            _text = run.Elements<W.Text>().FirstOrDefault();
-            _cFormat = new CharacterFormat(doc, run);
+            _ownerRun = ownerRun;
+            _text = text;
+            _cFormat = new CharacterFormat(doc, ownerRun);
+        }
+
+        internal TextRange(Document doc, W.Run ownerRun, O.OpenXmlElement element) : base(doc, ownerRun, element)
+        {
+            _doc = doc;
+            _ownerRun = ownerRun;
+            _element = element;
+            _cFormat = new CharacterFormat(doc, ownerRun);
         }
         #endregion
 
@@ -60,7 +73,7 @@ namespace Berry.Docx.Field
         /// <summary>
         /// Gets or sets the text.
         /// </summary>
-        public string Text
+        public virtual string Text
         {
             get
             {
@@ -72,7 +85,7 @@ namespace Berry.Docx.Field
             {
                 if (string.IsNullOrEmpty(value) && _ownerRun.Parent != null)
                 {
-                    Remove();
+                    this.Remove();
                     return;
                 }
                 if (_text == null)
@@ -173,10 +186,20 @@ namespace Berry.Docx.Field
         public override DocumentObject Clone()
         {
             W.Run run = new W.Run();
-            W.Text text = (W.Text)_text.CloneNode(true);
-            run.RunProperties = _ownerRun.RunProperties?.CloneNode(true) as W.RunProperties; // copy format
-            run.AppendChild(text);
-            return new TextRange(_doc, run);
+            if(_text != null)
+            {
+                W.Text text = (W.Text)_text.CloneNode(true);
+                run.RunProperties = _ownerRun.RunProperties?.CloneNode(true) as W.RunProperties; // copy format
+                run.AppendChild(text);
+                return new TextRange(_doc, run, text);
+            }
+            else
+            {
+                var ele = _element.CloneNode(true);
+                run.RunProperties = _ownerRun.RunProperties?.CloneNode(true) as W.RunProperties; // copy format
+                run.AppendChild(ele);
+                return new TextRange(_doc, run, ele);
+            }
         }
         #endregion
     }

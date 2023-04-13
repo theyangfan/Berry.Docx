@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net4.6.1;netcoreapp2.1;net5.0;net6.0</TargetFrameworks>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon />
@@ -11,12 +11,12 @@
 Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying OpenXML API.</Description>
     <Authors>番茄就是西红柿</Authors>
     <Company></Company>
-    <Copyright>© theyangfan 2022. All rights reserved.</Copyright>
+    <Copyright>© theyangfan 2023. All rights reserved.</Copyright>
     <PackageTags>word, docx, openxml, office</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.3</Version>
+    <Version>1.3.4-beta2</Version>
     <PackageReleaseNotes>1. 支持向段落中添加图片、分隔符和制表位 (Support append picture , break and tab to paragraph*)；
 2. 支持更多的格式 (Support more formats)；
 3. 修复了在解析无效超链接时抛出异常的问题 (Fixed an exception being thrown when parsing malformed hyperlinks)。

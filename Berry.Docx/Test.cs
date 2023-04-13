@@ -22,19 +22,10 @@ namespace Test
     {
         public static void Main()
         {
-            string src = @"C:\Users\tomato\Desktop\test.docx";
+            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
             using(Document doc = new Document(src, FileShare.ReadWrite))
             {
-                var p = new Paragraph(doc);
-                p.AppendText("图表");
-                p.ChildItems.Add(new FieldChar(doc, FieldCharType.Begin));
-                p.ChildItems.Add(new FieldCode(doc, "SEQ 图表 \\* ARABIC"));
-                p.ChildItems.Add(new FieldChar(doc, FieldCharType.Separate));
-                p.AppendText("1");
-                p.ChildItems.Add(new FieldChar(doc, FieldCharType.End));
                 
-                doc.LastSection.ChildObjects.Add(p);
-                doc.Save();
             }
         }
     }
