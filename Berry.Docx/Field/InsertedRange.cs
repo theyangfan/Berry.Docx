@@ -12,12 +12,14 @@ namespace Berry.Docx.Field
     public class InsertedRange : ParagraphItem
     {
         #region Priavate Members
+        private readonly Document _doc;
         private readonly W.InsertedRun _ins;
         #endregion
 
         #region Constructors
         internal InsertedRange(Document doc, W.InsertedRun ins) : base(doc, ins)
         {
+            _doc = doc;
             _ins = ins;
         }
 
@@ -53,8 +55,9 @@ namespace Berry.Docx.Field
             set
             {
                 _ins.RemoveAllChildren<W.Run>();
-                W.Run run = RunGenerator.GenerateTextRange(value);
-                _ins.Append(run);
+                TextRange tr = new TextRange(_doc);
+                tr.Text = value;
+                ChildObjects.Add(tr);
             }
         }
         #endregion

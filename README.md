@@ -109,6 +109,7 @@ namespace Example
 | 查找文本\|*Find text*                                                                                                         |
 | 读写表格格式 \| *Read-write table formats*                                                                                      |
 | 向段落中添加图片、分隔符和制表位 \| *Append picture , break and tab to paragraph*                                                         |
+| 读写域代码 \| Read-write field codes                                                                                           |
 
 <br/>
 
@@ -119,6 +120,12 @@ namespace Example
 <br/>
 
 # 更新日志（Release History）
+
+### v1.3.4 (2023-04-13)
+
+- 支持读写域代码 (Support read-write field codes)；
+
+- 修复了一些问题 (Fixed some bugs)。
 
 ### v1.3.3 (2023-03-22)
 
@@ -169,5 +176,4 @@ namespace Example
 
 # 下版本计划（Next Version Plan）
 
-- 支持读写域代码 (*Support read-write field codes*)
 - 支持更多图形属性 (*Support more shape properties*)

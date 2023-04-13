@@ -9,7 +9,7 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 namespace Berry.Docx.Field
 {
     /// <summary>
-    /// Represent a simple filed code.
+    /// The SimpleField class specifies the presence of a simple field at the current location in the document.
     /// </summary>
     public class SimpleField : ParagraphItem
     {
@@ -19,6 +19,19 @@ namespace Berry.Docx.Field
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Initializes a SimpleField instance with the specified code and result.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="code">The field code.</param>
+        /// <param name="result">The field result</param>
+        public SimpleField(Document doc, string code, string result)
+            : this(doc, ParagraphItemGenerator.GenerateSimpleField())
+        {
+            Code = code;
+            Result = result;
+        }
+
         internal SimpleField(Document doc, W.SimpleField fldSimple) : base(doc, fldSimple)
         {
             _doc = doc;
@@ -65,13 +78,22 @@ namespace Berry.Docx.Field
             {
                 TextRange tr = ChildObjects.OfType<TextRange>().FirstOrDefault()?.Clone() as TextRange;
                 if (tr == null) tr = new TextRange(_doc);
-                foreach (var item in ChildObjects.OfType<TextRange>())
-                {
-                    item.Remove();
-                }
+                ChildObjects.RemoveAll<TextRange>();
                 ChildObjects.Add(tr);
                 tr.Text = value;
             }
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Creates a duplicate of the object.
+        /// </summary>
+        /// <returns>The cloned object.</returns>
+        public override DocumentObject Clone()
+        {
+            W.SimpleField fldSimple = (W.SimpleField)_fldSimple.CloneNode(true);
+            return new SimpleField(_doc, fldSimple);
         }
         #endregion
     }

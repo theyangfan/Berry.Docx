@@ -82,15 +82,25 @@
     <div class="level1"><a class="xref" href="Berry.Docx.DocumentObject.html">DocumentObject</a></div>
     <div class="level2"><a class="xref" href="Berry.Docx.DocumentItem.html">DocumentItem</a></div>
     <div class="level3"><a class="xref" href="Berry.Docx.Field.ParagraphItem.html">ParagraphItem</a></div>
-    <div class="level4"><span class="xref">Tab</span></div>
+    <div class="level4"><a class="xref" href="Berry.Docx.Field.TextRange.html">TextRange</a></div>
+    <div class="level5"><span class="xref">Tab</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Berry.Docx.Field.ParagraphItem.html#Berry_Docx_Field_ParagraphItem_OwnerParagraph">ParagraphItem.OwnerParagraph</a>
+      <a class="xref" href="Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_CharacterFormat">TextRange.CharacterFormat</a>
     </div>
     <div>
-      <a class="xref" href="Berry.Docx.Field.ParagraphItem.html#Berry_Docx_Field_ParagraphItem_CharacterFormat">ParagraphItem.CharacterFormat</a>
+      <a class="xref" href="Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_GetStyle">TextRange.GetStyle()</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_ApplyStyle_System_String_">TextRange.ApplyStyle(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_ApplyStyle_Berry_Docx_BuiltInStyle_">TextRange.ApplyStyle(BuiltInStyle)</a>
+    </div>
+    <div>
+      <a class="xref" href="Berry.Docx.Field.ParagraphItem.html#Berry_Docx_Field_ParagraphItem_OwnerParagraph">ParagraphItem.OwnerParagraph</a>
     </div>
     <div>
       <a class="xref" href="Berry.Docx.Field.ParagraphItem.html#Berry_Docx_Field_ParagraphItem_PreviousSibling">ParagraphItem.PreviousSibling</a>
@@ -139,12 +149,17 @@
   <h6><strong>Assembly</strong>: Berry.Docx.dll</h6>
   <h5 id="Berry_Docx_Field_Tab_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Tab : ParagraphItem</code></pre>
+    <pre><code class="lang-csharp hljs">public class Tab : TextRange</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/theyangfan/github-pages/new/main/apiSpec/new?filename=Berry_Docx_Field_Tab__ctor_Berry_Docx_Document_.md&amp;value=---%0Auid%3A%20Berry.Docx.Field.Tab.%23ctor(Berry.Docx.Document)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/theyangfan/github-pages/blob/main/Berry.Docx/src/Field/Tab.cs/#L26">View Source</a>
+  </span>
   <a id="Berry_Docx_Field_Tab__ctor_" data-uid="Berry.Docx.Field.Tab.#ctor*"></a>
   <h4 id="Berry_Docx_Field_Tab__ctor_Berry_Docx_Document_" data-uid="Berry.Docx.Field.Tab.#ctor(Berry.Docx.Document)">Tab(Document)</h4>
   <div class="markdown level1 summary"><p>Initializes a new tab character.</p>
@@ -173,8 +188,13 @@
   </table>
   <h3 id="properties">Properties
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/theyangfan/github-pages/new/main/apiSpec/new?filename=Berry_Docx_Field_Tab_DocumentObjectType.md&amp;value=---%0Auid%3A%20Berry.Docx.Field.Tab.DocumentObjectType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/theyangfan/github-pages/blob/main/Berry.Docx/src/Field/Tab.cs/#L47">View Source</a>
+  </span>
   <a id="Berry_Docx_Field_Tab_DocumentObjectType_" data-uid="Berry.Docx.Field.Tab.DocumentObjectType*"></a>
   <h4 id="Berry_Docx_Field_Tab_DocumentObjectType" data-uid="Berry.Docx.Field.Tab.DocumentObjectType">DocumentObjectType</h4>
   <div class="markdown level1 summary"><p>Gets the type of the current objetc.</p>
@@ -200,11 +220,49 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Berry.Docx.DocumentObject.html#Berry_Docx_DocumentObject_DocumentObjectType">DocumentObject.DocumentObjectType</a></div>
+  <div><a class="xref" href="Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_DocumentObjectType">TextRange.DocumentObjectType</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/theyangfan/github-pages/new/main/apiSpec/new?filename=Berry_Docx_Field_Tab_Text.md&amp;value=---%0Auid%3A%20Berry.Docx.Field.Tab.Text%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/theyangfan/github-pages/blob/main/Berry.Docx/src/Field/Tab.cs/#L52">View Source</a>
+  </span>
+  <a id="Berry_Docx_Field_Tab_Text_" data-uid="Berry.Docx.Field.Tab.Text*"></a>
+  <h4 id="Berry_Docx_Field_Tab_Text" data-uid="Berry.Docx.Field.Tab.Text">Text</h4>
+  <div class="markdown level1 summary"><p>The &quot;\t&quot; character.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Text { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_Text">TextRange.Text</a></div>
   <h3 id="methods">Methods
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/theyangfan/github-pages/new/main/apiSpec/new?filename=Berry_Docx_Field_Tab_Clone.md&amp;value=---%0Auid%3A%20Berry.Docx.Field.Tab.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/theyangfan/github-pages/blob/main/Berry.Docx/src/Field/Tab.cs/#L64">View Source</a>
+  </span>
   <a id="Berry_Docx_Field_Tab_Clone_" data-uid="Berry.Docx.Field.Tab.Clone*"></a>
   <h4 id="Berry_Docx_Field_Tab_Clone" data-uid="Berry.Docx.Field.Tab.Clone">Clone()</h4>
   <div class="markdown level1 summary"><p>Creates a duplicate of the object.</p>
@@ -231,7 +289,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Berry.Docx.DocumentItem.html#Berry_Docx_DocumentItem_Clone">DocumentItem.Clone()</a></div>
+  <div><a class="xref" href="Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_Clone">TextRange.Clone()</a></div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Berry.Docx.EnumExtentions.html#Berry_Docx_EnumExtentions_Description__1___0_">EnumExtentions.Description&lt;T&gt;(T)</a>
@@ -243,6 +301,12 @@
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/theyangfan/github-pages/new/main/apiSpec/new?filename=Berry_Docx_Field_Tab.md&amp;value=---%0Auid%3A%20Berry.Docx.Field.Tab%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/theyangfan/github-pages/blob/main/Berry.Docx/src/Field/Tab.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

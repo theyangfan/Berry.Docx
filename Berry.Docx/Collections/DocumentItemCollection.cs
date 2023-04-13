@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
+using Berry.Docx.Field;
+
 namespace Berry.Docx.Collections
 {
     /// <summary>
@@ -50,6 +52,15 @@ namespace Berry.Docx.Collections
         /// <param name="obj">The DocumentObject instance that was added.</param>
         public override void Add(DocumentObject obj)
         {
+            if(obj is ParagraphItem)
+            {
+                ParagraphItem pItem = (ParagraphItem)obj;
+                if (pItem.InsideRun)
+                    _owner.Append(pItem.OwnerRun);
+                else
+                    _owner.Append(pItem.XElement);
+                return;
+            }
             var newElement = obj.XElement;
             if (_items.Count() > 0)
             {
@@ -146,14 +157,30 @@ namespace Berry.Docx.Collections
         }
 
         /// <summary>
+        /// Removes all specified type items from the current collection.
+        /// </summary>
+        /// <typeparam name="T">The DocumentObject Type.</typeparam>
+        public override void RemoveAll<T>()
+        {
+            var itemList = this.OfType<T>().ToList();
+            foreach (DocumentObject obj in itemList)
+            {
+                Remove(obj);
+            }
+            itemList.Clear();
+        }
+
+        /// <summary>
         /// Removes all items of the current collection.
         /// </summary>
         public override void Clear()
         {
-            foreach(DocumentObject obj in _items)
+            var itemList = _items.ToList();
+            foreach(DocumentObject obj in itemList)
             {
                 Remove(obj);
             }
+            itemList.Clear();
         }
         #endregion
     }

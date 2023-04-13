@@ -10,7 +10,7 @@ namespace Berry.Docx.Field
     /// <summary>
     /// Represent a tab character in the paragraph.
     /// </summary>
-    public class Tab : ParagraphItem
+    public class Tab : TextRange
     {
         #region Private Members
         private readonly Document _doc;
@@ -46,6 +46,14 @@ namespace Berry.Docx.Field
         /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.Tab;
 
+        /// <summary>
+        /// The "\t" character.
+        /// </summary>
+        public override string Text
+        {
+            get => "\t";
+            set => throw new NotSupportedException("The Tab Character does not support modifying.");
+        }
         #endregion
 
         #region Public Methods

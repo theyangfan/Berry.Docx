@@ -115,18 +115,15 @@ namespace Berry.Docx.Documents
                     {
                         text.Append((item as DeletedRange).Text);
                     }
-                    else if(item is Tab)
-                    {
-                        text.Append("\t");
-                    }
                 }
                 return text.ToString();
             }
             set
             {
-                _paragraph.RemoveAllChildren<W.Run>();
-                W.Run run = RunGenerator.GenerateTextRange(value);
-                _paragraph.AddChild(run);
+                ChildItems.Clear();
+                TextRange tr = new TextRange(_doc);
+                tr.Text = value;
+                ChildItems.Add(tr);
             }
         }
 
@@ -445,7 +442,7 @@ namespace Berry.Docx.Documents
             }
             float pgWidth = section.PageSetup.PageWidth - section.PageSetup.LeftMargin - section.PageSetup.RightMargin;
             float pgHeight = section.PageSetup.PageHeight - section.PageSetup.TopMargin - section.PageSetup.BottomMargin;
-            W.Run drawingRun = RunGenerator.GenerateDrawing(rId, filename, pgWidth, pgHeight);
+            W.Run drawingRun = ParagraphItemGenerator.GenerateDrawing(rId, filename, pgWidth, pgHeight);
 
             Picture pic = new Picture(_doc, drawingRun, drawingRun.GetFirstChild<W.Drawing>());
             ChildItems.Add(pic);

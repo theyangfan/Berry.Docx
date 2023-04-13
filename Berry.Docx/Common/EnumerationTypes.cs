@@ -82,16 +82,54 @@ namespace Berry.Docx
         /// Office Mathematical Text.
         /// </summary>
         OfficeMath,
+        /// <summary>
+        /// Block-Level Structured Document Tag.
+        /// </summary>
         SdtBlock,
+        /// <summary>
+        /// Block-Level Structured Document Tag Content.
+        /// </summary>
         SdtContent,
+        /// <summary>
+        /// Structured Document Tag Properties.
+        /// </summary>
         SdtProperties,
+        /// <summary>
+        /// Break.
+        /// </summary>
         Break,
+        /// <summary>
+        /// Tab Character.
+        /// </summary>
         Tab,
+        /// <summary>
+        /// Non Breaking Hyphen Character.
+        /// </summary>
+        NoBreakHyphen,
+        /// <summary>
+        /// Deleted Content.
+        /// </summary>
         DeletedRange,
+        /// <summary>
+        /// Inserted Content.
+        /// </summary>
         InsertedRange,
+        /// <summary>
+        /// Deleted Text.
+        /// </summary>
         DeletedTextRange,
+        /// <summary>
+        /// Simple Field.
+        /// </summary>
         SimpleField,
-        ComplexField
+        /// <summary>
+        /// Field Code.
+        /// </summary>
+        FieldCode,
+        /// <summary>
+        /// Complex Field Character.
+        /// </summary>
+        FieldChar
     }
 
     /// <summary>
@@ -2130,5 +2168,24 @@ namespace Berry.Docx
         /// Minimum Height.
         /// </summary>
         AtLeast = 2
+    }
+
+    /// <summary>
+    /// Defines the FieldCharType enumeration.
+    /// </summary>
+    public enum FieldCharType
+    {
+        /// <summary>
+        /// Start Character. 
+        /// </summary>
+        Begin = 0,
+        /// <summary>
+        /// Separator Character. 
+        /// </summary>
+        Separate = 1,
+        /// <summary>
+        /// End Character. 
+        /// </summary>
+        End = 2
     }
 }

@@ -1567,6 +1567,22 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Collections.DocumentItemCollection.Remove
   nameWithType: DocumentItemCollection.Remove
+- uid: Berry.Docx.Collections.DocumentItemCollection.RemoveAll*
+  name: RemoveAll
+  href: api/Berry.Docx.Collections.DocumentItemCollection.html#Berry_Docx_Collections_DocumentItemCollection_RemoveAll_
+  commentId: Overload:Berry.Docx.Collections.DocumentItemCollection.RemoveAll
+  isSpec: "True"
+  fullName: Berry.Docx.Collections.DocumentItemCollection.RemoveAll
+  nameWithType: DocumentItemCollection.RemoveAll
+- uid: Berry.Docx.Collections.DocumentItemCollection.RemoveAll``1
+  name: RemoveAll<T>()
+  href: api/Berry.Docx.Collections.DocumentItemCollection.html#Berry_Docx_Collections_DocumentItemCollection_RemoveAll__1
+  commentId: M:Berry.Docx.Collections.DocumentItemCollection.RemoveAll``1
+  name.vb: RemoveAll(Of T)()
+  fullName: Berry.Docx.Collections.DocumentItemCollection.RemoveAll<T>()
+  fullName.vb: Berry.Docx.Collections.DocumentItemCollection.RemoveAll(Of T)()
+  nameWithType: DocumentItemCollection.RemoveAll<T>()
+  nameWithType.vb: DocumentItemCollection.RemoveAll(Of T)()
 - uid: Berry.Docx.Collections.DocumentItemCollection.RemoveAt(System.Int32)
   name: RemoveAt(Int32)
   href: api/Berry.Docx.Collections.DocumentItemCollection.html#Berry_Docx_Collections_DocumentItemCollection_RemoveAt_System_Int32_
@@ -1738,6 +1754,22 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Collections.DocumentObjectCollection.Remove
   nameWithType: DocumentObjectCollection.Remove
+- uid: Berry.Docx.Collections.DocumentObjectCollection.RemoveAll*
+  name: RemoveAll
+  href: api/Berry.Docx.Collections.DocumentObjectCollection.html#Berry_Docx_Collections_DocumentObjectCollection_RemoveAll_
+  commentId: Overload:Berry.Docx.Collections.DocumentObjectCollection.RemoveAll
+  isSpec: "True"
+  fullName: Berry.Docx.Collections.DocumentObjectCollection.RemoveAll
+  nameWithType: DocumentObjectCollection.RemoveAll
+- uid: Berry.Docx.Collections.DocumentObjectCollection.RemoveAll``1
+  name: RemoveAll<T>()
+  href: api/Berry.Docx.Collections.DocumentObjectCollection.html#Berry_Docx_Collections_DocumentObjectCollection_RemoveAll__1
+  commentId: M:Berry.Docx.Collections.DocumentObjectCollection.RemoveAll``1
+  name.vb: RemoveAll(Of T)()
+  fullName: Berry.Docx.Collections.DocumentObjectCollection.RemoveAll<T>()
+  fullName.vb: Berry.Docx.Collections.DocumentObjectCollection.RemoveAll(Of T)()
+  nameWithType: DocumentObjectCollection.RemoveAll<T>()
+  nameWithType.vb: DocumentObjectCollection.RemoveAll(Of T)()
 - uid: Berry.Docx.Collections.DocumentObjectCollection.RemoveAt(System.Int32)
   name: RemoveAt(Int32)
   href: api/Berry.Docx.Collections.DocumentObjectCollection.html#Berry_Docx_Collections_DocumentObjectCollection_RemoveAt_System_Int32_
@@ -3273,12 +3305,6 @@ references:
   commentId: F:Berry.Docx.DocumentObjectType.Chart
   fullName: Berry.Docx.DocumentObjectType.Chart
   nameWithType: DocumentObjectType.Chart
-- uid: Berry.Docx.DocumentObjectType.ComplexField
-  name: ComplexField
-  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_ComplexField
-  commentId: F:Berry.Docx.DocumentObjectType.ComplexField
-  fullName: Berry.Docx.DocumentObjectType.ComplexField
-  nameWithType: DocumentObjectType.ComplexField
 - uid: Berry.Docx.DocumentObjectType.DeletedRange
   name: DeletedRange
   href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_DeletedRange
@@ -3309,6 +3335,18 @@ references:
   commentId: F:Berry.Docx.DocumentObjectType.EndnoteReference
   fullName: Berry.Docx.DocumentObjectType.EndnoteReference
   nameWithType: DocumentObjectType.EndnoteReference
+- uid: Berry.Docx.DocumentObjectType.FieldChar
+  name: FieldChar
+  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_FieldChar
+  commentId: F:Berry.Docx.DocumentObjectType.FieldChar
+  fullName: Berry.Docx.DocumentObjectType.FieldChar
+  nameWithType: DocumentObjectType.FieldChar
+- uid: Berry.Docx.DocumentObjectType.FieldCode
+  name: FieldCode
+  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_FieldCode
+  commentId: F:Berry.Docx.DocumentObjectType.FieldCode
+  fullName: Berry.Docx.DocumentObjectType.FieldCode
+  nameWithType: DocumentObjectType.FieldCode
 - uid: Berry.Docx.DocumentObjectType.FootnoteReference
   name: FootnoteReference
   href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_FootnoteReference
@@ -3333,6 +3371,12 @@ references:
   commentId: F:Berry.Docx.DocumentObjectType.Invalid
   fullName: Berry.Docx.DocumentObjectType.Invalid
   nameWithType: DocumentObjectType.Invalid
+- uid: Berry.Docx.DocumentObjectType.NoBreakHyphen
+  name: NoBreakHyphen
+  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_NoBreakHyphen
+  commentId: F:Berry.Docx.DocumentObjectType.NoBreakHyphen
+  fullName: Berry.Docx.DocumentObjectType.NoBreakHyphen
+  nameWithType: DocumentObjectType.NoBreakHyphen
 - uid: Berry.Docx.DocumentObjectType.OfficeMath
   name: OfficeMath
   href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_OfficeMath
@@ -5643,6 +5687,128 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.EndnoteReference.Id
   nameWithType: EndnoteReference.Id
+- uid: Berry.Docx.Field.FieldChar
+  name: FieldChar
+  href: api/Berry.Docx.Field.FieldChar.html
+  commentId: T:Berry.Docx.Field.FieldChar
+  fullName: Berry.Docx.Field.FieldChar
+  nameWithType: FieldChar
+- uid: Berry.Docx.Field.FieldChar.#ctor(Berry.Docx.Document,Berry.Docx.FieldCharType)
+  name: FieldChar(Document, FieldCharType)
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar__ctor_Berry_Docx_Document_Berry_Docx_FieldCharType_
+  commentId: M:Berry.Docx.Field.FieldChar.#ctor(Berry.Docx.Document,Berry.Docx.FieldCharType)
+  fullName: Berry.Docx.Field.FieldChar.FieldChar(Berry.Docx.Document, Berry.Docx.FieldCharType)
+  nameWithType: FieldChar.FieldChar(Document, FieldCharType)
+- uid: Berry.Docx.Field.FieldChar.#ctor*
+  name: FieldChar
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar__ctor_
+  commentId: Overload:Berry.Docx.Field.FieldChar.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldChar.FieldChar
+  nameWithType: FieldChar.FieldChar
+- uid: Berry.Docx.Field.FieldChar.Clone
+  name: Clone()
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar_Clone
+  commentId: M:Berry.Docx.Field.FieldChar.Clone
+  fullName: Berry.Docx.Field.FieldChar.Clone()
+  nameWithType: FieldChar.Clone()
+- uid: Berry.Docx.Field.FieldChar.Clone*
+  name: Clone
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar_Clone_
+  commentId: Overload:Berry.Docx.Field.FieldChar.Clone
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldChar.Clone
+  nameWithType: FieldChar.Clone
+- uid: Berry.Docx.Field.FieldChar.DocumentObjectType
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar_DocumentObjectType
+  commentId: P:Berry.Docx.Field.FieldChar.DocumentObjectType
+  fullName: Berry.Docx.Field.FieldChar.DocumentObjectType
+  nameWithType: FieldChar.DocumentObjectType
+- uid: Berry.Docx.Field.FieldChar.DocumentObjectType*
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar_DocumentObjectType_
+  commentId: Overload:Berry.Docx.Field.FieldChar.DocumentObjectType
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldChar.DocumentObjectType
+  nameWithType: FieldChar.DocumentObjectType
+- uid: Berry.Docx.Field.FieldChar.Type
+  name: Type
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar_Type
+  commentId: P:Berry.Docx.Field.FieldChar.Type
+  fullName: Berry.Docx.Field.FieldChar.Type
+  nameWithType: FieldChar.Type
+- uid: Berry.Docx.Field.FieldChar.Type*
+  name: Type
+  href: api/Berry.Docx.Field.FieldChar.html#Berry_Docx_Field_FieldChar_Type_
+  commentId: Overload:Berry.Docx.Field.FieldChar.Type
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldChar.Type
+  nameWithType: FieldChar.Type
+- uid: Berry.Docx.Field.FieldCode
+  name: FieldCode
+  href: api/Berry.Docx.Field.FieldCode.html
+  commentId: T:Berry.Docx.Field.FieldCode
+  fullName: Berry.Docx.Field.FieldCode
+  nameWithType: FieldCode
+- uid: Berry.Docx.Field.FieldCode.#ctor(Berry.Docx.Document)
+  name: FieldCode(Document)
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode__ctor_Berry_Docx_Document_
+  commentId: M:Berry.Docx.Field.FieldCode.#ctor(Berry.Docx.Document)
+  fullName: Berry.Docx.Field.FieldCode.FieldCode(Berry.Docx.Document)
+  nameWithType: FieldCode.FieldCode(Document)
+- uid: Berry.Docx.Field.FieldCode.#ctor(Berry.Docx.Document,System.String)
+  name: FieldCode(Document, String)
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode__ctor_Berry_Docx_Document_System_String_
+  commentId: M:Berry.Docx.Field.FieldCode.#ctor(Berry.Docx.Document,System.String)
+  fullName: Berry.Docx.Field.FieldCode.FieldCode(Berry.Docx.Document, System.String)
+  nameWithType: FieldCode.FieldCode(Document, String)
+- uid: Berry.Docx.Field.FieldCode.#ctor*
+  name: FieldCode
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode__ctor_
+  commentId: Overload:Berry.Docx.Field.FieldCode.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldCode.FieldCode
+  nameWithType: FieldCode.FieldCode
+- uid: Berry.Docx.Field.FieldCode.Clone
+  name: Clone()
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode_Clone
+  commentId: M:Berry.Docx.Field.FieldCode.Clone
+  fullName: Berry.Docx.Field.FieldCode.Clone()
+  nameWithType: FieldCode.Clone()
+- uid: Berry.Docx.Field.FieldCode.Clone*
+  name: Clone
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode_Clone_
+  commentId: Overload:Berry.Docx.Field.FieldCode.Clone
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldCode.Clone
+  nameWithType: FieldCode.Clone
+- uid: Berry.Docx.Field.FieldCode.Code
+  name: Code
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode_Code
+  commentId: P:Berry.Docx.Field.FieldCode.Code
+  fullName: Berry.Docx.Field.FieldCode.Code
+  nameWithType: FieldCode.Code
+- uid: Berry.Docx.Field.FieldCode.Code*
+  name: Code
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode_Code_
+  commentId: Overload:Berry.Docx.Field.FieldCode.Code
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldCode.Code
+  nameWithType: FieldCode.Code
+- uid: Berry.Docx.Field.FieldCode.DocumentObjectType
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode_DocumentObjectType
+  commentId: P:Berry.Docx.Field.FieldCode.DocumentObjectType
+  fullName: Berry.Docx.Field.FieldCode.DocumentObjectType
+  nameWithType: FieldCode.DocumentObjectType
+- uid: Berry.Docx.Field.FieldCode.DocumentObjectType*
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.FieldCode.html#Berry_Docx_Field_FieldCode_DocumentObjectType_
+  commentId: Overload:Berry.Docx.Field.FieldCode.DocumentObjectType
+  isSpec: "True"
+  fullName: Berry.Docx.Field.FieldCode.DocumentObjectType
+  nameWithType: FieldCode.DocumentObjectType
 - uid: Berry.Docx.Field.FootnoteReference
   name: FootnoteReference
   href: api/Berry.Docx.Field.FootnoteReference.html
@@ -5752,6 +5918,64 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.InsertedRange.Text
   nameWithType: InsertedRange.Text
+- uid: Berry.Docx.Field.NoBreakHyphen
+  name: NoBreakHyphen
+  href: api/Berry.Docx.Field.NoBreakHyphen.html
+  commentId: T:Berry.Docx.Field.NoBreakHyphen
+  fullName: Berry.Docx.Field.NoBreakHyphen
+  nameWithType: NoBreakHyphen
+- uid: Berry.Docx.Field.NoBreakHyphen.#ctor(Berry.Docx.Document)
+  name: NoBreakHyphen(Document)
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen__ctor_Berry_Docx_Document_
+  commentId: M:Berry.Docx.Field.NoBreakHyphen.#ctor(Berry.Docx.Document)
+  fullName: Berry.Docx.Field.NoBreakHyphen.NoBreakHyphen(Berry.Docx.Document)
+  nameWithType: NoBreakHyphen.NoBreakHyphen(Document)
+- uid: Berry.Docx.Field.NoBreakHyphen.#ctor*
+  name: NoBreakHyphen
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen__ctor_
+  commentId: Overload:Berry.Docx.Field.NoBreakHyphen.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.NoBreakHyphen.NoBreakHyphen
+  nameWithType: NoBreakHyphen.NoBreakHyphen
+- uid: Berry.Docx.Field.NoBreakHyphen.Clone
+  name: Clone()
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen_Clone
+  commentId: M:Berry.Docx.Field.NoBreakHyphen.Clone
+  fullName: Berry.Docx.Field.NoBreakHyphen.Clone()
+  nameWithType: NoBreakHyphen.Clone()
+- uid: Berry.Docx.Field.NoBreakHyphen.Clone*
+  name: Clone
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen_Clone_
+  commentId: Overload:Berry.Docx.Field.NoBreakHyphen.Clone
+  isSpec: "True"
+  fullName: Berry.Docx.Field.NoBreakHyphen.Clone
+  nameWithType: NoBreakHyphen.Clone
+- uid: Berry.Docx.Field.NoBreakHyphen.DocumentObjectType
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen_DocumentObjectType
+  commentId: P:Berry.Docx.Field.NoBreakHyphen.DocumentObjectType
+  fullName: Berry.Docx.Field.NoBreakHyphen.DocumentObjectType
+  nameWithType: NoBreakHyphen.DocumentObjectType
+- uid: Berry.Docx.Field.NoBreakHyphen.DocumentObjectType*
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen_DocumentObjectType_
+  commentId: Overload:Berry.Docx.Field.NoBreakHyphen.DocumentObjectType
+  isSpec: "True"
+  fullName: Berry.Docx.Field.NoBreakHyphen.DocumentObjectType
+  nameWithType: NoBreakHyphen.DocumentObjectType
+- uid: Berry.Docx.Field.NoBreakHyphen.Text
+  name: Text
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen_Text
+  commentId: P:Berry.Docx.Field.NoBreakHyphen.Text
+  fullName: Berry.Docx.Field.NoBreakHyphen.Text
+  nameWithType: NoBreakHyphen.Text
+- uid: Berry.Docx.Field.NoBreakHyphen.Text*
+  name: Text
+  href: api/Berry.Docx.Field.NoBreakHyphen.html#Berry_Docx_Field_NoBreakHyphen_Text_
+  commentId: Overload:Berry.Docx.Field.NoBreakHyphen.Text
+  isSpec: "True"
+  fullName: Berry.Docx.Field.NoBreakHyphen.Text
+  nameWithType: NoBreakHyphen.Text
 - uid: Berry.Docx.Field.OfficeMath
   name: OfficeMath
   href: api/Berry.Docx.Field.OfficeMath.html
@@ -6053,6 +6277,32 @@ references:
   commentId: T:Berry.Docx.Field.SimpleField
   fullName: Berry.Docx.Field.SimpleField
   nameWithType: SimpleField
+- uid: Berry.Docx.Field.SimpleField.#ctor(Berry.Docx.Document,System.String,System.String)
+  name: SimpleField(Document, String, String)
+  href: api/Berry.Docx.Field.SimpleField.html#Berry_Docx_Field_SimpleField__ctor_Berry_Docx_Document_System_String_System_String_
+  commentId: M:Berry.Docx.Field.SimpleField.#ctor(Berry.Docx.Document,System.String,System.String)
+  fullName: Berry.Docx.Field.SimpleField.SimpleField(Berry.Docx.Document, System.String, System.String)
+  nameWithType: SimpleField.SimpleField(Document, String, String)
+- uid: Berry.Docx.Field.SimpleField.#ctor*
+  name: SimpleField
+  href: api/Berry.Docx.Field.SimpleField.html#Berry_Docx_Field_SimpleField__ctor_
+  commentId: Overload:Berry.Docx.Field.SimpleField.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.SimpleField.SimpleField
+  nameWithType: SimpleField.SimpleField
+- uid: Berry.Docx.Field.SimpleField.Clone
+  name: Clone()
+  href: api/Berry.Docx.Field.SimpleField.html#Berry_Docx_Field_SimpleField_Clone
+  commentId: M:Berry.Docx.Field.SimpleField.Clone
+  fullName: Berry.Docx.Field.SimpleField.Clone()
+  nameWithType: SimpleField.Clone()
+- uid: Berry.Docx.Field.SimpleField.Clone*
+  name: Clone
+  href: api/Berry.Docx.Field.SimpleField.html#Berry_Docx_Field_SimpleField_Clone_
+  commentId: Overload:Berry.Docx.Field.SimpleField.Clone
+  isSpec: "True"
+  fullName: Berry.Docx.Field.SimpleField.Clone
+  nameWithType: SimpleField.Clone
 - uid: Berry.Docx.Field.SimpleField.Code
   name: Code
   href: api/Berry.Docx.Field.SimpleField.html#Berry_Docx_Field_SimpleField_Code
@@ -6137,6 +6387,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.Tab.DocumentObjectType
   nameWithType: Tab.DocumentObjectType
+- uid: Berry.Docx.Field.Tab.Text
+  name: Text
+  href: api/Berry.Docx.Field.Tab.html#Berry_Docx_Field_Tab_Text
+  commentId: P:Berry.Docx.Field.Tab.Text
+  fullName: Berry.Docx.Field.Tab.Text
+  nameWithType: Tab.Text
+- uid: Berry.Docx.Field.Tab.Text*
+  name: Text
+  href: api/Berry.Docx.Field.Tab.html#Berry_Docx_Field_Tab_Text_
+  commentId: Overload:Berry.Docx.Field.Tab.Text
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Tab.Text
+  nameWithType: Tab.Text
 - uid: Berry.Docx.Field.TextMatch
   name: TextMatch
   href: api/Berry.Docx.Field.TextMatch.html
@@ -6181,6 +6444,12 @@ references:
   commentId: M:Berry.Docx.Field.TextRange.#ctor(Berry.Docx.Document)
   fullName: Berry.Docx.Field.TextRange.TextRange(Berry.Docx.Document)
   nameWithType: TextRange.TextRange(Document)
+- uid: Berry.Docx.Field.TextRange.#ctor(Berry.Docx.Document,System.String)
+  name: TextRange(Document, String)
+  href: api/Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange__ctor_Berry_Docx_Document_System_String_
+  commentId: M:Berry.Docx.Field.TextRange.#ctor(Berry.Docx.Document,System.String)
+  fullName: Berry.Docx.Field.TextRange.TextRange(Berry.Docx.Document, System.String)
+  nameWithType: TextRange.TextRange(Document, String)
 - uid: Berry.Docx.Field.TextRange.#ctor*
   name: TextRange
   href: api/Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange__ctor_
@@ -6272,6 +6541,30 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.TextRange.Text
   nameWithType: TextRange.Text
+- uid: Berry.Docx.FieldCharType
+  name: FieldCharType
+  href: api/Berry.Docx.FieldCharType.html
+  commentId: T:Berry.Docx.FieldCharType
+  fullName: Berry.Docx.FieldCharType
+  nameWithType: FieldCharType
+- uid: Berry.Docx.FieldCharType.Begin
+  name: Begin
+  href: api/Berry.Docx.FieldCharType.html#Berry_Docx_FieldCharType_Begin
+  commentId: F:Berry.Docx.FieldCharType.Begin
+  fullName: Berry.Docx.FieldCharType.Begin
+  nameWithType: FieldCharType.Begin
+- uid: Berry.Docx.FieldCharType.End
+  name: End
+  href: api/Berry.Docx.FieldCharType.html#Berry_Docx_FieldCharType_End
+  commentId: F:Berry.Docx.FieldCharType.End
+  fullName: Berry.Docx.FieldCharType.End
+  nameWithType: FieldCharType.End
+- uid: Berry.Docx.FieldCharType.Separate
+  name: Separate
+  href: api/Berry.Docx.FieldCharType.html#Berry_Docx_FieldCharType_Separate
+  commentId: F:Berry.Docx.FieldCharType.Separate
+  fullName: Berry.Docx.FieldCharType.Separate
+  nameWithType: FieldCharType.Separate
 - uid: Berry.Docx.FontContentType
   name: FontContentType
   href: api/Berry.Docx.FontContentType.html
