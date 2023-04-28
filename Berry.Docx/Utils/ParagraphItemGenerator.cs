@@ -2,14 +2,14 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
-using System.Drawing.Imaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Wp = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
 using Pic = DocumentFormat.OpenXml.Drawing.Pictures;
 using A14 = DocumentFormat.OpenXml.Office2010.Drawing;
+
+using SixLabors.ImageSharp;
 
 namespace Berry.Docx
 {
@@ -80,9 +80,10 @@ namespace Berry.Docx
 
         public static Run GenerateDrawing(string rId, string filename, float maxWidth, float maxHeight)
         {
-            Image image = Image.FromFile(filename);
+            Image image = Image.Load(filename);
             long width = image.Width;
             long height = image.Height;
+            image.Dispose();
             float ratio = (float)width / height;
             if (width > maxWidth)
             {

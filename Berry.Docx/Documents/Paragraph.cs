@@ -449,6 +449,12 @@ namespace Berry.Docx.Documents
             return pic;
         }
 
+        public void AppendTOC(int fromLvl, int toLvl)
+        {
+            W.SdtBlock sdtBlock = TOCGenerator.Generate(fromLvl, toLvl);
+            _paragraph.InsertAfterSelf(sdtBlock);
+        }
+
         /// <summary>
         ///  Searches the paragraph for the first occurrence of the specified regular expression.
         /// </summary>
