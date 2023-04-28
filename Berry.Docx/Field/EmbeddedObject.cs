@@ -26,6 +26,7 @@ namespace Berry.Docx.Field
         private readonly ShapeStyles _shapeStyles;
         #endregion
 
+        #region Constructors
         internal EmbeddedObject(Document doc, W.Run ownerRun, W.EmbeddedObject obj)
             :base(doc, ownerRun, obj)
         {
@@ -36,9 +37,17 @@ namespace Berry.Docx.Field
             _shape = obj.GetFirstChild<V.Shape>();
             _shapeStyles = new ShapeStyles(_shape);
         }
+        #endregion
 
+        #region Public Properties
+        /// <summary>
+        /// Gets the type of the current object.
+        /// </summary>
         public override DocumentObjectType DocumentObjectType => DocumentObjectType.EmbeddedObject;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public OleObjectType OleType
         {
             get
@@ -80,7 +89,6 @@ namespace Berry.Docx.Field
         }
 
         
-
         public float Height
         {
             get
@@ -111,6 +119,8 @@ namespace Berry.Docx.Field
                 _shapeStyles["height"] = $"{Math.Round(value, 2)}pt";
             }
         }
+
+        #endregion
 
         #region Public Methods
         public Stream GetStream()
