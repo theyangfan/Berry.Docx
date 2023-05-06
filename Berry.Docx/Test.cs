@@ -24,13 +24,18 @@ namespace Test
         {
             string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
             string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
-            using(Document doc = new Document(src, FileShare.ReadWrite))
+            using (Document doc = new Document(src, FileShare.ReadWrite))
             {
-                var p = doc.Paragraphs.First();
-                var embed = p.ChildItems.OfType<EmbeddedObject>().FirstOrDefault();
-                embed.Width = 300;
-                embed.Height = 300;
-                doc.SaveAs(dst);
+                var p = doc.Paragraphs[1];
+                foreach(var bookmark in doc.Bookmarks)
+                {
+                    Console.WriteLine(bookmark.Id);
+                    Console.WriteLine(bookmark.Name);
+                    Console.WriteLine(bookmark.Start);
+                    Console.WriteLine(bookmark.End);
+                }
+
+                //doc.SaveAs(dst);
             }
         }
     }

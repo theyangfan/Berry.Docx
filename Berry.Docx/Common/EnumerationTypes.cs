@@ -129,7 +129,15 @@ namespace Berry.Docx
         /// <summary>
         /// Complex Field Character.
         /// </summary>
-        FieldChar
+        FieldChar,
+        /// <summary>
+        /// Bookmark start.
+        /// </summary>
+        BookmarkStart,
+        /// <summary>
+        /// Bookmark end.
+        /// </summary>
+        BookmarkEnd
     }
 
     /// <summary>

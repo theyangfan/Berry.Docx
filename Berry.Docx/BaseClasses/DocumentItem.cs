@@ -158,7 +158,7 @@ namespace Berry.Docx
                 }
                 else if (ele is M.OfficeMath) // Office Math
                 {
-                    yield return new OfficeMath(_doc, ele as M.OfficeMath);
+                    yield return new OfficeMath(_doc, (M.OfficeMath)ele);
                 }
                 else if (ele is M.Paragraph)
                 {
@@ -167,15 +167,23 @@ namespace Berry.Docx
                 }
                 else if(ele is W.DeletedRun) // DeletedRun
                 {
-                    yield return new DeletedRange(_doc, ele as W.DeletedRun);
+                    yield return new DeletedRange(_doc, (W.DeletedRun)ele);
                 }
                 else if (ele is W.InsertedRun) // InsertedRun
                 {
-                    yield return new InsertedRange(_doc, ele as W.InsertedRun);
+                    yield return new InsertedRange(_doc, (W.InsertedRun)ele);
                 }
                 else if(ele is W.SimpleField) // SimpleField
                 {
-                    yield return new SimpleField(_doc, ele as W.SimpleField);
+                    yield return new SimpleField(_doc, (W.SimpleField)ele);
+                }
+                else if(ele is W.BookmarkStart) // BookmarkStart
+                {
+                    yield return new BookmarkStart(_doc, (W.BookmarkStart)ele);
+                }
+                else if (ele is W.BookmarkEnd) // BookmarkEnd
+                {
+                    yield return new BookmarkEnd(_doc, (W.BookmarkEnd)ele);
                 }
             }
         }

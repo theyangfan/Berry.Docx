@@ -196,5 +196,20 @@ namespace Berry.Docx
             run1.Append(drawing1);
             return run1;
         }
+
+        public static BookmarkStart GenerateBookmarkStart(string id, string name)
+        {
+            BookmarkStart bookmarkStart = new BookmarkStart();
+            bookmarkStart.Id = id;
+            bookmarkStart.Name = name;
+            return bookmarkStart;
+        }
+
+        public static BookmarkEnd GenerateBookmarkEnd(string id)
+        {
+            BookmarkEnd bookmarkEnd = new BookmarkEnd();
+            bookmarkEnd.Id = id;
+            return bookmarkEnd;
+        }
     }
 }
