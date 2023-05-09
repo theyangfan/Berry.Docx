@@ -89,11 +89,7 @@ namespace Berry.Docx
         /// <summary>
         /// Block-Level Structured Document Tag Content.
         /// </summary>
-        SdtContent,
-        /// <summary>
-        /// Structured Document Tag Properties.
-        /// </summary>
-        SdtProperties,
+        SdtBlockContent,
         /// <summary>
         /// Break.
         /// </summary>
@@ -534,55 +530,59 @@ namespace Berry.Docx
         /// <summary>
         /// 标题(Title)
         /// </summary>
-        Title = 10,
+        Title,
         /// <summary>
         /// 副标题(Subtitle)
         /// </summary>
-        SubTitle = 11,
+        SubTitle,
         /// <summary>
-        /// 目录 1(toc 1)
+        /// 目录 (TOC)
         /// </summary>
-        TOC1 = 12,
+        TOC,
         /// <summary>
-        /// 目录 2(toc 2)
+        /// 目录 1 (TOC1)
         /// </summary>
-        TOC2 = 13,
+        TOC1,
         /// <summary>
-        /// 目录 3(toc 3)
+        /// 目录 2 (TOC2)
         /// </summary>
-        TOC3 = 14,
+        TOC2,
         /// <summary>
-        /// 目录 4(toc 4)
+        /// 目录 3 (TOC3)
         /// </summary>
-        TOC4 = 15,
+        TOC3,
         /// <summary>
-        /// 目录 5(toc 5)
+        /// 目录 4 (TOC4)
         /// </summary>
-        TOC5 = 16,
+        TOC4,
         /// <summary>
-        /// 目录 6(toc 6)
+        /// 目录 5 (TOC5)
         /// </summary>
-        TOC6 = 17,
+        TOC5,
         /// <summary>
-        /// 目录 7(toc 7)
+        /// 目录 6 (TOC6)
         /// </summary>
-        TOC7 = 18,
+        TOC6,
         /// <summary>
-        /// 目录 8(toc 8)
+        /// 目录 7 (TOC7)
         /// </summary>
-        TOC8 = 19,
+        TOC7,
         /// <summary>
-        /// 目录 9(toc 9)
+        /// 目录 8 (TOC8)
         /// </summary>
-        TOC9 = 20,
+        TOC8,
+        /// <summary>
+        /// 目录 9 (TOC9)
+        /// </summary>
+        TOC9,
         /// <summary>
         /// 页眉(header)
         /// </summary>
-        Header = 16,
+        Header,
         /// <summary>
         /// 页脚(footer)
         /// </summary>
-        Footer = 17
+        Footer
 
     }
 

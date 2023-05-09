@@ -180,6 +180,9 @@ namespace Berry.Docx.Formatting
                 case BuiltInStyle.Heading9:
                     styleName = "heading 9";
                     break;
+                case BuiltInStyle.TOC:
+                    styleName = "TOC";
+                    break;
                 default:
                     break;
             }

@@ -26,16 +26,12 @@ namespace Test
             string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
-                var p = doc.Paragraphs[1];
-                foreach(var bookmark in doc.Bookmarks)
-                {
-                    Console.WriteLine(bookmark.Id);
-                    Console.WriteLine(bookmark.Name);
-                    Console.WriteLine(bookmark.Start);
-                    Console.WriteLine(bookmark.End);
-                }
-
-                //doc.SaveAs(dst);
+                var p = doc.Paragraphs[0];
+                var toc = p.AppendTOC(1, 3);
+                Console.WriteLine(toc.StartOutlineLevel);
+                Console.WriteLine(toc.EndOutlineLevel);
+                //
+                doc.SaveAs(dst);
             }
         }
     }

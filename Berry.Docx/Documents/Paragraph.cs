@@ -258,7 +258,7 @@ namespace Berry.Docx.Documents
                         return section;
                     foreach(SdtBlock sdt in section.ChildObjects.OfType<SdtBlock>())
                     {
-                        if (sdt.SdtContent.ChildObjects.OfType<Paragraph>().Contains(this))
+                        if (sdt.Content.ChildObjects.OfType<Paragraph>().Contains(this))
                             return section;
                     }
                 }
@@ -449,10 +449,35 @@ namespace Berry.Docx.Documents
             return pic;
         }
 
-        public void AppendTOC(int fromLvl, int toLvl)
+        public void AppendTOC1(int fromLvl, int toLvl)
         {
             W.SdtBlock sdtBlock = TOCGenerator.Generate(fromLvl, toLvl);
             _paragraph.InsertAfterSelf(sdtBlock);
+        }
+
+        public TableOfContent AppendTOC(int startOutlineLevel, int endOutlineLevel)
+        {
+            SdtBlock sdt = new SdtBlock(_doc);
+            sdt.Format.DocPart.GalleryFilter = "Table of Contents";
+
+            Paragraph tocBegin = new Paragraph(_doc);
+            Paragraph tocEnd = new Paragraph(_doc);
+            string code = $" TOC \\o \"{startOutlineLevel}-{endOutlineLevel}\" \\h \\u ";
+            var fieldBegin = new FieldChar(_doc, FieldCharType.Begin);
+            var fieldCode = new FieldCode(_doc, code);
+            var fieldSeparate = new FieldChar(_doc, FieldCharType.Separate);
+            var fieldEnd = new FieldChar(_doc, FieldCharType.End);
+            tocBegin.ChildItems.Add(fieldBegin);
+            tocBegin.ChildItems.Add(fieldCode);
+            tocBegin.ChildItems.Add(fieldSeparate);
+            tocEnd.ChildItems.Add(fieldEnd);
+
+            sdt.Content.ChildObjects.Add(tocBegin);
+            sdt.Content.ChildObjects.Add(tocEnd);
+
+            InsertAfterSelf(sdt);
+
+            return new TableOfContent(_doc, sdt, code);
         }
 
         /// <summary>

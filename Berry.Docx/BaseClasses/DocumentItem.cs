@@ -271,8 +271,7 @@ namespace Berry.Docx
             if (element is W.Paragraph) return new Paragraph(_doc, (W.Paragraph)element);
             else if (element is W.Table) return new Table(_doc, (W.Table)element);
             else if (element is W.SdtBlock) return new SdtBlock(_doc, (W.SdtBlock)element);
-            else if (element is W.SdtProperties) return new SdtProperties(_doc, (W.SdtProperties)element);
-            else if (element is W.SdtContentBlock) return new SdtContent(_doc, (W.SdtContentBlock)element);
+            else if (element is W.SdtContentBlock) return new SdtBlockContent(_doc, (W.SdtContentBlock)element);
             else return null;
         }
         #endregion
