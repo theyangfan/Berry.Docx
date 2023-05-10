@@ -147,14 +147,7 @@ namespace Berry.Docx
                 }
                 else if (ele is W.Hyperlink)
                 {
-                    foreach (O.OpenXmlElement e in ele.ChildElements)
-                    {
-                        if (e is W.Run)
-                        {
-                            foreach (ParagraphItem item in RunItems((W.Run)e))
-                                yield return item;
-                        }
-                    }
+                    yield return new Hyperlink(_doc, (W.Hyperlink)ele);
                 }
                 else if (ele is M.OfficeMath) // Office Math
                 {

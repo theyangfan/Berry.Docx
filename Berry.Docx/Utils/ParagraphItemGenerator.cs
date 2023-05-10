@@ -211,5 +211,20 @@ namespace Berry.Docx
             bookmarkEnd.Id = id;
             return bookmarkEnd;
         }
+
+        public static Hyperlink GenerateHyperlink(Document doc, HyperlinkTargetType type, string target)
+        {
+            Hyperlink hyperlink = new Hyperlink();
+            if(type == HyperlinkTargetType.ExternalAddress)
+            {
+                var relationship = doc.Package.MainDocumentPart.AddHyperlinkRelationship(new Uri(target), true);
+                hyperlink.Id = relationship.Id;
+            }
+            else if(type == HyperlinkTargetType.Bookmark)
+            {
+                hyperlink.Anchor = target;
+            }
+            return hyperlink;
+        }
     }
 }

@@ -2201,10 +2201,22 @@ namespace Berry.Docx
         End = 2
     }
 
+    /// <summary>
+    /// Defines the HyperlinkTargetType enumeration.
+    /// </summary>
     public enum HyperlinkTargetType
     {
-        Invalid = -1,
-        Hyperlink = 0,
-        Bookmark = 1
+        /// <summary>
+        /// The start of the document. 
+        /// </summary>
+        Default = 0,
+        /// <summary>
+        /// The external hyperlink address.
+        /// </summary>
+        ExternalAddress = 1,
+        /// <summary>
+        /// The bookmark in the document.
+        /// </summary>
+        Bookmark = 2
     }
 }
