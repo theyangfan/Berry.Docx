@@ -133,7 +133,11 @@ namespace Berry.Docx
         /// <summary>
         /// Bookmark end.
         /// </summary>
-        BookmarkEnd
+        BookmarkEnd,
+        /// <summary>
+        /// Hyperlink.
+        /// </summary>
+        Hyperlink
     }
 
     /// <summary>
@@ -2195,5 +2199,12 @@ namespace Berry.Docx
         /// End Character. 
         /// </summary>
         End = 2
+    }
+
+    public enum HyperlinkTargetType
+    {
+        Invalid = -1,
+        Hyperlink = 0,
+        Bookmark = 1
     }
 }
