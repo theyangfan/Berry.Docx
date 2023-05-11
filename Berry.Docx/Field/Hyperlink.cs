@@ -23,9 +23,11 @@ namespace Berry.Docx.Field
         /// <param name="doc"></param>
         /// <param name="type">The type of the target.</param>
         /// <param name="target">The external hyperlink address or bookmark name.</param>
-        public Hyperlink(Document doc, HyperlinkTargetType type, string target)
+        /// <param name="text">The text to display.</param>
+        public Hyperlink(Document doc, HyperlinkTargetType type, string target, string text)
             : this(doc, ParagraphItemGenerator.GenerateHyperlink(doc, type, target))
         {
+            Text = text;
         }
 
         internal Hyperlink(Document doc, W.Hyperlink hyperlink) : base(doc, hyperlink)
@@ -132,6 +134,7 @@ namespace Berry.Docx.Field
             set
             {
                 ChildObjects.Clear();
+                if (string.IsNullOrEmpty(value)) return;
                 TextRange tr= new TextRange(_doc, value);
                 ChildObjects.Add(tr);
             }

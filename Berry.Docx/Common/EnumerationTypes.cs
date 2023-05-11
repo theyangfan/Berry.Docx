@@ -540,9 +540,9 @@ namespace Berry.Docx
         /// </summary>
         SubTitle,
         /// <summary>
-        /// 目录 (TOC)
+        /// 目录标题 (TOC Heading)
         /// </summary>
-        TOC,
+        TOCHeading,
         /// <summary>
         /// 目录 1 (TOC1)
         /// </summary>

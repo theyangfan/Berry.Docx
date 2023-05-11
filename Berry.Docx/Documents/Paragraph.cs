@@ -449,20 +449,18 @@ namespace Berry.Docx.Documents
             return pic;
         }
 
-        public void AppendTOC1(int fromLvl, int toLvl)
-        {
-            W.SdtBlock sdtBlock = TOCGenerator.Generate(fromLvl, toLvl);
-            _paragraph.InsertAfterSelf(sdtBlock);
-        }
-
         public TableOfContent AppendTOC(int startOutlineLevel, int endOutlineLevel)
         {
             SdtBlock sdt = new SdtBlock(_doc);
             sdt.Format.DocPart.GalleryFilter = "Table of Contents";
 
+            Paragraph tocHeading = new Paragraph(_doc);
+            tocHeading.AppendText("目录");
+            tocHeading.ApplyStyle(BuiltInStyle.TOCHeading);
+
             Paragraph tocBegin = new Paragraph(_doc);
             Paragraph tocEnd = new Paragraph(_doc);
-            string code = $" TOC \\o \"{startOutlineLevel}-{endOutlineLevel}\" \\h \\u ";
+            string code = $" TOC \\o \"{startOutlineLevel}-{endOutlineLevel}\" \\h ";
             var fieldBegin = new FieldChar(_doc, FieldCharType.Begin);
             var fieldCode = new FieldCode(_doc, code);
             var fieldSeparate = new FieldChar(_doc, FieldCharType.Separate);
@@ -472,12 +470,13 @@ namespace Berry.Docx.Documents
             tocBegin.ChildItems.Add(fieldSeparate);
             tocEnd.ChildItems.Add(fieldEnd);
 
+            sdt.Content.ChildObjects.Add(tocHeading);
             sdt.Content.ChildObjects.Add(tocBegin);
             sdt.Content.ChildObjects.Add(tocEnd);
 
             InsertAfterSelf(sdt);
 
-            return new TableOfContent(_doc, sdt, code);
+            return new TableOfContent(_doc, sdt, startOutlineLevel, endOutlineLevel);
         }
 
         /// <summary>

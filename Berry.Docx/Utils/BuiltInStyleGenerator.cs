@@ -34,6 +34,8 @@ namespace Berry.Docx
                     return GenerateHeading8(doc);
                 case BuiltInStyle.Heading9:
                     return GenerateHeading9(doc);
+                case BuiltInStyle.TOCHeading:
+                    return GenerateTOCHeading(doc);
                 case BuiltInStyle.TOC1:
                     return GenerateTOC1(doc);
                 case BuiltInStyle.TOC2:
@@ -434,6 +436,56 @@ namespace Berry.Docx
             RunFonts runFonts1 = new RunFonts() { AsciiTheme = ThemeFontValues.MajorHighAnsi, HighAnsiTheme = ThemeFontValues.MajorHighAnsi, EastAsiaTheme = ThemeFontValues.MajorEastAsia, ComplexScriptTheme = ThemeFontValues.MajorBidi };
 
             styleRunProperties1.Append(runFonts1);
+
+            style1.Append(styleName1);
+            style1.Append(basedOn1);
+            style1.Append(nextParagraphStyle1);
+            style1.Append(primaryStyle1);
+            style1.Append(styleParagraphProperties1);
+            style1.Append(styleRunProperties1);
+            return style1;
+        }
+
+        private static Style GenerateTOCHeading(Document doc)
+        {
+            string id = IDGenerator.GenerateStyleID(doc);
+            string baseId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Heading1, doc).StyleId;
+            string nextId = Berry.Docx.Formatting.ParagraphStyle.CreateBuiltInStyle(BuiltInStyle.Normal, doc).StyleId;
+
+            Style style1 = new Style() { Type = StyleValues.Paragraph, StyleId = id };
+            StyleName styleName1 = new StyleName() { Val = "TOC Heading" };
+            BasedOn basedOn1 = new BasedOn() { Val = baseId };
+            NextParagraphStyle nextParagraphStyle1 = new NextParagraphStyle() { Val = nextId };
+            PrimaryStyle primaryStyle1 = new PrimaryStyle();
+
+            StyleParagraphProperties styleParagraphProperties1 = new StyleParagraphProperties();
+            WidowControl widowControl1 = new WidowControl();
+
+            SpacingBetweenLines spacingBetweenLines1 = new SpacingBetweenLines() { Before = "240", After = "0", Line = "259", LineRule = LineSpacingRuleValues.Auto };
+            Justification justification1 = new Justification() { Val = JustificationValues.Left };
+            OutlineLevel outlineLevel1 = new OutlineLevel() { Val = 9 };
+
+            styleParagraphProperties1.Append(widowControl1);
+            styleParagraphProperties1.Append(spacingBetweenLines1);
+            styleParagraphProperties1.Append(justification1);
+            styleParagraphProperties1.Append(outlineLevel1);
+
+            StyleRunProperties styleRunProperties1 = new StyleRunProperties();
+            RunFonts runFonts1 = new RunFonts() { AsciiTheme = ThemeFontValues.MajorHighAnsi, HighAnsiTheme = ThemeFontValues.MajorHighAnsi, EastAsiaTheme = ThemeFontValues.MajorEastAsia, ComplexScriptTheme = ThemeFontValues.MajorBidi };
+            Bold bold1 = new Bold() { Val = false };
+            BoldComplexScript boldComplexScript1 = new BoldComplexScript() { Val = false };
+            Color color1 = new Color() { Val = "2F5496", ThemeColor = ThemeColorValues.Accent1, ThemeShade = "BF" };
+            Kern kern1 = new Kern() { Val = (UInt32Value)0U };
+            FontSize fontSize1 = new FontSize() { Val = "32" };
+            FontSizeComplexScript fontSizeComplexScript1 = new FontSizeComplexScript() { Val = "32" };
+
+            styleRunProperties1.Append(runFonts1);
+            styleRunProperties1.Append(bold1);
+            styleRunProperties1.Append(boldComplexScript1);
+            styleRunProperties1.Append(color1);
+            styleRunProperties1.Append(kern1);
+            styleRunProperties1.Append(fontSize1);
+            styleRunProperties1.Append(fontSizeComplexScript1);
 
             style1.Append(styleName1);
             style1.Append(basedOn1);

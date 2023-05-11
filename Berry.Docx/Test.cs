@@ -22,15 +22,13 @@ namespace Test
     {
         public static void Main()
         {
-            string src = @"C:\Users\tomato\Desktop\test.docx";
-            string dst = @"C:\Users\tomato\Desktop\dst.docx";
+            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
+            string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
-                var p = doc.Paragraphs.Last();
-                Hyperlink link = new Hyperlink(doc, HyperlinkTargetType.ExternalAddress, "http://www.bing.com");
-                link.Text = "http://www.bing.com";
-                link.AddToViewedHistory = true;
-                p.ChildItems.Add(link);
+                var p = doc.Paragraphs[0];
+                var toc = p.AppendTOC(1, 3);
+                toc.Update();
 
                 doc.SaveAs(dst);
             }
