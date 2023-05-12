@@ -18,6 +18,7 @@ using W = DocumentFormat.OpenXml.Wordprocessing;
 using Berry.Docx.Documents;
 using Berry.Docx.Collections;
 using Berry.Docx.Formatting;
+using Berry.Docx.Field;
 
 namespace Berry.Docx
 {
@@ -234,9 +235,17 @@ namespace Berry.Docx
                 {
                     yield return new Table(_document, (W.Table)ele);
                 }
-                else if(ele is W.SdtBlock)
+                else if (ele is W.SdtBlock)
                 {
                     yield return new SdtBlock(_document, (W.SdtBlock)ele);
+                }
+                else if (ele is W.BookmarkStart)
+                {
+                    yield return new BookmarkStart(_document, (W.BookmarkStart)ele);
+                }
+                else if(ele is W.BookmarkEnd)
+                {
+                    yield return new BookmarkEnd(_document, (W.BookmarkEnd)ele);
                 }
             }
         }

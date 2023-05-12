@@ -106,10 +106,11 @@ namespace Example
 | 操作页眉页脚\|*Manipulates header and footers*                                                                                  |
 | 读写页面设置\|*Read-write page setup*                                                                                           |
 | 读写列表样式\|*Read-write list style*                                                                                           |
-| 查找文本\|*Find text*                                                                                                         |
+| 查找文本\|*Find text*                                                                             |
 | 读写表格格式 \| *Read-write table formats*                                                                                      |
 | 向段落中添加图片、分隔符和制表位 \| *Append picture , break and tab to paragraph*                                                         |
 | 读写域代码 \| Read-write field codes                                                                                           |
+| 添加书签、超链接和目录 \| Adds bookmark、hyperlink and TOC                                                                            |
 
 <br/>
 
@@ -120,6 +121,14 @@ namespace Example
 <br/>
 
 # 更新日志（Release History）
+
+### v1.3.5 (2023-05-12)
+
+- 支持书签 (Supports bookmark)；
+
+- 支持超链接 (Supports hyperlink)；
+
+- 支持添加目录 (Supports add toc)。
 
 ### v1.3.4 (2023-04-13)
 

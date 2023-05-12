@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +14,7 @@ namespace Berry.Docx
         public static int CUSTOM_STYLE_ID = 1;
         public static int CUSTOM_NUM_ID = 1;
         public static int CUSTOM_ABSTRACT_NUM_ID = 0;
+        public static int CUSTOM_BOOKMARK_ID = 0;
         public static string GenerateRelationshipID(Document doc)
         {
             List<int> ids = new List<int>();
@@ -66,6 +68,23 @@ namespace Berry.Docx
             }
             while (ids.Contains(CUSTOM_ABSTRACT_NUM_ID)) CUSTOM_ABSTRACT_NUM_ID++;
             return CUSTOM_ABSTRACT_NUM_ID;
+        }
+
+        public static string GenerateBookmarkId(Document doc)
+        {
+            List<int> ids = new List<int>();
+            Body body = doc.Package.MainDocumentPart?.Document?.Body;
+            if (body == null) return "0";
+            foreach(var bookmark in body.Descendants<BookmarkStart>())
+            {
+                if (!string.IsNullOrEmpty(bookmark.Id?.Value))
+                {
+                    int.TryParse(bookmark.Id.Value, out int id);
+                    ids.Add(id);
+                }
+            }
+            while (ids.Contains(CUSTOM_BOOKMARK_ID)) ++CUSTOM_BOOKMARK_ID;
+            return CUSTOM_BOOKMARK_ID.ToString();
         }
     }
 }

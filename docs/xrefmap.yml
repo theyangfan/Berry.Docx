@@ -1453,6 +1453,12 @@ references:
   commentId: F:Berry.Docx.BuiltInStyle.TOC9
   fullName: Berry.Docx.BuiltInStyle.TOC9
   nameWithType: BuiltInStyle.TOC9
+- uid: Berry.Docx.BuiltInStyle.TOCHeading
+  name: TOCHeading
+  href: api/Berry.Docx.BuiltInStyle.html#Berry_Docx_BuiltInStyle_TOCHeading
+  commentId: F:Berry.Docx.BuiltInStyle.TOCHeading
+  fullName: Berry.Docx.BuiltInStyle.TOCHeading
+  nameWithType: BuiltInStyle.TOCHeading
 - uid: Berry.Docx.CellWidthType
   name: CellWidthType
   href: api/Berry.Docx.CellWidthType.html
@@ -1483,6 +1489,25 @@ references:
   commentId: N:Berry.Docx.Collections
   fullName: Berry.Docx.Collections
   nameWithType: Berry.Docx.Collections
+- uid: Berry.Docx.Collections.BookmarkCollection
+  name: BookmarkCollection
+  href: api/Berry.Docx.Collections.BookmarkCollection.html
+  commentId: T:Berry.Docx.Collections.BookmarkCollection
+  fullName: Berry.Docx.Collections.BookmarkCollection
+  nameWithType: BookmarkCollection
+- uid: Berry.Docx.Collections.BookmarkCollection.GetEnumerator
+  name: GetEnumerator()
+  href: api/Berry.Docx.Collections.BookmarkCollection.html#Berry_Docx_Collections_BookmarkCollection_GetEnumerator
+  commentId: M:Berry.Docx.Collections.BookmarkCollection.GetEnumerator
+  fullName: Berry.Docx.Collections.BookmarkCollection.GetEnumerator()
+  nameWithType: BookmarkCollection.GetEnumerator()
+- uid: Berry.Docx.Collections.BookmarkCollection.GetEnumerator*
+  name: GetEnumerator
+  href: api/Berry.Docx.Collections.BookmarkCollection.html#Berry_Docx_Collections_BookmarkCollection_GetEnumerator_
+  commentId: Overload:Berry.Docx.Collections.BookmarkCollection.GetEnumerator
+  isSpec: "True"
+  fullName: Berry.Docx.Collections.BookmarkCollection.GetEnumerator
+  nameWithType: BookmarkCollection.GetEnumerator
 - uid: Berry.Docx.Collections.DocumentItemCollection
   name: DocumentItemCollection
   href: api/Berry.Docx.Collections.DocumentItemCollection.html
@@ -2705,6 +2730,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Document.Document
   nameWithType: Document.Document
+- uid: Berry.Docx.Document.Bookmarks
+  name: Bookmarks
+  href: api/Berry.Docx.Document.html#Berry_Docx_Document_Bookmarks
+  commentId: P:Berry.Docx.Document.Bookmarks
+  fullName: Berry.Docx.Document.Bookmarks
+  nameWithType: Document.Bookmarks
+- uid: Berry.Docx.Document.Bookmarks*
+  name: Bookmarks
+  href: api/Berry.Docx.Document.html#Berry_Docx_Document_Bookmarks_
+  commentId: Overload:Berry.Docx.Document.Bookmarks
+  isSpec: "True"
+  fullName: Berry.Docx.Document.Bookmarks
+  nameWithType: Document.Bookmarks
 - uid: Berry.Docx.Document.Close
   name: Close()
   href: api/Berry.Docx.Document.html#Berry_Docx_Document_Close
@@ -2874,6 +2912,25 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Document.ListStyles
   nameWithType: Document.ListStyles
+- uid: Berry.Docx.Document.Normalize(Stream)
+  name: Normalize(Stream)
+  href: api/Berry.Docx.Document.html#Berry_Docx_Document_Normalize_Stream_
+  commentId: M:Berry.Docx.Document.Normalize(Stream)
+  fullName: Berry.Docx.Document.Normalize(Stream)
+  nameWithType: Document.Normalize(Stream)
+- uid: Berry.Docx.Document.Normalize(System.String)
+  name: Normalize(String)
+  href: api/Berry.Docx.Document.html#Berry_Docx_Document_Normalize_System_String_
+  commentId: M:Berry.Docx.Document.Normalize(System.String)
+  fullName: Berry.Docx.Document.Normalize(System.String)
+  nameWithType: Document.Normalize(String)
+- uid: Berry.Docx.Document.Normalize*
+  name: Normalize
+  href: api/Berry.Docx.Document.html#Berry_Docx_Document_Normalize_
+  commentId: Overload:Berry.Docx.Document.Normalize
+  isSpec: "True"
+  fullName: Berry.Docx.Document.Normalize
+  nameWithType: Document.Normalize
 - uid: Berry.Docx.Document.Paragraphs
   name: Paragraphs
   href: api/Berry.Docx.Document.html#Berry_Docx_Document_Paragraphs
@@ -3287,6 +3344,18 @@ references:
   commentId: F:Berry.Docx.DocumentObjectType.BodyRange
   fullName: Berry.Docx.DocumentObjectType.BodyRange
   nameWithType: DocumentObjectType.BodyRange
+- uid: Berry.Docx.DocumentObjectType.BookmarkEnd
+  name: BookmarkEnd
+  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_BookmarkEnd
+  commentId: F:Berry.Docx.DocumentObjectType.BookmarkEnd
+  fullName: Berry.Docx.DocumentObjectType.BookmarkEnd
+  nameWithType: DocumentObjectType.BookmarkEnd
+- uid: Berry.Docx.DocumentObjectType.BookmarkStart
+  name: BookmarkStart
+  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_BookmarkStart
+  commentId: F:Berry.Docx.DocumentObjectType.BookmarkStart
+  fullName: Berry.Docx.DocumentObjectType.BookmarkStart
+  nameWithType: DocumentObjectType.BookmarkStart
 - uid: Berry.Docx.DocumentObjectType.Break
   name: Break
   href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_Break
@@ -3359,6 +3428,12 @@ references:
   commentId: F:Berry.Docx.DocumentObjectType.GroupShape
   fullName: Berry.Docx.DocumentObjectType.GroupShape
   nameWithType: DocumentObjectType.GroupShape
+- uid: Berry.Docx.DocumentObjectType.Hyperlink
+  name: Hyperlink
+  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_Hyperlink
+  commentId: F:Berry.Docx.DocumentObjectType.Hyperlink
+  fullName: Berry.Docx.DocumentObjectType.Hyperlink
+  nameWithType: DocumentObjectType.Hyperlink
 - uid: Berry.Docx.DocumentObjectType.InsertedRange
   name: InsertedRange
   href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_InsertedRange
@@ -3401,18 +3476,12 @@ references:
   commentId: F:Berry.Docx.DocumentObjectType.SdtBlock
   fullName: Berry.Docx.DocumentObjectType.SdtBlock
   nameWithType: DocumentObjectType.SdtBlock
-- uid: Berry.Docx.DocumentObjectType.SdtContent
-  name: SdtContent
-  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_SdtContent
-  commentId: F:Berry.Docx.DocumentObjectType.SdtContent
-  fullName: Berry.Docx.DocumentObjectType.SdtContent
-  nameWithType: DocumentObjectType.SdtContent
-- uid: Berry.Docx.DocumentObjectType.SdtProperties
-  name: SdtProperties
-  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_SdtProperties
-  commentId: F:Berry.Docx.DocumentObjectType.SdtProperties
-  fullName: Berry.Docx.DocumentObjectType.SdtProperties
-  nameWithType: DocumentObjectType.SdtProperties
+- uid: Berry.Docx.DocumentObjectType.SdtBlockContent
+  name: SdtBlockContent
+  href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_SdtBlockContent
+  commentId: F:Berry.Docx.DocumentObjectType.SdtBlockContent
+  fullName: Berry.Docx.DocumentObjectType.SdtBlockContent
+  nameWithType: DocumentObjectType.SdtBlockContent
 - uid: Berry.Docx.DocumentObjectType.Section
   name: Section
   href: api/Berry.Docx.DocumentObjectType.html#Berry_Docx_DocumentObjectType_Section
@@ -3467,6 +3536,77 @@ references:
   commentId: N:Berry.Docx.Documents
   fullName: Berry.Docx.Documents
   nameWithType: Berry.Docx.Documents
+- uid: Berry.Docx.Documents.Bookmark
+  name: Bookmark
+  href: api/Berry.Docx.Documents.Bookmark.html
+  commentId: T:Berry.Docx.Documents.Bookmark
+  fullName: Berry.Docx.Documents.Bookmark
+  nameWithType: Bookmark
+- uid: Berry.Docx.Documents.Bookmark.CreateNewId(Berry.Docx.Document)
+  name: CreateNewId(Document)
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_CreateNewId_Berry_Docx_Document_
+  commentId: M:Berry.Docx.Documents.Bookmark.CreateNewId(Berry.Docx.Document)
+  fullName: Berry.Docx.Documents.Bookmark.CreateNewId(Berry.Docx.Document)
+  nameWithType: Bookmark.CreateNewId(Document)
+- uid: Berry.Docx.Documents.Bookmark.CreateNewId*
+  name: CreateNewId
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_CreateNewId_
+  commentId: Overload:Berry.Docx.Documents.Bookmark.CreateNewId
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Bookmark.CreateNewId
+  nameWithType: Bookmark.CreateNewId
+- uid: Berry.Docx.Documents.Bookmark.End
+  name: End
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_End
+  commentId: P:Berry.Docx.Documents.Bookmark.End
+  fullName: Berry.Docx.Documents.Bookmark.End
+  nameWithType: Bookmark.End
+- uid: Berry.Docx.Documents.Bookmark.End*
+  name: End
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_End_
+  commentId: Overload:Berry.Docx.Documents.Bookmark.End
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Bookmark.End
+  nameWithType: Bookmark.End
+- uid: Berry.Docx.Documents.Bookmark.Id
+  name: Id
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_Id
+  commentId: P:Berry.Docx.Documents.Bookmark.Id
+  fullName: Berry.Docx.Documents.Bookmark.Id
+  nameWithType: Bookmark.Id
+- uid: Berry.Docx.Documents.Bookmark.Id*
+  name: Id
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_Id_
+  commentId: Overload:Berry.Docx.Documents.Bookmark.Id
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Bookmark.Id
+  nameWithType: Bookmark.Id
+- uid: Berry.Docx.Documents.Bookmark.Name
+  name: Name
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_Name
+  commentId: P:Berry.Docx.Documents.Bookmark.Name
+  fullName: Berry.Docx.Documents.Bookmark.Name
+  nameWithType: Bookmark.Name
+- uid: Berry.Docx.Documents.Bookmark.Name*
+  name: Name
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_Name_
+  commentId: Overload:Berry.Docx.Documents.Bookmark.Name
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Bookmark.Name
+  nameWithType: Bookmark.Name
+- uid: Berry.Docx.Documents.Bookmark.Start
+  name: Start
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_Start
+  commentId: P:Berry.Docx.Documents.Bookmark.Start
+  fullName: Berry.Docx.Documents.Bookmark.Start
+  nameWithType: Bookmark.Start
+- uid: Berry.Docx.Documents.Bookmark.Start*
+  name: Start
+  href: api/Berry.Docx.Documents.Bookmark.html#Berry_Docx_Documents_Bookmark_Start_
+  commentId: Overload:Berry.Docx.Documents.Bookmark.Start
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Bookmark.Start
+  nameWithType: Bookmark.Start
 - uid: Berry.Docx.Documents.Column
   name: Column
   href: api/Berry.Docx.Documents.Column.html
@@ -3638,6 +3778,38 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.Columns.LineBetweenColumns
   nameWithType: Columns.LineBetweenColumns
+- uid: Berry.Docx.Documents.DocPartObject
+  name: DocPartObject
+  href: api/Berry.Docx.Documents.DocPartObject.html
+  commentId: T:Berry.Docx.Documents.DocPartObject
+  fullName: Berry.Docx.Documents.DocPartObject
+  nameWithType: DocPartObject
+- uid: Berry.Docx.Documents.DocPartObject.#ctor(Berry.Docx.Document,DocumentFormat.OpenXml.Wordprocessing.SdtProperties)
+  name: DocPartObject(Document, DocumentFormat.OpenXml.Wordprocessing.SdtProperties)
+  href: api/Berry.Docx.Documents.DocPartObject.html#Berry_Docx_Documents_DocPartObject__ctor_Berry_Docx_Document_DocumentFormat_OpenXml_Wordprocessing_SdtProperties_
+  commentId: M:Berry.Docx.Documents.DocPartObject.#ctor(Berry.Docx.Document,DocumentFormat.OpenXml.Wordprocessing.SdtProperties)
+  fullName: Berry.Docx.Documents.DocPartObject.DocPartObject(Berry.Docx.Document, DocumentFormat.OpenXml.Wordprocessing.SdtProperties)
+  nameWithType: DocPartObject.DocPartObject(Document, DocumentFormat.OpenXml.Wordprocessing.SdtProperties)
+- uid: Berry.Docx.Documents.DocPartObject.#ctor*
+  name: DocPartObject
+  href: api/Berry.Docx.Documents.DocPartObject.html#Berry_Docx_Documents_DocPartObject__ctor_
+  commentId: Overload:Berry.Docx.Documents.DocPartObject.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.DocPartObject.DocPartObject
+  nameWithType: DocPartObject.DocPartObject
+- uid: Berry.Docx.Documents.DocPartObject.GalleryFilter
+  name: GalleryFilter
+  href: api/Berry.Docx.Documents.DocPartObject.html#Berry_Docx_Documents_DocPartObject_GalleryFilter
+  commentId: P:Berry.Docx.Documents.DocPartObject.GalleryFilter
+  fullName: Berry.Docx.Documents.DocPartObject.GalleryFilter
+  nameWithType: DocPartObject.GalleryFilter
+- uid: Berry.Docx.Documents.DocPartObject.GalleryFilter*
+  name: GalleryFilter
+  href: api/Berry.Docx.Documents.DocPartObject.html#Berry_Docx_Documents_DocPartObject_GalleryFilter_
+  commentId: Overload:Berry.Docx.Documents.DocPartObject.GalleryFilter
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.DocPartObject.GalleryFilter
+  nameWithType: DocPartObject.GalleryFilter
 - uid: Berry.Docx.Documents.Endnote
   name: Endnote
   href: api/Berry.Docx.Documents.Endnote.html
@@ -4414,6 +4586,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.Paragraph.AppendText
   nameWithType: Paragraph.AppendText
+- uid: Berry.Docx.Documents.Paragraph.AppendTOC(System.Int32,System.Int32)
+  name: AppendTOC(Int32, Int32)
+  href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_AppendTOC_System_Int32_System_Int32_
+  commentId: M:Berry.Docx.Documents.Paragraph.AppendTOC(System.Int32,System.Int32)
+  fullName: Berry.Docx.Documents.Paragraph.AppendTOC(System.Int32, System.Int32)
+  nameWithType: Paragraph.AppendTOC(Int32, Int32)
+- uid: Berry.Docx.Documents.Paragraph.AppendTOC*
+  name: AppendTOC
+  href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_AppendTOC_
+  commentId: Overload:Berry.Docx.Documents.Paragraph.AppendTOC
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Paragraph.AppendTOC
+  nameWithType: Paragraph.AppendTOC
 - uid: Berry.Docx.Documents.Paragraph.ApplyStyle(Berry.Docx.BuiltInStyle)
   name: ApplyStyle(BuiltInStyle)
   href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_ApplyStyle_Berry_Docx_BuiltInStyle_
@@ -4621,6 +4806,32 @@ references:
   commentId: T:Berry.Docx.Documents.SdtBlock
   fullName: Berry.Docx.Documents.SdtBlock
   nameWithType: SdtBlock
+- uid: Berry.Docx.Documents.SdtBlock.#ctor(Berry.Docx.Document)
+  name: SdtBlock(Document)
+  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock__ctor_Berry_Docx_Document_
+  commentId: M:Berry.Docx.Documents.SdtBlock.#ctor(Berry.Docx.Document)
+  fullName: Berry.Docx.Documents.SdtBlock.SdtBlock(Berry.Docx.Document)
+  nameWithType: SdtBlock.SdtBlock(Document)
+- uid: Berry.Docx.Documents.SdtBlock.#ctor*
+  name: SdtBlock
+  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock__ctor_
+  commentId: Overload:Berry.Docx.Documents.SdtBlock.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.SdtBlock.SdtBlock
+  nameWithType: SdtBlock.SdtBlock
+- uid: Berry.Docx.Documents.SdtBlock.Content
+  name: Content
+  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_Content
+  commentId: P:Berry.Docx.Documents.SdtBlock.Content
+  fullName: Berry.Docx.Documents.SdtBlock.Content
+  nameWithType: SdtBlock.Content
+- uid: Berry.Docx.Documents.SdtBlock.Content*
+  name: Content
+  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_Content_
+  commentId: Overload:Berry.Docx.Documents.SdtBlock.Content
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.SdtBlock.Content
+  nameWithType: SdtBlock.Content
 - uid: Berry.Docx.Documents.SdtBlock.DocumentObjectType
   name: DocumentObjectType
   href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_DocumentObjectType
@@ -4634,70 +4845,57 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.SdtBlock.DocumentObjectType
   nameWithType: SdtBlock.DocumentObjectType
-- uid: Berry.Docx.Documents.SdtBlock.SdtContent
-  name: SdtContent
-  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_SdtContent
-  commentId: P:Berry.Docx.Documents.SdtBlock.SdtContent
-  fullName: Berry.Docx.Documents.SdtBlock.SdtContent
-  nameWithType: SdtBlock.SdtContent
-- uid: Berry.Docx.Documents.SdtBlock.SdtContent*
-  name: SdtContent
-  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_SdtContent_
-  commentId: Overload:Berry.Docx.Documents.SdtBlock.SdtContent
+- uid: Berry.Docx.Documents.SdtBlock.Format
+  name: Format
+  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_Format
+  commentId: P:Berry.Docx.Documents.SdtBlock.Format
+  fullName: Berry.Docx.Documents.SdtBlock.Format
+  nameWithType: SdtBlock.Format
+- uid: Berry.Docx.Documents.SdtBlock.Format*
+  name: Format
+  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_Format_
+  commentId: Overload:Berry.Docx.Documents.SdtBlock.Format
   isSpec: "True"
-  fullName: Berry.Docx.Documents.SdtBlock.SdtContent
-  nameWithType: SdtBlock.SdtContent
-- uid: Berry.Docx.Documents.SdtBlock.SdtProperties
-  name: SdtProperties
-  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_SdtProperties
-  commentId: P:Berry.Docx.Documents.SdtBlock.SdtProperties
-  fullName: Berry.Docx.Documents.SdtBlock.SdtProperties
-  nameWithType: SdtBlock.SdtProperties
-- uid: Berry.Docx.Documents.SdtBlock.SdtProperties*
-  name: SdtProperties
-  href: api/Berry.Docx.Documents.SdtBlock.html#Berry_Docx_Documents_SdtBlock_SdtProperties_
-  commentId: Overload:Berry.Docx.Documents.SdtBlock.SdtProperties
+  fullName: Berry.Docx.Documents.SdtBlock.Format
+  nameWithType: SdtBlock.Format
+- uid: Berry.Docx.Documents.SdtBlockContent
+  name: SdtBlockContent
+  href: api/Berry.Docx.Documents.SdtBlockContent.html
+  commentId: T:Berry.Docx.Documents.SdtBlockContent
+  fullName: Berry.Docx.Documents.SdtBlockContent
+  nameWithType: SdtBlockContent
+- uid: Berry.Docx.Documents.SdtBlockContent.DocumentObjectType
+  name: DocumentObjectType
+  href: api/Berry.Docx.Documents.SdtBlockContent.html#Berry_Docx_Documents_SdtBlockContent_DocumentObjectType
+  commentId: P:Berry.Docx.Documents.SdtBlockContent.DocumentObjectType
+  fullName: Berry.Docx.Documents.SdtBlockContent.DocumentObjectType
+  nameWithType: SdtBlockContent.DocumentObjectType
+- uid: Berry.Docx.Documents.SdtBlockContent.DocumentObjectType*
+  name: DocumentObjectType
+  href: api/Berry.Docx.Documents.SdtBlockContent.html#Berry_Docx_Documents_SdtBlockContent_DocumentObjectType_
+  commentId: Overload:Berry.Docx.Documents.SdtBlockContent.DocumentObjectType
   isSpec: "True"
-  fullName: Berry.Docx.Documents.SdtBlock.SdtProperties
-  nameWithType: SdtBlock.SdtProperties
-- uid: Berry.Docx.Documents.SdtContent
-  name: SdtContent
-  href: api/Berry.Docx.Documents.SdtContent.html
-  commentId: T:Berry.Docx.Documents.SdtContent
-  fullName: Berry.Docx.Documents.SdtContent
-  nameWithType: SdtContent
-- uid: Berry.Docx.Documents.SdtContent.DocumentObjectType
-  name: DocumentObjectType
-  href: api/Berry.Docx.Documents.SdtContent.html#Berry_Docx_Documents_SdtContent_DocumentObjectType
-  commentId: P:Berry.Docx.Documents.SdtContent.DocumentObjectType
-  fullName: Berry.Docx.Documents.SdtContent.DocumentObjectType
-  nameWithType: SdtContent.DocumentObjectType
-- uid: Berry.Docx.Documents.SdtContent.DocumentObjectType*
-  name: DocumentObjectType
-  href: api/Berry.Docx.Documents.SdtContent.html#Berry_Docx_Documents_SdtContent_DocumentObjectType_
-  commentId: Overload:Berry.Docx.Documents.SdtContent.DocumentObjectType
+  fullName: Berry.Docx.Documents.SdtBlockContent.DocumentObjectType
+  nameWithType: SdtBlockContent.DocumentObjectType
+- uid: Berry.Docx.Documents.SdtBlockFormat
+  name: SdtBlockFormat
+  href: api/Berry.Docx.Documents.SdtBlockFormat.html
+  commentId: T:Berry.Docx.Documents.SdtBlockFormat
+  fullName: Berry.Docx.Documents.SdtBlockFormat
+  nameWithType: SdtBlockFormat
+- uid: Berry.Docx.Documents.SdtBlockFormat.DocPart
+  name: DocPart
+  href: api/Berry.Docx.Documents.SdtBlockFormat.html#Berry_Docx_Documents_SdtBlockFormat_DocPart
+  commentId: P:Berry.Docx.Documents.SdtBlockFormat.DocPart
+  fullName: Berry.Docx.Documents.SdtBlockFormat.DocPart
+  nameWithType: SdtBlockFormat.DocPart
+- uid: Berry.Docx.Documents.SdtBlockFormat.DocPart*
+  name: DocPart
+  href: api/Berry.Docx.Documents.SdtBlockFormat.html#Berry_Docx_Documents_SdtBlockFormat_DocPart_
+  commentId: Overload:Berry.Docx.Documents.SdtBlockFormat.DocPart
   isSpec: "True"
-  fullName: Berry.Docx.Documents.SdtContent.DocumentObjectType
-  nameWithType: SdtContent.DocumentObjectType
-- uid: Berry.Docx.Documents.SdtProperties
-  name: SdtProperties
-  href: api/Berry.Docx.Documents.SdtProperties.html
-  commentId: T:Berry.Docx.Documents.SdtProperties
-  fullName: Berry.Docx.Documents.SdtProperties
-  nameWithType: SdtProperties
-- uid: Berry.Docx.Documents.SdtProperties.DocumentObjectType
-  name: DocumentObjectType
-  href: api/Berry.Docx.Documents.SdtProperties.html#Berry_Docx_Documents_SdtProperties_DocumentObjectType
-  commentId: P:Berry.Docx.Documents.SdtProperties.DocumentObjectType
-  fullName: Berry.Docx.Documents.SdtProperties.DocumentObjectType
-  nameWithType: SdtProperties.DocumentObjectType
-- uid: Berry.Docx.Documents.SdtProperties.DocumentObjectType*
-  name: DocumentObjectType
-  href: api/Berry.Docx.Documents.SdtProperties.html#Berry_Docx_Documents_SdtProperties_DocumentObjectType_
-  commentId: Overload:Berry.Docx.Documents.SdtProperties.DocumentObjectType
-  isSpec: "True"
-  fullName: Berry.Docx.Documents.SdtProperties.DocumentObjectType
-  nameWithType: SdtProperties.DocumentObjectType
+  fullName: Berry.Docx.Documents.SdtBlockFormat.DocPart
+  nameWithType: SdtBlockFormat.DocPart
 - uid: Berry.Docx.Documents.Table
   name: Table
   href: api/Berry.Docx.Documents.Table.html
@@ -5128,6 +5326,103 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.TableCellWidth.Val
   nameWithType: TableCellWidth.Val
+- uid: Berry.Docx.Documents.TableOfContent
+  name: TableOfContent
+  href: api/Berry.Docx.Documents.TableOfContent.html
+  commentId: T:Berry.Docx.Documents.TableOfContent
+  fullName: Berry.Docx.Documents.TableOfContent
+  nameWithType: TableOfContent
+- uid: Berry.Docx.Documents.TableOfContent.EndOutlineLevel
+  name: EndOutlineLevel
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_EndOutlineLevel
+  commentId: P:Berry.Docx.Documents.TableOfContent.EndOutlineLevel
+  fullName: Berry.Docx.Documents.TableOfContent.EndOutlineLevel
+  nameWithType: TableOfContent.EndOutlineLevel
+- uid: Berry.Docx.Documents.TableOfContent.EndOutlineLevel*
+  name: EndOutlineLevel
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_EndOutlineLevel_
+  commentId: Overload:Berry.Docx.Documents.TableOfContent.EndOutlineLevel
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableOfContent.EndOutlineLevel
+  nameWithType: TableOfContent.EndOutlineLevel
+- uid: Berry.Docx.Documents.TableOfContent.PageNumberAlignRight
+  name: PageNumberAlignRight
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_PageNumberAlignRight
+  commentId: P:Berry.Docx.Documents.TableOfContent.PageNumberAlignRight
+  fullName: Berry.Docx.Documents.TableOfContent.PageNumberAlignRight
+  nameWithType: TableOfContent.PageNumberAlignRight
+- uid: Berry.Docx.Documents.TableOfContent.PageNumberAlignRight*
+  name: PageNumberAlignRight
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_PageNumberAlignRight_
+  commentId: Overload:Berry.Docx.Documents.TableOfContent.PageNumberAlignRight
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableOfContent.PageNumberAlignRight
+  nameWithType: TableOfContent.PageNumberAlignRight
+- uid: Berry.Docx.Documents.TableOfContent.ShowPageNumber
+  name: ShowPageNumber
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_ShowPageNumber
+  commentId: P:Berry.Docx.Documents.TableOfContent.ShowPageNumber
+  fullName: Berry.Docx.Documents.TableOfContent.ShowPageNumber
+  nameWithType: TableOfContent.ShowPageNumber
+- uid: Berry.Docx.Documents.TableOfContent.ShowPageNumber*
+  name: ShowPageNumber
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_ShowPageNumber_
+  commentId: Overload:Berry.Docx.Documents.TableOfContent.ShowPageNumber
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableOfContent.ShowPageNumber
+  nameWithType: TableOfContent.ShowPageNumber
+- uid: Berry.Docx.Documents.TableOfContent.StartOutlineLevel
+  name: StartOutlineLevel
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_StartOutlineLevel
+  commentId: P:Berry.Docx.Documents.TableOfContent.StartOutlineLevel
+  fullName: Berry.Docx.Documents.TableOfContent.StartOutlineLevel
+  nameWithType: TableOfContent.StartOutlineLevel
+- uid: Berry.Docx.Documents.TableOfContent.StartOutlineLevel*
+  name: StartOutlineLevel
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_StartOutlineLevel_
+  commentId: Overload:Berry.Docx.Documents.TableOfContent.StartOutlineLevel
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableOfContent.StartOutlineLevel
+  nameWithType: TableOfContent.StartOutlineLevel
+- uid: Berry.Docx.Documents.TableOfContent.TabStopLeader
+  name: TabStopLeader
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_TabStopLeader
+  commentId: P:Berry.Docx.Documents.TableOfContent.TabStopLeader
+  fullName: Berry.Docx.Documents.TableOfContent.TabStopLeader
+  nameWithType: TableOfContent.TabStopLeader
+- uid: Berry.Docx.Documents.TableOfContent.TabStopLeader*
+  name: TabStopLeader
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_TabStopLeader_
+  commentId: Overload:Berry.Docx.Documents.TableOfContent.TabStopLeader
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableOfContent.TabStopLeader
+  nameWithType: TableOfContent.TabStopLeader
+- uid: Berry.Docx.Documents.TableOfContent.Update
+  name: Update()
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_Update
+  commentId: M:Berry.Docx.Documents.TableOfContent.Update
+  fullName: Berry.Docx.Documents.TableOfContent.Update()
+  nameWithType: TableOfContent.Update()
+- uid: Berry.Docx.Documents.TableOfContent.Update*
+  name: Update
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_Update_
+  commentId: Overload:Berry.Docx.Documents.TableOfContent.Update
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableOfContent.Update
+  nameWithType: TableOfContent.Update
+- uid: Berry.Docx.Documents.TableOfContent.UseHyperlink
+  name: UseHyperlink
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_UseHyperlink
+  commentId: P:Berry.Docx.Documents.TableOfContent.UseHyperlink
+  fullName: Berry.Docx.Documents.TableOfContent.UseHyperlink
+  nameWithType: TableOfContent.UseHyperlink
+- uid: Berry.Docx.Documents.TableOfContent.UseHyperlink*
+  name: UseHyperlink
+  href: api/Berry.Docx.Documents.TableOfContent.html#Berry_Docx_Documents_TableOfContent_UseHyperlink_
+  commentId: Overload:Berry.Docx.Documents.TableOfContent.UseHyperlink
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableOfContent.UseHyperlink
+  nameWithType: TableOfContent.UseHyperlink
 - uid: Berry.Docx.Documents.TableRow
   name: TableRow
   href: api/Berry.Docx.Documents.TableRow.html
@@ -5334,6 +5629,109 @@ references:
   commentId: N:Berry.Docx.Field
   fullName: Berry.Docx.Field
   nameWithType: Berry.Docx.Field
+- uid: Berry.Docx.Field.BookmarkEnd
+  name: BookmarkEnd
+  href: api/Berry.Docx.Field.BookmarkEnd.html
+  commentId: T:Berry.Docx.Field.BookmarkEnd
+  fullName: Berry.Docx.Field.BookmarkEnd
+  nameWithType: BookmarkEnd
+- uid: Berry.Docx.Field.BookmarkEnd.#ctor(Berry.Docx.Document,System.String)
+  name: BookmarkEnd(Document, String)
+  href: api/Berry.Docx.Field.BookmarkEnd.html#Berry_Docx_Field_BookmarkEnd__ctor_Berry_Docx_Document_System_String_
+  commentId: M:Berry.Docx.Field.BookmarkEnd.#ctor(Berry.Docx.Document,System.String)
+  fullName: Berry.Docx.Field.BookmarkEnd.BookmarkEnd(Berry.Docx.Document, System.String)
+  nameWithType: BookmarkEnd.BookmarkEnd(Document, String)
+- uid: Berry.Docx.Field.BookmarkEnd.#ctor*
+  name: BookmarkEnd
+  href: api/Berry.Docx.Field.BookmarkEnd.html#Berry_Docx_Field_BookmarkEnd__ctor_
+  commentId: Overload:Berry.Docx.Field.BookmarkEnd.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.BookmarkEnd.BookmarkEnd
+  nameWithType: BookmarkEnd.BookmarkEnd
+- uid: Berry.Docx.Field.BookmarkEnd.DocumentObjectType
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.BookmarkEnd.html#Berry_Docx_Field_BookmarkEnd_DocumentObjectType
+  commentId: P:Berry.Docx.Field.BookmarkEnd.DocumentObjectType
+  fullName: Berry.Docx.Field.BookmarkEnd.DocumentObjectType
+  nameWithType: BookmarkEnd.DocumentObjectType
+- uid: Berry.Docx.Field.BookmarkEnd.DocumentObjectType*
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.BookmarkEnd.html#Berry_Docx_Field_BookmarkEnd_DocumentObjectType_
+  commentId: Overload:Berry.Docx.Field.BookmarkEnd.DocumentObjectType
+  isSpec: "True"
+  fullName: Berry.Docx.Field.BookmarkEnd.DocumentObjectType
+  nameWithType: BookmarkEnd.DocumentObjectType
+- uid: Berry.Docx.Field.BookmarkEnd.Id
+  name: Id
+  href: api/Berry.Docx.Field.BookmarkEnd.html#Berry_Docx_Field_BookmarkEnd_Id
+  commentId: P:Berry.Docx.Field.BookmarkEnd.Id
+  fullName: Berry.Docx.Field.BookmarkEnd.Id
+  nameWithType: BookmarkEnd.Id
+- uid: Berry.Docx.Field.BookmarkEnd.Id*
+  name: Id
+  href: api/Berry.Docx.Field.BookmarkEnd.html#Berry_Docx_Field_BookmarkEnd_Id_
+  commentId: Overload:Berry.Docx.Field.BookmarkEnd.Id
+  isSpec: "True"
+  fullName: Berry.Docx.Field.BookmarkEnd.Id
+  nameWithType: BookmarkEnd.Id
+- uid: Berry.Docx.Field.BookmarkStart
+  name: BookmarkStart
+  href: api/Berry.Docx.Field.BookmarkStart.html
+  commentId: T:Berry.Docx.Field.BookmarkStart
+  fullName: Berry.Docx.Field.BookmarkStart
+  nameWithType: BookmarkStart
+- uid: Berry.Docx.Field.BookmarkStart.#ctor(Berry.Docx.Document,System.String,System.String)
+  name: BookmarkStart(Document, String, String)
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart__ctor_Berry_Docx_Document_System_String_System_String_
+  commentId: M:Berry.Docx.Field.BookmarkStart.#ctor(Berry.Docx.Document,System.String,System.String)
+  fullName: Berry.Docx.Field.BookmarkStart.BookmarkStart(Berry.Docx.Document, System.String, System.String)
+  nameWithType: BookmarkStart.BookmarkStart(Document, String, String)
+- uid: Berry.Docx.Field.BookmarkStart.#ctor*
+  name: BookmarkStart
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart__ctor_
+  commentId: Overload:Berry.Docx.Field.BookmarkStart.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.BookmarkStart.BookmarkStart
+  nameWithType: BookmarkStart.BookmarkStart
+- uid: Berry.Docx.Field.BookmarkStart.DocumentObjectType
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart_DocumentObjectType
+  commentId: P:Berry.Docx.Field.BookmarkStart.DocumentObjectType
+  fullName: Berry.Docx.Field.BookmarkStart.DocumentObjectType
+  nameWithType: BookmarkStart.DocumentObjectType
+- uid: Berry.Docx.Field.BookmarkStart.DocumentObjectType*
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart_DocumentObjectType_
+  commentId: Overload:Berry.Docx.Field.BookmarkStart.DocumentObjectType
+  isSpec: "True"
+  fullName: Berry.Docx.Field.BookmarkStart.DocumentObjectType
+  nameWithType: BookmarkStart.DocumentObjectType
+- uid: Berry.Docx.Field.BookmarkStart.Id
+  name: Id
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart_Id
+  commentId: P:Berry.Docx.Field.BookmarkStart.Id
+  fullName: Berry.Docx.Field.BookmarkStart.Id
+  nameWithType: BookmarkStart.Id
+- uid: Berry.Docx.Field.BookmarkStart.Id*
+  name: Id
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart_Id_
+  commentId: Overload:Berry.Docx.Field.BookmarkStart.Id
+  isSpec: "True"
+  fullName: Berry.Docx.Field.BookmarkStart.Id
+  nameWithType: BookmarkStart.Id
+- uid: Berry.Docx.Field.BookmarkStart.Name
+  name: Name
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart_Name
+  commentId: P:Berry.Docx.Field.BookmarkStart.Name
+  fullName: Berry.Docx.Field.BookmarkStart.Name
+  nameWithType: BookmarkStart.Name
+- uid: Berry.Docx.Field.BookmarkStart.Name*
+  name: Name
+  href: api/Berry.Docx.Field.BookmarkStart.html#Berry_Docx_Field_BookmarkStart_Name_
+  commentId: Overload:Berry.Docx.Field.BookmarkStart.Name
+  isSpec: "True"
+  fullName: Berry.Docx.Field.BookmarkStart.Name
+  nameWithType: BookmarkStart.Name
 - uid: Berry.Docx.Field.Break
   name: Break
   href: api/Berry.Docx.Field.Break.html
@@ -5616,6 +6014,32 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.EmbeddedObject.DocumentObjectType
   nameWithType: EmbeddedObject.DocumentObjectType
+- uid: Berry.Docx.Field.EmbeddedObject.GetStream
+  name: GetStream()
+  href: api/Berry.Docx.Field.EmbeddedObject.html#Berry_Docx_Field_EmbeddedObject_GetStream
+  commentId: M:Berry.Docx.Field.EmbeddedObject.GetStream
+  fullName: Berry.Docx.Field.EmbeddedObject.GetStream()
+  nameWithType: EmbeddedObject.GetStream()
+- uid: Berry.Docx.Field.EmbeddedObject.GetStream*
+  name: GetStream
+  href: api/Berry.Docx.Field.EmbeddedObject.html#Berry_Docx_Field_EmbeddedObject_GetStream_
+  commentId: Overload:Berry.Docx.Field.EmbeddedObject.GetStream
+  isSpec: "True"
+  fullName: Berry.Docx.Field.EmbeddedObject.GetStream
+  nameWithType: EmbeddedObject.GetStream
+- uid: Berry.Docx.Field.EmbeddedObject.Height
+  name: Height
+  href: api/Berry.Docx.Field.EmbeddedObject.html#Berry_Docx_Field_EmbeddedObject_Height
+  commentId: P:Berry.Docx.Field.EmbeddedObject.Height
+  fullName: Berry.Docx.Field.EmbeddedObject.Height
+  nameWithType: EmbeddedObject.Height
+- uid: Berry.Docx.Field.EmbeddedObject.Height*
+  name: Height
+  href: api/Berry.Docx.Field.EmbeddedObject.html#Berry_Docx_Field_EmbeddedObject_Height_
+  commentId: Overload:Berry.Docx.Field.EmbeddedObject.Height
+  isSpec: "True"
+  fullName: Berry.Docx.Field.EmbeddedObject.Height
+  nameWithType: EmbeddedObject.Height
 - uid: Berry.Docx.Field.EmbeddedObject.OleProgId
   name: OleProgId
   href: api/Berry.Docx.Field.EmbeddedObject.html#Berry_Docx_Field_EmbeddedObject_OleProgId
@@ -5642,6 +6066,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.EmbeddedObject.OleType
   nameWithType: EmbeddedObject.OleType
+- uid: Berry.Docx.Field.EmbeddedObject.Width
+  name: Width
+  href: api/Berry.Docx.Field.EmbeddedObject.html#Berry_Docx_Field_EmbeddedObject_Width
+  commentId: P:Berry.Docx.Field.EmbeddedObject.Width
+  fullName: Berry.Docx.Field.EmbeddedObject.Width
+  nameWithType: EmbeddedObject.Width
+- uid: Berry.Docx.Field.EmbeddedObject.Width*
+  name: Width
+  href: api/Berry.Docx.Field.EmbeddedObject.html#Berry_Docx_Field_EmbeddedObject_Width_
+  commentId: Overload:Berry.Docx.Field.EmbeddedObject.Width
+  isSpec: "True"
+  fullName: Berry.Docx.Field.EmbeddedObject.Width
+  nameWithType: EmbeddedObject.Width
 - uid: Berry.Docx.Field.EndnoteReference
   name: EndnoteReference
   href: api/Berry.Docx.Field.EndnoteReference.html
@@ -5886,6 +6323,90 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.GroupShape.DocumentObjectType
   nameWithType: GroupShape.DocumentObjectType
+- uid: Berry.Docx.Field.Hyperlink
+  name: Hyperlink
+  href: api/Berry.Docx.Field.Hyperlink.html
+  commentId: T:Berry.Docx.Field.Hyperlink
+  fullName: Berry.Docx.Field.Hyperlink
+  nameWithType: Hyperlink
+- uid: Berry.Docx.Field.Hyperlink.#ctor(Berry.Docx.Document,Berry.Docx.HyperlinkTargetType,System.String,System.String)
+  name: Hyperlink(Document, HyperlinkTargetType, String, String)
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink__ctor_Berry_Docx_Document_Berry_Docx_HyperlinkTargetType_System_String_System_String_
+  commentId: M:Berry.Docx.Field.Hyperlink.#ctor(Berry.Docx.Document,Berry.Docx.HyperlinkTargetType,System.String,System.String)
+  fullName: Berry.Docx.Field.Hyperlink.Hyperlink(Berry.Docx.Document, Berry.Docx.HyperlinkTargetType, System.String, System.String)
+  nameWithType: Hyperlink.Hyperlink(Document, HyperlinkTargetType, String, String)
+- uid: Berry.Docx.Field.Hyperlink.#ctor*
+  name: Hyperlink
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink__ctor_
+  commentId: Overload:Berry.Docx.Field.Hyperlink.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Hyperlink.Hyperlink
+  nameWithType: Hyperlink.Hyperlink
+- uid: Berry.Docx.Field.Hyperlink.AddToViewedHistory
+  name: AddToViewedHistory
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_AddToViewedHistory
+  commentId: P:Berry.Docx.Field.Hyperlink.AddToViewedHistory
+  fullName: Berry.Docx.Field.Hyperlink.AddToViewedHistory
+  nameWithType: Hyperlink.AddToViewedHistory
+- uid: Berry.Docx.Field.Hyperlink.AddToViewedHistory*
+  name: AddToViewedHistory
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_AddToViewedHistory_
+  commentId: Overload:Berry.Docx.Field.Hyperlink.AddToViewedHistory
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Hyperlink.AddToViewedHistory
+  nameWithType: Hyperlink.AddToViewedHistory
+- uid: Berry.Docx.Field.Hyperlink.DocumentObjectType
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_DocumentObjectType
+  commentId: P:Berry.Docx.Field.Hyperlink.DocumentObjectType
+  fullName: Berry.Docx.Field.Hyperlink.DocumentObjectType
+  nameWithType: Hyperlink.DocumentObjectType
+- uid: Berry.Docx.Field.Hyperlink.DocumentObjectType*
+  name: DocumentObjectType
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_DocumentObjectType_
+  commentId: Overload:Berry.Docx.Field.Hyperlink.DocumentObjectType
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Hyperlink.DocumentObjectType
+  nameWithType: Hyperlink.DocumentObjectType
+- uid: Berry.Docx.Field.Hyperlink.Target
+  name: Target
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_Target
+  commentId: P:Berry.Docx.Field.Hyperlink.Target
+  fullName: Berry.Docx.Field.Hyperlink.Target
+  nameWithType: Hyperlink.Target
+- uid: Berry.Docx.Field.Hyperlink.Target*
+  name: Target
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_Target_
+  commentId: Overload:Berry.Docx.Field.Hyperlink.Target
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Hyperlink.Target
+  nameWithType: Hyperlink.Target
+- uid: Berry.Docx.Field.Hyperlink.TargetType
+  name: TargetType
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_TargetType
+  commentId: P:Berry.Docx.Field.Hyperlink.TargetType
+  fullName: Berry.Docx.Field.Hyperlink.TargetType
+  nameWithType: Hyperlink.TargetType
+- uid: Berry.Docx.Field.Hyperlink.TargetType*
+  name: TargetType
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_TargetType_
+  commentId: Overload:Berry.Docx.Field.Hyperlink.TargetType
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Hyperlink.TargetType
+  nameWithType: Hyperlink.TargetType
+- uid: Berry.Docx.Field.Hyperlink.Text
+  name: Text
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_Text
+  commentId: P:Berry.Docx.Field.Hyperlink.Text
+  fullName: Berry.Docx.Field.Hyperlink.Text
+  nameWithType: Hyperlink.Text
+- uid: Berry.Docx.Field.Hyperlink.Text*
+  name: Text
+  href: api/Berry.Docx.Field.Hyperlink.html#Berry_Docx_Field_Hyperlink_Text_
+  commentId: Overload:Berry.Docx.Field.Hyperlink.Text
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Hyperlink.Text
+  nameWithType: Hyperlink.Text
 - uid: Berry.Docx.Field.InsertedRange
   name: InsertedRange
   href: api/Berry.Docx.Field.InsertedRange.html
@@ -8870,6 +9391,30 @@ references:
   commentId: F:Berry.Docx.GutterLocation.Top
   fullName: Berry.Docx.GutterLocation.Top
   nameWithType: GutterLocation.Top
+- uid: Berry.Docx.HyperlinkTargetType
+  name: HyperlinkTargetType
+  href: api/Berry.Docx.HyperlinkTargetType.html
+  commentId: T:Berry.Docx.HyperlinkTargetType
+  fullName: Berry.Docx.HyperlinkTargetType
+  nameWithType: HyperlinkTargetType
+- uid: Berry.Docx.HyperlinkTargetType.Bookmark
+  name: Bookmark
+  href: api/Berry.Docx.HyperlinkTargetType.html#Berry_Docx_HyperlinkTargetType_Bookmark
+  commentId: F:Berry.Docx.HyperlinkTargetType.Bookmark
+  fullName: Berry.Docx.HyperlinkTargetType.Bookmark
+  nameWithType: HyperlinkTargetType.Bookmark
+- uid: Berry.Docx.HyperlinkTargetType.Default
+  name: Default
+  href: api/Berry.Docx.HyperlinkTargetType.html#Berry_Docx_HyperlinkTargetType_Default
+  commentId: F:Berry.Docx.HyperlinkTargetType.Default
+  fullName: Berry.Docx.HyperlinkTargetType.Default
+  nameWithType: HyperlinkTargetType.Default
+- uid: Berry.Docx.HyperlinkTargetType.ExternalAddress
+  name: ExternalAddress
+  href: api/Berry.Docx.HyperlinkTargetType.html#Berry_Docx_HyperlinkTargetType_ExternalAddress
+  commentId: F:Berry.Docx.HyperlinkTargetType.ExternalAddress
+  fullName: Berry.Docx.HyperlinkTargetType.ExternalAddress
+  nameWithType: HyperlinkTargetType.ExternalAddress
 - uid: Berry.Docx.Indentation
   name: Indentation
   href: api/Berry.Docx.Indentation.html

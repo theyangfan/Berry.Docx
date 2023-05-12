@@ -145,20 +145,13 @@ namespace Berry.Docx
                     foreach (ParagraphItem item in RunItems((W.Run)ele))
                         yield return item;
                 }
-                else if (ele is W.Hyperlink)
+                else if (ele is W.Hyperlink) // Hyperlink
                 {
-                    foreach (O.OpenXmlElement e in ele.ChildElements)
-                    {
-                        if (e is W.Run)
-                        {
-                            foreach (ParagraphItem item in RunItems((W.Run)e))
-                                yield return item;
-                        }
-                    }
+                    yield return new Hyperlink(_doc, (W.Hyperlink)ele);
                 }
                 else if (ele is M.OfficeMath) // Office Math
                 {
-                    yield return new OfficeMath(_doc, ele as M.OfficeMath);
+                    yield return new OfficeMath(_doc, (M.OfficeMath)ele);
                 }
                 else if (ele is M.Paragraph)
                 {
@@ -167,15 +160,23 @@ namespace Berry.Docx
                 }
                 else if(ele is W.DeletedRun) // DeletedRun
                 {
-                    yield return new DeletedRange(_doc, ele as W.DeletedRun);
+                    yield return new DeletedRange(_doc, (W.DeletedRun)ele);
                 }
                 else if (ele is W.InsertedRun) // InsertedRun
                 {
-                    yield return new InsertedRange(_doc, ele as W.InsertedRun);
+                    yield return new InsertedRange(_doc, (W.InsertedRun)ele);
                 }
                 else if(ele is W.SimpleField) // SimpleField
                 {
-                    yield return new SimpleField(_doc, ele as W.SimpleField);
+                    yield return new SimpleField(_doc, (W.SimpleField)ele);
+                }
+                else if(ele is W.BookmarkStart) // BookmarkStart
+                {
+                    yield return new BookmarkStart(_doc, (W.BookmarkStart)ele);
+                }
+                else if (ele is W.BookmarkEnd) // BookmarkEnd
+                {
+                    yield return new BookmarkEnd(_doc, (W.BookmarkEnd)ele);
                 }
             }
         }
@@ -263,8 +264,9 @@ namespace Berry.Docx
             if (element is W.Paragraph) return new Paragraph(_doc, (W.Paragraph)element);
             else if (element is W.Table) return new Table(_doc, (W.Table)element);
             else if (element is W.SdtBlock) return new SdtBlock(_doc, (W.SdtBlock)element);
-            else if (element is W.SdtProperties) return new SdtProperties(_doc, (W.SdtProperties)element);
-            else if (element is W.SdtContentBlock) return new SdtContent(_doc, (W.SdtContentBlock)element);
+            else if (element is W.SdtContentBlock) return new SdtBlockContent(_doc, (W.SdtContentBlock)element);
+            else if(element is W.BookmarkStart) return new BookmarkStart(_doc, (W.BookmarkStart)element);
+            else if(element is W.BookmarkEnd) return new BookmarkEnd(_doc, (W.BookmarkEnd)element);
             else return null;
         }
         #endregion

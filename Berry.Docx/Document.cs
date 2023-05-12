@@ -217,11 +217,18 @@ namespace Berry.Docx
         /// <para>返回当前文档的脚注格式。</para>
         /// </summary>
         public FootEndnoteFormat FootnoteFormat => _settings.FootnoteFormt;
+
         /// <summary>
         /// Returns the endnote format in the document.
         /// <para>返回当前文档的尾注格式。</para>
         /// </summary>
         public FootEndnoteFormat EndnoteFormat => _settings.EndnoteFormt;
+
+        /// <summary>
+        /// Returns all of the bookmarks in the document.
+        /// </summary>
+        public BookmarkCollection Bookmarks => new BookmarkCollection(this);
+
         /// <summary>
         /// Returns the document default paragraph and character formats.
         /// <para>返回文档默认段落和字符格式。</para>
@@ -384,6 +391,33 @@ namespace Berry.Docx
                 settings.Settings.Save();
             }
         }
+
+        /// <summary>
+        /// Removes all of the OpenXmlUnknownElement(SmartTag, etc.)
+        /// </summary>
+        /// <param name="filename">The document file path.</param>
+        public static void Normalize(string filename)
+        {
+            using(var doc = new Document(filename))
+            {
+                doc.Normalize();
+                doc.Save();
+            }
+        }
+
+        /// <summary>
+        /// Removes all of the OpenXmlUnknownElement(SmartTag, etc.)
+        /// </summary>
+        /// <param name="stream">The document stream.</param>
+        public static void Normalize(Stream stream)
+        {
+            using (var doc = new Document(stream))
+            {
+                doc.SetCloseStream(false);
+                doc.Normalize();
+                doc.Save();
+            }
+        }
         #endregion
 
         #region Internal Properties
@@ -423,6 +457,29 @@ namespace Berry.Docx
                     yield return table;
                 }
             }
+        }
+
+        private void Normalize()
+        {
+            List<O.OpenXmlUnknownElement> unknownElements = new List<O.OpenXmlUnknownElement>();
+            foreach (var p in Paragraphs)
+            {
+                foreach (var unknow in p.XElement.Elements<O.OpenXmlUnknownElement>())
+                {
+                    // SmartTag
+                    if (unknow.LocalName == "smartTag")
+                    {
+                        // run
+                        foreach (var r in unknow.Elements().Where(e => e.LocalName == "r"))
+                        {
+                            unknow.InsertBeforeSelf(r.CloneNode(true));
+                        }
+                        unknownElements.Add(unknow);
+                    }
+                }
+            }
+            foreach (var unknow in unknownElements) unknow.Remove();
+            unknownElements.Clear();
         }
         #endregion
 

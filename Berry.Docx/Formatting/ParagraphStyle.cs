@@ -180,6 +180,36 @@ namespace Berry.Docx.Formatting
                 case BuiltInStyle.Heading9:
                     styleName = "heading 9";
                     break;
+                case BuiltInStyle.TOCHeading:
+                    styleName = "TOC Heading";
+                    break;
+                case BuiltInStyle.TOC1:
+                    styleName = "toc 1";
+                    break;
+                case BuiltInStyle.TOC2:
+                    styleName = "toc 2";
+                    break;
+                case BuiltInStyle.TOC3:
+                    styleName = "toc 3";
+                    break;
+                case BuiltInStyle.TOC4:
+                    styleName = "toc 4";
+                    break;
+                case BuiltInStyle.TOC5:
+                    styleName = "toc 5";
+                    break;
+                case BuiltInStyle.TOC6:
+                    styleName = "toc 6";
+                    break;
+                case BuiltInStyle.TOC7:
+                    styleName = "toc 7";
+                    break;
+                case BuiltInStyle.TOC8:
+                    styleName = "toc 8";
+                    break;
+                case BuiltInStyle.TOC9:
+                    styleName = "toc 9";
+                    break;
                 default:
                     break;
             }

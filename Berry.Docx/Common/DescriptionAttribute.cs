@@ -32,7 +32,7 @@ namespace Berry.Docx
 
     public static class EnumExtentions
     {
-        public static string Description<T>(this T t)
+        public static string Description<T>(this T t) where T : Enum
         {
             string fieldName = Enum.GetName(typeof(T), t);
             object[] attrs = typeof(T).GetField(fieldName).GetCustomAttributes(typeof(DescriptionAttribute), false);
