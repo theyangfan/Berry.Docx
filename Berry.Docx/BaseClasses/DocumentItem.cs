@@ -145,7 +145,7 @@ namespace Berry.Docx
                     foreach (ParagraphItem item in RunItems((W.Run)ele))
                         yield return item;
                 }
-                else if (ele is W.Hyperlink)
+                else if (ele is W.Hyperlink) // Hyperlink
                 {
                     yield return new Hyperlink(_doc, (W.Hyperlink)ele);
                 }
@@ -265,6 +265,8 @@ namespace Berry.Docx
             else if (element is W.Table) return new Table(_doc, (W.Table)element);
             else if (element is W.SdtBlock) return new SdtBlock(_doc, (W.SdtBlock)element);
             else if (element is W.SdtContentBlock) return new SdtBlockContent(_doc, (W.SdtContentBlock)element);
+            else if(element is W.BookmarkStart) return new BookmarkStart(_doc, (W.BookmarkStart)element);
+            else if(element is W.BookmarkEnd) return new BookmarkEnd(_doc, (W.BookmarkEnd)element);
             else return null;
         }
         #endregion

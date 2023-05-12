@@ -465,10 +465,16 @@ namespace Berry.Docx
             Justification justification1 = new Justification() { Val = JustificationValues.Left };
             OutlineLevel outlineLevel1 = new OutlineLevel() { Val = 9 };
 
+            NumberingProperties numberingProperties1 = new NumberingProperties();
+            NumberingId numberingId1 = new NumberingId() { Val = 0 };
+
+            numberingProperties1.Append(numberingId1);
+
             styleParagraphProperties1.Append(widowControl1);
             styleParagraphProperties1.Append(spacingBetweenLines1);
             styleParagraphProperties1.Append(justification1);
             styleParagraphProperties1.Append(outlineLevel1);
+            styleParagraphProperties1.Append(numberingProperties1);
 
             StyleRunProperties styleRunProperties1 = new StyleRunProperties();
             RunFonts runFonts1 = new RunFonts() { AsciiTheme = ThemeFontValues.MajorHighAnsi, HighAnsiTheme = ThemeFontValues.MajorHighAnsi, EastAsiaTheme = ThemeFontValues.MajorEastAsia, ComplexScriptTheme = ThemeFontValues.MajorBidi };

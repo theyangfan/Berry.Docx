@@ -88,7 +88,7 @@ namespace Berry.Docx.Field
         {
             get
             {
-                if(OwnerParagraph == null) return null;
+                if(OwnerParagraph == null) return base.PreviousSibling;
                 int index = OwnerParagraph.ChildItems.IndexOf(this);
                 try
                 {
@@ -109,7 +109,7 @@ namespace Berry.Docx.Field
         {
             get
             {
-                if (OwnerParagraph == null) return null;
+                if (OwnerParagraph == null) return base.NextSibling;
                 int index = OwnerParagraph.ChildItems.IndexOf(this);
                 try
                 {
@@ -258,6 +258,10 @@ namespace Berry.Docx.Field
             {
                 InsertBeforeSelf(obj as ParagraphItem);
             }
+            else
+            {
+                base.InsertBeforeSelf(obj);
+            }
         }
 
         /// <summary>
@@ -291,6 +295,10 @@ namespace Berry.Docx.Field
             if (obj is ParagraphItem)
             {
                 InsertAfterSelf(obj as ParagraphItem);
+            }
+            else
+            {
+                base.InsertAfterSelf(obj);
             }
         }
 

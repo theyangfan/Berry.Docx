@@ -27,10 +27,15 @@ namespace Test
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
                 var p = doc.Paragraphs[0];
-                var toc = p.AppendTOC(1, 3);
-                toc.Update();
+                foreach(var s in doc.Sections)
+                {
+                    foreach(var o in s.ChildObjects)
+                    {
+                        Console.WriteLine(o);
+                    } 
+                }
 
-                doc.SaveAs(dst);
+                //doc.SaveAs(dst);
             }
         }
     }

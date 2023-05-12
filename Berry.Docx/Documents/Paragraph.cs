@@ -282,14 +282,13 @@ namespace Berry.Docx.Documents
         /// <para>为当前段落应用指定名称的段落样式.</para>
         /// </summary>
         /// <param name="styleName">The style name.</param>
-        public void ApplyStyle(string styleName)
+        public ParagraphStyle ApplyStyle(string styleName)
         {
-            if (_paragraph == null || string.IsNullOrEmpty(styleName)) return;
+            if (_paragraph == null || string.IsNullOrEmpty(styleName)) return null;
             // 如果为内置样式，则应用内置样式
             if (Style.NameToBuiltIn(styleName) != BuiltInStyle.None)
             {
-                ApplyStyle(Style.NameToBuiltIn(styleName));
-                return;
+                return ApplyStyle(Style.NameToBuiltIn(styleName));
             }
             var style = _doc.Styles.FindByName(styleName, StyleType.Paragraph);
             if (style == null)
@@ -300,6 +299,7 @@ namespace Berry.Docx.Documents
             if (_paragraph.ParagraphProperties == null)
                 _paragraph.ParagraphProperties = new W.ParagraphProperties();
             _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
+            return style as ParagraphStyle;
         }
 
         /// <summary>
@@ -307,9 +307,9 @@ namespace Berry.Docx.Documents
         /// <para>为当前段落应用指定的内置样式.</para>
         /// </summary>
         /// <param name="bstyle">The built-in style type.</param>
-        public void ApplyStyle(BuiltInStyle bstyle)
+        public ParagraphStyle ApplyStyle(BuiltInStyle bstyle)
         {
-            if (_paragraph == null) return;
+            if (_paragraph == null) return null;
             var style = ParagraphStyle.CreateBuiltInStyle(bstyle, _doc);
             if (style != null)
             {
@@ -325,6 +325,7 @@ namespace Berry.Docx.Documents
                     _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
                 }
             }
+            return style;
         }
 
         /// <summary>
@@ -449,18 +450,32 @@ namespace Berry.Docx.Documents
             return pic;
         }
 
+        /// <summary>
+        /// Append a <see cref="TableOfContent"/> after current paragraph.
+        /// </summary>
+        /// <param name="startOutlineLevel">The start value of paragraph outline level. From 1 to 9.</param>
+        /// <param name="endOutlineLevel">The end value of paragraph outline level. From 1 to 9.</param>
+        /// <returns>The new appended <see cref="TableOfContent"/>.</returns>
         public TableOfContent AppendTOC(int startOutlineLevel, int endOutlineLevel)
         {
+            if(startOutlineLevel < 1 || startOutlineLevel > 9
+                || endOutlineLevel < 1 || endOutlineLevel > 9
+                || startOutlineLevel > endOutlineLevel)
+            {
+                throw new ArgumentOutOfRangeException("The value of the outline level is invalid. " +
+                    "And the start value can not greater than the end value.");
+            }
             SdtBlock sdt = new SdtBlock(_doc);
             sdt.Format.DocPart.GalleryFilter = "Table of Contents";
 
             Paragraph tocHeading = new Paragraph(_doc);
             tocHeading.AppendText("目录");
             tocHeading.ApplyStyle(BuiltInStyle.TOCHeading);
+            tocHeading.ListFormat.ClearFormatting();
 
             Paragraph tocBegin = new Paragraph(_doc);
             Paragraph tocEnd = new Paragraph(_doc);
-            string code = $" TOC \\o \"{startOutlineLevel}-{endOutlineLevel}\" \\h ";
+            string code = $" TOC \\o \"{startOutlineLevel}-{endOutlineLevel}\" \\h \\z \\u ";
             var fieldBegin = new FieldChar(_doc, FieldCharType.Begin);
             var fieldCode = new FieldCode(_doc, code);
             var fieldSeparate = new FieldChar(_doc, FieldCharType.Separate);
