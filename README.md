@@ -2,11 +2,17 @@
 
 [![Downloads](https://img.shields.io/nuget/dt/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx)
 
-根据 Office Open XML 格式规范(ECMA 375 第二版) 开发的一款用于读写 Word 2007+ (.docx) 文档的 .NET 库，基于 OpenXML SDK。作为一个 .NET 新手，建立此项目的主要目的是锻炼自己的 API 设计能力，目前项目仍在建设中...
+根据 Office Open XML 格式规范(ECMA 375 第二版) 开发的一款用于读写 Word 2007+ (.docx) 文档的 .NET 库，基于 OpenXML SDK。
 
-A .NET library for reading and writing Word 2007+ (.docx) files developed according to the Office OpenXML Format specification (ECMA-375, second edition), based on the OpenXML SDK. As a .NET novice, the main purpose of this project is to exercise my API design ability, which is still under construction...
+A .NET library for reading and writing Word 2007+ (.docx) files developed according to the Office OpenXML Format specification (ECMA-375, second edition), based on the OpenXML SDK.
 
-<br/>
+
+
+下图为 Berry.Docx 支持元素的类型结构图 (The following diagram shows the type structure of the elements supported by Berry.Docx)：
+
+![](elements_type_structure.png)
+
+ <br />
 
 # 程序包（Packages）
 
@@ -29,18 +35,6 @@ Berry.Docx 的 NuGet 软件包发布在NuGet.org上:
 *Open your project in Visual Studio, right-click the solution and select  **Manager NuGet Packages** , then enter "Berry.Docx" in the Browse input box, as follows:*
 
 ![image](https://github.com/theyangfan/Berry.Docx/blob/main/nuget_package_manager.png)
-
-选择安装即可。
-
-或者在 Visual Studio 程序包管理器控制台运行以下命令来安装：
-
-*Select and install.*
-
-*Or you could run the following command in the Package Manager Console to install it.*
-
-```sh
-PM> Install-Package Berry.Docx
-```
 
 <br/>
 
@@ -85,7 +79,7 @@ namespace Example
                 // 保存 (Save)
                 doc.Save();
             }
-        } 
+        }
     }
 }
 ```
@@ -106,7 +100,7 @@ namespace Example
 | 操作页眉页脚\|*Manipulates header and footers*                                                                                  |
 | 读写页面设置\|*Read-write page setup*                                                                                           |
 | 读写列表样式\|*Read-write list style*                                                                                           |
-| 查找文本\|*Find text*                                                                             |
+| 查找文本\|*Find text*                                                                                                         |
 | 读写表格格式 \| *Read-write table formats*                                                                                      |
 | 向段落中添加图片、分隔符和制表位 \| *Append picture , break and tab to paragraph*                                                         |
 | 读写域代码 \| Read-write field codes                                                                                           |
