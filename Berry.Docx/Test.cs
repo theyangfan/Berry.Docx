@@ -24,18 +24,13 @@ namespace Test
         {
             string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
             string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
-            using (Document doc = new Document(src, FileShare.ReadWrite))
-            {
-                var p = doc.Paragraphs[0];
-                foreach(var s in doc.Sections)
-                {
-                    foreach(var o in s.ChildObjects)
-                    {
-                        Console.WriteLine(o);
-                    } 
-                }
 
-                //doc.SaveAs(dst);
+            using (Document doc = new Document(src))
+            {
+                
+
+                // 保存
+                // doc.SaveAs(dst);
             }
         }
     }

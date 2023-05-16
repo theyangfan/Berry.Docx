@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net4.6.1;netcoreapp2.1;net5.0;net6.0</TargetFrameworks>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon />
     <StartupObject />
     <Description>Berry.Docx 是一款用于读写 Word 2007+ (.docx) 文档的.NET 库，无需 Word 应用程序。 旨在提供简便，完整，友好的接口来封装底层的 OpenXML API。
 Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.docx) files without the Word application. It aims to provide an intuitive, full and user-friendly interface to dealing with the underlying OpenXML API.</Description>
-    <Authors>番茄就是西红柿</Authors>
+    <Authors>番茄土豆</Authors>
     <Company></Company>
     <Copyright>© theyangfan 2023. All rights reserved.</Copyright>
     <PackageTags>word, docx, openxml, office</PackageTags>
@@ -49,7 +49,7 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\logo.png">
+    <None Include="..\images\logo.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

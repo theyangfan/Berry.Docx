@@ -2,17 +2,17 @@
 
 [![Downloads](https://img.shields.io/nuget/dt/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx)
 
-根据 Office Open XML 格式规范(ECMA 375 第二版) 开发的一款用于读写 Word 2007+ (.docx) 文档的 .NET 库，基于 OpenXML SDK。
+基于 [OpenXML SDK](https://github.com/dotnet/Open-XML-SDK) 开发的一款用于读写 Word 2007+ (.docx) 文档的 .NET 库，不依赖 Microsoft Office 应用程序 。
 
-A .NET library for reading and writing Word 2007+ (.docx) files developed according to the Office OpenXML Format specification (ECMA-375, second edition), based on the OpenXML SDK.
+A .NET library for reading and writing Word 2007+ (.docx) files based on the [OpenXML SDK](https://github.com/dotnet/Open-XML-SDK). Does not rely on Microsoft Office applications.
 
 
 
 下图为 Berry.Docx 支持元素的类型结构图 (The following diagram shows the type structure of the elements supported by Berry.Docx)：
 
-![](elements_type_structure.png)
+![](images/elements_type_structure.png)
 
- <br />
+<br />
 
 # 程序包（Packages）
 
@@ -34,7 +34,7 @@ Berry.Docx 的 NuGet 软件包发布在NuGet.org上:
 
 *Open your project in Visual Studio, right-click the solution and select  **Manager NuGet Packages** , then enter "Berry.Docx" in the Browse input box, as follows:*
 
-![image](https://github.com/theyangfan/Berry.Docx/blob/main/nuget_package_manager.png)
+![image](images/nuget_package_manager.png)
 
 <br/>
 
@@ -110,7 +110,9 @@ namespace Example
 
 # 文档（Documentation）
 
-- [API Documentation](https://theyangfan.github.io/Berry.Docx)
+- [使用指南 (Usage Guide)](https://github.com/theyangfan/Berry.Docx/wiki)
+
+- [API 文档 (API Documentation)](https://theyangfan.github.io/Berry.Docx)
 
 <br/>
 
