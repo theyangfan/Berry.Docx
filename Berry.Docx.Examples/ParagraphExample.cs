@@ -13,17 +13,17 @@ namespace Berry.Docx.Examples
         {
             // 1
             Paragraph p1 = new Paragraph(doc);
-            p1.Text = "满纸荒唐言，一把辛酸泪。";
+            p1.Text = "这是一个段落。";
             doc.Sections[0].Paragraphs.Add(p1);
 
             // 2
             Paragraph p2 = doc.CreateParagraph();
-            p2.Text = "都云作者痴，谁解其中味？";
+            p2.Text = "这是一个段落。";
             doc.Sections[0].ChildObjects.Add(p2);
 
             // 3
             Paragraph p3 = doc.Sections[0].AddParagraph();
-            p3.Text = "字字看来皆是血，十年辛苦不寻常！";
+            p3.Text = "这是一个段落。";
         }
 
         public static void SetParagraphFormat(Document doc)
