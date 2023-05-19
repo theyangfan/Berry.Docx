@@ -329,6 +329,18 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
+        /// Apply the specified style to the current paragraph.
+        /// </summary>
+        /// <param name="style">The paragraph style.</param>
+        public void ApplyStyle(ParagraphStyle style)
+        {
+            if(style == null) return;
+            if (_paragraph.ParagraphProperties == null)
+                _paragraph.ParagraphProperties = new W.ParagraphProperties();
+            _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
+        }
+
+        /// <summary>
         /// Appends the specified text to the end of the current paragraph.
         /// </summary>
         /// <param name="text">The specified text.</param>
