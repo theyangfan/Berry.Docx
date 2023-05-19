@@ -55,6 +55,7 @@ namespace Berry.Docx.Formatting
         private float _position = 0;
         private Border _border;
         private bool _isHidden = false;
+        private bool _snapToGrid = true;
         #endregion
 
         #endregion
@@ -1714,6 +1715,102 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _isHidden = value;
+                }
+            }
+        }
+
+        public bool SnapToGrid
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.SnapToGrid != null)
+                    {
+                        return _directRHld.SnapToGrid;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.SnapToGrid != null)
+                            return rStyle.SnapToGrid;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.SnapToGrid != null)
+                            return paragraph.SnapToGrid;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.SnapToGrid != null)
+                    {
+                        return _markRHld.SnapToGrid;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.SnapToGrid != null)
+                        return paragraph.SnapToGrid;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld?.SnapToGrid != null)
+                    {
+                        return _tblStyleHld.SnapToGrid;
+                    }
+                    // direct formatting
+                    if (_directSHld.SnapToGrid != null)
+                    {
+                        return _directSHld.SnapToGrid;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.SnapToGrid != null)
+                        return style.SnapToGrid;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.SnapToGrid ?? _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else
+                {
+                    return _snapToGrid;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.SnapToGrid = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.SnapToGrid = value;
+                    else _directSHld.SnapToGrid = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.SnapToGrid = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.SnapToGrid = value;
+                }
+                else
+                {
+                    _snapToGrid = value;
                 }
             }
         }

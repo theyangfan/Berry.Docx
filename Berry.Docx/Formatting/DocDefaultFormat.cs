@@ -42,6 +42,10 @@ namespace Berry.Docx.Formatting
                     _cFormat.CharacterSpacing = rHld.CharacterSpacing;
                 if (rHld.Position != null)
                     _cFormat.Position = rHld.Position;
+                if(rHld.IsHidden != null)
+                    _cFormat.IsHidden = rHld.IsHidden;
+                if(rHld.SnapToGrid != null)
+                    _cFormat.SnapToGrid = rHld.SnapToGrid;
 
                 _cFormat.Border = new Border(doc, defaults.RunPropertiesDefault);
             }

@@ -36,6 +36,7 @@ namespace Berry.Docx.Formatting
         private FloatValue _characterSpacing;
         private FloatValue _position;
         private BooleanValue _isHidden;
+        private BooleanValue _snapToGrid;
         #endregion
 
         #region Constructors
@@ -2026,6 +2027,135 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public BooleanValue SnapToGrid
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _snapToGrid;
+                }
+                W.SnapToGrid snapToGrid = null;
+                if (_run?.RunProperties?.SnapToGrid != null)
+                {
+                    snapToGrid = _run.RunProperties.SnapToGrid;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        snapToGrid = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.SnapToGrid;
+                    }
+                    else
+                    {
+                        snapToGrid = _style.StyleRunProperties?.SnapToGrid;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.SnapToGrid != null)
+                {
+                    snapToGrid = _defaultRPr.RunPropertiesBaseStyle.SnapToGrid;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.SnapToGrid>() != null)
+                {
+                    snapToGrid = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.SnapToGrid>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.SnapToGrid != null)
+                {
+                    snapToGrid = _numberingLevel.NumberingSymbolRunProperties.SnapToGrid;
+                }
+                if (snapToGrid == null) return null;
+                if (snapToGrid.Val == null) return true;
+                return snapToGrid.Val.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.SnapToGrid == null)
+                    {
+                        _run.RunProperties.SnapToGrid = new W.SnapToGrid();
+                    }
+                    if (value)
+                    {
+                        _run.RunProperties.SnapToGrid.Val = null;
+                    }
+                    else
+                    {
+                        _run.RunProperties.SnapToGrid.Val = false;
+                    }
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.SnapToGrid == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.SnapToGrid = new W.SnapToGrid();
+                        }
+                        if (value)
+                            tblStylePr.RunPropertiesBaseStyle.SnapToGrid.Val = null;
+                        else
+                            tblStylePr.RunPropertiesBaseStyle.SnapToGrid.Val = false;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.SnapToGrid == null)
+                        {
+                            _style.StyleRunProperties.SnapToGrid = new W.SnapToGrid();
+                        }
+                        if (value)
+                            _style.StyleRunProperties.SnapToGrid.Val = null;
+                        else
+                            _style.StyleRunProperties.SnapToGrid.Val = false;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.SnapToGrid>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.SnapToGrid());
+                    W.SnapToGrid snapToGrid = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.SnapToGrid>();
+                    if (value) snapToGrid.Val = null;
+                    else snapToGrid.Val = false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.SnapToGrid == null)
+                        _numberingLevel.NumberingSymbolRunProperties.SnapToGrid = new W.SnapToGrid();
+                    if (value) _numberingLevel.NumberingSymbolRunProperties.SnapToGrid.Val = null;
+                    else _numberingLevel.NumberingSymbolRunProperties.SnapToGrid.Val = false;
+                }
+                else
+                {
+                    _snapToGrid = value;
+                }
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -2079,7 +2209,8 @@ namespace Berry.Docx.Formatting
             format.CharacterScale = directFmt.CharacterScale ?? baseFmt.CharacterScale;
             format.CharacterSpacing = directFmt.CharacterSpacing ?? baseFmt.CharacterSpacing;
             format.Position = directFmt.Position ?? baseFmt.Position;
-
+            format.IsHidden = directFmt.IsHidden ?? baseFmt.IsHidden;
+            format.SnapToGrid = directFmt.SnapToGrid ?? baseFmt.SnapToGrid;
             return format;
         }
         #endregion
