@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Drawing;
@@ -24,16 +25,21 @@ namespace Test
         {
             string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
             string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
-
+#if NET6_0
+            Console.WriteLine(Convert.ToHexString(System.Text.Encoding.Unicode.GetBytes("我")));
+#endif
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
-                // 对文档最后一个段落进行标记
-                Paragraph p1 = doc.LastSection.Paragraphs[0];
-                foreach(var tr in p1.ChildItems.OfType<TextRange>())
+                var paragraph = doc.LastSection.Paragraphs[0];
+                foreach(var tr in paragraph.ChildItems.OfType<TextRange>())
                 {
-                    Console.WriteLine(tr.CharacterFormat.SnapToGrid);
+                    tr.CharacterFormat.UseComplexScript = true;
+                    tr.CharacterFormat.FontNameComplexScript = "黑体";
+                    tr.CharacterFormat.FontNameAscii = "Times New Roman";
+                    tr.CharacterFormat.FontNameEastAsia = "微软雅黑";
+                    tr.CharacterFormat.FontTypeHint = FontContentType.EastAsia;
                 }
-
+                
                 // 保存
                 doc.SaveAs(dst);
             }

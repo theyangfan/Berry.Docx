@@ -56,6 +56,8 @@ namespace Berry.Docx.Formatting
         private Border _border;
         private bool _isHidden = false;
         private bool _snapToGrid = true;
+        private bool _useComplexScript = false;
+        private bool _rightToLeft = false;
         #endregion
 
         #endregion
@@ -1811,6 +1813,94 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _snapToGrid = value;
+                }
+            }
+        }
+
+        public bool UseComplexScript
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    return _directRHld.UseComplexScript ?? false;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    return _markRHld.UseComplexScript ?? false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.UseComplexScript ?? false;
+                }
+                else
+                {
+                    return _useComplexScript;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.UseComplexScript = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.UseComplexScript = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.UseComplexScript = value;
+                }
+                else
+                {
+                    _useComplexScript = value;
+                }
+            }
+        }
+
+        public bool RightToLeft
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    return _directRHld.RightToLeft ?? false;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    return _markRHld.RightToLeft ?? false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.RightToLeft ?? false;
+                }
+                else
+                {
+                    return _rightToLeft;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.RightToLeft = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.RightToLeft = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.RightToLeft = value;
+                }
+                else
+                {
+                    _rightToLeft = value;
                 }
             }
         }

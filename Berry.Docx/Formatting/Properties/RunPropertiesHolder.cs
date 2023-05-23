@@ -37,6 +37,8 @@ namespace Berry.Docx.Formatting
         private FloatValue _position;
         private BooleanValue _isHidden;
         private BooleanValue _snapToGrid;
+        private BooleanValue _useComplexScript;
+        private BooleanValue _rightToLeft;
         #endregion
 
         #region Constructors
@@ -570,7 +572,7 @@ namespace Berry.Docx.Formatting
                 }
                 else
                 {
-                    _fontNameHAnsi = value;
+                    _fontNameCs = value;
                 }
             }
         }
@@ -2156,6 +2158,156 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        public BooleanValue UseComplexScript
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _useComplexScript;
+                }
+                W.ComplexScript cs = null;
+                if (_run?.RunProperties?.ComplexScript != null)
+                {
+                    cs = _run.RunProperties.ComplexScript;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.ComplexScript>() != null)
+                {
+                    cs = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.ComplexScript>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.ComplexScript != null)
+                {
+                    cs = _numberingLevel.NumberingSymbolRunProperties.ComplexScript;
+                }
+                if (cs == null) return null;
+                if (cs.Val == null) return true;
+                return cs.Val.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.ComplexScript == null)
+                    {
+                        _run.RunProperties.ComplexScript = new W.ComplexScript();
+                    }
+                    if (value)
+                    {
+                        _run.RunProperties.ComplexScript.Val = null;
+                    }
+                    else
+                    {
+                        _run.RunProperties.ComplexScript.Val = false;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.ComplexScript>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.ComplexScript());
+                    var cs = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.ComplexScript>();
+                    if (value) cs.Val = null;
+                    else cs.Val = false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.GetFirstChild<W.ComplexScript>() == null)
+                        _numberingLevel.NumberingSymbolRunProperties.AddChild(new W.ComplexScript());
+                    var cs = _numberingLevel.NumberingSymbolRunProperties.GetFirstChild<W.ComplexScript>();
+                    if (value) cs.Val = null;
+                    else cs.Val = false;
+                }
+                else
+                {
+                    _useComplexScript = value;
+                }
+            }
+        }
+
+        public BooleanValue RightToLeft
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _rightToLeft;
+                }
+                W.RightToLeftText rtl = null;
+                if (_run?.RunProperties?.RightToLeftText != null)
+                {
+                    rtl = _run.RunProperties.RightToLeftText;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RightToLeftText>() != null)
+                {
+                    rtl = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RightToLeftText>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.RightToLeftText != null)
+                {
+                    rtl = _numberingLevel.NumberingSymbolRunProperties.RightToLeftText;
+                }
+                if (rtl == null) return null;
+                if (rtl.Val == null) return true;
+                return rtl.Val.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.RightToLeftText == null)
+                    {
+                        _run.RunProperties.RightToLeftText = new W.RightToLeftText();
+                    }
+                    if (value)
+                    {
+                        _run.RunProperties.RightToLeftText.Val = null;
+                    }
+                    else
+                    {
+                        _run.RunProperties.RightToLeftText.Val = false;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RightToLeftText>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RightToLeftText());
+                    var rtl = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RightToLeftText>();
+                    if (value) rtl.Val = null;
+                    else rtl.Val = false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.GetFirstChild<W.RightToLeftText>() == null)
+                        _numberingLevel.NumberingSymbolRunProperties.AddChild(new W.RightToLeftText());
+                    var rtl = _numberingLevel.NumberingSymbolRunProperties.GetFirstChild<W.RightToLeftText>();
+                    if (value) rtl.Val = null;
+                    else rtl.Val = false;
+                }
+                else
+                {
+                    _rightToLeft = value;
+                }
+            }
+        }
         #endregion
 
         #region Public Methods
@@ -2211,6 +2363,7 @@ namespace Berry.Docx.Formatting
             format.Position = directFmt.Position ?? baseFmt.Position;
             format.IsHidden = directFmt.IsHidden ?? baseFmt.IsHidden;
             format.SnapToGrid = directFmt.SnapToGrid ?? baseFmt.SnapToGrid;
+
             return format;
         }
         #endregion
