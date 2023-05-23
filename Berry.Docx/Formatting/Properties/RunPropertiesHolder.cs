@@ -21,14 +21,21 @@ namespace Berry.Docx.Formatting
         private readonly W.Level _numberingLevel;
 
         private string _fontNameEastAsia;
+        private string _fontNameEastAsiaTheme;
         private string _fontNameAscii;
+        private string _fontNameAsciiTheme;
         private string _fontNameHAnsi;
+        private string _fontNameHAnsiTheme;
         private string _fontNameCs;
+        private string _fontNameCsTheme;
+     
         private EnumValue<FontContentType> _fontTypeHint;
         private FloatValue _fontSize;
         private FloatValue _fontSizeCs;
         private BooleanValue _bold;
+        private BooleanValue _boldCs;
         private BooleanValue _italic;
+        private BooleanValue _italicCs;
         private EnumValue<SubSuperScript> _subSuperScript;
         private EnumValue<UnderlineStyle> _underlineStyle;
         private ColorValue _color = ColorValue.Auto;
@@ -212,6 +219,126 @@ namespace Berry.Docx.Formatting
                     if(_numberingLevel.NumberingSymbolRunProperties == null)
                         _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
                     if(_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
+                        _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
+                    _numberingLevel.NumberingSymbolRunProperties.RunFonts.EastAsia = value;
+                }
+                else
+                {
+                    _fontNameEastAsia = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets East Asian font name.
+        /// </summary>
+        public string FontNameEastAsiaTheme
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _fontNameEastAsiaTheme;
+                }
+                W.RunFonts rFonts = null;
+                if (_run?.RunProperties?.RunFonts != null)
+                {
+                    rFonts = _run.RunProperties.RunFonts;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        rFonts = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.RunFonts;
+                    }
+                    else
+                    {
+                        rFonts = _style.StyleRunProperties?.RunFonts;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.RunFonts != null)
+                {
+                    rFonts = _defaultRPr.RunPropertiesBaseStyle.RunFonts;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
+                {
+                    rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.RunFonts != null)
+                {
+                    rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
+                }
+                if (rFonts?.EastAsiaTheme != null)
+                {
+                    return _document.GetThemeFont(rFonts.EastAsiaTheme);
+                }
+                return rFonts?.EastAsia;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.RunFonts == null)
+                    {
+                        _run.RunProperties.RunFonts = new W.RunFonts();
+                    }
+                    _run.RunProperties.RunFonts.EastAsia = value;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.RunFonts == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.RunFonts = new W.RunFonts();
+                        }
+                        tblStylePr.RunPropertiesBaseStyle.RunFonts.EastAsia = value;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.RunFonts == null)
+                        {
+                            _style.StyleRunProperties.RunFonts = new W.RunFonts();
+                        }
+                        _style.StyleRunProperties.RunFonts.EastAsia = value;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
+                    W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                    rFonts.EastAsia = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
                         _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
                     _numberingLevel.NumberingSymbolRunProperties.RunFonts.EastAsia = value;
                 }
@@ -808,6 +935,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets complex script font size specified in points.
+        /// </summary>
         public FloatValue FontSizeCs
         {
             get
@@ -925,6 +1055,7 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
         /// <summary>
         /// Gets or sets bold style.
         /// </summary>
@@ -1059,6 +1190,139 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
+        /// Gets or sets complex script bold style.
+        /// </summary>
+        public BooleanValue BoldCs
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _boldCs;
+                }
+                W.BoldComplexScript bold = null;
+                if (_run?.RunProperties?.BoldComplexScript != null)
+                {
+                    bold = _run.RunProperties.BoldComplexScript;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        bold = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.BoldComplexScript;
+                    }
+                    else
+                    {
+                        bold = _style.StyleRunProperties?.BoldComplexScript;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.BoldComplexScript != null)
+                {
+                    bold = _defaultRPr.RunPropertiesBaseStyle.BoldComplexScript;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.BoldComplexScript>() != null)
+                {
+                    bold = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.BoldComplexScript>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.BoldComplexScript != null)
+                {
+                    bold = _numberingLevel.NumberingSymbolRunProperties.BoldComplexScript;
+                }
+                if (bold == null) return null;
+                if (bold.Val == null) return true;
+                return bold.Val.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.BoldComplexScript == null)
+                    {
+                        _run.RunProperties.BoldComplexScript = new W.BoldComplexScript();
+                    }
+                    if (value)
+                    {
+                        _run.RunProperties.BoldComplexScript.Val = null;
+                    }
+                    else
+                    {
+                        _run.RunProperties.BoldComplexScript.Val = false;
+                    }
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.BoldComplexScript == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.BoldComplexScript = new W.BoldComplexScript();
+                        }
+                        if (value)
+                            tblStylePr.RunPropertiesBaseStyle.BoldComplexScript.Val = null;
+                        else
+                            tblStylePr.RunPropertiesBaseStyle.BoldComplexScript.Val = false;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.BoldComplexScript == null)
+                        {
+                            _style.StyleRunProperties.BoldComplexScript = new W.BoldComplexScript();
+                        }
+                        if (value)
+                            _style.StyleRunProperties.BoldComplexScript.Val = null;
+                        else
+                            _style.StyleRunProperties.BoldComplexScript.Val = false;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.BoldComplexScript>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.BoldComplexScript());
+                    W.BoldComplexScript bold = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.BoldComplexScript>();
+                    if (value) bold.Val = null;
+                    else bold.Val = false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.BoldComplexScript == null)
+                        _numberingLevel.NumberingSymbolRunProperties.BoldComplexScript = new W.BoldComplexScript();
+                    if (value) _numberingLevel.NumberingSymbolRunProperties.BoldComplexScript.Val = null;
+                    else _numberingLevel.NumberingSymbolRunProperties.BoldComplexScript.Val = false;
+                }
+                else
+                {
+                    _boldCs = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets italic style.
         /// </summary>
         public BooleanValue Italic
@@ -1187,6 +1451,139 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _italic = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets complex script italic style.
+        /// </summary>
+        public BooleanValue ItalicCs
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _italicCs;
+                }
+                W.ItalicComplexScript italic = null;
+                if (_run?.RunProperties?.ItalicComplexScript != null)
+                {
+                    italic = _run.RunProperties.ItalicComplexScript;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        italic = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.ItalicComplexScript;
+                    }
+                    else
+                    {
+                        italic = _style.StyleRunProperties?.ItalicComplexScript;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.ItalicComplexScript != null)
+                {
+                    italic = _defaultRPr.RunPropertiesBaseStyle.ItalicComplexScript;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.ItalicComplexScript>() != null)
+                {
+                    italic = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.ItalicComplexScript>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.ItalicComplexScript != null)
+                {
+                    italic = _numberingLevel.NumberingSymbolRunProperties.ItalicComplexScript;
+                }
+                if (italic == null) return null;
+                if (italic.Val == null) return true;
+                return italic.Val.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.ItalicComplexScript == null)
+                    {
+                        _run.RunProperties.ItalicComplexScript = new W.ItalicComplexScript();
+                    }
+                    if (value)
+                    {
+                        _run.RunProperties.ItalicComplexScript.Val = null;
+                    }
+                    else
+                    {
+                        _run.RunProperties.ItalicComplexScript.Val = false;
+                    }
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.ItalicComplexScript == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.ItalicComplexScript = new W.ItalicComplexScript();
+                        }
+                        if (value)
+                            tblStylePr.RunPropertiesBaseStyle.ItalicComplexScript.Val = null;
+                        else
+                            tblStylePr.RunPropertiesBaseStyle.ItalicComplexScript.Val = false;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.ItalicComplexScript == null)
+                        {
+                            _style.StyleRunProperties.ItalicComplexScript = new W.ItalicComplexScript();
+                        }
+                        if (value)
+                            _style.StyleRunProperties.ItalicComplexScript.Val = null;
+                        else
+                            _style.StyleRunProperties.ItalicComplexScript.Val = false;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.ItalicComplexScript>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.ItalicComplexScript());
+                    W.ItalicComplexScript italic = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.ItalicComplexScript>();
+                    if (value) italic.Val = null;
+                    else italic.Val = false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.ItalicComplexScript == null)
+                        _numberingLevel.NumberingSymbolRunProperties.ItalicComplexScript = new W.ItalicComplexScript();
+                    if (value) _numberingLevel.NumberingSymbolRunProperties.ItalicComplexScript.Val = null;
+                    else _numberingLevel.NumberingSymbolRunProperties.ItalicComplexScript.Val = false;
+                }
+                else
+                {
+                    _italicCs = value;
                 }
             }
         }
@@ -2354,7 +2751,9 @@ namespace Berry.Docx.Formatting
             format.FontSize = directFmt.FontSize ?? baseFmt.FontSize;
             format.FontSizeCs = directFmt.FontSizeCs ?? baseFmt.FontSizeCs;
             format.Bold = directFmt.Bold ?? baseFmt.Bold;
+            format.BoldCs = directFmt.BoldCs ?? baseFmt.BoldCs;
             format.Italic = directFmt.Italic ?? baseFmt.Italic;
+            format.ItalicCs = directFmt.ItalicCs ?? baseFmt.ItalicCs;
             format.SubSuperScript = directFmt.SubSuperScript ?? baseFmt.SubSuperScript;
             format.UnderlineStyle = directFmt.UnderlineStyle ?? baseFmt.UnderlineStyle;
             format.TextColor = directFmt.TextColor ?? baseFmt.TextColor;
