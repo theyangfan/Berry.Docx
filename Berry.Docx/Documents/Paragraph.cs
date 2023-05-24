@@ -246,6 +246,18 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
+        /// Return true if the current paragraph is at the end of the section, otherwise false.
+        /// </summary>
+        public bool IsEndOfSection
+        {
+            get
+            {
+                return _paragraph.ParagraphProperties?.SectionProperties != null
+                    || _paragraph.NextSibling() is W.SectionProperties;
+            }
+        }
+
+        /// <summary>
         /// Gets the owener section of the current paragraph.
         /// </summary>
         internal Section Section

@@ -23,23 +23,13 @@ namespace Test
     {
         public static void Main()
         {
-            string src = @"C:\Users\tomato\Desktop\test.docx";
-            string dst = @"C:\Users\tomato\Desktop\dst.docx";
-#if NET6_0
-            Console.WriteLine(Convert.ToHexString(System.Text.Encoding.Unicode.GetBytes("我")));
-#endif
+            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
+            string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
+
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
                 var paragraph = doc.LastSection.Paragraphs[0];
-                foreach(var tr in paragraph.ChildItems.OfType<TextRange>())
-                {
-                    tr.CharacterFormat.FontNameComplexScript = "楷体";
-                    tr.CharacterFormat.FontNameAscii = "Times New Roman";
-                    tr.CharacterFormat.FontNameEastAsia = "微软雅黑";
-                    //tr.CharacterFormat.FontTypeHint = FontContentType.EastAsia;
-                    tr.CharacterFormat.UseComplexScript = true;
-                    //tr.CharacterFormat.RightToLeft = true;
-                }
+
 
                 // 保存
                 doc.SaveAs(dst);

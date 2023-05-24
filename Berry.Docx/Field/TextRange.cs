@@ -109,6 +109,18 @@ namespace Berry.Docx.Field
         /// Gets the character format.
         /// </summary>
         public override CharacterFormat CharacterFormat => _cFormat;
+
+        public IEnumerable<Character> Characters
+        {
+            get
+            {
+                foreach(var c in Text)
+                {
+                    yield return new Character(this, c);
+                }
+            }
+        }
+
         #endregion
 
         #region Public Methods

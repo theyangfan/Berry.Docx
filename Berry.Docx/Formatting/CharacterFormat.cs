@@ -177,7 +177,7 @@ namespace Berry.Docx.Formatting
                 else if(_ownerStyle != null)
                 {
                     // table style
-                    if(_tblStyleHld?.FontNameEastAsia != null)
+                    if (_tblStyleHld?.FontNameEastAsia != null)
                     {
                         return _tblStyleHld.FontNameEastAsia;
                     }

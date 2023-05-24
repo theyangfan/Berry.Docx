@@ -128,6 +128,15 @@ namespace Berry.Docx
         #endregion
 
         #region Public Properties
+        public DocumentObjectCollection ChildObjects
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+
         /// <summary>
         /// Return a collection of <see cref="Section"/> that supports traversal in the document. 
         /// <para>返回当前文档中所有节的可遍历集合</para>

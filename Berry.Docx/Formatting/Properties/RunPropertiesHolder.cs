@@ -21,13 +21,13 @@ namespace Berry.Docx.Formatting
         private readonly W.Level _numberingLevel;
 
         private string _fontNameEastAsia;
-        private string _fontNameEastAsiaTheme;
+        private EnumValue<W.ThemeFontValues> _fontNameEastAsiaTheme;
         private string _fontNameAscii;
-        private string _fontNameAsciiTheme;
+        private EnumValue<W.ThemeFontValues> _fontNameAsciiTheme;
         private string _fontNameHAnsi;
-        private string _fontNameHAnsiTheme;
+        private EnumValue<W.ThemeFontValues> _fontNameHAnsiTheme;
         private string _fontNameCs;
-        private string _fontNameCsTheme;
+        private EnumValue<W.ThemeFontValues> _fontNameCsTheme;
      
         private EnumValue<FontContentType> _fontTypeHint;
         private FloatValue _fontSize;
@@ -150,10 +150,7 @@ namespace Berry.Docx.Formatting
                 {
                     rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
-                if(rFonts?.EastAsiaTheme != null)
-                {
-                    return _document.GetThemeFont(rFonts.EastAsiaTheme);
-                }
+                if (rFonts?.EastAsiaTheme != null) return _document.GetThemeFont(rFonts.EastAsiaTheme);
                 return rFonts?.EastAsia;
             }
             set
@@ -230,9 +227,9 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets East Asian font name.
+        /// Gets or sets East Asian theme font.
         /// </summary>
-        public string FontNameEastAsiaTheme
+        public EnumValue<W.ThemeFontValues> FontNameEastAsiaTheme
         {
             get
             {
@@ -270,11 +267,7 @@ namespace Berry.Docx.Formatting
                 {
                     rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
-                if (rFonts?.EastAsiaTheme != null)
-                {
-                    return _document.GetThemeFont(rFonts.EastAsiaTheme);
-                }
-                return rFonts?.EastAsia;
+                return rFonts?.EastAsiaTheme?.Value;
             }
             set
             {
@@ -288,7 +281,8 @@ namespace Berry.Docx.Formatting
                     {
                         _run.RunProperties.RunFonts = new W.RunFonts();
                     }
-                    _run.RunProperties.RunFonts.EastAsia = value;
+                    if (value != null) _run.RunProperties.RunFonts.EastAsiaTheme = value.Val;
+                    else _run.RunProperties.RunFonts.EastAsiaTheme = null;
                 }
                 else if (_style != null)
                 {
@@ -308,7 +302,8 @@ namespace Berry.Docx.Formatting
                         {
                             tblStylePr.RunPropertiesBaseStyle.RunFonts = new W.RunFonts();
                         }
-                        tblStylePr.RunPropertiesBaseStyle.RunFonts.EastAsia = value;
+                        if (value != null) tblStylePr.RunPropertiesBaseStyle.RunFonts.EastAsiaTheme = value.Val;
+                        else tblStylePr.RunPropertiesBaseStyle.RunFonts.EastAsiaTheme = null;
                     }
                     else
                     {
@@ -320,7 +315,8 @@ namespace Berry.Docx.Formatting
                         {
                             _style.StyleRunProperties.RunFonts = new W.RunFonts();
                         }
-                        _style.StyleRunProperties.RunFonts.EastAsia = value;
+                        if (value != null) _style.StyleRunProperties.RunFonts.EastAsiaTheme = value.Val;
+                        else _style.StyleRunProperties.RunFonts.EastAsiaTheme = null;
                     }
                 }
                 else if (_paragraph != null)
@@ -332,7 +328,8 @@ namespace Berry.Docx.Formatting
                     if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
                         _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
                     W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
-                    rFonts.EastAsia = value;
+                    if (value != null) rFonts.EastAsiaTheme = value.Val;
+                    else rFonts.EastAsiaTheme = null;
                 }
                 else if (_numberingLevel != null)
                 {
@@ -340,11 +337,12 @@ namespace Berry.Docx.Formatting
                         _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
                     if (_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
                         _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
-                    _numberingLevel.NumberingSymbolRunProperties.RunFonts.EastAsia = value;
+                    if (value != null) _numberingLevel.NumberingSymbolRunProperties.RunFonts.EastAsiaTheme = value.Val;
+                    else _numberingLevel.NumberingSymbolRunProperties.RunFonts.EastAsiaTheme = null;
                 }
                 else
                 {
-                    _fontNameEastAsia = value;
+                    _fontNameEastAsiaTheme = value;
                 }
             }
         }
@@ -391,10 +389,7 @@ namespace Berry.Docx.Formatting
                 {
                     rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
-                if (rFonts?.AsciiTheme != null)
-                {
-                    return _document.GetThemeFont(rFonts.AsciiTheme);
-                }
+                if (rFonts?.AsciiTheme != null) return _document.GetThemeFont(rFonts.AsciiTheme);
                 return rFonts?.Ascii;
             }
             set
@@ -470,6 +465,124 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public EnumValue<W.ThemeFontValues> FontNameAsciiTheme
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _fontNameAsciiTheme;
+                }
+                W.RunFonts rFonts = null;
+                if (_run?.RunProperties?.RunFonts != null)
+                {
+                    rFonts = _run.RunProperties.RunFonts;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        rFonts = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.RunFonts;
+                    }
+                    else
+                    {
+                        rFonts = _style.StyleRunProperties?.RunFonts;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.RunFonts != null)
+                {
+                    rFonts = _defaultRPr.RunPropertiesBaseStyle.RunFonts;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
+                {
+                    rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.RunFonts != null)
+                {
+                    rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
+                }
+                return rFonts?.AsciiTheme?.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.RunFonts == null)
+                    {
+                        _run.RunProperties.RunFonts = new W.RunFonts();
+                    }
+                    if (value != null) _run.RunProperties.RunFonts.AsciiTheme = value.Val;
+                    else _run.RunProperties.RunFonts.AsciiTheme = null;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.RunFonts == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.RunFonts = new W.RunFonts();
+                        }
+                        if (value != null) tblStylePr.RunPropertiesBaseStyle.RunFonts.AsciiTheme = value.Val;
+                        else tblStylePr.RunPropertiesBaseStyle.RunFonts.AsciiTheme = null;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.RunFonts == null)
+                        {
+                            _style.StyleRunProperties.RunFonts = new W.RunFonts();
+                        }
+                        if (value != null) _style.StyleRunProperties.RunFonts.AsciiTheme = value.Val;
+                        else _style.StyleRunProperties.RunFonts.AsciiTheme = null;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
+                    W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                    if (value != null) rFonts.AsciiTheme = value.Val;
+                    else rFonts.AsciiTheme = null;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
+                        _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
+                    if (value != null) _numberingLevel.NumberingSymbolRunProperties.RunFonts.AsciiTheme = value.Val;
+                    else _numberingLevel.NumberingSymbolRunProperties.RunFonts.AsciiTheme = null;
+                }
+                else
+                {
+                    _fontNameAsciiTheme = value;
+                }
+            }
+        }
+
         public string FontNameHighAnsi
         {
             get
@@ -508,10 +621,7 @@ namespace Berry.Docx.Formatting
                 {
                     rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
-                if (rFonts?.HighAnsiTheme != null)
-                {
-                    return _document.GetThemeFont(rFonts.HighAnsiTheme);
-                }
+                if (rFonts?.HighAnsiTheme != null) return _document.GetThemeFont(rFonts.HighAnsiTheme);
                 return rFonts?.HighAnsi;
             }
             set
@@ -587,6 +697,124 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        public EnumValue<W.ThemeFontValues> FontNameHighAnsiTheme
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _fontNameHAnsiTheme;
+                }
+                W.RunFonts rFonts = null;
+                if (_run?.RunProperties?.RunFonts != null)
+                {
+                    rFonts = _run.RunProperties.RunFonts;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        rFonts = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.RunFonts;
+                    }
+                    else
+                    {
+                        rFonts = _style.StyleRunProperties?.RunFonts;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.RunFonts != null)
+                {
+                    rFonts = _defaultRPr.RunPropertiesBaseStyle.RunFonts;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
+                {
+                    rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.RunFonts != null)
+                {
+                    rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
+                }
+                return rFonts?.HighAnsiTheme?.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.RunFonts == null)
+                    {
+                        _run.RunProperties.RunFonts = new W.RunFonts();
+                    }
+                    if (value != null) _run.RunProperties.RunFonts.HighAnsiTheme = value.Val;
+                    else _run.RunProperties.RunFonts.HighAnsiTheme = null;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.RunFonts == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.RunFonts = new W.RunFonts();
+                        }
+                        if (value != null) tblStylePr.RunPropertiesBaseStyle.RunFonts.HighAnsiTheme = value.Val;
+                        else tblStylePr.RunPropertiesBaseStyle.RunFonts.HighAnsiTheme = null;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.RunFonts == null)
+                        {
+                            _style.StyleRunProperties.RunFonts = new W.RunFonts();
+                        }
+                        if (value != null) _style.StyleRunProperties.RunFonts.HighAnsiTheme = value.Val;
+                        else _style.StyleRunProperties.RunFonts.HighAnsiTheme = null;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
+                    W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                    if (value != null) rFonts.HighAnsiTheme = value.Val;
+                    else rFonts.HighAnsiTheme = null;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
+                        _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
+                    if (value != null) _numberingLevel.NumberingSymbolRunProperties.RunFonts.HighAnsiTheme = value.Val;
+                    else _numberingLevel.NumberingSymbolRunProperties.RunFonts.HighAnsiTheme = null;
+                }
+                else
+                {
+                    _fontNameHAnsiTheme = value;
+                }
+            }
+        }
+
         public string FontNameComplexScript
         {
             get
@@ -625,10 +853,7 @@ namespace Berry.Docx.Formatting
                 {
                     rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
                 }
-                if (rFonts?.ComplexScriptTheme != null)
-                {
-                    return _document.GetThemeFont(rFonts.ComplexScriptTheme);
-                }
+                if (rFonts?.ComplexScriptTheme != null) return _document.GetThemeFont(rFonts.ComplexScriptTheme);
                 return rFonts?.ComplexScript;
             }
             set
@@ -700,6 +925,124 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _fontNameCs = value;
+                }
+            }
+        }
+
+        public EnumValue<W.ThemeFontValues> FontNameComplexScriptTheme
+        {
+            get
+            {
+                if (_run == null && _style == null && _defaultRPr == null && _paragraph == null && _numberingLevel == null)
+                {
+                    return _fontNameCsTheme;
+                }
+                W.RunFonts rFonts = null;
+                if (_run?.RunProperties?.RunFonts != null)
+                {
+                    rFonts = _run.RunProperties.RunFonts;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        rFonts = _style.Elements<W.TableStyleProperties>()
+                                .Where(t => t.Type == _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>()).FirstOrDefault()
+                                ?.RunPropertiesBaseStyle?.RunFonts;
+                    }
+                    else
+                    {
+                        rFonts = _style.StyleRunProperties?.RunFonts;
+                    }
+                }
+                else if (_defaultRPr?.RunPropertiesBaseStyle?.RunFonts != null)
+                {
+                    rFonts = _defaultRPr.RunPropertiesBaseStyle.RunFonts;
+                }
+                else if (_paragraph?.ParagraphProperties?.ParagraphMarkRunProperties?.GetFirstChild<W.RunFonts>() != null)
+                {
+                    rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                }
+                else if (_numberingLevel?.NumberingSymbolRunProperties?.RunFonts != null)
+                {
+                    rFonts = _numberingLevel.NumberingSymbolRunProperties.RunFonts;
+                }
+                return rFonts?.ComplexScriptTheme?.Value;
+            }
+            set
+            {
+                if (_run != null)
+                {
+                    if (_run.RunProperties == null)
+                    {
+                        _run.RunProperties = new W.RunProperties();
+                    }
+                    if (_run.RunProperties.RunFonts == null)
+                    {
+                        _run.RunProperties.RunFonts = new W.RunFonts();
+                    }
+                    if (value != null) _run.RunProperties.RunFonts.ComplexScriptTheme = value.Val;
+                    else _run.RunProperties.RunFonts.ComplexScriptTheme = null;
+                }
+                else if (_style != null)
+                {
+                    if (_tableStyleRegion != null && _tableStyleRegion != TableRegionType.WholeTable)
+                    {
+                        W.TableStyleOverrideValues type = _tableStyleRegion.Val.Convert<W.TableStyleOverrideValues>();
+                        if (!_style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).Any())
+                        {
+                            _style.Append(new W.TableStyleProperties() { Type = type });
+                        }
+                        W.TableStyleProperties tblStylePr = _style.Elements<W.TableStyleProperties>().Where(t => t.Type == type).FirstOrDefault();
+                        if (tblStylePr.RunPropertiesBaseStyle == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle = new W.RunPropertiesBaseStyle();
+                        }
+                        if (tblStylePr.RunPropertiesBaseStyle.RunFonts == null)
+                        {
+                            tblStylePr.RunPropertiesBaseStyle.RunFonts = new W.RunFonts();
+                        }
+                        if (value != null) tblStylePr.RunPropertiesBaseStyle.RunFonts.ComplexScriptTheme = value.Val;
+                        else tblStylePr.RunPropertiesBaseStyle.RunFonts.ComplexScriptTheme = null;
+                    }
+                    else
+                    {
+                        if (_style.StyleRunProperties == null)
+                        {
+                            _style.StyleRunProperties = new W.StyleRunProperties();
+                        }
+                        if (_style.StyleRunProperties.RunFonts == null)
+                        {
+                            _style.StyleRunProperties.RunFonts = new W.RunFonts();
+                        }
+                        if (value != null) _style.StyleRunProperties.RunFonts.ComplexScriptTheme = value.Val;
+                        else _style.StyleRunProperties.RunFonts.ComplexScriptTheme = null;
+                    }
+                }
+                else if (_paragraph != null)
+                {
+                    if (_paragraph.ParagraphProperties == null)
+                        _paragraph.ParagraphProperties = new W.ParagraphProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties = new W.ParagraphMarkRunProperties();
+                    if (_paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>() == null)
+                        _paragraph.ParagraphProperties.ParagraphMarkRunProperties.AddChild(new W.RunFonts());
+                    W.RunFonts rFonts = _paragraph.ParagraphProperties.ParagraphMarkRunProperties.GetFirstChild<W.RunFonts>();
+                    if (value != null) rFonts.ComplexScriptTheme = value.Val;
+                    else rFonts.ComplexScriptTheme = null;
+                }
+                else if (_numberingLevel != null)
+                {
+                    if (_numberingLevel.NumberingSymbolRunProperties == null)
+                        _numberingLevel.NumberingSymbolRunProperties = new W.NumberingSymbolRunProperties();
+                    if (_numberingLevel.NumberingSymbolRunProperties.RunFonts == null)
+                        _numberingLevel.NumberingSymbolRunProperties.RunFonts = new W.RunFonts();
+                    if (value != null) _numberingLevel.NumberingSymbolRunProperties.RunFonts.ComplexScriptTheme = value.Val;
+                    else _numberingLevel.NumberingSymbolRunProperties.RunFonts.ComplexScriptTheme = null;
+                }
+                else
+                {
+                    _fontNameCsTheme = value;
                 }
             }
         }
@@ -2743,9 +3086,13 @@ namespace Berry.Docx.Formatting
             RunPropertiesHolder directFmt = new RunPropertiesHolder(doc.Package, style);
 
             format.FontNameAscii = directFmt.FontNameAscii ?? baseFmt.FontNameAscii;
+            format.FontNameAsciiTheme = directFmt.FontNameAsciiTheme ?? baseFmt.FontNameAsciiTheme;
             format.FontNameEastAsia = directFmt.FontNameEastAsia ?? baseFmt.FontNameEastAsia;
+            format.FontNameEastAsiaTheme = directFmt.FontNameEastAsiaTheme ?? baseFmt.FontNameEastAsiaTheme;
             format.FontNameHighAnsi = directFmt.FontNameHighAnsi ?? baseFmt.FontNameHighAnsi;
+            format.FontNameHighAnsiTheme = directFmt.FontNameHighAnsiTheme ?? baseFmt.FontNameHighAnsiTheme;
             format.FontNameComplexScript = directFmt.FontNameComplexScript ?? baseFmt.FontNameComplexScript;
+            format.FontNameComplexScriptTheme = directFmt.FontNameComplexScriptTheme ?? baseFmt.FontNameComplexScriptTheme;
             format.FontTypeHint = directFmt.FontTypeHint ?? baseFmt.FontTypeHint;
 
             format.FontSize = directFmt.FontSize ?? baseFmt.FontSize;

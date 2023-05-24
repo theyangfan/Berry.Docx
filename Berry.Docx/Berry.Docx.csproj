@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net4.6.1;netcoreapp2.1;net5.0;net6.0</TargetFrameworks>
-    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net4.6.1;netcoreapp2.1;netstandard2.0;net6.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ApplicationIcon />
@@ -16,7 +16,7 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.6-beta1</Version>
+    <Version>1.3.6-beta3</Version>
     <PackageReleaseNotes>1. 支持书签 (Supports bookmark)；
   
 2. 支持超链接 (Supports hyperlink)；

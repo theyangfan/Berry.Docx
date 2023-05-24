@@ -45,6 +45,19 @@ namespace Berry.Docx.Collections
         public int IndexOf(Section section) => _sections.ToList().IndexOf(section);
 
         /// <summary>
+        /// Removes all sections of the current document.
+        /// </summary>
+        public void Clear()
+        {
+            var sectionList = _sections.ToList();
+            foreach (var section in sectionList)
+            {
+                section.Remove();
+            }
+            sectionList.Clear();
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
