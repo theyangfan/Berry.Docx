@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Berry.Docx.VisualModel.Field
+namespace Berry.Docx.Visual.Field
 {
     public class Character
     {
@@ -16,7 +16,7 @@ namespace Berry.Docx.VisualModel.Field
         private readonly VerticalAlignment _vAlign = VerticalAlignment.Center;
         private readonly HorizontalAlignment _hAlign = HorizontalAlignment.Left;
 
-        public Character(Berry.Docx.Field.Character character, double charSpace, double normalFontSize, Berry.Docx.DocGridType gridType)
+        internal Character(Berry.Docx.Field.Character character, double charSpace, double normalFontSize, Berry.Docx.DocGridType gridType)
         {
             _value = character.Val;
             System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;

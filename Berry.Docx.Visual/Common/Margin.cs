@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Berry.Docx.VisualModel
+namespace Berry.Docx.Visual
 {
     public class Margin
     {

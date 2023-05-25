@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Windows;
-using Berry.Docx.VisualModel.Field;
+using Berry.Docx.Visual.Field;
 
-namespace Berry.Docx.VisualModel.Documents
+namespace Berry.Docx.Visual.Documents
 {
     public class Paragraph
     {
@@ -26,7 +26,7 @@ namespace Berry.Docx.VisualModel.Documents
 
         private List<ParagraphLine> _lines;
 
-        public Paragraph(Berry.Docx.Documents.Paragraph paragraph, double availableWidth, double charSpace, double lineSpace, Berry.Docx.DocGridType gridType)
+        internal Paragraph(Berry.Docx.Documents.Paragraph paragraph, double availableWidth, double charSpace, double lineSpace, Berry.Docx.DocGridType gridType)
         {
             _paragraph = paragraph;
             _width = availableWidth;
@@ -44,7 +44,7 @@ namespace Berry.Docx.VisualModel.Documents
             else
             {
                 firstCharSize = paragraph.MarkFormat.FontSize;
-                paragraph.AppendText(" ");
+                paragraph.ChildItems.InsertAt(new Berry.Docx.Field.TextRange(_paragraph.Document, " "), 0);
             }
 
             _normalFontSize = Berry.Docx.Formatting.ParagraphStyle.Default(paragraph.Document).CharacterFormat.FontSize;

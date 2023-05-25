@@ -4,9 +4,9 @@ using System.Text;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Berry.Docx.VisualModel.Documents;
+using Berry.Docx.Visual.Documents;
 
-namespace Berry.Docx.VisualModel
+namespace Berry.Docx.Visual
 {
     public class Page
     {
@@ -22,7 +22,7 @@ namespace Berry.Docx.VisualModel
 
         private double _curHeight = 0;
 
-        public Page(Berry.Docx.Document doc, Berry.Docx.Section section)
+        internal Page(Berry.Docx.Document doc, Berry.Docx.Section section)
         {
             var pageSetup = section.PageSetup;
             _width = pageSetup.PageWidth.ToPixel();
@@ -53,7 +53,7 @@ namespace Berry.Docx.VisualModel
 
         public List<Paragraph> Paragraphs => _paragraphs;
 
-        public bool TryAppend(Berry.Docx.Documents.Paragraph p, ref int lineNumber)
+        internal bool TryAppend(Berry.Docx.Documents.Paragraph p, ref int lineNumber)
         {
             Paragraph paragraph = new Paragraph(p, _availableWidth, _charSpace, _lineSpace, _gridType);
             var lines = paragraph.GenerateLines();

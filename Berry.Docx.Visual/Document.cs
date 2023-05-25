@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Berry.Docx;
-
-namespace Berry.Docx.VisualModel
+namespace Berry.Docx.Visual
 {
     public class Document
     {
@@ -17,7 +15,7 @@ namespace Berry.Docx.VisualModel
             int sIndex = 0;
             foreach(var section in doc.Sections)
             {
-                if (sIndex == 0 || section.Type != SectionBreakType.Continuous)
+                if (sIndex++ == 0 || section.Type != SectionBreakType.Continuous)
                 {
                     _pages.Add(new Page(doc, section));
                     pageIndex++;
@@ -34,7 +32,7 @@ namespace Berry.Docx.VisualModel
                         _pages.Add(new Page(doc, section));
                         pageIndex++;
                     }
-                    while ( !_pages[pageIndex].TryAppend(paragraph, ref lineNumber))
+                    while (!_pages[pageIndex].TryAppend(paragraph, ref lineNumber))
                     {
                         _pages.Add(new Page(doc, section));
                         pageIndex++;

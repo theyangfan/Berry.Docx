@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Berry.Docx.VisualModel
+namespace Berry.Docx.Visual
 {
-    public class Class1
+    public class Test
     {
         public static void Main()
         {
-            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
             using(var doc = new Berry.Docx.Document(src, System.IO.FileShare.ReadWrite))
             {
                 Document document = new Document(doc);

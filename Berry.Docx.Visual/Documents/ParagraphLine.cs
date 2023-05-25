@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using Berry.Docx.VisualModel.Field;
+using Berry.Docx.Visual.Field;
 
-namespace Berry.Docx.VisualModel.Documents
+namespace Berry.Docx.Visual.Documents
 {
     public class ParagraphLine
     {
@@ -22,7 +22,7 @@ namespace Berry.Docx.VisualModel.Documents
         private double _curWidth = 0;
         private int _rowCnt = 1;
 
-        public ParagraphLine(Berry.Docx.Documents.Paragraph paragraph, double availableWidth, double charSpace, double lineSpace, DocGridType gridType)
+        internal ParagraphLine(Berry.Docx.Documents.Paragraph paragraph, double availableWidth, double charSpace, double lineSpace, DocGridType gridType)
         {
             _paragraph = paragraph;
             _availableWidth = availableWidth;
@@ -64,7 +64,7 @@ namespace Berry.Docx.VisualModel.Documents
 
         internal bool HasPageBreak { get; set; }
 
-        public bool TryAppend(Character character)
+        internal bool TryAppend(Character character)
         {
             if(_specialIndent + _curWidth + character.Width > _availableWidth + 1)
             {
