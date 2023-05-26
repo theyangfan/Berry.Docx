@@ -20,16 +20,18 @@ namespace Berry.Docx.Visual.Documents
         private double _specialIndent = 0;
         private double _beforeSpace = 0;
         private double _afterSpace = 0;
-        private Margin _margin;
+
+        private Margin _margin = new Margin(0, 0, 0, 0);
+        private Margin _padding = new Margin(0, 0, 0, 0);
 
         private double _normalFontSize = 10.5;
 
         private List<ParagraphLine> _lines;
 
-        internal Paragraph(Berry.Docx.Documents.Paragraph paragraph, double availableWidth, double charSpace, double lineSpace, Berry.Docx.DocGridType gridType)
+        internal Paragraph(Berry.Docx.Documents.Paragraph paragraph, double width, double charSpace, double lineSpace, Berry.Docx.DocGridType gridType)
         {
             _paragraph = paragraph;
-            _width = availableWidth;
+            _width = width;
             _charSpace = charSpace;
             _lineSpace = lineSpace;
             _gridType = gridType;
@@ -192,21 +194,38 @@ namespace Berry.Docx.Visual.Documents
             }
             #endregion
 
-            _margin = new Margin(_leftIndent, _beforeSpace, _rightIndent, _afterSpace);
+            _margin = new Margin(0, _beforeSpace, 0, _afterSpace);
+            _padding = new Margin(_leftIndent, 0, _rightIndent, 0);
         }
 
         public double Width => _width;
 
-        public List<ParagraphLine> Lines => _lines;
+        public double Height
+        {
+            get
+            {
+                double height = 0;
+                foreach(var line in _lines)
+                {
+                    height += line.Margin.Top + line.Height + line.Margin.Bottom;
+                }
+                return height;
+            }
+        }
 
         public Margin Margin => _margin;
+
+        public Margin Padding => _padding;
+
+        public List<ParagraphLine> Lines => _lines;
 
         internal List<ParagraphLine> GenerateLines()
         {
             List<ParagraphLine> lines = new List<ParagraphLine>();
             int index = 0;
-            lines.Add(new ParagraphLine(_paragraph, _width - _leftIndent - _rightIndent, _charSpace, _lineSpace, _gridType));
-            if (_specialIndent > 0) lines[index].SpecialIndent = _specialIndent;
+            double width = _width - _margin.Left - _margin.Right - _padding.Left - _padding.Right;
+            lines.Add(new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType));
+            if (_specialIndent > 0) lines[index].Padding.Left = _specialIndent;
 
             foreach (var item in _paragraph.ChildItems)
             {
@@ -218,8 +237,8 @@ namespace Berry.Docx.Visual.Documents
                         Character character = new Character(c, _charSpace, _normalFontSize, _gridType);
                         if (!lines[index].TryAppend(character))
                         {
-                            var line = new ParagraphLine(_paragraph, _width - _leftIndent - _rightIndent, _charSpace, _lineSpace, _gridType);
-                            if (_specialIndent < 0) line.SpecialIndent = Math.Abs(_specialIndent);
+                            var line = new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType);
+                            if (_specialIndent < 0) line.Padding.Left = Math.Abs(_specialIndent);
                             lines.Add(line);
                             index++;
                         }
@@ -230,11 +249,11 @@ namespace Berry.Docx.Visual.Documents
                     var br = (Berry.Docx.Field.Break)item;
                     if (br.Type == BreakType.Page)
                     {
-                        lines[index].HasPageBreak = true;
-                        var line = new ParagraphLine(_paragraph, _width - _leftIndent - _rightIndent, _charSpace, _lineSpace, _gridType);
+                        lines[index].EndsWithPageBreak = true;
+                        var line = new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType);
                         if (item == _paragraph.ChildItems.First())
                         {
-                            if (_specialIndent > 0) line.SpecialIndent = _specialIndent;
+                            if (_specialIndent > 0) line.Padding.Left = _specialIndent;
                         }
                         else if (item == _paragraph.ChildItems.Last())
                         {
@@ -242,7 +261,7 @@ namespace Berry.Docx.Visual.Documents
                         }
                         else
                         {
-                            if (_specialIndent < 0) line.SpecialIndent = Math.Abs(_specialIndent);
+                            if (_specialIndent < 0) line.Padding.Left = Math.Abs(_specialIndent);
                         }
                         lines.Add(line);
                         index++;

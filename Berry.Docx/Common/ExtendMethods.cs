@@ -7,6 +7,8 @@ using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
 
+using Berry.Docx.Documents;
+
 namespace Berry.Docx
 {
     internal static class ExtendMethods
@@ -56,6 +58,31 @@ namespace Berry.Docx
         {
             return Regex.Replace(input, pattern, newStr);
         }
+
+#if NET35
+        public static bool HasFlag(this TextReadingMode e, TextReadingMode flag)
+        {
+            byte a = (byte)e;
+            byte b = (byte)flag;
+            return (a & b) == b;
+        }
+
+        public static IEnumerable<DocumentItem> Convert<T>(this IEnumerable<T> items) where T : DocumentItem
+        {
+            foreach(var item in items)
+            {
+                yield return item;
+            }
+        }
+
+        public static IEnumerable<DocumentObject> Convert(this IEnumerable<DocumentItem> items)
+        {
+            foreach (var item in items)
+            {
+                yield return item;
+            }
+        }
+#endif
 
         #region OpenXMl Extend Methods
         /// <summary>
@@ -176,6 +203,6 @@ namespace Berry.Docx
             }
             return themeFonts.ContainsKey(themeFont) ? themeFonts[themeFont] : string.Empty;
         }
-        #endregion
+#endregion
     }
 }

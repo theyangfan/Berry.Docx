@@ -17,7 +17,11 @@ namespace Berry.Docx.Collections
         #endregion
 
         #region Constructors
+#if NET35
+        internal ParagraphItemCollection(O.OpenXmlElement owner, IEnumerable<ParagraphItem> items) : base(owner, items.Convert())
+#else
         internal ParagraphItemCollection(O.OpenXmlElement owner, IEnumerable<ParagraphItem> items) : base(owner, items)
+#endif
         {
             _owner = owner;
             _items = items;

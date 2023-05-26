@@ -93,11 +93,11 @@ namespace Berry.Docx.Documents
         public string Text
         {
             get
-            { 
+            {
                 StringBuilder text = new StringBuilder();
                 foreach(DocumentObject item in ChildObjects)
                 {
-                    if(item is TextRange)
+                    if (item is TextRange)
                     {
                         TextRange tr = item as TextRange;
                         if (!TextReadingMode.HasFlag(TextReadingMode.IncludeHiddenText) && tr.CharacterFormat.IsHidden) continue;
@@ -277,9 +277,9 @@ namespace Berry.Docx.Documents
                 return null;
             }
         }
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
         /// <summary>
         /// The paragraph style. 
         /// </summary>
@@ -707,9 +707,9 @@ namespace Berry.Docx.Documents
             _paragraph.Append(referenceRun);
         }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
         private IEnumerable<ParagraphItem> ParagraphItems()
         {
             foreach(DocumentItem item in base.ChildObjects)
@@ -717,7 +717,7 @@ namespace Berry.Docx.Documents
                 yield return item as ParagraphItem;
             }
         }
-        #endregion
+#endregion
 
     }
 }

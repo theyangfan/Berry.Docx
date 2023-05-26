@@ -8,7 +8,11 @@ using P = DocumentFormat.OpenXml.Packaging;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 using V = DocumentFormat.OpenXml.Vml;
 using Ovml = DocumentFormat.OpenXml.Vml.Office;
+#if NET35_OR_GREATER
+using System.Drawing;
+#elif NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_0_OR_GREATER
 using SixLabors.ImageSharp;
+#endif
 
 namespace Berry.Docx.Field
 {
@@ -17,16 +21,16 @@ namespace Berry.Docx.Field
     /// </summary>
     public class EmbeddedObject : ParagraphItem
     {
-        #region Private Members
+#region Private Members
         private readonly Document _doc;
         private readonly W.Run _ownerRun;
         private readonly W.EmbeddedObject _object;
         private readonly V.Shape _shape;
         private readonly Ovml.OleObject _oleObject;
         private readonly ShapeStyles _shapeStyles;
-        #endregion
+#endregion
 
-        #region Constructors
+#region Constructors
         internal EmbeddedObject(Document doc, W.Run ownerRun, W.EmbeddedObject obj)
             :base(doc, ownerRun, obj)
         {
@@ -37,9 +41,9 @@ namespace Berry.Docx.Field
             _shape = obj.GetFirstChild<V.Shape>();
             _shapeStyles = new ShapeStyles(_shape);
         }
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
         /// <summary>
         /// Gets the type of the current object.
         /// </summary>
@@ -80,7 +84,11 @@ namespace Berry.Docx.Field
             {
                 using (var s = GetStream())
                 {
+#if NET35_OR_GREATER
+                    var img = Image.FromStream(s);
+#elif NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_0_OR_GREATER
                     var img = Image.Load(s);
+#endif
                     _object.DxaOriginal = Convert.ToInt32(img.Width / 96.0f * 72 * 20).ToString();
                     img.Dispose();
                 }
@@ -112,7 +120,11 @@ namespace Berry.Docx.Field
             {
                 using(var s = GetStream())
                 {
+#if NET35_OR_GREATER
+                    var img = Image.FromStream(s);
+#elif NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_0_OR_GREATER
                     var img = Image.Load(s);
+#endif
                     _object.DyaOriginal = Convert.ToInt32(img.Height / 96.0f * 72 * 20).ToString();
                     img.Dispose();
                 }
@@ -120,9 +132,9 @@ namespace Berry.Docx.Field
             }
         }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
         public Stream GetStream()
         {
             string rId = _shape.GetFirstChild<V.ImageData>().RelationshipId.Value;
@@ -144,7 +156,7 @@ namespace Berry.Docx.Field
             run.AppendChild(embobj);
             return new EmbeddedObject(_doc, run, embobj);
         }
-        #endregion
+#endregion
     }
 
     internal class ShapeStyles : IEnumerable<KeyValuePair<string, string>>

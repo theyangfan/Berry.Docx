@@ -8,8 +8,11 @@ using Wp = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
 using Pic = DocumentFormat.OpenXml.Drawing.Pictures;
 using A14 = DocumentFormat.OpenXml.Office2010.Drawing;
-
+#if NET35_OR_GREATER
+using System.Drawing;
+#elif NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_0_OR_GREATER
 using SixLabors.ImageSharp;
+#endif
 
 namespace Berry.Docx
 {
@@ -80,7 +83,11 @@ namespace Berry.Docx
 
         public static Run GenerateDrawing(string rId, string filename, float maxWidth, float maxHeight)
         {
+#if NET35_OR_GREATER
+            Image image = Image.FromFile(filename);
+#elif NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_0_OR_GREATER
             Image image = Image.Load(filename);
+#endif
             long width = image.Width;
             long height = image.Height;
             image.Dispose();

@@ -8,13 +8,14 @@ namespace Berry.Docx.Visual.Field
 {
     public class Character
     {
+        private readonly Character _character;
         private readonly char _value;
         private readonly FormattedText _text;
         private readonly double _width = 0;
         private readonly double _fontWidth = 0;
         private readonly double _height = 0;
         private readonly VerticalAlignment _vAlign = VerticalAlignment.Center;
-        private readonly HorizontalAlignment _hAlign = HorizontalAlignment.Left;
+        private HorizontalAlignment _hAlign = HorizontalAlignment.Left;
 
         internal Character(Berry.Docx.Field.Character character, double charSpace, double normalFontSize, Berry.Docx.DocGridType gridType)
         {
@@ -31,14 +32,25 @@ namespace Berry.Docx.Visual.Field
             double size = character.FontSize.ToPixel();
             System.Drawing.Color color = character.TextColor.Val;
             Brush brush = new SolidColorBrush(Color.FromRgb(color.R, color.G, color.B));
-
+#if NET462_OR_GREATER
             double dpi = 1.0;
-
+            if (Application.Current?.MainWindow != null)
+                dpi = VisualTreeHelper.GetDpi(Application.Current.MainWindow).PixelsPerDip;
+            else
+                dpi = System.Drawing.Graphics.FromHwnd(IntPtr.Zero).DpiX / 96;
             _text = new FormattedText(character.Val.ToString(), culture, dir, typeface, size, brush, dpi);
+#else
+            _text = new FormattedText(character.Val.ToString(), culture, dir, typeface, size, brush);
+#endif
+
             // 空格
             if (character.Val == 0x20)
             {
+#if NET462_OR_GREATER
                 _fontWidth = new FormattedText(".", culture, dir, typeface, size, brush, dpi).Width;
+#else
+                _fontWidth = new FormattedText(".", culture, dir, typeface, size, brush).Width;
+#endif
             }
             else
             {
@@ -88,7 +100,11 @@ namespace Berry.Docx.Visual.Field
 
         public double Height => _height;
 
-        public HorizontalAlignment HorizontalAlignment => _hAlign;
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get => _hAlign;
+            internal set => _hAlign = value;
+        }
 
         public VerticalAlignment VerticalAlignment => _vAlign;
     }

@@ -14,7 +14,8 @@ namespace Berry.Docx.Visual
         private readonly double _availableWidth = 0;
         private readonly double _availableHeight = 0;
         private readonly double _height = 0;
-        private readonly Margin _margin;
+        private readonly Margin _margin = new Margin(0,0,0,0);
+        private readonly Margin _padding = new Margin(0,0,0,0);
         private readonly double _charSpace = 0;
         private readonly double _lineSpace = 0;
         private readonly Berry.Docx.DocGridType _gridType;
@@ -36,7 +37,7 @@ namespace Berry.Docx.Visual
 
             _availableWidth = _width - leftMar - rightMar;
             _availableHeight = _height - topMar - bottomMar;
-            _margin = new Margin(leftMar, topMar, rightMar, bottomMar);
+            _padding = new Margin(leftMar, topMar, rightMar, bottomMar);
             _gridType = pageSetup.DocGrid;
             _paragraphs = new List<Paragraph>();
         }
@@ -47,11 +48,14 @@ namespace Berry.Docx.Visual
 
         public Margin Margin => _margin;
 
+        public Margin Padding => _padding;
+
         public double CharSpace => _charSpace;
 
         public double LineSpace => _lineSpace;
 
         public List<Paragraph> Paragraphs => _paragraphs;
+
 
         internal bool TryAppend(Berry.Docx.Documents.Paragraph p, ref int lineNumber)
         {
@@ -73,12 +77,12 @@ namespace Berry.Docx.Visual
             for (int i = lineNumber; i < count; i++)
             {
                 var line = lines[i];
-                if(_curHeight + line.Height > _availableHeight)
+                if(_curHeight + line.Height + line.Margin.Top + line.Margin.Bottom > _availableHeight)
                 {
                     if(paragraph.Lines.Count > 0) _paragraphs.Add(paragraph);
                     return false;
                 }
-                if (line.HasPageBreak)
+                if (line.EndsWithPageBreak)
                 {
                     paragraph.Lines.Add(line);
                     _paragraphs.Add(paragraph);
@@ -86,7 +90,7 @@ namespace Berry.Docx.Visual
                     return false;
                 }
                 paragraph.Lines.Add(line);
-                _curHeight += line.Height;
+                _curHeight += line.Height + line.Margin.Top + line.Margin.Bottom;
                 lineNumber++;
             }
             if(paragraph.Lines.Count > 0) _paragraphs.Add(paragraph);

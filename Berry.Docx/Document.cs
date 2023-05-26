@@ -83,7 +83,16 @@ namespace Berry.Docx
                 MemoryStream tempStream = new MemoryStream();
                 using (FileStream stream = File.Open(filename, FileMode.Open, FileAccess.Read, share))
                 {
+#if NET35
+                    int length = 256;
+                    byte[] buffer = new byte[length];
+                    while((length = stream.Read(buffer, 0, length)) > 0)
+                    {
+                        tempStream.Write(buffer, 0, length);
+                    }
+#else
                     stream.CopyTo(tempStream);
+#endif
                 }
                 tempStream.Seek(0, SeekOrigin.Begin);
                 // handle malformed hyperlink
@@ -113,8 +122,18 @@ namespace Berry.Docx
         public Document(Stream stream)
         {
             _stream = stream;
-            MemoryStream temp_stream = new MemoryStream();
-            stream.CopyTo(temp_stream);
+            MemoryStream tempStream = new MemoryStream();
+#if NET35
+            int length = 256;
+            byte[] buffer = new byte[length];
+            while ((length = stream.Read(buffer, 0, length)) > 0)
+            {
+                tempStream.Write(buffer, 0, length);
+            }
+#else
+                    stream.CopyTo(tempStream);
+#endif
+            tempStream.Seek(0, SeekOrigin.Begin);
             // handle malformed hyperlink
             _openSettings = new P.OpenSettings();
             _openSettings.AutoSave = false;
@@ -122,12 +141,12 @@ namespace Berry.Docx
             {
                 return new MalformedURIHandler();
             };
-            _doc = P.WordprocessingDocument.Open(temp_stream, true, _openSettings);
+            _doc = P.WordprocessingDocument.Open(tempStream, true, _openSettings);
             _settings = new Settings(this, _doc.MainDocumentPart.DocumentSettingsPart.Settings);
         }
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
         public DocumentObjectCollection ChildObjects
         {
             get
@@ -243,9 +262,9 @@ namespace Berry.Docx
         /// <para>返回文档默认段落和字符格式。</para>
         /// </summary>
         public DocDefaultFormat DefaultFormat => new DocDefaultFormat(this);
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
         /// <summary>
         /// Create a new paragraph.
         /// <para>新建一个段落。</para>
@@ -427,9 +446,9 @@ namespace Berry.Docx
                 doc.Save();
             }
         }
-        #endregion
+#endregion
 
-        #region Internal Properties
+#region Internal Properties
         internal P.WordprocessingDocument Package => _doc;
 
         /// <summary>
@@ -437,9 +456,9 @@ namespace Berry.Docx
         /// <para>返回文档 settings。</para>
         /// </summary>
         internal Settings Settings { get => _settings; }
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
         private IEnumerable<Section> SectionsPrivate()
         {
             foreach (W.SectionProperties sectPr in _doc.MainDocumentPart.Document.Body.Descendants<W.SectionProperties>())
@@ -490,7 +509,7 @@ namespace Berry.Docx
             foreach (var unknow in unknownElements) unknow.Remove();
             unknownElements.Clear();
         }
-        #endregion
+#endregion
 
     }
 }

@@ -62,7 +62,11 @@ namespace Berry.Docx.Collections
                 numbering.Append(style.AbstractNum);
             }
             numbering.Append(style.NumberingInstance);
+#if NET35
+            if(!string.IsNullOrEmpty(style.Name.Trim()))
+#else
             if (!string.IsNullOrWhiteSpace(style.Name))
+#endif
                 _listStyleNames[style.Name] = style.AbstractNumberID;
         }
 

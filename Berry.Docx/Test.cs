@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Diagnostics;
 
@@ -29,7 +28,10 @@ namespace Test
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
                 var paragraph = doc.LastSection.Paragraphs[0];
+                foreach(var item in paragraph.ChildItems)
+                {
 
+                }
 
                 // 保存
                 doc.SaveAs(dst);
