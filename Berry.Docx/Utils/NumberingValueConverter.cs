@@ -81,6 +81,7 @@ namespace Berry.Docx
             }
             string symbol = symbols.ToString().RxReplace("零+", "零").RxReplace("零亿", "亿").RxReplace("零万","万");
             if(symbol.Length > 1 && symbol.EndsWith("零")) symbol = symbol.Substring(0, symbol.Length - 1);
+            if (symbol.StartsWith("一十")) symbol = symbol.Substring(1);
             return symbol;
         }
 

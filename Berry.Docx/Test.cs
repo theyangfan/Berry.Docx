@@ -22,12 +22,13 @@ namespace Test
     {
         public static void Main()
         {
-            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
-            string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
+            string dst = @"C:\Users\tomato\Desktop\dst.docx";
 
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
                 var paragraph = doc.LastSection.Paragraphs[0];
+                Console.WriteLine(paragraph.ListText);
                 foreach(var item in paragraph.ChildItems)
                 {
 

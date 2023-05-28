@@ -10,7 +10,7 @@ namespace Berry.Docx.Visual
     {
         public static void Main()
         {
-            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
+            string src = @"C:\Users\tomato\Desktop\test.docx";
             using(var doc = new Berry.Docx.Document(src, System.IO.FileShare.ReadWrite))
             {
                 Document document = new Document(doc);

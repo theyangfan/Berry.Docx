@@ -146,16 +146,7 @@ namespace Berry.Docx
         }
 #endregion
 
-#region Public Properties
-        public DocumentObjectCollection ChildObjects
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-
+        #region Public Properties
         /// <summary>
         /// Return a collection of <see cref="Section"/> that supports traversal in the document. 
         /// <para>返回当前文档中所有节的可遍历集合</para>
@@ -264,7 +255,7 @@ namespace Berry.Docx
         public DocDefaultFormat DefaultFormat => new DocDefaultFormat(this);
 #endregion
 
-#region Public Methods
+        #region Public Methods
         /// <summary>
         /// Create a new paragraph.
         /// <para>新建一个段落。</para>
@@ -446,9 +437,9 @@ namespace Berry.Docx
                 doc.Save();
             }
         }
-#endregion
+        #endregion
 
-#region Internal Properties
+        #region Internal Properties
         internal P.WordprocessingDocument Package => _doc;
 
         /// <summary>
@@ -456,9 +447,9 @@ namespace Berry.Docx
         /// <para>返回文档 settings。</para>
         /// </summary>
         internal Settings Settings { get => _settings; }
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
         private IEnumerable<Section> SectionsPrivate()
         {
             foreach (W.SectionProperties sectPr in _doc.MainDocumentPart.Document.Body.Descendants<W.SectionProperties>())
@@ -509,7 +500,7 @@ namespace Berry.Docx
             foreach (var unknow in unknownElements) unknow.Remove();
             unknownElements.Clear();
         }
-#endregion
+        #endregion
 
     }
 }

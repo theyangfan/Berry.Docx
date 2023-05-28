@@ -227,6 +227,28 @@ namespace Berry.Docx.Visual.Documents
             lines.Add(new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType));
             if (_specialIndent > 0) lines[index].Padding.Left = _specialIndent;
 
+            if (_paragraph.ListFormat.CurrentLevel != null
+                &&!string.IsNullOrEmpty(_paragraph.ListText))
+            {
+                string list = _paragraph.ListText;
+                if (_paragraph.ListFormat.CurrentLevel.SuffixCharacter == LevelSuffixCharacter.Tab)
+                    list += "    ";
+                else if (_paragraph.ListFormat.CurrentLevel.SuffixCharacter == LevelSuffixCharacter.Space)
+                    list += " ";
+                foreach(var c in list)
+                {
+                    var c1 = new Docx.Field.Character(c, _paragraph.MarkFormat);
+                    Character character = new Character(c1, _charSpace, _normalFontSize, _gridType);
+                    while (!lines[index].TryAppend(character))
+                    {
+                        var line = new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType);
+                        if (_specialIndent < 0) line.Padding.Left = Math.Abs(_specialIndent);
+                        lines.Add(line);
+                        index++;
+                    }
+                }
+            }
+
             foreach (var item in _paragraph.ChildItems)
             {
                 if (item is Berry.Docx.Field.TextRange)
@@ -235,7 +257,7 @@ namespace Berry.Docx.Visual.Documents
                     foreach (var c in tr.Characters)
                     {
                         Character character = new Character(c, _charSpace, _normalFontSize, _gridType);
-                        if (!lines[index].TryAppend(character))
+                        while (!lines[index].TryAppend(character))
                         {
                             var line = new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType);
                             if (_specialIndent < 0) line.Padding.Left = Math.Abs(_specialIndent);

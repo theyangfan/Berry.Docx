@@ -279,7 +279,7 @@ namespace Berry.Docx.Documents
         }
 #endregion
 
-#region Public Methods
+        #region Public Methods
         /// <summary>
         /// The paragraph style. 
         /// </summary>
@@ -707,9 +707,9 @@ namespace Berry.Docx.Documents
             _paragraph.Append(referenceRun);
         }
 
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
         private IEnumerable<ParagraphItem> ParagraphItems()
         {
             foreach(DocumentItem item in base.ChildObjects)
@@ -717,7 +717,7 @@ namespace Berry.Docx.Documents
                 yield return item as ParagraphItem;
             }
         }
-#endregion
+        #endregion
 
     }
 }

@@ -88,7 +88,6 @@ namespace Berry.Docx.Formatting
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerParagraph"></param>
-        /// <param name="paragraphMark"></param>
         internal CharacterFormat(Document doc, W.Paragraph ownerParagraph)
         {
             _doc = doc;
@@ -1634,7 +1633,8 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets the amount (in points) of character pitch which shall be added or removed after each character.
+        /// Gets or sets the amount (in points) of character pitch which shall be added 
+        /// or removed after each character.
         /// </summary>
         public float CharacterSpacing
         {
@@ -1733,7 +1733,8 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets the amount (in points) by which text shall be raised or lowered in relation to the default baseline location.
+        /// Gets or sets the amount (in points) by which text shall be raised or lowered
+        /// in relation to the default baseline location.
         /// </summary>
         public float Position
         {
@@ -1938,6 +1939,9 @@ namespace Berry.Docx.Formatting
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether snap to grid when document grid is defined.
+        /// </summary>
         public bool SnapToGrid
         {
             get
