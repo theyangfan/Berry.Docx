@@ -10,6 +10,7 @@ namespace Berry.Docx.Visual.Documents
 {
     public class ParagraphLine
     {
+        #region Private Members
         private readonly Berry.Docx.Documents.Paragraph _paragraph;
         private double _availableWidth = 0;
         private double _lineSpace = 0;
@@ -25,7 +26,9 @@ namespace Berry.Docx.Visual.Documents
 
         private Margin _margin = new Margin(0, 0, 0, 0);
         private Margin _padding = new Margin(0, 0, 0, 0);
+        #endregion
 
+        #region Constructor
         internal ParagraphLine(Berry.Docx.Documents.Paragraph paragraph, double availableWidth, double charSpace, double lineSpace, DocGridType gridType)
         {
             _paragraph = paragraph;
@@ -59,7 +62,9 @@ namespace Berry.Docx.Visual.Documents
                 }
             }
         }
+        #endregion
 
+        #region Public Properties
         public double Width => _availableWidth;
 
         public double Height => _height;
@@ -71,11 +76,13 @@ namespace Berry.Docx.Visual.Documents
         public HorizontalAlignment HorizontalAlignment => _hAlign;
 
         public List<Character> Characters => _chars;
+        #endregion
 
-
-
+        #region Internal Properties
         internal bool EndsWithPageBreak { get; set; }
+        #endregion
 
+        #region Internal Methods
         internal bool TryAppend(Character character)
         {
             double space = _margin.Left + _margin.Right + _padding.Left + _padding.Right;
@@ -135,5 +142,7 @@ namespace Berry.Docx.Visual.Documents
             }
             return true;
         }
+        #endregion
+
     }
 }

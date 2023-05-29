@@ -9,6 +9,7 @@ namespace Berry.Docx.Visual.Documents
 {
     public class Paragraph
     {
+        #region Private Members
         private Berry.Docx.Documents.Paragraph _paragraph;
         private readonly double _width = 0;
         private double _charSpace = 0;
@@ -27,7 +28,9 @@ namespace Berry.Docx.Visual.Documents
         private double _normalFontSize = 10.5;
 
         private List<ParagraphLine> _lines;
+        #endregion
 
+        #region Constructor
         internal Paragraph(Berry.Docx.Documents.Paragraph paragraph, double width, double charSpace, double lineSpace, Berry.Docx.DocGridType gridType)
         {
             _paragraph = paragraph;
@@ -45,6 +48,7 @@ namespace Berry.Docx.Visual.Documents
             }
             else
             {
+                // 空行
                 firstCharSize = paragraph.MarkFormat.FontSize;
                 paragraph.ChildItems.InsertAt(new Berry.Docx.Field.TextRange(_paragraph.Document, " "), 0);
             }
@@ -197,7 +201,9 @@ namespace Berry.Docx.Visual.Documents
             _margin = new Margin(0, _beforeSpace, 0, _afterSpace);
             _padding = new Margin(_leftIndent, 0, _rightIndent, 0);
         }
+        #endregion
 
+        #region Public Properties
         public double Width => _width;
 
         public double Height
@@ -218,7 +224,9 @@ namespace Berry.Docx.Visual.Documents
         public Margin Padding => _padding;
 
         public List<ParagraphLine> Lines => _lines;
+        #endregion
 
+        #region Internal Methods
         internal List<ParagraphLine> GenerateLines()
         {
             List<ParagraphLine> lines = new List<ParagraphLine>();
@@ -226,7 +234,7 @@ namespace Berry.Docx.Visual.Documents
             double width = _width - _margin.Left - _margin.Right - _padding.Left - _padding.Right;
             lines.Add(new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType));
             if (_specialIndent > 0) lines[index].Padding.Left = _specialIndent;
-
+            // 段落编号
             if (_paragraph.ListFormat.CurrentLevel != null
                 &&!string.IsNullOrEmpty(_paragraph.ListText))
             {
@@ -251,6 +259,7 @@ namespace Berry.Docx.Visual.Documents
 
             foreach (var item in _paragraph.ChildItems)
             {
+                // 文本
                 if (item is Berry.Docx.Field.TextRange)
                 {
                     var tr = (Berry.Docx.Field.TextRange)item;
@@ -266,6 +275,7 @@ namespace Berry.Docx.Visual.Documents
                         }
                     }
                 }
+                // 分页符
                 else if (item is Berry.Docx.Field.Break)
                 {
                     var br = (Berry.Docx.Field.Break)item;
@@ -293,6 +303,6 @@ namespace Berry.Docx.Visual.Documents
             }
             return lines;
         }
-
+        #endregion
     }
 }

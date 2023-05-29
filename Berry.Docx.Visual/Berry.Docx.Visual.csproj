@@ -3,7 +3,18 @@
   <PropertyGroup>
     <TargetFrameworks>net35;net40;net462</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <Version>1.0.0-beta9</Version>
+    <Version>1.0.0-beta6</Version>
+    <Authors>番茄土豆</Authors>
+    <Description>一款用于构建 DOCX 文档在显示时的组成结构的 .NET 库。通过此项目，我们可以知道文档有多少个页面，页面有哪些段落，段落有哪些行和字符，以及这些内容的尺寸和边距。
+A.NET library for building the structure of a DOCX document when it is displayed. From this project, we can know how many pages the document has, what paragraphs the page has, what lines and characters the paragraphs have, and the dimensions and margins of these contents.</Description>
+    <Copyright>© theyangfan 2023. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx/tree/main/Berry.Docx.Visual</PackageProjectUrl>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/theyangfan/Berry.Docx/tree/main/Berry.Docx.Visual</RepositoryUrl>
+    <PackageTags>word, docx, openxml, office, docx visual</PackageTags>
+    <PackageReleaseNotes>支持页面、段落和文本字符 (Supports pages、paragraphs and characters)。</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +24,21 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\images\logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

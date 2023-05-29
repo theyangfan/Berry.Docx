@@ -19,5 +19,10 @@ namespace Berry.Docx.Visual
         public double Top { get; set; } = 0;
         public double Right { get; set; } = 0;
         public double Bottom { get; set; } = 0;
+
+        public override string ToString()
+        {
+            return $"({Left}, {Top}, {Right}, {Bottom})";
+        }
     }
 }

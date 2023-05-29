@@ -10,6 +10,7 @@ namespace Berry.Docx.Visual
 {
     public class Page
     {
+        #region Private Members
         private readonly double _width = 0;
         private readonly double _availableWidth = 0;
         private readonly double _availableHeight = 0;
@@ -22,7 +23,9 @@ namespace Berry.Docx.Visual
         private readonly List<Paragraph> _paragraphs;
 
         private double _curHeight = 0;
+        #endregion
 
+        #region Constructor
         internal Page(Berry.Docx.Document doc, Berry.Docx.Section section)
         {
             var pageSetup = section.PageSetup;
@@ -41,7 +44,9 @@ namespace Berry.Docx.Visual
             _gridType = pageSetup.DocGrid;
             _paragraphs = new List<Paragraph>();
         }
+        #endregion
 
+        #region Public Properties
         public double Width => _width;
 
         public double Height => _height;
@@ -55,8 +60,9 @@ namespace Berry.Docx.Visual
         public double LineSpace => _lineSpace;
 
         public List<Paragraph> Paragraphs => _paragraphs;
+        #endregion
 
-
+        #region Internal Methods
         internal bool TryAppend(Berry.Docx.Documents.Paragraph p, ref int lineNumber)
         {
             Paragraph paragraph = new Paragraph(p, _availableWidth, _charSpace, _lineSpace, _gridType);
@@ -96,6 +102,6 @@ namespace Berry.Docx.Visual
             if(paragraph.Lines.Count > 0) _paragraphs.Add(paragraph);
             return true;
         }
-        
+        #endregion
     }
 }

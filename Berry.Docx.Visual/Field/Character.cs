@@ -8,7 +8,7 @@ namespace Berry.Docx.Visual.Field
 {
     public class Character
     {
-        private readonly Character _character;
+        #region Private Members
         private readonly char _value;
         private readonly FormattedText _text;
         private readonly double _width = 0;
@@ -16,7 +16,9 @@ namespace Berry.Docx.Visual.Field
         private readonly double _height = 0;
         private readonly VerticalAlignment _vAlign = VerticalAlignment.Center;
         private HorizontalAlignment _hAlign = HorizontalAlignment.Left;
+        #endregion
 
+        #region Constructor
         internal Character(Berry.Docx.Field.Character character, double charSpace, double normalFontSize, Berry.Docx.DocGridType gridType)
         {
             _value = character.Val;
@@ -92,7 +94,9 @@ namespace Berry.Docx.Visual.Field
             else
                 _hAlign = HorizontalAlignment.Left;
         }
+        #endregion
 
+        #region Public Properties
         public char Val => _value;
         public FormattedText FormattedText => _text;
 
@@ -107,5 +111,6 @@ namespace Berry.Docx.Visual.Field
         }
 
         public VerticalAlignment VerticalAlignment => _vAlign;
+        #endregion
     }
 }

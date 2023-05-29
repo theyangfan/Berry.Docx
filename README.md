@@ -20,9 +20,10 @@ Berry.Docx 的 NuGet 软件包发布在NuGet.org上:
 
 *The release NuGet packages for Berry.Docx are on NuGet.org:*
 
-| Package    | Download                                                                                             |
-| ---------- | ---------------------------------------------------------------------------------------------------- |
-| Berry.Docx | [![NuGet](https://img.shields.io/nuget/v/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx) |
+| Package           | Download                                                                                                           |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Berry.Docx        | [![NuGet](https://img.shields.io/nuget/v/Berry.Docx.svg)](https://www.nuget.org/packages/Berry.Docx)               |
+| Berry.Docx.Visual | [![NuGet](https://img.shields.io/nuget/v/Berry.Docx.Visual.svg)](https://www.nuget.org/packages/Berry.Docx.Visual) |
 
 ## 通过 NuGet 安装（Install via NuGet）
 
@@ -117,6 +118,16 @@ namespace Example
 <br/>
 
 # 更新日志（Release History）
+
+### v1.3.6 (2023-05-29)
+
+- 支持读取段落中的字符的最终格式 (Supports reading the final format of characters of the paragraph)；
+
+- 新增了 Berry.Docx.Visual 项目，用于构建文档在显示时的组成结构 (Added Berry.Docx.Visua project, Used to build the structure of the document when display)。
+
+- 新增了对 .NET Framework 3.5 的支持 (Supports .NET Framework 3.5)；
+
+- 修复了一些问题 (Fixed some bugs)。
 
 ### v1.3.5 (2023-05-12)
 

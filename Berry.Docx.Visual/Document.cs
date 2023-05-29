@@ -6,7 +6,11 @@ namespace Berry.Docx.Visual
 {
     public class Document
     {
+        #region Private Members
         private List<Page> _pages;
+        #endregion
+
+        #region Constructors
         public Document(Berry.Docx.Document doc)
         {
             _pages = new List<Page>();
@@ -40,7 +44,10 @@ namespace Berry.Docx.Visual
                 }
             }
         }
+        #endregion
 
+        #region Public Properties
         public List<Page> Pages => _pages;
+        #endregion
     }
 }

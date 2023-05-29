@@ -22,10 +22,10 @@ namespace Test
     {
         public static void Main()
         {
-            string src = @"C:\Users\tomato\Desktop\test.docx";
-            string dst = @"C:\Users\tomato\Desktop\dst.docx";
+            string src = @"C:\Users\zhailiao123\Desktop\docs\debug\test.docx";
+            string dst = @"C:\Users\zhailiao123\Desktop\docs\debug\dst.docx";
 
-            using (Document doc = new Document(src, FileShare.ReadWrite))
+            using (Document doc = new Document(File.Open(src, FileMode.Open)))
             {
                 var paragraph = doc.LastSection.Paragraphs[0];
                 Console.WriteLine(paragraph.ListText);
@@ -33,7 +33,6 @@ namespace Test
                 {
 
                 }
-
                 // 保存
                 doc.SaveAs(dst);
             }
