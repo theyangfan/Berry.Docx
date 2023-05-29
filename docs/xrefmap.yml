@@ -2135,6 +2135,19 @@ references:
   commentId: T:Berry.Docx.Collections.SectionCollection
   fullName: Berry.Docx.Collections.SectionCollection
   nameWithType: SectionCollection
+- uid: Berry.Docx.Collections.SectionCollection.Clear
+  name: Clear()
+  href: api/Berry.Docx.Collections.SectionCollection.html#Berry_Docx_Collections_SectionCollection_Clear
+  commentId: M:Berry.Docx.Collections.SectionCollection.Clear
+  fullName: Berry.Docx.Collections.SectionCollection.Clear()
+  nameWithType: SectionCollection.Clear()
+- uid: Berry.Docx.Collections.SectionCollection.Clear*
+  name: Clear
+  href: api/Berry.Docx.Collections.SectionCollection.html#Berry_Docx_Collections_SectionCollection_Clear_
+  commentId: Overload:Berry.Docx.Collections.SectionCollection.Clear
+  isSpec: "True"
+  fullName: Berry.Docx.Collections.SectionCollection.Clear
+  nameWithType: SectionCollection.Clear
 - uid: Berry.Docx.Collections.SectionCollection.Count
   name: Count
   href: api/Berry.Docx.Collections.SectionCollection.html#Berry_Docx_Collections_SectionCollection_Count
@@ -4605,6 +4618,12 @@ references:
   commentId: M:Berry.Docx.Documents.Paragraph.ApplyStyle(Berry.Docx.BuiltInStyle)
   fullName: Berry.Docx.Documents.Paragraph.ApplyStyle(Berry.Docx.BuiltInStyle)
   nameWithType: Paragraph.ApplyStyle(BuiltInStyle)
+- uid: Berry.Docx.Documents.Paragraph.ApplyStyle(Berry.Docx.Formatting.ParagraphStyle)
+  name: ApplyStyle(ParagraphStyle)
+  href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_ApplyStyle_Berry_Docx_Formatting_ParagraphStyle_
+  commentId: M:Berry.Docx.Documents.Paragraph.ApplyStyle(Berry.Docx.Formatting.ParagraphStyle)
+  fullName: Berry.Docx.Documents.Paragraph.ApplyStyle(Berry.Docx.Formatting.ParagraphStyle)
+  nameWithType: Paragraph.ApplyStyle(ParagraphStyle)
 - uid: Berry.Docx.Documents.Paragraph.ApplyStyle(System.String)
   name: ApplyStyle(String)
   href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_ApplyStyle_System_String_
@@ -4709,6 +4728,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.Paragraph.IsDeleted
   nameWithType: Paragraph.IsDeleted
+- uid: Berry.Docx.Documents.Paragraph.IsEndOfSection
+  name: IsEndOfSection
+  href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_IsEndOfSection
+  commentId: P:Berry.Docx.Documents.Paragraph.IsEndOfSection
+  fullName: Berry.Docx.Documents.Paragraph.IsEndOfSection
+  nameWithType: Paragraph.IsEndOfSection
+- uid: Berry.Docx.Documents.Paragraph.IsEndOfSection*
+  name: IsEndOfSection
+  href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_IsEndOfSection_
+  commentId: Overload:Berry.Docx.Documents.Paragraph.IsEndOfSection
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Paragraph.IsEndOfSection
+  nameWithType: Paragraph.IsEndOfSection
 - uid: Berry.Docx.Documents.Paragraph.IsInserted
   name: IsInserted
   href: api/Berry.Docx.Documents.Paragraph.html#Berry_Docx_Documents_Paragraph_IsInserted
@@ -5835,6 +5867,194 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.Canvas.DocumentObjectType
   nameWithType: Canvas.DocumentObjectType
+- uid: Berry.Docx.Field.Character
+  name: Character
+  href: api/Berry.Docx.Field.Character.html
+  commentId: T:Berry.Docx.Field.Character
+  fullName: Berry.Docx.Field.Character
+  nameWithType: Character
+- uid: Berry.Docx.Field.Character.#ctor(System.Char,Berry.Docx.Formatting.CharacterFormat)
+  name: Character(Char, CharacterFormat)
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character__ctor_System_Char_Berry_Docx_Formatting_CharacterFormat_
+  commentId: M:Berry.Docx.Field.Character.#ctor(System.Char,Berry.Docx.Formatting.CharacterFormat)
+  fullName: Berry.Docx.Field.Character.Character(System.Char, Berry.Docx.Formatting.CharacterFormat)
+  nameWithType: Character.Character(Char, CharacterFormat)
+- uid: Berry.Docx.Field.Character.#ctor*
+  name: Character
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character__ctor_
+  commentId: Overload:Berry.Docx.Field.Character.#ctor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.Character
+  nameWithType: Character.Character
+- uid: Berry.Docx.Field.Character.Bold
+  name: Bold
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Bold
+  commentId: P:Berry.Docx.Field.Character.Bold
+  fullName: Berry.Docx.Field.Character.Bold
+  nameWithType: Character.Bold
+- uid: Berry.Docx.Field.Character.Bold*
+  name: Bold
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Bold_
+  commentId: Overload:Berry.Docx.Field.Character.Bold
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.Bold
+  nameWithType: Character.Bold
+- uid: Berry.Docx.Field.Character.CharacterScale
+  name: CharacterScale
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_CharacterScale
+  commentId: P:Berry.Docx.Field.Character.CharacterScale
+  fullName: Berry.Docx.Field.Character.CharacterScale
+  nameWithType: Character.CharacterScale
+- uid: Berry.Docx.Field.Character.CharacterScale*
+  name: CharacterScale
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_CharacterScale_
+  commentId: Overload:Berry.Docx.Field.Character.CharacterScale
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.CharacterScale
+  nameWithType: Character.CharacterScale
+- uid: Berry.Docx.Field.Character.CharacterSpacing
+  name: CharacterSpacing
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_CharacterSpacing
+  commentId: P:Berry.Docx.Field.Character.CharacterSpacing
+  fullName: Berry.Docx.Field.Character.CharacterSpacing
+  nameWithType: Character.CharacterSpacing
+- uid: Berry.Docx.Field.Character.CharacterSpacing*
+  name: CharacterSpacing
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_CharacterSpacing_
+  commentId: Overload:Berry.Docx.Field.Character.CharacterSpacing
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.CharacterSpacing
+  nameWithType: Character.CharacterSpacing
+- uid: Berry.Docx.Field.Character.FontName
+  name: FontName
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_FontName
+  commentId: P:Berry.Docx.Field.Character.FontName
+  fullName: Berry.Docx.Field.Character.FontName
+  nameWithType: Character.FontName
+- uid: Berry.Docx.Field.Character.FontName*
+  name: FontName
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_FontName_
+  commentId: Overload:Berry.Docx.Field.Character.FontName
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.FontName
+  nameWithType: Character.FontName
+- uid: Berry.Docx.Field.Character.FontSize
+  name: FontSize
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_FontSize
+  commentId: P:Berry.Docx.Field.Character.FontSize
+  fullName: Berry.Docx.Field.Character.FontSize
+  nameWithType: Character.FontSize
+- uid: Berry.Docx.Field.Character.FontSize*
+  name: FontSize
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_FontSize_
+  commentId: Overload:Berry.Docx.Field.Character.FontSize
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.FontSize
+  nameWithType: Character.FontSize
+- uid: Berry.Docx.Field.Character.IsHidden
+  name: IsHidden
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_IsHidden
+  commentId: P:Berry.Docx.Field.Character.IsHidden
+  fullName: Berry.Docx.Field.Character.IsHidden
+  nameWithType: Character.IsHidden
+- uid: Berry.Docx.Field.Character.IsHidden*
+  name: IsHidden
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_IsHidden_
+  commentId: Overload:Berry.Docx.Field.Character.IsHidden
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.IsHidden
+  nameWithType: Character.IsHidden
+- uid: Berry.Docx.Field.Character.Italic
+  name: Italic
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Italic
+  commentId: P:Berry.Docx.Field.Character.Italic
+  fullName: Berry.Docx.Field.Character.Italic
+  nameWithType: Character.Italic
+- uid: Berry.Docx.Field.Character.Italic*
+  name: Italic
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Italic_
+  commentId: Overload:Berry.Docx.Field.Character.Italic
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.Italic
+  nameWithType: Character.Italic
+- uid: Berry.Docx.Field.Character.Position
+  name: Position
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Position
+  commentId: P:Berry.Docx.Field.Character.Position
+  fullName: Berry.Docx.Field.Character.Position
+  nameWithType: Character.Position
+- uid: Berry.Docx.Field.Character.Position*
+  name: Position
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Position_
+  commentId: Overload:Berry.Docx.Field.Character.Position
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.Position
+  nameWithType: Character.Position
+- uid: Berry.Docx.Field.Character.SnapToGrid
+  name: SnapToGrid
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_SnapToGrid
+  commentId: P:Berry.Docx.Field.Character.SnapToGrid
+  fullName: Berry.Docx.Field.Character.SnapToGrid
+  nameWithType: Character.SnapToGrid
+- uid: Berry.Docx.Field.Character.SnapToGrid*
+  name: SnapToGrid
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_SnapToGrid_
+  commentId: Overload:Berry.Docx.Field.Character.SnapToGrid
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.SnapToGrid
+  nameWithType: Character.SnapToGrid
+- uid: Berry.Docx.Field.Character.SubSuperScript
+  name: SubSuperScript
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_SubSuperScript
+  commentId: P:Berry.Docx.Field.Character.SubSuperScript
+  fullName: Berry.Docx.Field.Character.SubSuperScript
+  nameWithType: Character.SubSuperScript
+- uid: Berry.Docx.Field.Character.SubSuperScript*
+  name: SubSuperScript
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_SubSuperScript_
+  commentId: Overload:Berry.Docx.Field.Character.SubSuperScript
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.SubSuperScript
+  nameWithType: Character.SubSuperScript
+- uid: Berry.Docx.Field.Character.TextColor
+  name: TextColor
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_TextColor
+  commentId: P:Berry.Docx.Field.Character.TextColor
+  fullName: Berry.Docx.Field.Character.TextColor
+  nameWithType: Character.TextColor
+- uid: Berry.Docx.Field.Character.TextColor*
+  name: TextColor
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_TextColor_
+  commentId: Overload:Berry.Docx.Field.Character.TextColor
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.TextColor
+  nameWithType: Character.TextColor
+- uid: Berry.Docx.Field.Character.UnderlineStyle
+  name: UnderlineStyle
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_UnderlineStyle
+  commentId: P:Berry.Docx.Field.Character.UnderlineStyle
+  fullName: Berry.Docx.Field.Character.UnderlineStyle
+  nameWithType: Character.UnderlineStyle
+- uid: Berry.Docx.Field.Character.UnderlineStyle*
+  name: UnderlineStyle
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_UnderlineStyle_
+  commentId: Overload:Berry.Docx.Field.Character.UnderlineStyle
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.UnderlineStyle
+  nameWithType: Character.UnderlineStyle
+- uid: Berry.Docx.Field.Character.Val
+  name: Val
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Val
+  commentId: P:Berry.Docx.Field.Character.Val
+  fullName: Berry.Docx.Field.Character.Val
+  nameWithType: Character.Val
+- uid: Berry.Docx.Field.Character.Val*
+  name: Val
+  href: api/Berry.Docx.Field.Character.html#Berry_Docx_Field_Character_Val_
+  commentId: Overload:Berry.Docx.Field.Character.Val
+  isSpec: "True"
+  fullName: Berry.Docx.Field.Character.Val
+  nameWithType: Character.Val
 - uid: Berry.Docx.Field.Chart
   name: Chart
   href: api/Berry.Docx.Field.Chart.html
@@ -7010,6 +7230,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Field.TextRange.CharacterFormat
   nameWithType: TextRange.CharacterFormat
+- uid: Berry.Docx.Field.TextRange.Characters
+  name: Characters
+  href: api/Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_Characters
+  commentId: P:Berry.Docx.Field.TextRange.Characters
+  fullName: Berry.Docx.Field.TextRange.Characters
+  nameWithType: TextRange.Characters
+- uid: Berry.Docx.Field.TextRange.Characters*
+  name: Characters
+  href: api/Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_Characters_
+  commentId: Overload:Berry.Docx.Field.TextRange.Characters
+  isSpec: "True"
+  fullName: Berry.Docx.Field.TextRange.Characters
+  nameWithType: TextRange.Characters
 - uid: Berry.Docx.Field.TextRange.Clone
   name: Clone()
   href: api/Berry.Docx.Field.TextRange.html#Berry_Docx_Field_TextRange_Clone
@@ -7327,6 +7560,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Formatting.CharacterFormat.Bold
   nameWithType: CharacterFormat.Bold
+- uid: Berry.Docx.Formatting.CharacterFormat.BoldCs
+  name: BoldCs
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_BoldCs
+  commentId: P:Berry.Docx.Formatting.CharacterFormat.BoldCs
+  fullName: Berry.Docx.Formatting.CharacterFormat.BoldCs
+  nameWithType: CharacterFormat.BoldCs
+- uid: Berry.Docx.Formatting.CharacterFormat.BoldCs*
+  name: BoldCs
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_BoldCs_
+  commentId: Overload:Berry.Docx.Formatting.CharacterFormat.BoldCs
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.CharacterFormat.BoldCs
+  nameWithType: CharacterFormat.BoldCs
 - uid: Berry.Docx.Formatting.CharacterFormat.Border
   name: Border
   href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_Border
@@ -7509,6 +7755,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Formatting.CharacterFormat.Italic
   nameWithType: CharacterFormat.Italic
+- uid: Berry.Docx.Formatting.CharacterFormat.ItalicCs
+  name: ItalicCs
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_ItalicCs
+  commentId: P:Berry.Docx.Formatting.CharacterFormat.ItalicCs
+  fullName: Berry.Docx.Formatting.CharacterFormat.ItalicCs
+  nameWithType: CharacterFormat.ItalicCs
+- uid: Berry.Docx.Formatting.CharacterFormat.ItalicCs*
+  name: ItalicCs
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_ItalicCs_
+  commentId: Overload:Berry.Docx.Formatting.CharacterFormat.ItalicCs
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.CharacterFormat.ItalicCs
+  nameWithType: CharacterFormat.ItalicCs
 - uid: Berry.Docx.Formatting.CharacterFormat.Position
   name: Position
   href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_Position
@@ -7522,6 +7781,32 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Formatting.CharacterFormat.Position
   nameWithType: CharacterFormat.Position
+- uid: Berry.Docx.Formatting.CharacterFormat.RightToLeft
+  name: RightToLeft
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_RightToLeft
+  commentId: P:Berry.Docx.Formatting.CharacterFormat.RightToLeft
+  fullName: Berry.Docx.Formatting.CharacterFormat.RightToLeft
+  nameWithType: CharacterFormat.RightToLeft
+- uid: Berry.Docx.Formatting.CharacterFormat.RightToLeft*
+  name: RightToLeft
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_RightToLeft_
+  commentId: Overload:Berry.Docx.Formatting.CharacterFormat.RightToLeft
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.CharacterFormat.RightToLeft
+  nameWithType: CharacterFormat.RightToLeft
+- uid: Berry.Docx.Formatting.CharacterFormat.SnapToGrid
+  name: SnapToGrid
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_SnapToGrid
+  commentId: P:Berry.Docx.Formatting.CharacterFormat.SnapToGrid
+  fullName: Berry.Docx.Formatting.CharacterFormat.SnapToGrid
+  nameWithType: CharacterFormat.SnapToGrid
+- uid: Berry.Docx.Formatting.CharacterFormat.SnapToGrid*
+  name: SnapToGrid
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_SnapToGrid_
+  commentId: Overload:Berry.Docx.Formatting.CharacterFormat.SnapToGrid
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.CharacterFormat.SnapToGrid
+  nameWithType: CharacterFormat.SnapToGrid
 - uid: Berry.Docx.Formatting.CharacterFormat.SubSuperScript
   name: SubSuperScript
   href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_SubSuperScript
@@ -7561,6 +7846,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Formatting.CharacterFormat.UnderlineStyle
   nameWithType: CharacterFormat.UnderlineStyle
+- uid: Berry.Docx.Formatting.CharacterFormat.UseComplexScript
+  name: UseComplexScript
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_UseComplexScript
+  commentId: P:Berry.Docx.Formatting.CharacterFormat.UseComplexScript
+  fullName: Berry.Docx.Formatting.CharacterFormat.UseComplexScript
+  nameWithType: CharacterFormat.UseComplexScript
+- uid: Berry.Docx.Formatting.CharacterFormat.UseComplexScript*
+  name: UseComplexScript
+  href: api/Berry.Docx.Formatting.CharacterFormat.html#Berry_Docx_Formatting_CharacterFormat_UseComplexScript_
+  commentId: Overload:Berry.Docx.Formatting.CharacterFormat.UseComplexScript
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.CharacterFormat.UseComplexScript
+  nameWithType: CharacterFormat.UseComplexScript
 - uid: Berry.Docx.Formatting.CharacterStyle
   name: CharacterStyle
   href: api/Berry.Docx.Formatting.CharacterStyle.html
@@ -10517,6 +10815,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Section.PreviousSection
   nameWithType: Section.PreviousSection
+- uid: Berry.Docx.Section.Remove
+  name: Remove()
+  href: api/Berry.Docx.Section.html#Berry_Docx_Section_Remove
+  commentId: M:Berry.Docx.Section.Remove
+  fullName: Berry.Docx.Section.Remove()
+  nameWithType: Section.Remove()
+- uid: Berry.Docx.Section.Remove*
+  name: Remove
+  href: api/Berry.Docx.Section.html#Berry_Docx_Section_Remove_
+  commentId: Overload:Berry.Docx.Section.Remove
+  isSpec: "True"
+  fullName: Berry.Docx.Section.Remove
+  nameWithType: Section.Remove
 - uid: Berry.Docx.Section.Tables
   name: Tables
   href: api/Berry.Docx.Section.html#Berry_Docx_Section_Tables
@@ -10530,6 +10841,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Section.Tables
   nameWithType: Section.Tables
+- uid: Berry.Docx.Section.Type
+  name: Type
+  href: api/Berry.Docx.Section.html#Berry_Docx_Section_Type
+  commentId: P:Berry.Docx.Section.Type
+  fullName: Berry.Docx.Section.Type
+  nameWithType: Section.Type
+- uid: Berry.Docx.Section.Type*
+  name: Type
+  href: api/Berry.Docx.Section.html#Berry_Docx_Section_Type_
+  commentId: Overload:Berry.Docx.Section.Type
+  isSpec: "True"
+  fullName: Berry.Docx.Section.Type
+  nameWithType: Section.Type
 - uid: Berry.Docx.SectionBreakType
   name: SectionBreakType
   href: api/Berry.Docx.SectionBreakType.html
