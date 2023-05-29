@@ -43,6 +43,22 @@ namespace Berry.Docx
 
         #region Public Properties
         /// <summary>
+        /// Gets the section type of the current section.
+        /// </summary>
+        public SectionBreakType Type
+        {
+            get
+            {
+                var type = _sectPr.GetFirstChild<W.SectionType>();
+                if (type?.Val == null) return SectionBreakType.NextPage;
+                if (type.Val.Value == W.SectionMarkValues.Continuous) return SectionBreakType.Continuous;
+                else if (type.Val.Value == W.SectionMarkValues.OddPage) return SectionBreakType.OddPage;
+                else if (type.Val.Value == W.SectionMarkValues.EvenPage) return SectionBreakType.EvenPage;
+                else return SectionBreakType.NextPage;
+            }
+        }
+
+        /// <summary>
         /// The Page Layout setup.
         /// <para>返回页面布局格式。</para>
         /// </summary>
@@ -142,6 +158,15 @@ namespace Berry.Docx
             Table table = new Table(_document, rowCnt, columnCnt);
             ChildObjects.Add(table);
             return table;
+        }
+
+        /// <summary>
+        /// Removes the current section break.
+        /// </summary>
+        public void Remove()
+        {
+            if (_sectPr.Parent is W.Body) return;
+            _sectPr.Remove();
         }
 
         /// <summary>

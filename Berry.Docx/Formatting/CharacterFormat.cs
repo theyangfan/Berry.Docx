@@ -46,7 +46,9 @@ namespace Berry.Docx.Formatting
         private float _fontSize = 10.5F;
         private float _fontSizeCs = 10.5F;
         private bool _bold = false;
+        private bool _boldCs = false;
         private bool _italic = false;
+        private bool _italicCs = false;
         private SubSuperScript _subSuperScript = SubSuperScript.None;
         private UnderlineStyle _underlineStyle = UnderlineStyle.None;
         private ColorValue _textColor = ColorValue.Auto;
@@ -55,6 +57,9 @@ namespace Berry.Docx.Formatting
         private float _position = 0;
         private Border _border;
         private bool _isHidden = false;
+        private bool _snapToGrid = true;
+        private bool _useComplexScript = false;
+        private bool _rightToLeft = false;
         #endregion
 
         #endregion
@@ -83,7 +88,6 @@ namespace Berry.Docx.Formatting
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="ownerParagraph"></param>
-        /// <param name="paragraphMark"></param>
         internal CharacterFormat(Document doc, W.Paragraph ownerParagraph)
         {
             _doc = doc;
@@ -172,7 +176,7 @@ namespace Berry.Docx.Formatting
                 else if(_ownerStyle != null)
                 {
                     // table style
-                    if(_tblStyleHld?.FontNameEastAsia != null)
+                    if (_tblStyleHld?.FontNameEastAsia != null)
                     {
                         return _tblStyleHld.FontNameEastAsia;
                     }
@@ -425,7 +429,7 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets the Complex Script font.
+        /// Gets or sets the complex script font.
         /// </summary>
         public string FontNameComplexScript
         {
@@ -678,6 +682,7 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
         /// <summary>
         /// Gets or sets font size in chinese.
         /// </summary>
@@ -704,8 +709,9 @@ namespace Berry.Docx.Formatting
                     FontSize = sizeList[value];
             }
         }
+
         /// <summary>
-        /// 
+        /// Gets or sets the complex script font size specified in points.
         /// </summary>
         public float FontSizeCs
         {
@@ -908,6 +914,113 @@ namespace Berry.Docx.Formatting
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the complex script bold style.
+        /// </summary>
+        public bool BoldCs
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.BoldCs != null)
+                    {
+                        return _directRHld.BoldCs;
+                    }
+                    if (_doc.DefaultFormat.CharacterFormat.BoldCs)
+                        return true;
+                    // character & paragraph
+                    BooleanValue cVal = null;
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        cVal = rStyle.BoldCs;
+                    }
+                    BooleanValue pVal = null;
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        pVal = paragraph.BoldCs;
+                    }
+                    if (cVal != null && pVal != null)
+                        return cVal == pVal ? false : true;
+                    else if (cVal != null)
+                        return cVal;
+                    else if (pVal != null)
+                        return pVal;
+                    else
+                        return false;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.BoldCs != null)
+                    {
+                        return _markRHld.BoldCs;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.BoldCs != null)
+                        return paragraph.BoldCs;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.BoldCs;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld?.BoldCs != null)
+                    {
+                        return _tblStyleHld.BoldCs;
+                    }
+                    // direct formatting
+                    if (_directSHld.BoldCs != null)
+                    {
+                        return _directSHld.BoldCs;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.BoldCs != null)
+                        return style.BoldCs;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.BoldCs;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.BoldCs ?? _doc.DefaultFormat.CharacterFormat.BoldCs;
+                }
+                else
+                {
+                    return _boldCs;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.BoldCs = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.BoldCs = value;
+                    else _directSHld.BoldCs = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.BoldCs = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.BoldCs = value;
+                }
+                else
+                {
+                    _boldCs = value;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets or sets italic style.
         /// </summary>
@@ -1010,6 +1123,112 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _italic = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the complex script italic style.
+        /// </summary>
+        public bool ItalicCs
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.ItalicCs != null)
+                    {
+                        return _directRHld.ItalicCs;
+                    }
+                    if (_doc.DefaultFormat.CharacterFormat.ItalicCs)
+                        return true;
+                    // character & paragraph
+                    BooleanValue cVal = null;
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        cVal = rStyle.ItalicCs;
+                    }
+                    BooleanValue pVal = null;
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        pVal = paragraph.ItalicCs;
+                    }
+                    if (cVal != null && pVal != null)
+                        return cVal == pVal ? false : true;
+                    else if (cVal != null)
+                        return cVal;
+                    else if (pVal != null)
+                        return pVal;
+                    else
+                        return false;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.ItalicCs != null)
+                    {
+                        return _markRHld.ItalicCs;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.ItalicCs != null)
+                        return paragraph.ItalicCs;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.ItalicCs;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld?.ItalicCs != null)
+                    {
+                        return _tblStyleHld.ItalicCs;
+                    }
+                    // direct formatting
+                    if (_directSHld.ItalicCs != null)
+                    {
+                        return _directSHld.ItalicCs;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.ItalicCs != null)
+                        return style.ItalicCs;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.ItalicCs;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.ItalicCs ?? _doc.DefaultFormat.CharacterFormat.ItalicCs;
+                }
+                else
+                {
+                    return _italicCs;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.ItalicCs = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.ItalicCs = value;
+                    else _directSHld.ItalicCs = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.ItalicCs = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.ItalicCs = value;
+                }
+                else
+                {
+                    _italicCs = value;
                 }
             }
         }
@@ -1414,7 +1633,8 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets the amount (in points) of character pitch which shall be added or removed after each character.
+        /// Gets or sets the amount (in points) of character pitch which shall be added 
+        /// or removed after each character.
         /// </summary>
         public float CharacterSpacing
         {
@@ -1513,7 +1733,8 @@ namespace Berry.Docx.Formatting
         }
 
         /// <summary>
-        /// Gets or sets the amount (in points) by which text shall be raised or lowered in relation to the default baseline location.
+        /// Gets or sets the amount (in points) by which text shall be raised or lowered
+        /// in relation to the default baseline location.
         /// </summary>
         public float Position
         {
@@ -1714,6 +1935,193 @@ namespace Berry.Docx.Formatting
                 else
                 {
                     _isHidden = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether snap to grid when document grid is defined.
+        /// </summary>
+        public bool SnapToGrid
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    if (_directRHld.SnapToGrid != null)
+                    {
+                        return _directRHld.SnapToGrid;
+                    }
+                    // character style
+                    if (_ownerRun?.RunProperties?.RunStyle != null)
+                    {
+                        RunPropertiesHolder rStyle = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerRun.GetStyle(_doc));
+                        if (rStyle.SnapToGrid != null)
+                            return rStyle.SnapToGrid;
+                    }
+                    // paragraph style
+                    if (_ownerRun.Ancestors<W.Paragraph>().Any())
+                    {
+                        RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively
+                            (_doc, _ownerRun.Ancestors<W.Paragraph>().First().GetStyle(_doc));
+                        if (paragraph.SnapToGrid != null)
+                            return paragraph.SnapToGrid;
+                    }
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    if (_markRHld.SnapToGrid != null)
+                    {
+                        return _markRHld.SnapToGrid;
+                    }
+                    // paragraph style
+                    RunPropertiesHolder paragraph = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerParagraph.GetStyle(_doc));
+                    if (paragraph.SnapToGrid != null)
+                        return paragraph.SnapToGrid;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld?.SnapToGrid != null)
+                    {
+                        return _tblStyleHld.SnapToGrid;
+                    }
+                    // direct formatting
+                    if (_directSHld.SnapToGrid != null)
+                    {
+                        return _directSHld.SnapToGrid;
+                    }
+                    // character & paragraph style
+                    RunPropertiesHolder style = RunPropertiesHolder.GetRunStyleFormatRecursively(_doc, _ownerStyle);
+                    if (style.SnapToGrid != null)
+                        return style.SnapToGrid;
+                    // document defaults
+                    return _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.SnapToGrid ?? _doc.DefaultFormat.CharacterFormat.SnapToGrid;
+                }
+                else
+                {
+                    return _snapToGrid;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.SnapToGrid = value;
+                }
+                else if (_ownerStyle != null)
+                {
+                    if (_tblStyleHld != null) _tblStyleHld.SnapToGrid = value;
+                    else _directSHld.SnapToGrid = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.SnapToGrid = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.SnapToGrid = value;
+                }
+                else
+                {
+                    _snapToGrid = value;
+                }
+            }
+        }
+
+        public bool UseComplexScript
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    return _directRHld.UseComplexScript ?? false;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    return _markRHld.UseComplexScript ?? false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.UseComplexScript ?? false;
+                }
+                else
+                {
+                    return _useComplexScript;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.UseComplexScript = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.UseComplexScript = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.UseComplexScript = value;
+                }
+                else
+                {
+                    _useComplexScript = value;
+                }
+            }
+        }
+
+        public bool RightToLeft
+        {
+            get
+            {
+                if (_ownerRun != null)
+                {
+                    // direct formatting
+                    return _directRHld.RightToLeft ?? false;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    // paragraph mark
+                    return _markRHld.RightToLeft ?? false;
+                }
+                else if (_numberingLevel != null)
+                {
+                    return _numRHld.RightToLeft ?? false;
+                }
+                else
+                {
+                    return _rightToLeft;
+                }
+            }
+            set
+            {
+                if (_ownerRun != null)
+                {
+                    _directRHld.RightToLeft = value;
+                }
+                else if (_ownerParagraph != null)
+                {
+                    _markRHld.RightToLeft = value;
+                }
+                else if (_numberingLevel != null)
+                {
+                    _numRHld.RightToLeft = value;
+                }
+                else
+                {
+                    _rightToLeft = value;
                 }
             }
         }

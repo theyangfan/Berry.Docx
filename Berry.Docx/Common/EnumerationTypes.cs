@@ -2116,7 +2116,7 @@ namespace Berry.Docx
     /// Defines the text reading mode enumeration.
     /// </summary>
     [Flags]
-    public enum TextReadingMode : uint
+    public enum TextReadingMode : byte
     {
         /// <summary>
         /// Include nothing below.

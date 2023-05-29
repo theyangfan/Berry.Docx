@@ -14,7 +14,11 @@ namespace Berry.Docx.Collections
         #endregion
 
         #region Constructors
+#if NET35
+        internal TableCollection(O.OpenXmlElement owner, IEnumerable<Table> tables) : base(owner, tables.Convert())
+#else
         internal TableCollection(O.OpenXmlElement owner, IEnumerable<Table> tables) : base(owner, tables)
+#endif
         {
             _tables = tables;
         }

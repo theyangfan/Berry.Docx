@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net4.6.1;netcoreapp2.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net48;netcoreapp2.1;netstandard2.0;net6.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -16,13 +16,14 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.5</Version>
-    <PackageReleaseNotes>1. 支持书签 (Supports bookmark)；
+    <Version>1.3.6</Version>
+    <PackageReleaseNotes>* 支持读取段落中的字符的最终格式 (Supports reading the final format of characters of the paragraph)；
   
-2. 支持超链接 (Supports hyperlink)；
+* 新增了 Berry.Docx.Visual 项目，用于构建文档在显示时的组成结构 (Added Berry.Docx.Visua project, Used to build the structure of the document when display)。
   
-3. 支持添加目录 (Supports add toc)。
-</PackageReleaseNotes>
+* 新增了对 .NET Framework 3.5 的支持 (Supports .NET Framework 3.5)；
+  
+* 修复了一些问题 (Fixed some bugs)。</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/theyangfan/Berry.Docx</RepositoryUrl>
     <PackageIcon>logo.png</PackageIcon>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -40,18 +41,55 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.6" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.4" />
   </ItemGroup>
 
+  <Choose>
+    <When Condition=" '$(TargetFramework)' == 'net35'">
+      <ItemGroup>
+        <Reference Include="System.Drawing" />
+      </ItemGroup>
+    </When>
+
+    <When Condition=" '$(TargetFramework)' == 'net40'">
+      <ItemGroup>
+        <Reference Include="System.Drawing" />
+      </ItemGroup>
+    </When>
+    
+    <When Condition=" '$(TargetFramework)' == 'net48'">
+      <ItemGroup>
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.4" />
+      </ItemGroup>
+    </When>
+    
+    <When Condition=" '$(TargetFramework)' == 'netcoreapp2.1'">
+      <ItemGroup>
+        <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.6" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.4" />
+      </ItemGroup>
+    </When>
+    
+    <When Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+      <ItemGroup>
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.4" />
+      </ItemGroup>
+    </When>
+
+    <When Condition=" '$(TargetFramework)' == 'net6.0'">
+      <ItemGroup>
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.4" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  
   <ItemGroup>
-    <None Include="..\images\logo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+    <None Include="..\images\logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Include="..\README.md">
       <Pack>True</Pack>

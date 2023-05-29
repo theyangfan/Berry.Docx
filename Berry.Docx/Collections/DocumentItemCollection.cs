@@ -19,8 +19,11 @@ namespace Berry.Docx.Collections
         #endregion
 
         #region Constructors
-        internal DocumentItemCollection(O.OpenXmlElement owner, IEnumerable<DocumentItem> items)
-            : base(items)
+#if NET35
+        internal DocumentItemCollection(O.OpenXmlElement owner, IEnumerable<DocumentItem> items) : base(items.Convert())
+#else
+        internal DocumentItemCollection(O.OpenXmlElement owner, IEnumerable<DocumentItem> items) : base(items)
+#endif
         {
             _owner = owner;
             _items = items;

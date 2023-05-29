@@ -10,7 +10,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Berry.Docx.Tests", "Berry.D
 		{97C258CB-16B5-4742-B209-9DA17595C5E0} = {97C258CB-16B5-4742-B209-9DA17595C5E0}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Berry.Docx.Examples", "Berry.Docx.Examples\Berry.Docx.Examples.csproj", "{51CFE969-AA73-4997-8F8F-511A192DD21B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Berry.Docx.Examples", "Berry.Docx.Examples\Berry.Docx.Examples.csproj", "{51CFE969-AA73-4997-8F8F-511A192DD21B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Berry.Docx.Visual", "Berry.Docx.Visual\Berry.Docx.Visual.csproj", "{5A74C75D-E155-4513-B07F-F86A80BC53C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,10 @@ Global
 		{51CFE969-AA73-4997-8F8F-511A192DD21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51CFE969-AA73-4997-8F8F-511A192DD21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51CFE969-AA73-4997-8F8F-511A192DD21B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A74C75D-E155-4513-B07F-F86A80BC53C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A74C75D-E155-4513-B07F-F86A80BC53C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A74C75D-E155-4513-B07F-F86A80BC53C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A74C75D-E155-4513-B07F-F86A80BC53C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

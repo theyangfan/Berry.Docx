@@ -93,11 +93,11 @@ namespace Berry.Docx.Documents
         public string Text
         {
             get
-            { 
+            {
                 StringBuilder text = new StringBuilder();
                 foreach(DocumentObject item in ChildObjects)
                 {
-                    if(item is TextRange)
+                    if (item is TextRange)
                     {
                         TextRange tr = item as TextRange;
                         if (!TextReadingMode.HasFlag(TextReadingMode.IncludeHiddenText) && tr.CharacterFormat.IsHidden) continue;
@@ -246,6 +246,18 @@ namespace Berry.Docx.Documents
         }
 
         /// <summary>
+        /// Return true if the current paragraph is at the end of the section, otherwise false.
+        /// </summary>
+        public bool IsEndOfSection
+        {
+            get
+            {
+                return _paragraph.ParagraphProperties?.SectionProperties != null
+                    || _paragraph.NextSibling() is W.SectionProperties;
+            }
+        }
+
+        /// <summary>
         /// Gets the owener section of the current paragraph.
         /// </summary>
         internal Section Section
@@ -265,7 +277,7 @@ namespace Berry.Docx.Documents
                 return null;
             }
         }
-        #endregion
+#endregion
 
         #region Public Methods
         /// <summary>
@@ -326,6 +338,18 @@ namespace Berry.Docx.Documents
                 }
             }
             return style;
+        }
+
+        /// <summary>
+        /// Apply the specified style to the current paragraph.
+        /// </summary>
+        /// <param name="style">The paragraph style.</param>
+        public void ApplyStyle(ParagraphStyle style)
+        {
+            if(style == null) return;
+            if (_paragraph.ParagraphProperties == null)
+                _paragraph.ParagraphProperties = new W.ParagraphProperties();
+            _paragraph.ParagraphProperties.ParagraphStyleId = new W.ParagraphStyleId() { Val = style.StyleId };
         }
 
         /// <summary>

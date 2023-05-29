@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using O = DocumentFormat.OpenXml;
 using Berry.Docx.Documents;
 
@@ -14,8 +17,13 @@ namespace Berry.Docx.Collections
         #endregion
 
         #region Constructors
+#if NET35
+        internal ParagraphCollection(O.OpenXmlElement owner, IEnumerable<Paragraph> paragraphs)
+            : base(owner, paragraphs.Convert())
+#else
         internal ParagraphCollection(O.OpenXmlElement owner, IEnumerable<Paragraph> paragraphs)
             : base(owner, paragraphs)
+#endif
         {
             _paragraphs = paragraphs;
         }
@@ -28,7 +36,7 @@ namespace Berry.Docx.Collections
         /// <param name="index">The zero-based index.</param>
         /// <returns>The paragraph at the specified index.</returns>
         public new Paragraph this[int index] => (Paragraph)base[index];
-        #endregion
+#endregion
 
         #region Public Methods
         /// <summary>

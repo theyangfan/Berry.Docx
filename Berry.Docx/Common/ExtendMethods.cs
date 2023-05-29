@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using OOXML = DocumentFormat.OpenXml;
-using OP = DocumentFormat.OpenXml.Packaging;
-using OW = DocumentFormat.OpenXml.Wordprocessing;
-using OD = DocumentFormat.OpenXml.Drawing;
+using P = DocumentFormat.OpenXml.Packaging;
+using W = DocumentFormat.OpenXml.Wordprocessing;
+using A = DocumentFormat.OpenXml.Drawing;
+
+using Berry.Docx.Documents;
 
 namespace Berry.Docx
 {
@@ -58,13 +59,38 @@ namespace Berry.Docx
             return Regex.Replace(input, pattern, newStr);
         }
 
+#if NET35
+        public static bool HasFlag(this TextReadingMode e, TextReadingMode flag)
+        {
+            byte a = (byte)e;
+            byte b = (byte)flag;
+            return (a & b) == b;
+        }
+
+        public static IEnumerable<DocumentItem> Convert<T>(this IEnumerable<T> items) where T : DocumentItem
+        {
+            foreach(var item in items)
+            {
+                yield return item;
+            }
+        }
+
+        public static IEnumerable<DocumentObject> Convert(this IEnumerable<DocumentItem> items)
+        {
+            foreach (var item in items)
+            {
+                yield return item;
+            }
+        }
+#endif
+
         #region OpenXMl Extend Methods
         /// <summary>
         /// Returns document body element.
         /// </summary>
         /// <param name="doc">The OpenXML WordprocessingDocument</param>
         /// <returns>The body element.</returns>
-        internal static OW.Body GetBody (this OP.WordprocessingDocument doc)
+        internal static W.Body GetBody (this P.WordprocessingDocument doc)
         {
             return doc?.MainDocumentPart?.Document?.Body;
         }
@@ -74,9 +100,9 @@ namespace Berry.Docx
         /// </summary>
         /// <param name="doc">The OpenXML WordprocessingDocument</param>
         /// <returns>The SectionProperties</returns>
-        internal static OW.SectionProperties GetRootSectionProperties(this OP.WordprocessingDocument doc)
+        internal static W.SectionProperties GetRootSectionProperties(this P.WordprocessingDocument doc)
         {
-            return doc.GetBody()?.LastChild as OW.SectionProperties;
+            return doc.GetBody()?.LastChild as W.SectionProperties;
         }
 
         /// <summary>
@@ -85,27 +111,27 @@ namespace Berry.Docx
         /// <param name="p">The OpenXMl paragraph element.</param>
         /// <param name="doc">The document</param>
         /// <returns>The OpenXML style</returns>
-        internal static OW.Style GetStyle(this OW.Paragraph p, Document doc)
+        internal static W.Style GetStyle(this W.Paragraph p, Document doc)
         {
-            OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
+            W.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
             if(p?.ParagraphProperties?.ParagraphStyleId != null)
             {
                 string styleId = p.ParagraphProperties.ParagraphStyleId.Val.ToString();
-                return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
+                return styles.Elements<W.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
             }
             else
             {
-                return styles.Elements<OW.Style>().Where(s => s.Type.Value == OW.StyleValues.Paragraph &&  s.Default?.Value == true).FirstOrDefault();
+                return styles.Elements<W.Style>().Where(s => s.Type.Value == W.StyleValues.Paragraph &&  s.Default?.Value == true).FirstOrDefault();
             }
         }
 
-        internal static OW.Style GetStyle(this OW.Run run, Document doc)
+        internal static W.Style GetStyle(this W.Run run, Document doc)
         {
-            OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
+            W.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
             if (run?.RunProperties?.RunStyle != null)
             {
                 string styleId = run.RunProperties.RunStyle.Val.ToString();
-                return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
+                return styles.Elements<W.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
             }
             return null;
         }
@@ -115,13 +141,13 @@ namespace Berry.Docx
         /// </summary>
         /// <param name="style">The OpenXMl style.</param>
         /// <returns>The based-on OpenXMl style.</returns>
-        internal static OW.Style GetBaseStyle(this OW.Style style, Document doc)
+        internal static W.Style GetBaseStyle(this W.Style style, Document doc)
         {
             if(style.BasedOn != null)
             {
-                OW.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
+                W.Styles styles = doc.Package.MainDocumentPart.StyleDefinitionsPart.Styles;
                 string styleId = style.BasedOn.Val.ToString();
-                return styles.Elements<OW.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
+                return styles.Elements<W.Style>().Where(s => s.StyleId == styleId).FirstOrDefault();
             }
             return null;
         }
@@ -132,37 +158,51 @@ namespace Berry.Docx
         /// <param name="doc"></param>
         /// <param name="themeFont"></param>
         /// <returns></returns>
-        public static string GetThemeFont(this OP.WordprocessingDocument doc, OW.ThemeFontValues themeFont)
+        public static string GetThemeFont(this P.WordprocessingDocument doc, W.ThemeFontValues themeFont)
         {
-            OD.MajorFont majorFont = doc.MainDocumentPart?.ThemePart?.Theme?.ThemeElements?.FontScheme?.MajorFont;
-            OD.MinorFont minorFont = doc.MainDocumentPart?.ThemePart?.Theme?.ThemeElements?.FontScheme?.MinorFont;
-            OD.SupplementalFont font = null;
-            switch (themeFont)
+            Dictionary<W.ThemeFontValues, string> themeFonts = new Dictionary<W.ThemeFontValues, string>();
+            A.FontScheme fonts = doc.MainDocumentPart?.ThemePart?.Theme?.ThemeElements?.FontScheme;
+            if (fonts != null)
             {
-                case OW.ThemeFontValues.MajorEastAsia:
-                    font = majorFont.Elements<OD.SupplementalFont>().Where(f => f.Script.Value == "Hans").FirstOrDefault();
-                    if(font != null)
-                        return font.Typeface;
-                    else
-                        return majorFont.EastAsianFont.Typeface;
-                case OW.ThemeFontValues.MajorAscii:
-                    return majorFont.LatinFont.Typeface;
-                case OW.ThemeFontValues.MajorHighAnsi:
-                    return majorFont.LatinFont.Typeface;
-                case OW.ThemeFontValues.MinorEastAsia:
-                    font = minorFont.Elements<OD.SupplementalFont>().Where(f => f.Script.Value == "Hans").FirstOrDefault();
-                    if (font != null)
-                        return font.Typeface;
-                    else
-                        return minorFont.EastAsianFont.Typeface;
-                case OW.ThemeFontValues.MinorAscii:
-                    return minorFont.LatinFont.Typeface;
-                case OW.ThemeFontValues.MinorHighAnsi:
-                    return minorFont.LatinFont.Typeface;
-                default:
-                    return string.Empty;
+                var majorFont = fonts.MajorFont;
+                var minorFont = fonts.MinorFont;
+                if (majorFont != null)
+                {
+                    var latin = majorFont.LatinFont;
+                    var eastAsian = majorFont.EastAsianFont;
+                    var cs = majorFont.ComplexScriptFont;
+                    var hans = majorFont.Elements<A.SupplementalFont>().Where(f => f.Script == "Hans").FirstOrDefault();
+                    var arab = majorFont.Elements<A.SupplementalFont>().Where(f => f.Script == "Arab").FirstOrDefault();
+                    if (!string.IsNullOrEmpty(latin?.Typeface)) 
+                    {
+                        themeFonts.Add(W.ThemeFontValues.MajorAscii, latin.Typeface);
+                        themeFonts.Add(W.ThemeFontValues.MajorHighAnsi, latin.Typeface);
+                    }
+                    if (!string.IsNullOrEmpty(eastAsian?.Typeface)) themeFonts.Add(W.ThemeFontValues.MajorEastAsia, eastAsian.Typeface);
+                    else if (!string.IsNullOrEmpty(hans?.Typeface)) themeFonts.Add(W.ThemeFontValues.MajorEastAsia, hans.Typeface);
+                    if (!string.IsNullOrEmpty(cs?.Typeface)) themeFonts.Add(W.ThemeFontValues.MajorBidi, cs.Typeface);
+                    else if (!string.IsNullOrEmpty(arab?.Typeface)) themeFonts.Add(W.ThemeFontValues.MajorBidi, arab.Typeface);
+                }
+                if (minorFont != null)
+                {
+                    var latin = minorFont.LatinFont;
+                    var eastAsian = minorFont.EastAsianFont;
+                    var cs = minorFont.ComplexScriptFont;
+                    var hans = minorFont.Elements<A.SupplementalFont>().Where(f => f.Script == "Hans").FirstOrDefault();
+                    var arab = minorFont.Elements<A.SupplementalFont>().Where(f => f.Script == "Arab").FirstOrDefault();
+                    if (!string.IsNullOrEmpty(latin?.Typeface))
+                    {
+                        themeFonts.Add(W.ThemeFontValues.MinorAscii, latin.Typeface);
+                        themeFonts.Add(W.ThemeFontValues.MinorHighAnsi, latin.Typeface);
+                    }
+                    if (!string.IsNullOrEmpty(eastAsian?.Typeface)) themeFonts.Add(W.ThemeFontValues.MinorEastAsia, eastAsian.Typeface);
+                    else if (!string.IsNullOrEmpty(hans?.Typeface)) themeFonts.Add(W.ThemeFontValues.MinorEastAsia, hans.Typeface);
+                    if (!string.IsNullOrEmpty(cs?.Typeface)) themeFonts.Add(W.ThemeFontValues.MinorBidi, cs.Typeface);
+                    else if (!string.IsNullOrEmpty(arab?.Typeface)) themeFonts.Add(W.ThemeFontValues.MinorBidi, arab.Typeface);
+                }
             }
+            return themeFonts.ContainsKey(themeFont) ? themeFonts[themeFont] : string.Empty;
         }
-        #endregion
+#endregion
     }
 }

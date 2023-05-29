@@ -22,39 +22,41 @@ namespace Berry.Docx
             { 12, "千" },
             { 13, "万" },
         };
-
-        private static Tuple<int, string>[] upperRomanSymbols =
+#if NEt35
+#else
+#endif
+        private static Dictionary<int, string> upperRomanSymbols = new Dictionary<int, string>()
         {
-            new Tuple<int, string>(1000, "M"),
-            new Tuple<int, string>(900, "CM"),
-            new Tuple<int, string>(500, "D"),
-            new Tuple<int, string>(400, "CD"),
-            new Tuple<int, string>(100, "C"),
-            new Tuple<int, string>(90, "XC"),
-            new Tuple<int, string>(50, "L"),
-            new Tuple<int, string>(40, "XL"),
-            new Tuple<int, string>(10, "X"),
-            new Tuple<int, string>(9, "IX"),
-            new Tuple<int, string>(5, "V"),
-            new Tuple<int, string>(4, "IV"),
-            new Tuple<int, string>(1, "I")
+            { 1000, "M" },
+            { 900, "CM" },
+            { 500, "D" },
+            { 400, "CD" },
+            { 100, "C" },
+            { 90, "XC" },
+            { 50, "L" },
+            { 40, "XL" },
+            { 10, "X" },
+            { 9, "IX" },
+            { 5, "V" },
+            { 4, "IV" },
+            { 1, "I" }
         };
 
-        private static Tuple<int, string>[] lowerRomanSymbols =
+        private static Dictionary<int, string> lowerRomanSymbols = new Dictionary<int, string>()
         {
-            new Tuple<int, string>(1000, "m"),
-            new Tuple<int, string>(900, "cm"),
-            new Tuple<int, string>(500, "d"),
-            new Tuple<int, string>(400, "cd"),
-            new Tuple<int, string>(100, "c"),
-            new Tuple<int, string>(90, "xc"),
-            new Tuple<int, string>(50, "l"),
-            new Tuple<int, string>(40, "xl"),
-            new Tuple<int, string>(10, "x"),
-            new Tuple<int, string>(9, "ix"),
-            new Tuple<int, string>(5, "v"),
-            new Tuple<int, string>(4, "iv"),
-            new Tuple<int, string>(1, "i")
+            { 1000, "m" },
+            { 900, "cm" },
+            { 500, "d" },
+            { 400, "cd" },
+            { 100, "c" },
+            { 90, "xc" },
+            { 50, "l" },
+            { 40, "xl" },
+            { 10, "x" },
+            { 9, "ix" },
+            { 5, "v" },
+            { 4, "iv" },
+            { 1, "i" }
         };
 
         public static string IntToChineseCounting(int num)
@@ -79,6 +81,7 @@ namespace Berry.Docx
             }
             string symbol = symbols.ToString().RxReplace("零+", "零").RxReplace("零亿", "亿").RxReplace("零万","万");
             if(symbol.Length > 1 && symbol.EndsWith("零")) symbol = symbol.Substring(0, symbol.Length - 1);
+            if (symbol.StartsWith("一十")) symbol = symbol.Substring(1);
             return symbol;
         }
 
@@ -87,8 +90,8 @@ namespace Berry.Docx
             StringBuilder roman = new StringBuilder();
             foreach(var pair in upperRomanSymbols)
             {
-                int value = pair.Item1;
-                string symbol = pair.Item2;
+                int value = pair.Key;
+                string symbol = pair.Value;
                 while(num >= value)
                 {
                     num -= value;
@@ -107,8 +110,8 @@ namespace Berry.Docx
             StringBuilder roman = new StringBuilder();
             foreach (var pair in lowerRomanSymbols)
             {
-                int value = pair.Item1;
-                string symbol = pair.Item2;
+                int value = pair.Key;
+                string symbol = pair.Value;
                 while (num >= value)
                 {
                     num -= value;
