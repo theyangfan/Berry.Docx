@@ -16,7 +16,7 @@ namespace Berry.Docx.Visual.Documents
         private double _lineSpace = 0;
         private DocGridType _gridType;
 
-        private readonly List<Character> _chars;
+        private readonly List<ParagraphItem> _items;
         private double _height = 0;
         private readonly HorizontalAlignment _hAlign = HorizontalAlignment.Left;
 
@@ -36,7 +36,7 @@ namespace Berry.Docx.Visual.Documents
             _lineSpace = lineSpace;
             _gridType = gridType;
 
-            _chars = new List<Character>();
+            _items = new List<ParagraphItem>();
             
             if (gridType != DocGridType.SnapToChars)
             {
@@ -75,7 +75,7 @@ namespace Berry.Docx.Visual.Documents
 
         public HorizontalAlignment HorizontalAlignment => _hAlign;
 
-        public List<Character> Characters => _chars;
+        public List<ParagraphItem> ChildItems => _items;
         #endregion
 
         #region Internal Properties
@@ -83,23 +83,28 @@ namespace Berry.Docx.Visual.Documents
         #endregion
 
         #region Internal Methods
-        internal bool TryAppend(Character character)
+        internal bool TryAppend(ParagraphItem item)
         {
             double space = _margin.Left + _margin.Right + _padding.Left + _padding.Right;
-            if(space + _textWidth + character.Width > _availableWidth + 1)
+            if(item.GetType() != typeof(Picture) || _items.Count > 0)
             {
-                return false;
+                if (space + _textWidth + item.Width > _availableWidth + 1)
+                {
+                    return false;
+                }
             }
-            _chars.Add(character);
-            _textWidth += character.Width;
+            _items.Add(item);
+            _textWidth += item.Width;
             if (_paragraph.Format.SnapToGrid && _gridType != DocGridType.None)
             {
-                while (character.Height > (_lineSpace * _rowCnt) * 0.76) _rowCnt++;
+                double factor = 0.99;
+                if (item is Character) factor = 0.90;
+                while (item.Height > (_lineSpace * _rowCnt) * factor) _rowCnt++;
                 _height = _lineSpace * _rowCnt;
             }
             else
             {
-                _height = Math.Max(_height, character.Height);
+                _height = Math.Max(_height, item.Height);
             }
             // 调整行距
             var lineSpacing = _paragraph.Format.GetLineSpacing();
@@ -122,26 +127,29 @@ namespace Berry.Docx.Visual.Documents
                     _height = Math.Max(_height, lineSpacing.Val.ToPixel());
             }
             // 设置底部内边距
-            _maxCharHeight = Math.Max(_maxCharHeight, character.Height);
+            _maxCharHeight = Math.Max(_maxCharHeight, item.Height);
             _padding.Bottom = (_height - _maxCharHeight) / 2;
             // 如果分散对齐，在左右边距之间均匀分布文本, 起始字符左对齐，末尾字符右对齐，其余居中对齐
             if (_hAlign == HorizontalAlignment.Stretch)
             {
-                if (_chars.Count == 1) _chars.First().HorizontalAlignment = HorizontalAlignment.Center;
+                if (_items.Count == 1) _items.First().HorizontalAlignment = HorizontalAlignment.Center;
                 else
                 {
                     int i = 0;
-                    foreach(var c in _chars)
+                    foreach (var c in _items)
                     {
                         if (i == 0) c.HorizontalAlignment = HorizontalAlignment.Left;
-                        else if (i == _chars.Count - 1) c.HorizontalAlignment = HorizontalAlignment.Right;
+                        else if (i == _items.Count - 1) c.HorizontalAlignment = HorizontalAlignment.Right;
                         else c.HorizontalAlignment = HorizontalAlignment.Center;
                         i++;
                     }
                 }
             }
+
             return true;
         }
+
+
         #endregion
 
     }

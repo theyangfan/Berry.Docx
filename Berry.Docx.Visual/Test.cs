@@ -12,7 +12,7 @@ namespace Berry.Docx.Visual
         {
             string src = @"C:\Users\tomato\Desktop\test.docx";
             // 
-            using(Berry.Docx.Document doc = new Berry.Docx.Document("example.docx"))
+            using(Berry.Docx.Document doc = new Berry.Docx.Document(src, System.IO.FileShare.ReadWrite))
             {
                 Document visualDoc = new Document(doc);
                 // get first page
@@ -27,11 +27,10 @@ namespace Berry.Docx.Visual
                 var line1 = paragraph1.Lines[0];
                 Console.WriteLine(line1.Height);
                 Console.WriteLine(line1.HorizontalAlignment);
-                // get first character
-                var char1 = line1.Characters[0];
-                Console.WriteLine(char1.Val);
-                Console.WriteLine(char1.Width);
-                Console.WriteLine(char1.Height);
+                // get first paragraph item
+                var item1 = line1.ChildItems[1];
+                Console.WriteLine(item1.Width);
+                Console.WriteLine(item1.Height);
             }
         }
 

@@ -16,7 +16,7 @@ Berry.Docx is a .NET library for reading, manipulating and writing Word 2007+ (.
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx</PackageProjectUrl>
-    <Version>1.3.6-beta7</Version>
+    <Version>1.3.7-beta1</Version>
     <PackageReleaseNotes>* 支持读取段落中的字符的最终格式 (Supports reading the final format of characters of the paragraph)；
   
 * 新增了 Berry.Docx.Visual 项目，用于构建文档在显示时的组成结构 (Added Berry.Docx.Visua project, Used to build the structure of the document when display)。
