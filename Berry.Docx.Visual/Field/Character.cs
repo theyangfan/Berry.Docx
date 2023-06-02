@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Berry.Docx.Visual.Field
 {
-    public class Character
+    public class Character : ParagraphItem
     {
         #region Private Members
         private readonly char _value;
@@ -100,11 +100,11 @@ namespace Berry.Docx.Visual.Field
         public char Val => _value;
         public FormattedText FormattedText => _text;
 
-        public double Width => _width;
+        public override double Width => _width;
 
-        public double Height => _height;
+        public override double Height => _height;
 
-        public HorizontalAlignment HorizontalAlignment
+        public override HorizontalAlignment HorizontalAlignment
         {
             get => _hAlign;
             internal set => _hAlign = value;

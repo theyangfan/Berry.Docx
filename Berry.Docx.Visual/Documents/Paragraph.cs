@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using System.Windows;
 using Berry.Docx.Visual.Field;
+using BF = Berry.Docx.Field;
 
 namespace Berry.Docx.Visual.Documents
 {
@@ -42,9 +43,11 @@ namespace Berry.Docx.Visual.Documents
             _lines = new List<ParagraphLine>();
 
             float firstCharSize = 0;
-            if (paragraph.ChildItems.OfType<Berry.Docx.Field.TextRange>().Count() > 0)
+            if (paragraph.ChildItems.Count > 0 && 
+                (paragraph.ChildItems[0].DocumentObjectType == DocumentObjectType.TextRange
+                || paragraph.ChildItems[0].DocumentObjectType == DocumentObjectType.Picture))
             {
-                firstCharSize = paragraph.ChildItems.OfType<Berry.Docx.Field.TextRange>().First().CharacterFormat.FontSize;
+                firstCharSize = paragraph.ChildItems[0].CharacterFormat.FontSize;
             }
             else
             {
@@ -273,6 +276,18 @@ namespace Berry.Docx.Visual.Documents
                             lines.Add(line);
                             index++;
                         }
+                    }
+                }
+                // 图片
+                else if(item is Berry.Docx.Field.Picture)
+                {
+                    Picture picture = new Picture((Berry.Docx.Field.Picture)item);
+                    while (!lines[index].TryAppend(picture))
+                    {
+                        var line = new ParagraphLine(_paragraph, width, _charSpace, _lineSpace, _gridType);
+                        if (_specialIndent < 0) line.Padding.Left = Math.Abs(_specialIndent);
+                        lines.Add(line);
+                        index++;
                     }
                 }
                 // 分页符

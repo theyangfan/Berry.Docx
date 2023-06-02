@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Berry.Docx.Visual.Documents;
+using Berry.Docx.Visual.Field;
 
 namespace Berry.Docx.Visual
 {
@@ -83,10 +84,13 @@ namespace Berry.Docx.Visual
             for (int i = lineNumber; i < count; i++)
             {
                 var line = lines[i];
-                if(_curHeight + line.Height + line.Margin.Top + line.Margin.Bottom > _availableHeight)
+                if(line.ChildItems[0].GetType() != typeof(Picture) || _paragraphs.Count > 0)
                 {
-                    if(paragraph.Lines.Count > 0) _paragraphs.Add(paragraph);
-                    return false;
+                    if (_curHeight + line.Height + line.Margin.Top + line.Margin.Bottom > _availableHeight)
+                    {
+                        if (paragraph.Lines.Count > 0) _paragraphs.Add(paragraph);
+                        return false;
+                    }
                 }
                 if (line.EndsWithPageBreak)
                 {
