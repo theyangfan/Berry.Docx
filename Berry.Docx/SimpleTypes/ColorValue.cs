@@ -41,7 +41,7 @@ namespace Berry.Docx
         /// <param name="color"></param>
         public ColorValue(Color color)
         {
-            _color= color;
+            _color = color;
         }
 
         /// <summary>
@@ -93,8 +93,7 @@ namespace Berry.Docx
 
         public override string ToString()
         {
-            if (_auto) return "auto";
-            else return ColorConverter.ToHex(_color);
+            return _auto ? "auto" : ColorConverter.ToHex(_color);
         }
         #endregion
     }

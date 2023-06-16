@@ -15,22 +15,61 @@ namespace Berry.Docx.Documents
     {
         #region Private Members
         private Document _ownerDoc;
-        private Table _ownerTable;
-        private TableRow _ownerTableRow;
         private W.TableCell _cell;
+        private TablePropertiesHolder _tblPr;
         #endregion
 
         #region Constructors
-        internal TableCell(Document ownerDoc, Table ownerTable, TableRow ownerTableRow, W.TableCell cell) : base(ownerDoc, cell)
+        internal TableCell(Document ownerDoc, W.TableCell cell) : base(ownerDoc, cell)
         {
             _ownerDoc = ownerDoc;
-            _ownerTable = ownerTable;
-            _ownerTableRow = ownerTableRow;
             _cell = cell;
+            _tblPr = new TablePropertiesHolder(this);
         }
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// The owner table.
+        /// </summary>
+        public Table Table => Row?.Table;
+
+        /// <summary>
+        /// The owner table row.
+        /// </summary>
+        public TableRow Row
+        {
+            get
+            {
+                if(_cell.Parent is W.TableRow)
+                    return new TableRow(_ownerDoc, (W.TableRow)_cell.Parent);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// The row index of the current cell.
+        /// </summary>
+        public int RowIndex => Row?.RowIndex ?? 0;
+
+        /// <summary>
+        /// The column index of the current cell.
+        /// </summary>
+        public int ColumnIndex
+        {
+            get
+            {
+                if (Row == null) return 0;
+                int index = 0;
+                foreach(var cell in Row.Cells)
+                {
+                    if (cell == this) break;
+                    index += cell.ColumnSpan;
+                }
+                return index;
+            }
+        }
+
         /// <summary>
         /// The DocumentObject type.
         /// </summary>
@@ -49,7 +88,45 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// Gets the cell borders.
         /// </summary>
-        public TableBorders Borders => new TableBorders(_ownerDoc, this);
+        public TableBorders Borders => new TableBorders(this);
+
+        /// <summary>
+        /// Gets or sets the cell background color.
+        /// </summary>
+        public ColorValue Background
+        {
+            get
+            {
+                if(_tblPr.Background != null)
+                    return _tblPr.Background;
+                if (Table == null) return ColorValue.Auto;
+                if (RowIndex == 0 && Table.Format.FirstRowEnabled)
+                {
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.FirstRow);
+                    if(style.Background != null) return style.Background;
+                }
+                if (RowIndex == Table.RowCount - 1 && Table.Format.LastRowEnabled)
+                {
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.LastRow);
+                    if (style.Background != null) return style.Background;
+                }
+                if (ColumnIndex == 0 && Table.Format.FirstColumnEnabled)
+                {
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.FirstColumn);
+                    if (style.Background != null) return style.Background;
+                }
+                if (ColumnIndex + ColumnSpan == Table.ColumnCount && Table.Format.LastColumnEnabled)
+                {
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.LastColumn);
+                    if (style.Background != null) return style.Background;
+                }
+                return Table.Format.Background;
+            }
+            set
+            {
+                _tblPr.Background = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the table cell vertical alignment.
@@ -58,86 +135,55 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                W.TableCellVerticalAlignment vAlign = _cell.TableCellProperties?.TableCellVerticalAlignment;
-                if(vAlign == null)
+                if(_tblPr.VerticalCellAlignment != null)
+                    return _tblPr.VerticalCellAlignment;
+                if (Table == null) return TableCellVerticalAlignment.Top;
+                if (RowIndex == 0 && Table.Format.FirstRowEnabled)
                 {
-                    return vAlign.Val.Value.Convert<TableCellVerticalAlignment>();
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.FirstRow);
+                    if (style.VerticalCellAlignment != null) return style.VerticalCellAlignment;
                 }
-                return _ownerTable.GetStyle().WholeTable.VerticalCellAlignment;
+                if (RowIndex == Table.RowCount - 1 && Table.Format.LastRowEnabled)
+                {
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.LastRow);
+                    if (style.VerticalCellAlignment != null) return style.VerticalCellAlignment;
+                }
+                if (ColumnIndex == 0 && Table.Format.FirstColumnEnabled)
+                {
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.FirstColumn);
+                    if (style.VerticalCellAlignment != null) return style.VerticalCellAlignment;
+                }
+                if (ColumnIndex + ColumnSpan == Table.ColumnCount && Table.Format.LastColumnEnabled)
+                {
+                    var style = new TablePropertiesHolder(Table.GetStyle(), TableRegionType.LastColumn);
+                    if (style.VerticalCellAlignment != null) return style.VerticalCellAlignment;
+                }
+                return Table.GetStyle().WholeTable.VerticalCellAlignment;
             }
             set
             {
-                if(_cell.TableCellProperties == null)
-                {
-                    _cell.TableCellProperties = new W.TableCellProperties();
-                }
-                _cell.TableCellProperties.TableCellVerticalAlignment = new W.TableCellVerticalAlignment()
-                {
-                    Val = value.Convert<W.TableVerticalAlignmentValues>()
-                };
+                _tblPr.VerticalCellAlignment = value;
             }
         }
 
-        public int GridSpan
+        /// <summary>
+        /// Gets or sets the number of grid columns which shall be spanned by the current cell.
+        /// </summary>
+        public int ColumnSpan
         {
-            get
-            {
-                W.GridSpan gridSpan = _cell.TableCellProperties?.GridSpan;
-                if (gridSpan == null) return 1;
-                return gridSpan.Val.Value;
-            }
-            set
-            {
-                if (value <= 1 && _cell.TableCellProperties?.GridSpan != null)
-                {
-                    _cell.TableCellProperties.GridSpan = null;
-                    return;
-                }
-                if(_cell.TableCellProperties == null)
-                {
-                    _cell.TableCellProperties = new W.TableCellProperties();
-                }
-                if (_cell.TableCellProperties.GridSpan == null)
-                {
-                    _cell.TableCellProperties.GridSpan = new W.GridSpan(); 
-                }
-                _cell.TableCellProperties.GridSpan.Val = value;
-            }
+            get => _tblPr.ColumnSpan ?? 1;
+            set => _tblPr.ColumnSpan = value;
         }
 
-        public TableCellVerticalMergeType VMerge
+        /// <summary>
+        /// Gets or sets a value indicates whether the current cell is part of a vertically 
+        /// merged set of cells (i.e., whether this cell continues the vertical merge or starts
+        /// a new merged group of cells).
+        /// </summary>
+        public TableCellVerticalMergeType VerticalMerge
         {
-            get
-            {
-                W.VerticalMerge vMerge = _cell.TableCellProperties?.VerticalMerge;
-                if (vMerge == null) return TableCellVerticalMergeType.None;
-                if (vMerge.Val == null) return TableCellVerticalMergeType.Continue;
-                return vMerge.Val.Value.Convert<TableCellVerticalMergeType>();
-            }
-            set
-            {
-                if(value == TableCellVerticalMergeType.None && _cell.TableCellProperties?.VerticalMerge != null)
-                {
-                    _cell.TableCellProperties.VerticalMerge = null;
-                    return;
-                }
-                if (_cell.TableCellProperties == null)
-                {
-                    _cell.TableCellProperties = new W.TableCellProperties();
-                }
-                if (_cell.TableCellProperties.VerticalMerge == null)
-                {
-                    _cell.TableCellProperties.VerticalMerge = new W.VerticalMerge();
-                }
-                if (value == TableCellVerticalMergeType.Restart)
-                {
-                    _cell.TableCellProperties.VerticalMerge.Val = W.MergedCellValues.Restart;
-                }
-                else if (value == TableCellVerticalMergeType.Continue)
-                {
-                    _cell.TableCellProperties.VerticalMerge.Val = null;
-                }
-            }
+            get => _tblPr.VMerge ?? TableCellVerticalMergeType.None;
+            set => _tblPr.VMerge = value;
         }
 
         #endregion
@@ -197,7 +243,8 @@ namespace Berry.Docx.Documents
         /// <returns>The new table row.</returns>
         public TableRow InsertRowAbove()
         {
-            return _ownerTableRow.InsertRowAbove();
+            if (Row == null) return null;
+            return Row.InsertRowAbove();
         }
 
         /// <summary>
@@ -206,7 +253,8 @@ namespace Berry.Docx.Documents
         /// <returns>The new table row.</returns>
         public TableRow InsertRowBelow()
         {
-            return _ownerTableRow.InsertRowBelow();
+            if (Row == null) return null;
+            return Row.InsertRowBelow();
         }
 
         /// <summary>
@@ -214,11 +262,12 @@ namespace Berry.Docx.Documents
         /// </summary>
         public void InsertColumnLeft()
         {
-            int index = _ownerTableRow.Cells.IndexOf(this);
+            if (Row == null) return;
+            int index = Row.Cells.IndexOf(this);
             TableCell cell = (TableCell)Clone();
             cell.ClearContent();
 
-            foreach(TableRow row in _ownerTable.Rows)
+            foreach(TableRow row in Table.Rows)
             {
                 if(row.Cells.Count > index)
                 {
@@ -236,11 +285,12 @@ namespace Berry.Docx.Documents
         /// </summary>
         public void InsertColumnRight()
         {
-            int index = _ownerTableRow.Cells.IndexOf(this);
+            if (Row == null) return;
+            int index = Row.Cells.IndexOf(this);
             TableCell cell = (TableCell)Clone();
             cell.ClearContent();
 
-            foreach (TableRow row in _ownerTable.Rows)
+            foreach (TableRow row in Table.Rows)
             {
                 if (row.Cells.Count > index)
                 {
@@ -272,7 +322,7 @@ namespace Berry.Docx.Documents
         public override DocumentObject Clone()
         {
             W.TableCell newCell = (W.TableCell)_cell.CloneNode(true);
-            return new TableCell(_ownerDoc, _ownerTable, _ownerTableRow, newCell);
+            return new TableCell(_ownerDoc, newCell);
         }
         #endregion
 

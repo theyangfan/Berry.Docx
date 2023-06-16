@@ -27,12 +27,19 @@ namespace Test
 
             using (Document doc = new Document(src, FileShare.ReadWrite))
             {
-                var paragraph = doc.LastSection.Paragraphs[0];
-                var pic = paragraph.ChildItems[0] as Picture;
-                Console.WriteLine(pic.Width);
-                Console.WriteLine(pic.Height);
+                //var paragraph = doc.LastSection.Paragraphs[0];
+                var table = doc.LastSection.Tables[0];
+                var c1 = table[0][0];
+                var c2 = table[1][0];
+
+                c1.Borders.Bottom.Style = BorderStyle.Single;
+                c2.Borders.Top.Style = BorderStyle.Single;
+                c1.Borders.Bottom.Width = 4;
+                c1.Borders.Bottom.Color = Color.Red;
+                c2.Borders.Top.Width = 1;
+                c2.Borders.Top.Color = Color.Yellow;
                 // 保存
-                //doc.SaveAs(dst);
+                doc.SaveAs(dst);
             }
         }
     }

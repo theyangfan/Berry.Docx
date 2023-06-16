@@ -8,7 +8,7 @@ using BF = Berry.Docx.Field;
 
 namespace Berry.Docx.Visual.Documents
 {
-    public class Paragraph
+    public class Paragraph : DocumentItem
     {
         #region Private Members
         private Berry.Docx.Documents.Paragraph _paragraph;

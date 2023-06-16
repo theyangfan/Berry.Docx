@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using O = DocumentFormat.OpenXml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
+using Berry.Docx.Formatting;
 
 namespace Berry.Docx.Documents
 {
@@ -14,20 +15,46 @@ namespace Berry.Docx.Documents
     {
         #region Private Members
         private Document _ownerDoc;
-        private Table _ownerTable;
         private W.TableRow _row;
+        private readonly TablePropertiesHolder _tblPr;
         #endregion
 
         #region Constructors
-        internal TableRow(Document ownerDoc, Table ownerTable, W.TableRow row) : base(ownerDoc, row)
+        internal TableRow(Document ownerDoc, W.TableRow row) : base(ownerDoc, row)
         {
             _ownerDoc = ownerDoc;
-            _ownerTable = ownerTable;
             _row = row;
+            _tblPr = new TablePropertiesHolder(this);
         }
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        public Table Table
+        {
+            get
+            {
+                if(_row.Parent is W.Table)
+                {
+                    return new Table(_ownerDoc, (W.Table)_row.Parent);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int RowIndex
+        {
+            get
+            {
+                if(Table == null) return 0;
+                return Table.Rows.IndexOf(this);
+            }
+        }
         /// <summary>
         /// The DocumentObject type.
         /// </summary>
@@ -50,6 +77,9 @@ namespace Berry.Docx.Documents
         /// </summary>
         public TableCellCollection Cells => new TableCellCollection(_row, GetTableCells());
 
+        /// <summary>
+        /// Gets or sets the row height (int points).
+        /// </summary>
         public float Height
         {
             get
@@ -83,6 +113,9 @@ namespace Berry.Docx.Documents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the height type.
+        /// </summary>
         public TableRowHeightType HeightType
         {
             get
@@ -123,25 +156,13 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                if(_row.TableRowProperties?.GetFirstChild<W.TableJustification>() != null)
-                {
-                    W.TableJustification jc = _row.TableRowProperties.GetFirstChild<W.TableJustification>();
-                    return jc.Val.Value.Convert<TableRowAlignment>();
-                }
-                return _ownerTable.Format.HorizontalAlignment;
+                if(_tblPr.HorizontalAlignment != null) return _tblPr.HorizontalAlignment;
+                if(Table == null) return TableRowAlignment.Left;
+                return Table.Format.HorizontalAlignment;
             }
             set
             {
-                if(_row.TableRowProperties == null)
-                {
-                    _row.TableRowProperties = new W.TableRowProperties();
-                }
-                if (_row.TableRowProperties.GetFirstChild<W.TableJustification>() == null)
-                {
-                    _row.TableRowProperties.AddChild(new W.TableJustification());
-                }
-                W.TableJustification jc = _row.TableRowProperties.GetFirstChild<W.TableJustification>();
-                jc.Val = value.Convert<W.TableRowAlignmentValues>();
+                _tblPr.HorizontalAlignment = value;
             }
         }
 
@@ -152,32 +173,28 @@ namespace Berry.Docx.Documents
         {
             get
             {
-                W.CantSplit cantSplit = _row.TableRowProperties?.GetFirstChild<W.CantSplit>();
-                if(cantSplit != null)
-                {
-                    if (cantSplit.Val == null) return false;
-                    return cantSplit.Val.Value == W.OnOffOnlyValues.Off;
-                }
-                return _ownerTable.GetStyle().WholeTable.AllowBreakAcrossPages;
+                if (_tblPr.AllowBreakAcrossPages != null) return _tblPr.AllowBreakAcrossPages;
+                if(Table == null) return true;
+                return Table.GetStyle().WholeTable.AllowBreakAcrossPages;
             }
             set
             {
-                if (value)
-                {
-                    _row.TableRowProperties?.GetFirstChild<W.CantSplit>()?.Remove();
-                }
-                else
-                {
-                    if (_row.TableRowProperties == null)
-                    {
-                        _row.TableRowProperties = new W.TableRowProperties();
-                    }
-                    _row.TableRowProperties.AddChild(new W.CantSplit());
-                }
+                _tblPr.AllowBreakAcrossPages = value;
             }
         }
+        #endregion
 
-        
+        #region Internal
+        /// <summary>
+        /// Gets or sets a value indicating whether repeat the first row as header row at the top of each page.
+        /// </summary>
+        internal bool RepeatHeaderRow
+        {
+            get => _tblPr.RepeatHeaderRow ?? false;
+            set => _tblPr.RepeatHeaderRow = value;
+        }
+
+        internal new W.TableRow XElement => _row;
         #endregion
 
         #region Public Methods
@@ -229,7 +246,7 @@ namespace Berry.Docx.Documents
         public override DocumentObject Clone()
         {
             W.TableRow newRow = (W.TableRow)_row.CloneNode(true);
-            return new TableRow(_ownerDoc, _ownerTable, newRow);
+            return new TableRow(_ownerDoc, newRow);
         }
         #endregion
 
@@ -238,7 +255,7 @@ namespace Berry.Docx.Documents
         {
             foreach (W.TableCell cell in _row.Elements<W.TableCell>())
             {
-                yield return new TableCell(_ownerDoc, _ownerTable, this, cell);
+                yield return new TableCell(_ownerDoc, cell);
             }
         }
         #endregion
