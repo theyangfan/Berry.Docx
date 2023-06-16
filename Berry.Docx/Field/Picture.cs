@@ -63,7 +63,7 @@ namespace Berry.Docx.Field
         /// <summary>
         /// Gets or sets the width of the picture.
         /// </summary>
-        public int Width
+        public float Width
         {
             get
             {
@@ -72,7 +72,7 @@ namespace Berry.Docx.Field
                     Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
                     if(extent != null)
                     {
-                        return (int)Math.Round(extent.Cx.Value / 12700.0);
+                        return (float)Math.Round(extent.Cx.Value / 12700.0);
                     }
                 }
                 return 0;
@@ -84,12 +84,12 @@ namespace Berry.Docx.Field
                     Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
                     if (extent != null)
                     {
-                        extent.Cx = value * 12700;
+                        extent.Cx = (int)(value * 12700);
                     }
                     A.Extents extents = _drawing.Descendants<A.Extents>().FirstOrDefault();
                     if(extents != null)
                     {
-                        extents.Cx = value * 12700;
+                        extents.Cx = (int)(value * 12700);
                     }
                 }
             }
@@ -98,7 +98,7 @@ namespace Berry.Docx.Field
         /// <summary>
         /// ets or sets the height of the picture.
         /// </summary>
-        public int Height
+        public float Height
         {
             get
             {
@@ -107,7 +107,7 @@ namespace Berry.Docx.Field
                     Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
                     if (extent != null)
                     {
-                        return (int)Math.Round(extent.Cy.Value / 12700.0);
+                        return (float)Math.Round(extent.Cy.Value / 12700.0);
                     }
                 }
                 return 0;
@@ -119,12 +119,12 @@ namespace Berry.Docx.Field
                     Wp.Extent extent = _drawing.Descendants<Wp.Extent>().FirstOrDefault();
                     if (extent != null)
                     {
-                        extent.Cy = value * 12700;
+                        extent.Cy = (int)(value * 12700);
                     }
                     A.Extents extents = _drawing.Descendants<A.Extents>().FirstOrDefault();
                     if (extents != null)
                     {
-                        extents.Cy = value * 12700;
+                        extents.Cy = (int)(value * 12700);
                     }
                 }
             }

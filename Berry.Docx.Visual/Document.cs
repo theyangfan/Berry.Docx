@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BD = Berry.Docx.Documents;
 
 namespace Berry.Docx.Visual
 {
@@ -28,18 +29,31 @@ namespace Berry.Docx.Visual
                 float lineSpace = section.PageSetup.LinePitch.ToPixel();
                 var gridType = section.PageSetup.DocGrid;
 
-                foreach(var paragraph in section.Paragraphs)
+                foreach(var obj in section.ChildObjects)
                 {
-                    int lineNumber = 0;
-                    if(paragraph.Format.PageBreakBefore && _pages[pageIndex].Paragraphs.Count > 0)
+                    if(obj is BD.Paragraph)
                     {
-                        _pages.Add(new Page(doc, section));
-                        pageIndex++;
+                        var paragraph = (BD.Paragraph)obj;
+                        int lineNumber = 0;
+                        if (paragraph.Format.PageBreakBefore && _pages[pageIndex].ChildItems.Count > 0)
+                        {
+                            _pages.Add(new Page(doc, section));
+                            pageIndex++;
+                        }
+                        while (!_pages[pageIndex].TryAppend(paragraph, ref lineNumber))
+                        {
+                            _pages.Add(new Page(doc, section));
+                            pageIndex++;
+                        }
                     }
-                    while (!_pages[pageIndex].TryAppend(paragraph, ref lineNumber))
+                    else if(obj is BD.Table)
                     {
-                        _pages.Add(new Page(doc, section));
-                        pageIndex++;
+                        var table = (BD.Table)obj;
+                        while (!_pages[pageIndex].TryAppend(table))
+                        {
+                            _pages.Add(new Page(doc, section));
+                            pageIndex++;
+                        }
                     }
                 }
             }

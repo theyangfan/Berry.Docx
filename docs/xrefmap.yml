@@ -1508,6 +1508,41 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Collections.BookmarkCollection.GetEnumerator
   nameWithType: BookmarkCollection.GetEnumerator
+- uid: Berry.Docx.Collections.ColumnWidthCollection
+  name: ColumnWidthCollection
+  href: api/Berry.Docx.Collections.ColumnWidthCollection.html
+  commentId: T:Berry.Docx.Collections.ColumnWidthCollection
+  fullName: Berry.Docx.Collections.ColumnWidthCollection
+  nameWithType: ColumnWidthCollection
+- uid: Berry.Docx.Collections.ColumnWidthCollection.GetEnumerator
+  name: GetEnumerator()
+  href: api/Berry.Docx.Collections.ColumnWidthCollection.html#Berry_Docx_Collections_ColumnWidthCollection_GetEnumerator
+  commentId: M:Berry.Docx.Collections.ColumnWidthCollection.GetEnumerator
+  fullName: Berry.Docx.Collections.ColumnWidthCollection.GetEnumerator()
+  nameWithType: ColumnWidthCollection.GetEnumerator()
+- uid: Berry.Docx.Collections.ColumnWidthCollection.GetEnumerator*
+  name: GetEnumerator
+  href: api/Berry.Docx.Collections.ColumnWidthCollection.html#Berry_Docx_Collections_ColumnWidthCollection_GetEnumerator_
+  commentId: Overload:Berry.Docx.Collections.ColumnWidthCollection.GetEnumerator
+  isSpec: "True"
+  fullName: Berry.Docx.Collections.ColumnWidthCollection.GetEnumerator
+  nameWithType: ColumnWidthCollection.GetEnumerator
+- uid: Berry.Docx.Collections.ColumnWidthCollection.Item(System.Int32)
+  name: Item[Int32]
+  href: api/Berry.Docx.Collections.ColumnWidthCollection.html#Berry_Docx_Collections_ColumnWidthCollection_Item_System_Int32_
+  commentId: P:Berry.Docx.Collections.ColumnWidthCollection.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: Berry.Docx.Collections.ColumnWidthCollection.Item[System.Int32]
+  fullName.vb: Berry.Docx.Collections.ColumnWidthCollection.Item(System.Int32)
+  nameWithType: ColumnWidthCollection.Item[Int32]
+  nameWithType.vb: ColumnWidthCollection.Item(Int32)
+- uid: Berry.Docx.Collections.ColumnWidthCollection.Item*
+  name: Item
+  href: api/Berry.Docx.Collections.ColumnWidthCollection.html#Berry_Docx_Collections_ColumnWidthCollection_Item_
+  commentId: Overload:Berry.Docx.Collections.ColumnWidthCollection.Item
+  isSpec: "True"
+  fullName: Berry.Docx.Collections.ColumnWidthCollection.Item
+  nameWithType: ColumnWidthCollection.Item
 - uid: Berry.Docx.Collections.DocumentItemCollection
   name: DocumentItemCollection
   href: api/Berry.Docx.Collections.DocumentItemCollection.html
@@ -5018,6 +5053,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.Table.ColumnCount
   nameWithType: Table.ColumnCount
+- uid: Berry.Docx.Documents.Table.ColumnWidths
+  name: ColumnWidths
+  href: api/Berry.Docx.Documents.Table.html#Berry_Docx_Documents_Table_ColumnWidths
+  commentId: P:Berry.Docx.Documents.Table.ColumnWidths
+  fullName: Berry.Docx.Documents.Table.ColumnWidths
+  nameWithType: Table.ColumnWidths
+- uid: Berry.Docx.Documents.Table.ColumnWidths*
+  name: ColumnWidths
+  href: api/Berry.Docx.Documents.Table.html#Berry_Docx_Documents_Table_ColumnWidths_
+  commentId: Overload:Berry.Docx.Documents.Table.ColumnWidths
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.Table.ColumnWidths
+  nameWithType: Table.ColumnWidths
 - uid: Berry.Docx.Documents.Table.DocumentObjectType
   name: DocumentObjectType
   href: api/Berry.Docx.Documents.Table.html#Berry_Docx_Documents_Table_DocumentObjectType
@@ -5118,6 +5166,19 @@ references:
   commentId: T:Berry.Docx.Documents.TableCell
   fullName: Berry.Docx.Documents.TableCell
   nameWithType: TableCell
+- uid: Berry.Docx.Documents.TableCell.Background
+  name: Background
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_Background
+  commentId: P:Berry.Docx.Documents.TableCell.Background
+  fullName: Berry.Docx.Documents.TableCell.Background
+  nameWithType: TableCell.Background
+- uid: Berry.Docx.Documents.TableCell.Background*
+  name: Background
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_Background_
+  commentId: Overload:Berry.Docx.Documents.TableCell.Background
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableCell.Background
+  nameWithType: TableCell.Background
 - uid: Berry.Docx.Documents.TableCell.Borders
   name: Borders
   href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_Borders
@@ -5170,6 +5231,32 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.TableCell.Clone
   nameWithType: TableCell.Clone
+- uid: Berry.Docx.Documents.TableCell.ColumnIndex
+  name: ColumnIndex
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_ColumnIndex
+  commentId: P:Berry.Docx.Documents.TableCell.ColumnIndex
+  fullName: Berry.Docx.Documents.TableCell.ColumnIndex
+  nameWithType: TableCell.ColumnIndex
+- uid: Berry.Docx.Documents.TableCell.ColumnIndex*
+  name: ColumnIndex
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_ColumnIndex_
+  commentId: Overload:Berry.Docx.Documents.TableCell.ColumnIndex
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableCell.ColumnIndex
+  nameWithType: TableCell.ColumnIndex
+- uid: Berry.Docx.Documents.TableCell.ColumnSpan
+  name: ColumnSpan
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_ColumnSpan
+  commentId: P:Berry.Docx.Documents.TableCell.ColumnSpan
+  fullName: Berry.Docx.Documents.TableCell.ColumnSpan
+  nameWithType: TableCell.ColumnSpan
+- uid: Berry.Docx.Documents.TableCell.ColumnSpan*
+  name: ColumnSpan
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_ColumnSpan_
+  commentId: Overload:Berry.Docx.Documents.TableCell.ColumnSpan
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableCell.ColumnSpan
+  nameWithType: TableCell.ColumnSpan
 - uid: Berry.Docx.Documents.TableCell.DocumentObjectType
   name: DocumentObjectType
   href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_DocumentObjectType
@@ -5196,19 +5283,6 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.TableCell.GetCellWidth
   nameWithType: TableCell.GetCellWidth
-- uid: Berry.Docx.Documents.TableCell.GridSpan
-  name: GridSpan
-  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_GridSpan
-  commentId: P:Berry.Docx.Documents.TableCell.GridSpan
-  fullName: Berry.Docx.Documents.TableCell.GridSpan
-  nameWithType: TableCell.GridSpan
-- uid: Berry.Docx.Documents.TableCell.GridSpan*
-  name: GridSpan
-  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_GridSpan_
-  commentId: Overload:Berry.Docx.Documents.TableCell.GridSpan
-  isSpec: "True"
-  fullName: Berry.Docx.Documents.TableCell.GridSpan
-  nameWithType: TableCell.GridSpan
 - uid: Berry.Docx.Documents.TableCell.InsertColumnLeft
   name: InsertColumnLeft()
   href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_InsertColumnLeft
@@ -5274,6 +5348,32 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.TableCell.Paragraphs
   nameWithType: TableCell.Paragraphs
+- uid: Berry.Docx.Documents.TableCell.Row
+  name: Row
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_Row
+  commentId: P:Berry.Docx.Documents.TableCell.Row
+  fullName: Berry.Docx.Documents.TableCell.Row
+  nameWithType: TableCell.Row
+- uid: Berry.Docx.Documents.TableCell.Row*
+  name: Row
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_Row_
+  commentId: Overload:Berry.Docx.Documents.TableCell.Row
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableCell.Row
+  nameWithType: TableCell.Row
+- uid: Berry.Docx.Documents.TableCell.RowIndex
+  name: RowIndex
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_RowIndex
+  commentId: P:Berry.Docx.Documents.TableCell.RowIndex
+  fullName: Berry.Docx.Documents.TableCell.RowIndex
+  nameWithType: TableCell.RowIndex
+- uid: Berry.Docx.Documents.TableCell.RowIndex*
+  name: RowIndex
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_RowIndex_
+  commentId: Overload:Berry.Docx.Documents.TableCell.RowIndex
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableCell.RowIndex
+  nameWithType: TableCell.RowIndex
 - uid: Berry.Docx.Documents.TableCell.SetCellWidth(System.Single,Berry.Docx.CellWidthType)
   name: SetCellWidth(Single, CellWidthType)
   href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_SetCellWidth_System_Single_Berry_Docx_CellWidthType_
@@ -5287,6 +5387,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.TableCell.SetCellWidth
   nameWithType: TableCell.SetCellWidth
+- uid: Berry.Docx.Documents.TableCell.Table
+  name: Table
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_Table
+  commentId: P:Berry.Docx.Documents.TableCell.Table
+  fullName: Berry.Docx.Documents.TableCell.Table
+  nameWithType: TableCell.Table
+- uid: Berry.Docx.Documents.TableCell.Table*
+  name: Table
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_Table_
+  commentId: Overload:Berry.Docx.Documents.TableCell.Table
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableCell.Table
+  nameWithType: TableCell.Table
 - uid: Berry.Docx.Documents.TableCell.VerticalCellAlignment
   name: VerticalCellAlignment
   href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_VerticalCellAlignment
@@ -5300,19 +5413,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.TableCell.VerticalCellAlignment
   nameWithType: TableCell.VerticalCellAlignment
-- uid: Berry.Docx.Documents.TableCell.VMerge
-  name: VMerge
-  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_VMerge
-  commentId: P:Berry.Docx.Documents.TableCell.VMerge
-  fullName: Berry.Docx.Documents.TableCell.VMerge
-  nameWithType: TableCell.VMerge
-- uid: Berry.Docx.Documents.TableCell.VMerge*
-  name: VMerge
-  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_VMerge_
-  commentId: Overload:Berry.Docx.Documents.TableCell.VMerge
+- uid: Berry.Docx.Documents.TableCell.VerticalMerge
+  name: VerticalMerge
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_VerticalMerge
+  commentId: P:Berry.Docx.Documents.TableCell.VerticalMerge
+  fullName: Berry.Docx.Documents.TableCell.VerticalMerge
+  nameWithType: TableCell.VerticalMerge
+- uid: Berry.Docx.Documents.TableCell.VerticalMerge*
+  name: VerticalMerge
+  href: api/Berry.Docx.Documents.TableCell.html#Berry_Docx_Documents_TableCell_VerticalMerge_
+  commentId: Overload:Berry.Docx.Documents.TableCell.VerticalMerge
   isSpec: "True"
-  fullName: Berry.Docx.Documents.TableCell.VMerge
-  nameWithType: TableCell.VMerge
+  fullName: Berry.Docx.Documents.TableCell.VerticalMerge
+  nameWithType: TableCell.VerticalMerge
 - uid: Berry.Docx.Documents.TableCellWidth
   name: TableCellWidth
   href: api/Berry.Docx.Documents.TableCellWidth.html
@@ -5633,6 +5746,32 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Documents.TableRow.Item
   nameWithType: TableRow.Item
+- uid: Berry.Docx.Documents.TableRow.RowIndex
+  name: RowIndex
+  href: api/Berry.Docx.Documents.TableRow.html#Berry_Docx_Documents_TableRow_RowIndex
+  commentId: P:Berry.Docx.Documents.TableRow.RowIndex
+  fullName: Berry.Docx.Documents.TableRow.RowIndex
+  nameWithType: TableRow.RowIndex
+- uid: Berry.Docx.Documents.TableRow.RowIndex*
+  name: RowIndex
+  href: api/Berry.Docx.Documents.TableRow.html#Berry_Docx_Documents_TableRow_RowIndex_
+  commentId: Overload:Berry.Docx.Documents.TableRow.RowIndex
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableRow.RowIndex
+  nameWithType: TableRow.RowIndex
+- uid: Berry.Docx.Documents.TableRow.Table
+  name: Table
+  href: api/Berry.Docx.Documents.TableRow.html#Berry_Docx_Documents_TableRow_Table
+  commentId: P:Berry.Docx.Documents.TableRow.Table
+  fullName: Berry.Docx.Documents.TableRow.Table
+  nameWithType: TableRow.Table
+- uid: Berry.Docx.Documents.TableRow.Table*
+  name: Table
+  href: api/Berry.Docx.Documents.TableRow.html#Berry_Docx_Documents_TableRow_Table_
+  commentId: Overload:Berry.Docx.Documents.TableRow.Table
+  isSpec: "True"
+  fullName: Berry.Docx.Documents.TableRow.Table
+  nameWithType: TableRow.Table
 - uid: Berry.Docx.EnumExtentions
   name: EnumExtentions
   href: api/Berry.Docx.EnumExtentions.html
@@ -7904,6 +8043,25 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Formatting.CharacterStyle.Default
   nameWithType: CharacterStyle.Default
+- uid: Berry.Docx.Formatting.ColumnWidth
+  name: ColumnWidth
+  href: api/Berry.Docx.Formatting.ColumnWidth.html
+  commentId: T:Berry.Docx.Formatting.ColumnWidth
+  fullName: Berry.Docx.Formatting.ColumnWidth
+  nameWithType: ColumnWidth
+- uid: Berry.Docx.Formatting.ColumnWidth.Width
+  name: Width
+  href: api/Berry.Docx.Formatting.ColumnWidth.html#Berry_Docx_Formatting_ColumnWidth_Width
+  commentId: P:Berry.Docx.Formatting.ColumnWidth.Width
+  fullName: Berry.Docx.Formatting.ColumnWidth.Width
+  nameWithType: ColumnWidth.Width
+- uid: Berry.Docx.Formatting.ColumnWidth.Width*
+  name: Width
+  href: api/Berry.Docx.Formatting.ColumnWidth.html#Berry_Docx_Formatting_ColumnWidth_Width_
+  commentId: Overload:Berry.Docx.Formatting.ColumnWidth.Width
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.ColumnWidth.Width
+  nameWithType: ColumnWidth.Width
 - uid: Berry.Docx.Formatting.DocDefaultFormat
   name: DocDefaultFormat
   href: api/Berry.Docx.Formatting.DocDefaultFormat.html
@@ -9229,6 +9387,19 @@ references:
   commentId: T:Berry.Docx.Formatting.TableFormat
   fullName: Berry.Docx.Formatting.TableFormat
   nameWithType: TableFormat
+- uid: Berry.Docx.Formatting.TableFormat.Background
+  name: Background
+  href: api/Berry.Docx.Formatting.TableFormat.html#Berry_Docx_Formatting_TableFormat_Background
+  commentId: P:Berry.Docx.Formatting.TableFormat.Background
+  fullName: Berry.Docx.Formatting.TableFormat.Background
+  nameWithType: TableFormat.Background
+- uid: Berry.Docx.Formatting.TableFormat.Background*
+  name: Background
+  href: api/Berry.Docx.Formatting.TableFormat.html#Berry_Docx_Formatting_TableFormat_Background_
+  commentId: Overload:Berry.Docx.Formatting.TableFormat.Background
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.TableFormat.Background
+  nameWithType: TableFormat.Background
 - uid: Berry.Docx.Formatting.TableFormat.Borders
   name: Borders
   href: api/Berry.Docx.Formatting.TableFormat.html#Berry_Docx_Formatting_TableFormat_Borders
@@ -9352,6 +9523,19 @@ references:
   isSpec: "True"
   fullName: Berry.Docx.Formatting.TableRegionStyle.AllowBreakAcrossPages
   nameWithType: TableRegionStyle.AllowBreakAcrossPages
+- uid: Berry.Docx.Formatting.TableRegionStyle.Background
+  name: Background
+  href: api/Berry.Docx.Formatting.TableRegionStyle.html#Berry_Docx_Formatting_TableRegionStyle_Background
+  commentId: P:Berry.Docx.Formatting.TableRegionStyle.Background
+  fullName: Berry.Docx.Formatting.TableRegionStyle.Background
+  nameWithType: TableRegionStyle.Background
+- uid: Berry.Docx.Formatting.TableRegionStyle.Background*
+  name: Background
+  href: api/Berry.Docx.Formatting.TableRegionStyle.html#Berry_Docx_Formatting_TableRegionStyle_Background_
+  commentId: Overload:Berry.Docx.Formatting.TableRegionStyle.Background
+  isSpec: "True"
+  fullName: Berry.Docx.Formatting.TableRegionStyle.Background
+  nameWithType: TableRegionStyle.Background
 - uid: Berry.Docx.Formatting.TableRegionStyle.Borders
   name: Borders
   href: api/Berry.Docx.Formatting.TableRegionStyle.html#Berry_Docx_Formatting_TableRegionStyle_Borders

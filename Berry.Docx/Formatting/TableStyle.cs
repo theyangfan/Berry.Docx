@@ -39,11 +39,11 @@ namespace Berry.Docx.Formatting
         {
             _doc = doc;
             _style = style;
-            _wholeTable = new TableRegionStyle(doc, style, TableRegionType.WholeTable);
-            _firstRow = new TableRegionStyle(doc, style, TableRegionType.FirstRow);
-            _lastRow = new TableRegionStyle(doc, style, TableRegionType.LastRow);
-            _firstColumn = new TableRegionStyle(doc, style, TableRegionType.FirstColumn);
-            _lastColumn = new TableRegionStyle(doc, style, TableRegionType.LastColumn);
+            _wholeTable = new TableRegionStyle(doc, this, TableRegionType.WholeTable);
+            _firstRow = new TableRegionStyle(doc, this, TableRegionType.FirstRow);
+            _lastRow = new TableRegionStyle(doc, this, TableRegionType.LastRow);
+            _firstColumn = new TableRegionStyle(doc, this, TableRegionType.FirstColumn);
+            _lastColumn = new TableRegionStyle(doc, this, TableRegionType.LastColumn);
         }
         #endregion
 

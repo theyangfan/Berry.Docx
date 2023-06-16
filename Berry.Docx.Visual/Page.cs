@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using BD = Berry.Docx.Documents;
 using Berry.Docx.Visual.Documents;
 using Berry.Docx.Visual.Field;
 
@@ -16,12 +17,11 @@ namespace Berry.Docx.Visual
         private readonly double _availableWidth = 0;
         private readonly double _availableHeight = 0;
         private readonly double _height = 0;
-        private readonly Margin _margin = new Margin(0,0,0,0);
         private readonly Margin _padding = new Margin(0,0,0,0);
         private readonly double _charSpace = 0;
         private readonly double _lineSpace = 0;
         private readonly Berry.Docx.DocGridType _gridType;
-        private readonly List<Paragraph> _paragraphs;
+        private readonly List<DocumentItem> _items;
 
         private double _curHeight = 0;
         #endregion
@@ -43,7 +43,7 @@ namespace Berry.Docx.Visual
             _availableHeight = _height - topMar - bottomMar;
             _padding = new Margin(leftMar, topMar, rightMar, bottomMar);
             _gridType = pageSetup.DocGrid;
-            _paragraphs = new List<Paragraph>();
+            _items = new List<DocumentItem>();
         }
         #endregion
 
@@ -52,25 +52,24 @@ namespace Berry.Docx.Visual
 
         public double Height => _height;
 
-        public Margin Margin => _margin;
-
         public Margin Padding => _padding;
 
         public double CharSpace => _charSpace;
 
         public double LineSpace => _lineSpace;
 
-        public List<Paragraph> Paragraphs => _paragraphs;
+        public List<DocumentItem> ChildItems => _items;
+
         #endregion
 
         #region Internal Methods
-        internal bool TryAppend(Berry.Docx.Documents.Paragraph p, ref int lineNumber)
+        internal bool TryAppend(BD.Paragraph p, ref int lineNumber)
         {
             Paragraph paragraph = new Paragraph(p, _availableWidth, _charSpace, _lineSpace, _gridType);
             var lines = paragraph.GenerateLines();
-            if(_paragraphs.Count > 0)
+            if(_items.Count > 0 && _items.Last() is Paragraph)
             {
-                var lastP = _paragraphs.Last();
+                var lastP = (Paragraph)_items.Last();
                 double margin = Math.Max(lastP.Margin.Bottom, paragraph.Margin.Top);
                 lastP.Margin.Bottom = 0;
                 paragraph.Margin.Top = margin;
@@ -84,18 +83,18 @@ namespace Berry.Docx.Visual
             for (int i = lineNumber; i < count; i++)
             {
                 var line = lines[i];
-                if(line.ChildItems[0].GetType() != typeof(Picture) || _paragraphs.Count > 0)
+                if(line.ChildItems[0].GetType() != typeof(Picture) || _items.Count > 0)
                 {
                     if (_curHeight + line.Height + line.Margin.Top + line.Margin.Bottom > _availableHeight)
                     {
-                        if (paragraph.Lines.Count > 0) _paragraphs.Add(paragraph);
+                        if (paragraph.Lines.Count > 0) _items.Add(paragraph);
                         return false;
                     }
                 }
                 if (line.EndsWithPageBreak)
                 {
                     paragraph.Lines.Add(line);
-                    _paragraphs.Add(paragraph);
+                    _items.Add(paragraph);
                     lineNumber++;
                     return false;
                 }
@@ -103,7 +102,16 @@ namespace Berry.Docx.Visual
                 _curHeight += line.Height + line.Margin.Top + line.Margin.Bottom;
                 lineNumber++;
             }
-            if(paragraph.Lines.Count > 0) _paragraphs.Add(paragraph);
+            if(paragraph.Lines.Count > 0) _items.Add(paragraph);
+            return true;
+        }
+
+        internal bool TryAppend(BD.Table tbl)
+        {
+            Table table = new Table(tbl, _charSpace, _lineSpace, _gridType);
+            if (_items.Count > 0 && _curHeight + table.Height > _availableHeight) return false;
+            _items.Add(table);
+            _curHeight += table.Height;
             return true;
         }
         #endregion

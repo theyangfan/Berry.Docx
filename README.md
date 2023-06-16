@@ -119,6 +119,10 @@ namespace Example
 
 # 更新日志（Release History）
 
+### v1.3.7 (2023-06-16)
+
+- 支持读写表格边框和底纹格式 (Supports read-write table borders and background color)。
+
 ### v1.3.6 (2023-05-29)
 
 - 支持读取段落中的字符的最终格式 (Supports reading the final format of characters of the paragraph)；

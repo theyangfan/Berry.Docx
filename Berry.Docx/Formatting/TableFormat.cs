@@ -14,7 +14,7 @@ namespace Berry.Docx.Formatting
         #region Private Members
         private readonly Document _doc;
         private readonly Table _table;
-        private readonly W.Table _xtable;
+        private readonly TablePropertiesHolder _tblPr;
         #endregion
 
         #region Constructors
@@ -22,7 +22,7 @@ namespace Berry.Docx.Formatting
         {
             _doc = doc;
             _table = table;
-            _xtable = table.XElement;
+            _tblPr = new TablePropertiesHolder(table);
         }
         #endregion
 
@@ -32,29 +32,8 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public bool FirstRowEnabled
         {
-            get
-            {
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if(tblPr?.TableLook?.FirstRow != null)
-                {
-                    return tblPr.TableLook.FirstRow;
-                }
-                return true;
-            }
-            set
-            {
-                
-                if(_xtable.GetFirstChild<W.TableProperties>() == null)
-                {
-                    _xtable.AddChild(new W.TableProperties());
-                }
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if(tblPr.TableLook == null)
-                {
-                    tblPr.TableLook = new W.TableLook();
-                }
-                tblPr.TableLook.FirstRow = value;
-            }
+            get => _tblPr.FirstRowEnabled ?? true;
+            set => _tblPr.FirstRowEnabled = value;
         }
 
         /// <summary>
@@ -62,29 +41,8 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public bool LastRowEnabled
         {
-            get
-            {
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if (tblPr?.TableLook?.LastRow != null)
-                {
-                    return tblPr.TableLook.LastRow;
-                }
-                return false;
-            }
-            set
-            {
-
-                if (_xtable.GetFirstChild<W.TableProperties>() == null)
-                {
-                    _xtable.AddChild(new W.TableProperties());
-                }
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if (tblPr.TableLook == null)
-                {
-                    tblPr.TableLook = new W.TableLook();
-                }
-                tblPr.TableLook.LastRow = value;
-            }
+            get => _tblPr.LastRowEnabled ?? false;
+            set => _tblPr.LastRowEnabled = value;
         }
 
         /// <summary>
@@ -92,29 +50,8 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public bool FirstColumnEnabled
         {
-            get
-            {
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if (tblPr?.TableLook?.FirstColumn != null)
-                {
-                    return tblPr.TableLook.FirstColumn;
-                }
-                return true;
-            }
-            set
-            {
-
-                if (_xtable.GetFirstChild<W.TableProperties>() == null)
-                {
-                    _xtable.AddChild(new W.TableProperties());
-                }
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if (tblPr.TableLook == null)
-                {
-                    tblPr.TableLook = new W.TableLook();
-                }
-                tblPr.TableLook.FirstColumn = value;
-            }
+            get => _tblPr.FirstColumnEnabled ?? true;
+            set => _tblPr.FirstColumnEnabled = value;
         }
 
         /// <summary>
@@ -122,29 +59,8 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public bool LastColumnEnabled
         {
-            get
-            {
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if (tblPr?.TableLook?.LastColumn != null)
-                {
-                    return tblPr.TableLook.LastColumn;
-                }
-                return false;
-            }
-            set
-            {
-
-                if (_xtable.GetFirstChild<W.TableProperties>() == null)
-                {
-                    _xtable.AddChild(new W.TableProperties());
-                }
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if (tblPr.TableLook == null)
-                {
-                    tblPr.TableLook = new W.TableLook();
-                }
-                tblPr.TableLook.LastColumn = value;
-            }
+            get => _tblPr.LastColumnEnabled ?? false;
+            set => _tblPr.LastColumnEnabled = value;
         }
 
         /// <summary>
@@ -154,25 +70,32 @@ namespace Berry.Docx.Formatting
         {
             get
             {
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if(tblPr?.TableJustification != null)
-                {
-                    return tblPr.TableJustification.Val.Value.Convert<TableRowAlignment>();
-                }
+                if(_tblPr.HorizontalAlignment != null) return _tblPr.HorizontalAlignment;
                 return _table.GetStyle().WholeTable.HorizontalAlignment;
             }
             set
             {
-                if (_xtable.GetFirstChild<W.TableProperties>() == null)
-                {
-                    _xtable.AddChild(new W.TableProperties());
-                }
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                tblPr.TableJustification = new W.TableJustification() { Val = value.Convert<W.TableRowAlignmentValues>() };
-                foreach(TableRow row in _table.Rows)
+                _tblPr.HorizontalAlignment = value;
+                foreach(var row in _table.Rows)
                 {
                     row.HorizontalAlignment = value;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the background color of the current table.
+        /// </summary>
+        public ColorValue Background
+        {
+            get
+            {
+                if(_tblPr.Background != null) return _tblPr.Background;
+                return _table.GetStyle().WholeTable.Background;
+            }
+            set
+            {
+                _tblPr.Background = value;
             }
         }
 
@@ -181,37 +104,8 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public bool WrapTextAround
         {
-            get
-            {
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                return tblPr?.TablePositionProperties != null;
-            }
-            set
-            {
-                if (_xtable.GetFirstChild<W.TableProperties>() == null)
-                {
-                    _xtable.AddChild(new W.TableProperties());
-                }
-                W.TableProperties tblPr = _xtable.GetFirstChild<W.TableProperties>();
-                if (value)
-                {
-                    if(tblPr.TablePositionProperties == null)
-                    {
-                        // set initial properties
-                        tblPr.TablePositionProperties = new W.TablePositionProperties()
-                        {
-                            LeftFromText = 180,
-                            RightFromText = 180,
-                            VerticalAnchor = W.VerticalAnchorValues.Text,
-                            TablePositionY = 1
-                        };
-                    }
-                }
-                else
-                {
-                    tblPr.TablePositionProperties = null;
-                }
-            }
+            get => _tblPr.WrapTextAround ?? false;
+            set => _tblPr.WrapTextAround = value;
         }
 
         /// <summary>
@@ -219,36 +113,14 @@ namespace Berry.Docx.Formatting
         /// </summary>
         public bool RepeatHeaderRow
         {
-            get
-            {
-                W.TableRow row = _table.Rows[0].XElement as W.TableRow;
-                W.TableHeader header = row.TableRowProperties.GetFirstChild<W.TableHeader>();
-                if (header == null) return false;
-                if (header.Val == null) return true;
-                return header.Val.Value == W.OnOffOnlyValues.On;
-            }
-            set
-            {
-                W.TableRow row = _table.Rows[0].XElement as W.TableRow;
-                if (value)
-                {
-                    if (row.TableRowProperties == null)
-                    {
-                        row.TableRowProperties = new W.TableRowProperties();
-                    }
-                    row.TableRowProperties.AddChild(new W.TableHeader());
-                }
-                else
-                {
-                    row.TableRowProperties?.GetFirstChild<W.TableHeader>()?.Remove();
-                }
-            }
+            get => _table.Rows[0].RepeatHeaderRow;
+            set => _table.Rows[0].RepeatHeaderRow = value;
         }
 
         /// <summary>
         /// Gets the table borders.
         /// </summary>
-        public TableBorders Borders => new TableBorders(_doc, _table);
+        public TableBorders Borders => new TableBorders(_table);
         #endregion
     }
 }

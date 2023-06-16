@@ -2084,7 +2084,7 @@ namespace Berry.Docx
         /// </summary>
         Auto = 0,
         /// <summary>
-        /// Width in Percent.
+        /// Width in Percent (0-100).
         /// </summary>
         Percent = 1,
         /// <summary>

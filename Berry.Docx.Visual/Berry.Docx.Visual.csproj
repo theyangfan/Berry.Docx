@@ -3,23 +3,23 @@
   <PropertyGroup>
     <TargetFrameworks>net35;net40;net462</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>番茄土豆</Authors>
-    <Description>一款用于构建 DOCX 文档在显示时的组成结构的 .NET 库。通过此项目，我们可以访问文档中的页面，页面中的段落，段落中的行，行中的字符和图片等，以及这些内容的尺寸和边距。
+    <Description>一款用于构建 DOCX 文档在显示时的组成结构的 .NET 库。通过此项目，我们可以访问文档中的页面、表格、段落以及其中的字符和图片等，以及这些内容的尺寸和边距等格式。
 
-A.NET library for building the structure of a DOCX document when it is displayed. Through this project, we can access the pages in the document, the paragraphs in the page, the lines in the paragraphs, the characters and pictures in the lines, as well as the dimensions and margins of these contents.</Description>
+A.NET library for building the structure of a DOCX document when it is displayed. Through this project, we can access the pages, tables, paragraphs, characters and images in the document, as well as the format of the dimensions and margins of these contents.</Description>
     <Copyright>© theyangfan 2023. All rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/theyangfan/Berry.Docx/tree/main/Berry.Docx.Visual</PackageProjectUrl>
     <PackageIcon>logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/theyangfan/Berry.Docx/tree/main/Berry.Docx.Visual</RepositoryUrl>
     <PackageTags>word, docx, openxml, office, docx visual</PackageTags>
-    <PackageReleaseNotes>支持嵌入式图片 (Supports inline pictures)。</PackageReleaseNotes>
+    <PackageReleaseNotes>支持表格 (Supports tables)。</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Berry.Docx" Version="1.3.6" />
+    <PackageReference Include="Berry.Docx" Version="1.3.7" />
   </ItemGroup>
 
   <ItemGroup>

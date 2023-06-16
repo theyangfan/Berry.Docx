@@ -49,7 +49,18 @@ namespace Berry.Docx.Documents
         /// <summary>
         /// Gets the column count.
         /// </summary>
-        public int ColumnCount => Rows[0].Cells.Count;
+        public int ColumnCount
+        {
+            get
+            {
+                int maxCnt = 0;
+                foreach(var row in Rows)
+                {
+                    maxCnt = Math.Max(maxCnt, row.Cells.Count);
+                }
+                return maxCnt;
+            }
+        }
 
         /// <summary>
         /// Gets the table format.
@@ -77,6 +88,11 @@ namespace Berry.Docx.Documents
         /// The table rows collection.
         /// </summary>
         public TableRowCollection Rows => new TableRowCollection(_table, TableRowsPrivate());
+
+        /// <summary>
+        /// Gets the width of columns.
+        /// </summary>
+        public ColumnWidthCollection ColumnWidths => new ColumnWidthCollection(_doc, this);
         #endregion
 
         #region Public Methods
@@ -220,7 +236,7 @@ namespace Berry.Docx.Documents
         {
             foreach (W.TableRow row in _table.Elements<W.TableRow>())
             {
-                yield return new TableRow(_doc, this, row);
+                yield return new TableRow(_doc, row);
             }
         }
         #endregion
